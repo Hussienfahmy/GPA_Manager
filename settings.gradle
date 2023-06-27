@@ -15,4 +15,7 @@ dependencyResolutionManagement {
 rootProject.name = "GPA Manager"
 include ':app'
 include ':core'
+include ':grades_setting'
+include ':grades_setting:grades_setting_domain'
+include ':grades_setting:grades_setting_presentation'
 include ':core-ui'

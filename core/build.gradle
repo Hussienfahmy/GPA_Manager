@@ -2,6 +2,10 @@ apply {
     from("$rootDir/base-module.gradle")
 }
 
+android {
+    namespace = app_id + ".core"
+}
+
 dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"

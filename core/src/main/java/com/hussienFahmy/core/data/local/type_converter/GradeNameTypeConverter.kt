@@ -1,0 +1,16 @@
+package com.hussienfahmy.core.data.local.type_converter
+
+import androidx.room.TypeConverter
+import com.hussienfahmy.core.data.local.model.GradeName
+
+class GradeNameTypeConverter {
+    @TypeConverter
+    fun toGradeName(symbol: String?): GradeName? {
+        return GradeName.values().firstOrNull { it.symbol == symbol }
+    }
+
+    @TypeConverter
+    fun toGradeSymbol(gradeName: GradeName?): String? {
+        return gradeName?.symbol
+    }
+}

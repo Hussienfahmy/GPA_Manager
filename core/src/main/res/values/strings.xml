@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="add">Add</string>
+    <string name="add_and_close">Add and close</string>
+    <string name="add_another_subject">+ Add another subject</string>
+    <string name="add_subject">Add Subject</string>
+    <string name="add_subjects_hint">Tap on the (+ Add) button to add subjects</string>
+    <string name="app_name" translatable="false">GPA Manager</string>
+    <string name="calculation_settings">Calculation Settings</string>
+    <string name="calculation_settings_screen_summary">GPA System (4 or 5), Subject Marks</string>
+    <string name="cancel">Cancel</string>
+    <string name="const_subject_marks">Const Subject Marks</string>
+    <string name="credit_hours_value">Credit Hours: %d</string>
+    <string name="cumulative">Cumulative</string>
+    <string name="cumulative_gpa">Cumulative GPA</string>
+    <string name="cumulative_gpa_value">Cumulative GPA: %.2f</string>
+    <string name="cumulative_gpa_will_be">The Cumulative GPA will be</string>
+    <string name="cumulative_target_gpa">Target Cumulative GPA</string>
+    <string name="current_cumulative_gpa">Current Cumulative GPA</string>
+    <string name="current_total_hours">Current Total Hours</string>
+    <string name="delete">Delete</string>
+    <string name="department">Department</string>
+    <string name="edit">Edit</string>
+    <string name="email">Email</string>
+    <string name="empty_feedback">The feedback can not be a feedback without content !! :)</string>
+    <string name="err_calculation_failed_please_select_grade">Please select grade</string>
+    <string name="err_cant_activate">Please set points and percentage first to enable this grade</string>
+    <string name="err_percentage_range">Percentage can be from 0 to 100</string>
+    <string name="err_points_less_zero">Points can not be negative</string>
+    <string name="err_subject_credit_hours_negative">Credit hours can not be negative</string>
+    <string name="err_subject_midterm_negative">Midterm can not be less than zero</string>
+    <string name="err_subject_name_empty">Subject Name Can not be Empty</string>
+    <string name="err_subject_oral_negative">Oral can not be less than zero</string>
+    <string name="err_subject_practical_negative">Practical marks can not be less than zero</string>
+    <string name="err_subject_total_must_more_than_zero">Total Marks must be more than zero</string>
+    <string name="err_waiting_to_add_subjects">Waiting to add subjects</string>
+    <string name="error_happened">Error happened</string>
+    <string name="error_icon">Error Icon</string>
+    <string name="error_no_academic_progress">Failed to get academic progress, sign in again and check your data</string>
+    <string name="error_occurred">Error Occurred</string>
+    <string name="error_occurred_contact_developer">An Error has been occurred, please report to the developer</string>
+    <string name="expected_semester_gpa">Expected Semester GPA</string>
+    <string name="faculty">Faculty</string>
+    <string name="feature_request_summary">Vote on a features to be added in the app, the more votes the more we focus on it</string>
+    <string name="feature_request_title">Feature Request</string>
+    <string name="features_request_hint">Features requested by the users from their feedback, upvote any feature you need more, so we focus on it more :)</string>
+    <string name="feedback_content">Feedback Content</string>
+    <string name="feedback_hint">Your feedback is very important.\nTell us what you want to see in the app, or what you want the app to do or any issue you faced.\n and we will make it :)</string>
+    <string name="feedback_success">your feedback was submitted, Thank you very much.\nnow will try to do our best to make GPA calculation easy for you :)</string>
+    <string name="field_can_not_be_empty">This field must not be empty</string>
+    <string name="first">First</string>
+    <string name="fix_grade">Fix Grade</string>
+    <string name="gpa_quick_calculator">GPA Quick Calculator</string>
+    <string name="gpa_system">GPA System</string>
+    <string name="grades_settings">Grades Settings</string>
+    <string name="grades_settings_screen_summary">Control grade properties like points, percentage, available</string>
+    <string name="high_grade_to_low_credit_hours">High grade to\nlow C. hours subjects</string>
+    <string name="hours">Hours</string>
+    <string name="include_your_email">Include your email with your feedback to get a replay, or keep it private</string>
+    <string name="level">Level</string>
+    <string name="level_semester">Level %d %s Semester</string>
+    <string name="mode_normal">Normal</string>
+    <string name="mode_predictive">Predictive</string>
+    <string name="more">More</string>
+    <string name="name">Name</string>
+    <string name="new_subject_name">New subject Name</string>
+    <string name="no_subjects">No Subjects</string>
+    <string name="not_set">Not Set</string>
+    <string name="number_must_be_more_than_zero">"This number must be more than or equal zero(0) "</string>
+    <string name="ok">OK</string>
+    <string name="Percentage">Percentage</string>
+    <string name="percentage_value">Percentage\n%.2f</string>
+    <string name="please_enter_value">Please Enter Value</string>
+    <string name="points">Points</string>
+    <string name="points_value">Points\n%.2f</string>
+    <string name="predict_grade">Calculate Grade</string>
+    <string name="private_email">Private</string>
+    <string name="quick">Quick</string>
+    <string name="rename">Rename</string>
+    <string name="rename_subject">Rename Subject</string>
+    <string name="reset">Reset</string>
+    <string name="save">Save</string>
+    <string name="second">Second</string>
+    <string name="semester">Semester</string>
+    <string name="semester_credit_hours">Semester Credit Hours</string>
+    <string name="send">Send</string>
+    <string name="send_feedback_summary">send a feedback about your experience, or an issue you faced with the app to the developer</string>
+    <string name="send_feedback_title">Send Feedback</string>
+    <string name="subject_marks_depends_on">Subject Marks Depends on</string>
+    <string name="subject_marks_per_credit">Subject Marks Per Credit Hour</string>
+    <string name="subject_name">Subject Name</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="university">University</string>
+    <string name="use_my_information">Use my information</string>
+    <string name="user_photo">User Photo</string>
+    <string name="voted">Voted !!</string>
+    <string name="yes">Yes</string>
+    <string name="are_you_sure">Are you sure ?</string>
+    <string name="is_app_useful">Did you find the app useful ? ❤</string>
+    <string name="is_app_useful_details">If you find the app useful and really helped you, make us happy by clicking here to rate and review the app on play store</string>
+    <string name="about_app">About App</string>
+    <string name="about_app_summary">Info about the app and the developer</string>
+    <string name="app_version" translatable="false">Version %s</string>
+    <string name="connect_with_us">Connect with us</string>
+    <string name="facebook_page">facebook page</string>
+    <string name="like_us_on_facebook">Like us on Facebook</string>
+    <string name="play_store_link" translatable="false">https://play.google.com/store/apps/details?id=com.hussienFahmy.myGpaManager</string>
+    <string name="app_logo_description">app logo</string>
+    <string name="contact_us">Contact us</string>
+    <string name="gpa_manager_email" translatable="false">gpa-manager@h-fahmy.com</string>
+    <string name="play_store_description">App page on play store</string>
+    <string name="rate_us_on_play_store">Rate us on play store</string>
+    <string name="youtube_channel">youtube channel</string>
+    <string name="watch_us_on_youtube">Watch us on YouTube</string>
+    <string name="web_page">web page</string>
+    <string name="visit_our_website">Visit our website</string>
+    <string name="website_url" translatable="false">https://h-fahmy.com/gpa-manager</string>
+    <string name="facebook_page_url" translatable="false">fb://page/GPAManger</string>
+    <string name="youtube_channel_url" translatable="false">https://youtube.com/channel/UC_UbPztL518_gCWuzxTcvSw</string>
+    <string name="app_slogan" translatable="false">Modern GPA Calculator, Built with ❤ by a student to all students</string>
+    <string name="developer_github">Developer page on GitHub</string>
+    <string name="github_url" translatable="false">https://github.com/Hussienfahmy</string>
+    <string name="enter">Enter</string>
+    <string name="total_marks">Total Marks</string>
+    <string name="marks">Marks</string>
+    <string name="semester_marks">Semester Marks</string>
+    <string name="midterm">Midterm</string>
+    <string name="practical">Practical</string>
+    <string name="oral">Oral</string>
+    <string name="change_photo">Change Photo</string>
+    <string name="app_settings">App Settings</string>
+    <string name="modify_app_sittings">Modify app settings (dark mode, etc..)</string>
+    <string name="enable_dark_mode">Enable Dark Mode</string>
+    <string name="sign_out">Signe Out</string>
+    <string name="tip_modes"><b>Normal Mode</b>: you choose the grade for each subject and see how the cumulative GPA will be affected\n\n<b>Predictive Mode</b>: you only choose the cumulative GPA you want to achieve this semester, then you will see the required grade for each subject (and optionally modify each grade by yourself to refine the result)</string>
+    <string name="tip_required_marks">After you enter the midterm, practical and oral. If you see B+ with a 45 below it for example, so you need to get 45 marks (in the final exam) to achieve B+ in this subject</string>
+    <string name="done">Done</string>
+    <string name="remove_ads">Remove Ads</string>
+    <string name="remove_ads_summary">Remove ads from the app</string>
+    <string name="purchase_success">Thank you, please restart app to take effect</string>
+    <string name="remove_ads_product_id" translatable="false">gpa_manager_all_ads</string>
+    <string name="chat">Chat</string>
+    <string name="do_you_liked_the_app">Do you liked the app? ❤️</string>
+    <string name="err_grade_not_found">Grade Not Found</string>
+    <string name="active_grades_only">Active</string>
+    <string name="all_grades">All</string>
+</resources>
