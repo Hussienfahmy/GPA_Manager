@@ -1,7 +1,7 @@
-package com.hussienfahmy.core_ui.presentation.viewmodel
+package com.hussienFahmy.core_ui.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.hussienfahmy.core_ui.presentation.model.UiEvent
+import com.hussienFahmy.core_ui.presentation.model.UiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 

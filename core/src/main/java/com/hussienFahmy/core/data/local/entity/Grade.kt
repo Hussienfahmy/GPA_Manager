@@ -1,9 +1,9 @@
-package com.hussienfahmy.core.data.local.entity
+package com.hussienFahmy.core.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.hussienfahmy.core.data.local.model.GradeName
+import com.hussienFahmy.core.data.local.model.GradeName
 
 
 /**

@@ -1,4 +1,4 @@
-package com.hussienfahmy.myGpaManager
+package com.hussienFahmy.myGpaManager
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

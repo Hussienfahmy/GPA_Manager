@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.h_fahmy.core_ui.Dimensions
-import com.h_fahmy.core_ui.LocalSpacing
+import com.hussienFahmy.core_ui.Dimensions
+import com.hussienFahmy.core_ui.LocalSpacing
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,

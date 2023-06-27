@@ -1,12 +1,12 @@
-package com.hussienfahmy.grades_setting_domain.use_case
+package com.hussienFahmy.grades_setting_domain.use_case
 
 import com.google.common.truth.Truth.*
-import com.hussienfahmy.core.data.local.GradeDao
-import com.hussienfahmy.core.data.local.SubjectDao
-import com.hussienfahmy.core.data.local.entity.Grade
-import com.hussienfahmy.core.data.local.model.GradeName
-import com.hussienfahmy.core.data.local.util.UpdateResult
-import com.hussienfahmy.grades_setting_domain.model.GradeSetting
+import com.hussienFahmy.core.data.local.GradeDao
+import com.hussienFahmy.core.data.local.SubjectDao
+import com.hussienFahmy.core.data.local.entity.Grade
+import com.hussienFahmy.core.data.local.model.GradeName
+import com.hussienFahmy.core.data.local.util.UpdateResult
+import com.hussienFahmy.grades_setting_domain.model.GradeSetting
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,7 +29,7 @@ class ActivateGradeTest {
 
         gradeDao = mockk(relaxed = true)
 
-        getGradeByName = mockk<GetGradeByName>(relaxed = true)
+        getGradeByName = mockk(relaxed = true)
 
         activateGrade = ActivateGrade(
             subjectDao = subjectDao,

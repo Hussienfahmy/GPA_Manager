@@ -1,4 +1,4 @@
-package com.hussienfahmy.core_ui.domain.use_cases
+package com.hussienFahmy.core_ui.domain.use_cases
 
 class FilterToDigitsOnly {
     operator fun invoke(input: String): String {

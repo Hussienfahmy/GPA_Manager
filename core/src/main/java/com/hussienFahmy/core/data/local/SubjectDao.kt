@@ -1,9 +1,9 @@
-package com.hussienfahmy.core.data.local
+package com.hussienFahmy.core.data.local
 
 import androidx.room.*
-import com.hussienfahmy.core.data.local.entity.Grade
-import com.hussienfahmy.core.data.local.entity.Subject
-import com.hussienfahmy.core.data.local.model.GradeName
+import com.hussienFahmy.core.data.local.entity.Grade
+import com.hussienFahmy.core.data.local.entity.Subject
+import com.hussienFahmy.core.data.local.model.GradeName
 import kotlinx.coroutines.flow.Flow
 
 @Dao

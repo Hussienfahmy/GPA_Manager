@@ -1,12 +1,12 @@
-package com.hussienfahmy.core.data.local
+package com.hussienFahmy.core.data.local
 
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.hussienfahmy.core.data.local.entity.Grade
-import com.hussienfahmy.core.data.local.model.GradeName
+import com.hussienFahmy.core.data.local.entity.Grade
+import com.hussienFahmy.core.data.local.model.GradeName
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After

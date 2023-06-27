@@ -1,6 +1,6 @@
-package com.hussienfahmy.core.data.local.util
+package com.hussienFahmy.core.data.local.util
 
-import com.hussienfahmy.core.model.UiText
+import com.hussienFahmy.core.model.UiText
 
 /**
  * Represents the result of an database update operation.

@@ -1,4 +1,4 @@
-package com.hussienfahmy.grades_setting_domain
+package com.hussienFahmy.grades_setting_domain
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

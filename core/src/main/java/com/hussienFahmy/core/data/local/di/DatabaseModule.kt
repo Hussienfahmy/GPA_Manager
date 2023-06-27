@@ -1,11 +1,11 @@
-package com.hussienfahmy.core.data.local.di
+package com.hussienFahmy.core.data.local.di
 
 import android.app.Application
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.hussienfahmy.core.data.local.AppDatabase
-import com.hussienfahmy.core.data.local.entity.Grade
+import com.hussienFahmy.core.data.local.AppDatabase
+import com.hussienFahmy.core.data.local.entity.Grade
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

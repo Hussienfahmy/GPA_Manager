@@ -1,4 +1,4 @@
-package com.hussienfahmy.core_ui
+package com.hussienFahmy.core_ui
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry

@@ -1,6 +1,6 @@
-package com.hussienfahmy.grades_setting_presentation
+package com.hussienFahmy.grades_setting_presentation
 
-import com.hussienfahmy.grades_setting_domain.model.GradeSetting
+import com.hussienFahmy.grades_setting_domain.model.GradeSetting
 
 sealed class GradeEvent {
     data class UpdatePoints(val gradeSetting: GradeSetting, val points: String) : GradeEvent()

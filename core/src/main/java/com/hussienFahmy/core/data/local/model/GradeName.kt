@@ -1,4 +1,4 @@
-package com.hussienfahmy.core.data.local.model
+package com.hussienFahmy.core.data.local.model
 
 enum class GradeName(val symbol: String) {
     F("F"),

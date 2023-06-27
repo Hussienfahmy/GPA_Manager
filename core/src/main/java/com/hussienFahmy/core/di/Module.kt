@@ -1,4 +1,4 @@
-package com.hussienfahmy.core.di
+package com.hussienFahmy.core.di
 
 import dagger.Module
 import dagger.Provides

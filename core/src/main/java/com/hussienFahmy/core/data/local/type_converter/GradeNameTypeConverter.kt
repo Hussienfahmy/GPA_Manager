@@ -1,7 +1,7 @@
-package com.hussienfahmy.core.data.local.type_converter
+package com.hussienFahmy.core.data.local.type_converter
 
 import androidx.room.TypeConverter
-import com.hussienfahmy.core.data.local.model.GradeName
+import com.hussienFahmy.core.data.local.model.GradeName
 
 class GradeNameTypeConverter {
     @TypeConverter

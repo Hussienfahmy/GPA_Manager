@@ -1,4 +1,4 @@
-package com.h_fahmy.core_ui
+package com.hussienFahmy.core_ui
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.unit.Dp

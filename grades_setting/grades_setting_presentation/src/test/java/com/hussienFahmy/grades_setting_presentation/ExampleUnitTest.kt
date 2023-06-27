@@ -1,4 +1,4 @@
-package com.hussienfahmy.grades_setting_presentation
+package com.hussienFahmy.grades_setting_presentation
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

@@ -1,4 +1,4 @@
-package com.hussienfahmy.grades_setting_presentation.components
+package com.hussienFahmy.grades_setting_presentation.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
@@ -25,10 +25,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.h_fahmy.core_ui.LocalSpacing
+import com.hussienFahmy.core.data.local.model.GradeName
+import com.hussienFahmy.core_ui.LocalSpacing
+import com.hussienFahmy.grades_setting_domain.model.GradeSetting
 import com.hussienFahmy.myGpaManager.core.R
-import com.hussienfahmy.core.data.local.model.GradeName
-import com.hussienfahmy.grades_setting_domain.model.GradeSetting
 
 @Composable
 fun GradeItem(

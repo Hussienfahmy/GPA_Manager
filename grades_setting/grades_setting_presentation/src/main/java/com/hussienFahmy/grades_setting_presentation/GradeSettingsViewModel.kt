@@ -1,12 +1,12 @@
-package com.hussienfahmy.grades_setting_presentation
+package com.hussienFahmy.grades_setting_presentation
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.hussienfahmy.core.data.local.util.UpdateResult
-import com.hussienfahmy.core_ui.presentation.model.UiEvent
-import com.hussienfahmy.core_ui.presentation.viewmodel.EventViewModel
-import com.hussienfahmy.grades_setting_domain.use_case.GradeSettingsUseCases
-import com.hussienfahmy.grades_setting_presentation.model.Mode
+import com.hussienFahmy.core.data.local.util.UpdateResult
+import com.hussienFahmy.core_ui.presentation.model.UiEvent
+import com.hussienFahmy.core_ui.presentation.viewmodel.EventViewModel
+import com.hussienFahmy.grades_setting_domain.use_case.GradeSettingsUseCases
+import com.hussienFahmy.grades_setting_presentation.model.Mode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

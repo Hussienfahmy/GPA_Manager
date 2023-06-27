@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.hussienfahmy.core_ui.domain.use_cases.FilterToDigitsOnly
+import com.hussienFahmy.core_ui.domain.use_cases.FilterToDigitsOnly
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

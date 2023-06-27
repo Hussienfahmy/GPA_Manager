@@ -1,8 +1,8 @@
-package com.hussienfahmy.core.data.local.di
+package com.hussienFahmy.core.data.local.di
 
-import com.hussienfahmy.core.data.local.AppDatabase
-import com.hussienfahmy.core.data.local.GradeDao
-import com.hussienfahmy.core.data.local.SubjectDao
+import com.hussienFahmy.core.data.local.AppDatabase
+import com.hussienFahmy.core.data.local.GradeDao
+import com.hussienFahmy.core.data.local.SubjectDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
