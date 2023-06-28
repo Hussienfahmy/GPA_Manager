@@ -1,10 +1,9 @@
 package com.hussienFahmy.grades_setting_presentation
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.hussienFahmy.core.data.local.util.UpdateResult
 import com.hussienFahmy.core_ui.presentation.model.UiEvent
-import com.hussienFahmy.core_ui.presentation.viewmodel.EventViewModel
+import com.hussienFahmy.core_ui.presentation.viewmodel.UiViewModel
 import com.hussienFahmy.grades_setting_domain.use_case.GradeSettingsUseCases
 import com.hussienFahmy.grades_setting_presentation.model.Mode
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +15,9 @@ import javax.inject.Inject
 @HiltViewModel
 class GradeSettingsViewModel @Inject constructor(
     private val gradeSettingsUseCases: GradeSettingsUseCases
-) : EventViewModel<GradeEvent>() {
+) : UiViewModel<GradeEvent, GradeSettingsState>(
+    initialState = { GradeSettingsState() }
+) {
 
     override fun onEvent(event: GradeEvent) {
         viewModelScope.launch {
@@ -50,9 +51,6 @@ class GradeSettingsViewModel @Inject constructor(
     fun onModeChange(mode: Mode) {
         state.value = state.value.copy(mode = mode)
     }
-
-    var state = mutableStateOf(GradeSettingsState())
-        private set
 
     init {
         gradeSettingsUseCases.loadGrades().onEach {
