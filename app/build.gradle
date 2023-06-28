@@ -53,8 +53,11 @@ android {
 
 dependencies {
 
-    implementation project(":grades_setting:grades_setting_presentation")
     implementation project(":core-ui")
+    implementation project(":grades_setting:grades_setting_presentation")
+    // data module implemented so hilt can generate it's dependencies
+    implementation project(":user_data:user_data_data")
+    implementation project(":user_data:user_data_presentaion")
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"

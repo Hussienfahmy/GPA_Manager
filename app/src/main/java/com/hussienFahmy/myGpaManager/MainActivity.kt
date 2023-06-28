@@ -13,8 +13,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
-import com.hussienFahmy.grades_setting_presentation.GradeSettingsScreen
 import com.hussienFahmy.myGpaManager.ui.theme.GPAManagerTheme
+import com.hussienfahmy.user_data_presentaion.UserDataScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                         },
                     snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
                 ) { paddingValues ->
-                    GradeSettingsScreen(
+                    UserDataScreen(
                         snackBarHostState = snackBarHostState,
                         modifier = Modifier
                             .fillMaxSize()

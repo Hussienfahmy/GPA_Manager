@@ -134,4 +134,9 @@
     <string name="err_grade_not_found">لم يتم العثور  علي التقدير</string>
     <string name="active_grades_only">المفعلة</string>
     <string name="all_grades">الجميع</string>
+    <string name="name_is_required">الاسم مطلوب</string>
+    <string name="cannot_be_empty">لا يمكن ان يكون فارغا</string>
+    <string name="cannot_be_less_than_one">لا يمكن ان يكون اقل من واحد</string>
+    <string name="cannot_be_negative">لا يمكن ان يكون قيمة سالبة</string>
+    <string name="invalid_input">ادخال غير صحيح</string>
 </resources>

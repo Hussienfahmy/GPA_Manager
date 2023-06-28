@@ -144,4 +144,9 @@
     <string name="err_grade_not_found">Grade Not Found</string>
     <string name="active_grades_only">Active</string>
     <string name="all_grades">All</string>
+    <string name="name_is_required">Name is required</string>
+    <string name="cannot_be_empty">Cann\'t be empty</string>
+    <string name="cannot_be_less_than_one">Can\'t be less than one</string>
+    <string name="cannot_be_negative">Can\'t be negative</string>
+    <string name="invalid_input">Invalid Input</string>
 </resources>
