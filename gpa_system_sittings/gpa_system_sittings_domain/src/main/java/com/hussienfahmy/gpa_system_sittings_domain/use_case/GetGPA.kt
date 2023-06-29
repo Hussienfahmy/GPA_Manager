@@ -1,0 +1,9 @@
+package com.hussienfahmy.gpa_system_sittings_domain.use_case
+
+import com.hussienfahmy.gpa_system_sittings_domain.repository.GPASystemRepository
+
+class GetGPA(
+    private val repository: GPASystemRepository,
+) {
+    suspend operator fun invoke() = repository.getGPA()
+}

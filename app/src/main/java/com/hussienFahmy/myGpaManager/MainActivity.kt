@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import com.hussienFahmy.myGpaManager.ui.theme.GPAManagerTheme
-import com.hussienfahmy.subject_settings_presentation.SubjectsSettingsScreen
+import com.hussienfahmy.gpa_system_sittings_presentaion.GPASettingsScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,9 +36,9 @@ class MainActivity : ComponentActivity() {
                         },
                     snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
                 ) { paddingValues ->
-                    SubjectsSettingsScreen(
-                        snackBarHostState = snackBarHostState,
+                    GPASettingsScreen(
                         modifier = Modifier
+                            .fillMaxSize()
                             .padding(paddingValues)
                     )
                 }

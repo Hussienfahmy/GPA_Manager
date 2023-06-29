@@ -153,4 +153,6 @@
     <string name="invalid_number">Invalid Number</string>
     <string name="credit_hours">Credit Hours</string>
     <string name="constant">Constant</string>
+    <string name="gpa_system_four" translatable="false">Four</string>
+    <string name="gpa_system_five" translatable="false">Five</string>
 </resources>
