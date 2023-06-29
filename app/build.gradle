@@ -58,6 +58,7 @@ dependencies {
     // data module implemented so hilt can generate it's dependencies
     implementation project(":user_data:user_data_data")
     implementation project(":user_data:user_data_presentaion")
+    implementation project(":quick:quick_presentation")
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"

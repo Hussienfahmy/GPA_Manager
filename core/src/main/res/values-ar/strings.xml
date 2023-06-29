@@ -139,4 +139,5 @@
     <string name="cannot_be_less_than_one">لا يمكن ان يكون اقل من واحد</string>
     <string name="cannot_be_negative">لا يمكن ان يكون قيمة سالبة</string>
     <string name="invalid_input">ادخال غير صحيح</string>
+    <string name="total_hours_is_zero">الساعات لا يمكن ان تكون اقل من صفر</string>
 </resources>

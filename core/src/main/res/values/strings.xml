@@ -149,4 +149,5 @@
     <string name="cannot_be_less_than_one">Can\'t be less than one</string>
     <string name="cannot_be_negative">Can\'t be negative</string>
     <string name="invalid_input">Invalid Input</string>
+    <string name="total_hours_is_zero">Total hours can\'t be zero</string>
 </resources>

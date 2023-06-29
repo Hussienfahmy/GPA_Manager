@@ -16,6 +16,9 @@
             <option value="$PROJECT_DIR$/grades_setting" />
             <option value="$PROJECT_DIR$/grades_setting/grades_setting_domain" />
             <option value="$PROJECT_DIR$/grades_setting/grades_setting_presentation" />
+            <option value="$PROJECT_DIR$/quick" />
+            <option value="$PROJECT_DIR$/quick/quick_domain" />
+            <option value="$PROJECT_DIR$/quick/quick_presentation" />
             <option value="$PROJECT_DIR$/user_data" />
             <option value="$PROJECT_DIR$/user_data/user_data_data" />
             <option value="$PROJECT_DIR$/user_data/user_data_domain" />
