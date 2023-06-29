@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.first
 internal class UserDataStore(
     context: Context
 ) {
-    private val Context.dataStore by dataStore("calculation_settings", UserDataSerializer)
+    private val Context.dataStore by dataStore("user_data", UserDataSerializer)
 
     private val datastore = context.dataStore
 
