@@ -57,7 +57,7 @@ fun ExpandableTextField(
 
     val isError = valueState.isBlank()
 
-    val alpha by animateFloatAsState(targetValue = if (editMode) 1f else 0.5f)
+    val alpha by animateFloatAsState(targetValue = if (enabled) 1f else 0.5f)
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
