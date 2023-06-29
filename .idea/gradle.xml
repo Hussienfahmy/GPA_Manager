@@ -19,6 +19,10 @@
             <option value="$PROJECT_DIR$/quick" />
             <option value="$PROJECT_DIR$/quick/quick_domain" />
             <option value="$PROJECT_DIR$/quick/quick_presentation" />
+            <option value="$PROJECT_DIR$/subject_settings" />
+            <option value="$PROJECT_DIR$/subject_settings/subject_settings_data" />
+            <option value="$PROJECT_DIR$/subject_settings/subject_settings_domain" />
+            <option value="$PROJECT_DIR$/subject_settings/subject_settings_presentation" />
             <option value="$PROJECT_DIR$/user_data" />
             <option value="$PROJECT_DIR$/user_data/user_data_data" />
             <option value="$PROJECT_DIR$/user_data/user_data_domain" />

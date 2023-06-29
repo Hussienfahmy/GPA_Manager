@@ -87,7 +87,7 @@
     <string name="send_feedback_summary">send a feedback about your experience, or an issue you faced with the app to the developer</string>
     <string name="send_feedback_title">Send Feedback</string>
     <string name="subject_marks_depends_on">Subject Marks Depends on</string>
-    <string name="subject_marks_per_credit">Subject Marks Per Credit Hour</string>
+    <string name="subject_marks_per_credit">Marks / 1 Credit Hour</string>
     <string name="subject_name">Subject Name</string>
     <string name="total_hours">Total Hours</string>
     <string name="university">University</string>
@@ -150,4 +150,7 @@
     <string name="cannot_be_negative">Can\'t be negative</string>
     <string name="invalid_input">Invalid Input</string>
     <string name="total_hours_is_zero">Total hours can\'t be zero</string>
+    <string name="invalid_number">Invalid Number</string>
+    <string name="credit_hours">Credit Hours</string>
+    <string name="constant">Constant</string>
 </resources>
