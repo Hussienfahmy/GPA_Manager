@@ -33,10 +33,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hussienFahmy.core.domain.user_data.model.UserData
 import com.hussienFahmy.core_ui.LocalSpacing
+import com.hussienFahmy.core_ui.presentation.components.ExpandableTextField
 import com.hussienFahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienFahmy.myGpaManager.core.R
 import com.hussienfahmy.user_data_presentaion.components.SemesterSelection
-import com.hussienfahmy.user_data_presentaion.components.UserDataItem
 import com.hussienfahmy.user_data_presentaion.components.UserPhoto
 
 @Composable
@@ -130,7 +130,7 @@ fun UserDataScreenContent(
 
                 Spacer(modifier = Modifier.height(spacing.medium))
 
-                UserDataItem(
+                ExpandableTextField(
                     title = stringResource(R.string.name),
                     value = userData.name,
                     onNewValueSubmitted = { onUpdateName(it) }
@@ -140,19 +140,19 @@ fun UserDataScreenContent(
 
         Card {
             Column {
-                UserDataItem(
+                ExpandableTextField(
                     title = stringResource(R.string.university),
                     value = userData.academicInfo.university,
                     onNewValueSubmitted = { onUpdateUniversity(it) }
                 )
 
-                UserDataItem(
+                ExpandableTextField(
                     title = stringResource(R.string.faculty),
                     value = userData.academicInfo.faculty,
                     onNewValueSubmitted = { onUpdateFaculty(it) }
                 )
 
-                UserDataItem(
+                ExpandableTextField(
                     title = stringResource(R.string.department),
                     value = userData.academicInfo.department,
                     onNewValueSubmitted = { onUpdateDepartment(it) }
@@ -162,7 +162,7 @@ fun UserDataScreenContent(
 
         Card {
             Column {
-                UserDataItem(
+                ExpandableTextField(
                     title = stringResource(R.string.level),
                     value = userData.academicInfo.level.toString(),
                     onNewValueSubmitted = { onUpdateLevel(it) },
@@ -174,14 +174,14 @@ fun UserDataScreenContent(
                     onSemesterClick = onUpdateSemester
                 )
 
-                UserDataItem(
+                ExpandableTextField(
                     title = stringResource(R.string.cumulative_gpa),
                     value = userData.academicProgress.cumulativeGPA.toString(),
                     onNewValueSubmitted = { onUpdateCumulativeGPA(it) },
                     keyboardType = KeyboardType.Number
                 )
 
-                UserDataItem(
+                ExpandableTextField(
                     title = stringResource(R.string.total_hours),
                     value = userData.academicProgress.creditHours.toString(),
                     onNewValueSubmitted = { onUpdateCreditHours(it) },
