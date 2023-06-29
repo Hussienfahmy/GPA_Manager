@@ -1,9 +1,9 @@
 package com.hussienfahmy.user_data_domain.use_cases
 
 import com.hussienFahmy.core.data.local.util.UpdateResult
+import com.hussienFahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienFahmy.core.model.UiText
 import com.hussienFahmy.myGpaManager.core.R
-import com.hussienfahmy.user_data_domain.repository.UserDataRepository
 
 class UpdateFaculty(
     private val repository: UserDataRepository,

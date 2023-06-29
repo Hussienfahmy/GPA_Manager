@@ -1,5 +1,9 @@
 package com.hussienfahmy.user_data_domain.use_cases
 
+import com.hussienFahmy.core.domain.user_data.use_cases.GetAcademicProgress
+import com.hussienFahmy.core.domain.user_data.use_cases.GetUserData
+import com.hussienFahmy.core.domain.user_data.use_cases.ObserveUserData
+
 data class UserDataUseCases(
     val observeUserData: ObserveUserData,
     val getUserData: GetUserData,

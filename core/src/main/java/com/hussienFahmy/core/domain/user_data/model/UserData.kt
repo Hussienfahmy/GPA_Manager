@@ -1,4 +1,4 @@
-package com.hussienfahmy.user_data_domain.model
+package com.hussienFahmy.core.domain.user_data.model
 
 data class UserData(
     val name: String,

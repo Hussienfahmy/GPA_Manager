@@ -1,9 +1,9 @@
 package com.hussienfahmy.user_data_data.repository
 
+import com.hussienFahmy.core.domain.user_data.model.UserData
+import com.hussienFahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienfahmy.user_data_data.local.UserDataStore
 import com.hussienfahmy.user_data_data.mapper.toUserData
-import com.hussienfahmy.user_data_domain.model.UserData
-import com.hussienfahmy.user_data_domain.repository.UserDataRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import com.hussienfahmy.user_data_data.local.model.UserData as UserDataLocal

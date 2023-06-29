@@ -18,9 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.hussienFahmy.core.domain.user_data.model.UserData
 import com.hussienFahmy.core_ui.LocalSpacing
 import com.hussienFahmy.myGpaManager.core.R
-import com.hussienfahmy.user_data_domain.model.UserData
 
 @Composable
 fun SemesterSelection(

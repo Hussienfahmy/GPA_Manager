@@ -1,9 +1,9 @@
 package com.hussienfahmy.user_data_domain.di
 
-import com.hussienfahmy.user_data_domain.repository.UserDataRepository
-import com.hussienfahmy.user_data_domain.use_cases.GetAcademicProgress
-import com.hussienfahmy.user_data_domain.use_cases.GetUserData
-import com.hussienfahmy.user_data_domain.use_cases.ObserveUserData
+import com.hussienFahmy.core.domain.user_data.repository.UserDataRepository
+import com.hussienFahmy.core.domain.user_data.use_cases.GetAcademicProgress
+import com.hussienFahmy.core.domain.user_data.use_cases.GetUserData
+import com.hussienFahmy.core.domain.user_data.use_cases.ObserveUserData
 import com.hussienfahmy.user_data_domain.use_cases.UpdateCreditHours
 import com.hussienfahmy.user_data_domain.use_cases.UpdateCumulativeGPA
 import com.hussienfahmy.user_data_domain.use_cases.UpdateDepartment
@@ -25,24 +25,6 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Module
 @InstallIn(ViewModelComponent::class)
 object Module {
-
-    @Provides
-    @ViewModelScoped
-    fun provideObserveUserData(
-        repository: UserDataRepository
-    ) = ObserveUserData(repository)
-
-    @Provides
-    @ViewModelScoped
-    fun provideGetUserData(
-        repository: UserDataRepository
-    ) = GetUserData(repository)
-
-    @Provides
-    @ViewModelScoped
-    fun provideGetAcademicProgress(
-        getUserData: GetUserData
-    ) = GetAcademicProgress(getUserData)
 
     @Provides
     @ViewModelScoped

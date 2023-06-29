@@ -1,9 +1,9 @@
 package com.hussienfahmy.user_data_data.di
 
 import android.content.Context
+import com.hussienFahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienfahmy.user_data_data.local.UserDataStore
 import com.hussienfahmy.user_data_data.repository.UserDataRepositoryImpl
-import com.hussienfahmy.user_data_domain.repository.UserDataRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

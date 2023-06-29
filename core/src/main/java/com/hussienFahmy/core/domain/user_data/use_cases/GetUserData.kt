@@ -1,6 +1,6 @@
-package com.hussienfahmy.user_data_domain.use_cases
+package com.hussienFahmy.core.domain.user_data.use_cases
 
-import com.hussienfahmy.user_data_domain.repository.UserDataRepository
+import com.hussienFahmy.core.domain.user_data.repository.UserDataRepository
 
 class GetUserData(
     private val repository: UserDataRepository

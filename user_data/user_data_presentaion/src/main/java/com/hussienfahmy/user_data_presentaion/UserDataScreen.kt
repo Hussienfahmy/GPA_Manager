@@ -31,10 +31,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hussienFahmy.core.domain.user_data.model.UserData
 import com.hussienFahmy.core_ui.LocalSpacing
 import com.hussienFahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienFahmy.myGpaManager.core.R
-import com.hussienfahmy.user_data_domain.model.UserData
 import com.hussienfahmy.user_data_presentaion.components.SemesterSelection
 import com.hussienfahmy.user_data_presentaion.components.UserDataItem
 import com.hussienfahmy.user_data_presentaion.components.UserPhoto

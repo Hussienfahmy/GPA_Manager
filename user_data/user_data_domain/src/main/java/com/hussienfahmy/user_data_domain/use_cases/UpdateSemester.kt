@@ -1,7 +1,7 @@
 package com.hussienfahmy.user_data_domain.use_cases
 
-import com.hussienfahmy.user_data_domain.model.UserData
-import com.hussienfahmy.user_data_domain.repository.UserDataRepository
+import com.hussienFahmy.core.domain.user_data.model.UserData
+import com.hussienFahmy.core.domain.user_data.repository.UserDataRepository
 
 class UpdateSemester(
     private val repository: UserDataRepository,
