@@ -7,8 +7,8 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
- * [T] is the type of the event that will be received by [onEvent]
- * [R] is the type of the state that will be used by the UI
+ * @param T is the type of the event that will be received by [onEvent]
+ * @param R is the type of the state that will be used by the UI
  */
 abstract class UiViewModel<T, R> constructor(initialState: () -> R) : ViewModel() {
 
