@@ -13,10 +13,10 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core-ui" />
-            <option value="$PROJECT_DIR$/gpa_system_sittings" />
-            <option value="$PROJECT_DIR$/gpa_system_sittings/gpa_system_sittings_data" />
-            <option value="$PROJECT_DIR$/gpa_system_sittings/gpa_system_sittings_domain" />
-            <option value="$PROJECT_DIR$/gpa_system_sittings/gpa_system_sittings_presentaion" />
+            <option value="$PROJECT_DIR$/gpa_system_settings" />
+            <option value="$PROJECT_DIR$/gpa_system_settings/gpa_system_settings_data" />
+            <option value="$PROJECT_DIR$/gpa_system_settings/gpa_system_settings_domain" />
+            <option value="$PROJECT_DIR$/gpa_system_settings/gpa_system_settings_presentaion" />
             <option value="$PROJECT_DIR$/grades_setting" />
             <option value="$PROJECT_DIR$/grades_setting/grades_setting_domain" />
             <option value="$PROJECT_DIR$/grades_setting/grades_setting_presentation" />
