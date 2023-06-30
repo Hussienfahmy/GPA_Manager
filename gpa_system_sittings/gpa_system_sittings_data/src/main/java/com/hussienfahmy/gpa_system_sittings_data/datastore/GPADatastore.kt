@@ -6,8 +6,7 @@ import com.hussienfahmy.gpa_system_sittings_data.model.GPA
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
-// todo make all classes internal
-class GPADatastore(
+internal class GPADatastore(
     context: Context,
 ) {
     private val Context.dataStore by dataStore("gpa_system", GPASerializer)
