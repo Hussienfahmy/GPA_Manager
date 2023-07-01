@@ -1,10 +1,9 @@
 package com.hussienfahmy.gpa_system_sittings_domain.use_case
 
-import com.hussienFahmy.core.domain.gpa_settings.model.GPA
 import com.hussienFahmy.core.domain.gpa_settings.repository.GPASettingsRepository
 
-class UpdateGPASystem(
+class ObserveGPASettings(
     private val repository: GPASettingsRepository,
 ) {
-    suspend operator fun invoke(system: GPA.System) = repository.updateGPASystem(system)
+    operator fun invoke() = repository.observeGPA()
 }

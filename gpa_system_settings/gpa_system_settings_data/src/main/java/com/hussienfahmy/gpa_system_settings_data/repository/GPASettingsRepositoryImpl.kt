@@ -1,21 +1,21 @@
 package com.hussienfahmy.gpa_system_settings_data.repository
 
+import com.hussienFahmy.core.domain.gpa_settings.model.GPA
+import com.hussienFahmy.core.domain.gpa_settings.repository.GPASettingsRepository
 import com.hussienfahmy.gpa_system_settings_data.datastore.GPADatastore
 import com.hussienfahmy.gpa_system_settings_data.mappers.toDomain
-import com.hussienfahmy.gpa_system_sittings_domain.model.GPA
-import com.hussienfahmy.gpa_system_sittings_domain.repository.GPASystemRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import com.hussienfahmy.gpa_system_settings_data.model.GPA as GPASystemData
 
-internal class GPASystemRepositoryImpl(
+internal class GPASettingsRepositoryImpl(
     private val dataStore: GPADatastore,
-) : GPASystemRepository {
+) : GPASettingsRepository {
     override fun observeGPA(): Flow<GPA> {
         return dataStore.observeGPASystem().map { it.toDomain() }
     }
 
-    override suspend fun getGPA(): GPA {
+    override suspend fun getGPASettings(): GPA {
         return dataStore.getGPASystem().toDomain()
     }
 

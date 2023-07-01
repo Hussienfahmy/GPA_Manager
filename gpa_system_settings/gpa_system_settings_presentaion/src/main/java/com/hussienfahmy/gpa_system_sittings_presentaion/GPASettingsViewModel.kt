@@ -2,7 +2,7 @@ package com.hussienfahmy.gpa_system_sittings_presentaion
 
 import androidx.lifecycle.viewModelScope
 import com.hussienFahmy.core_ui.presentation.viewmodel.UiViewModel
-import com.hussienfahmy.gpa_system_sittings_domain.use_case.ObserveGPA
+import com.hussienfahmy.gpa_system_sittings_domain.use_case.ObserveGPASettings
 import com.hussienfahmy.gpa_system_sittings_domain.use_case.UpdateGPASystem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GPASettingsViewModel @Inject constructor(
-    observeGPA: ObserveGPA,
+    observeGPA: ObserveGPASettings,
     private val updateGPASystem: UpdateGPASystem,
 ) : UiViewModel<GPAEvent, GPAState>(initialState = { GPAState.Loading }) {
 

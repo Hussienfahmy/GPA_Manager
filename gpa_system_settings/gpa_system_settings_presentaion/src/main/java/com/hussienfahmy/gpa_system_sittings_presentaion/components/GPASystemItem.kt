@@ -11,8 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.hussienFahmy.core.domain.gpa_settings.model.GPA
 import com.hussienFahmy.myGpaManager.core.R
-import com.hussienfahmy.gpa_system_sittings_domain.model.GPA
 
 @Composable
 fun GPASystemItem(

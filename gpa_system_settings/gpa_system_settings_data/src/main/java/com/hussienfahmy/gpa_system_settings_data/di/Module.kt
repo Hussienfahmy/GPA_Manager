@@ -1,9 +1,9 @@
 package com.hussienfahmy.gpa_system_settings_data.di
 
 import android.content.Context
+import com.hussienFahmy.core.domain.gpa_settings.repository.GPASettingsRepository
 import com.hussienfahmy.gpa_system_settings_data.datastore.GPADatastore
-import com.hussienfahmy.gpa_system_settings_data.repository.GPASystemRepositoryImpl
-import com.hussienfahmy.gpa_system_sittings_domain.repository.GPASystemRepository
+import com.hussienfahmy.gpa_system_settings_data.repository.GPASettingsRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,8 +19,8 @@ internal object Module {
     @Singleton
     fun provideGPASystemRepository(
         dataStore: GPADatastore
-    ): GPASystemRepository {
-        return GPASystemRepositoryImpl(dataStore)
+    ): GPASettingsRepository {
+        return GPASettingsRepositoryImpl(dataStore)
     }
 
     @Provides

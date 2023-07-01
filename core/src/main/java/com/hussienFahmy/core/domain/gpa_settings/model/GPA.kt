@@ -1,4 +1,4 @@
-package com.hussienfahmy.gpa_system_sittings_domain.model
+package com.hussienFahmy.core.domain.gpa_settings.model
 
 data class GPA(
     val system: System

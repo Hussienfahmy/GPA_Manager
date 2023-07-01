@@ -1,8 +1,7 @@
 package com.hussienfahmy.gpa_system_sittings_domain.di
 
-import com.hussienfahmy.gpa_system_sittings_domain.repository.GPASystemRepository
-import com.hussienfahmy.gpa_system_sittings_domain.use_case.GetGPA
-import com.hussienfahmy.gpa_system_sittings_domain.use_case.ObserveGPA
+import com.hussienFahmy.core.domain.gpa_settings.repository.GPASettingsRepository
+import com.hussienfahmy.gpa_system_sittings_domain.use_case.ObserveGPASettings
 import com.hussienfahmy.gpa_system_sittings_domain.use_case.UpdateGPASystem
 import dagger.Module
 import dagger.Provides
@@ -14,21 +13,16 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @InstallIn(ViewModelComponent::class)
 object Module {
 
-    @Provides
-    @ViewModelScoped
-    fun provideGetGpaSystem(
-        repository: GPASystemRepository
-    ): GetGPA = GetGPA(repository)
 
     @Provides
     @ViewModelScoped
-    fun provideObserveGpaSystem(
-        repository: GPASystemRepository
-    ): ObserveGPA = ObserveGPA(repository)
+    fun provideObserveGpaSettings(
+        repository: GPASettingsRepository
+    ): ObserveGPASettings = ObserveGPASettings(repository)
 
     @Provides
     @ViewModelScoped
     fun provideUpdateGPASystem(
-        repository: GPASystemRepository
+        repository: GPASettingsRepository
     ): UpdateGPASystem = UpdateGPASystem(repository)
 }
