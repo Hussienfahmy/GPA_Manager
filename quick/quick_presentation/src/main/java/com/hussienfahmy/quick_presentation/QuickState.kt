@@ -11,7 +11,9 @@ data class QuickState(
         creditHours = 0
     ),
     val invalidCumulativeGPAInput: Boolean = false,
+    val invalidCumulativeGPAAboveMax: Boolean = false,
     val invalidSemesterGPAInput: Boolean = false,
+    val invalidSemesterGPAAboveMax: Boolean = false,
     val invalidTotalHoursInput: Boolean = false,
     val invalidSemesterHoursInput: Boolean = false,
 )

@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.hussienFahmy.core.domain.user_data.model.UserData
@@ -39,7 +40,9 @@ fun InputCard(
     modifier: Modifier,
     academicProgress: UserData.AcademicProgress,
     invalidCumulativeGPAInput: Boolean,
+    invalidCumulativeGPAAboveMax: Boolean,
     invalidSemesterGPAInput: Boolean,
+    invalidSemesterGPAAboveMax: Boolean,
     invalidTotalHoursInput: Boolean,
     invalidSemesterHoursInput: Boolean,
     onCalculate: (QuickCalculationRequest) -> Unit,
@@ -124,12 +127,28 @@ fun InputCard(
             OutlinedTextField(
                 value = cumulativeGPA,
                 onValueChange = { cumulativeGPA = it },
-                isError = invalidCumulativeGPAInput,
+                isError = invalidCumulativeGPAInput or invalidCumulativeGPAAboveMax,
                 label = {
                     Text(
                         text = stringResource(R.string.current_cumulative_gpa),
                         style = MaterialTheme.typography.bodySmall
                     )
+                },
+                supportingText = {
+                    val supportingText = when {
+                        invalidCumulativeGPAInput -> stringResource(R.string.invalid_input)
+                        invalidCumulativeGPAAboveMax -> stringResource(R.string.above_max)
+                        else -> null
+                    }
+                    if (supportingText != null) {
+                        Text(
+                            text = supportingText,
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontSize = 10.sp
+                            ),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
                 },
                 enabled = !useMyAcademicProgress,
                 modifier = Modifier.constrainAs(cumulativeGPARef) {
@@ -156,6 +175,21 @@ fun InputCard(
                         style = MaterialTheme.typography.bodySmall
                     )
                 },
+                supportingText = {
+                    val supportingText = when {
+                        invalidTotalHoursInput -> stringResource(R.string.invalid_input)
+                        else -> null
+                    }
+                    if (supportingText != null) {
+                        Text(
+                            text = supportingText,
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontSize = 10.sp
+                            ),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                },
                 enabled = !useMyAcademicProgress,
                 modifier = Modifier.constrainAs(totalHoursRef) {
                     centerVerticallyTo(cumulativeGPARef)
@@ -173,12 +207,28 @@ fun InputCard(
             OutlinedTextField(
                 value = semesterGPA,
                 onValueChange = { semesterGPA = it },
-                isError = invalidSemesterGPAInput,
+                isError = invalidSemesterGPAInput or invalidSemesterGPAAboveMax,
                 label = {
                     Text(
                         text = stringResource(R.string.expected_semester_gpa),
                         style = MaterialTheme.typography.bodySmall
                     )
+                },
+                supportingText = {
+                    val supportingText = when {
+                        invalidSemesterGPAInput -> stringResource(R.string.invalid_input)
+                        invalidSemesterGPAAboveMax -> stringResource(R.string.above_max)
+                        else -> null
+                    }
+                    if (supportingText != null) {
+                        Text(
+                            text = supportingText,
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontSize = 10.sp
+                            ),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
                 },
                 modifier = Modifier.constrainAs(semesterGPARef) {
                     top.linkTo(cumulativeGPARef.bottom)
@@ -203,6 +253,21 @@ fun InputCard(
                         text = stringResource(R.string.semester_credit_hours),
                         style = MaterialTheme.typography.bodySmall
                     )
+                },
+                supportingText = {
+                    val supportingText = when {
+                        invalidSemesterHoursInput -> stringResource(R.string.invalid_input)
+                        else -> null
+                    }
+                    if (supportingText != null) {
+                        Text(
+                            text = supportingText,
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontSize = 10.sp
+                            ),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
                 },
                 modifier = Modifier.constrainAs(semesterHoursRef) {
                     centerVerticallyTo(semesterGPARef)
@@ -233,6 +298,8 @@ fun InputCardPreview() {
         invalidSemesterGPAInput = true,
         invalidTotalHoursInput = false,
         invalidSemesterHoursInput = false,
+        invalidCumulativeGPAAboveMax = true,
+        invalidSemesterGPAAboveMax = false,
         onCalculate = {}
     )
 }

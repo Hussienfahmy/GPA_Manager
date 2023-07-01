@@ -31,14 +31,27 @@ class QuickViewModel @Inject constructor(
     }
 
     override fun onEvent(event: QuickEvent) {
-        val result = when (event) {
-            is QuickEvent.Calculate -> quickCalculate(event.calculationRequest)
-        }
-
         viewModelScope.launch {
+            val result = when (event) {
+                is QuickEvent.Calculate -> quickCalculate(event.calculationRequest)
+            }
+
             when (result) {
                 QuickCalculate.Result.InValidCumulativeGPA -> state.value = state.value.copy(
                     invalidCumulativeGPAInput = true,
+                    invalidCumulativeGPAAboveMax = false,
+                    invalidSemesterGPAAboveMax = false,
+                    invalidTotalHoursInput = false,
+                    invalidSemesterGPAInput = false,
+                    invalidSemesterHoursInput = false,
+                    cumulativeGPAPercentage = 0.0f,
+                    cumulativeGPA = 0.0f,
+                )
+
+                QuickCalculate.Result.CumulativeGPAAboveMax -> state.value = state.value.copy(
+                    invalidCumulativeGPAAboveMax = true,
+                    invalidSemesterGPAAboveMax = false,
+                    invalidCumulativeGPAInput = false,
                     invalidTotalHoursInput = false,
                     invalidSemesterGPAInput = false,
                     invalidSemesterHoursInput = false,
@@ -51,6 +64,19 @@ class QuickViewModel @Inject constructor(
                     invalidTotalHoursInput = false,
                     invalidCumulativeGPAInput = false,
                     invalidSemesterHoursInput = false,
+                    invalidCumulativeGPAAboveMax = false,
+                    invalidSemesterGPAAboveMax = false,
+                    cumulativeGPAPercentage = 0.0f,
+                    cumulativeGPA = 0.0f,
+                )
+
+                QuickCalculate.Result.SemesterGPAAboveMax -> state.value = state.value.copy(
+                    invalidCumulativeGPAAboveMax = false,
+                    invalidSemesterGPAAboveMax = true,
+                    invalidCumulativeGPAInput = false,
+                    invalidTotalHoursInput = false,
+                    invalidSemesterGPAInput = false,
+                    invalidSemesterHoursInput = false,
                     cumulativeGPAPercentage = 0.0f,
                     cumulativeGPA = 0.0f,
                 )
@@ -60,6 +86,8 @@ class QuickViewModel @Inject constructor(
                     invalidTotalHoursInput = false,
                     invalidCumulativeGPAInput = false,
                     invalidSemesterGPAInput = false,
+                    invalidCumulativeGPAAboveMax = false,
+                    invalidSemesterGPAAboveMax = false,
                     cumulativeGPAPercentage = 0.0f,
                     cumulativeGPA = 0.0f,
                 )
@@ -69,6 +97,8 @@ class QuickViewModel @Inject constructor(
                     invalidSemesterHoursInput = false,
                     invalidCumulativeGPAInput = false,
                     invalidSemesterGPAInput = false,
+                    invalidCumulativeGPAAboveMax = false,
+                    invalidSemesterGPAAboveMax = false,
                     cumulativeGPAPercentage = 0.0f,
                     cumulativeGPA = 0.0f,
                 )

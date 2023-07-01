@@ -1,5 +1,6 @@
 package com.hussienfahmy.quick_domain.di
 
+import com.hussienFahmy.core.domain.gpa_settings.use_case.GetGPASettings
 import com.hussienfahmy.quick_domain.use_cases.CalculatePercentage
 import com.hussienfahmy.quick_domain.use_cases.QuickCalculate
 import dagger.Module
@@ -14,7 +15,9 @@ object Module {
 
     @Provides
     @ViewModelScoped
-    fun provideQuickCalculate() = QuickCalculate()
+    fun provideQuickCalculate(
+        getGPASettings: GetGPASettings,
+    ) = QuickCalculate(getGPASettings)
 
     @Provides
     @ViewModelScoped

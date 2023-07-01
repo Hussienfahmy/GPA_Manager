@@ -155,4 +155,5 @@
     <string name="constant">Constant</string>
     <string name="gpa_system_four" translatable="false">Four</string>
     <string name="gpa_system_five" translatable="false">Five</string>
+    <string name="above_max">Input is higher than max GPA</string>
 </resources>

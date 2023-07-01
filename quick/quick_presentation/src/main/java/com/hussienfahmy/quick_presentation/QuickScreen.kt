@@ -48,6 +48,8 @@ fun QuickScreen(
                 academicProgress = state.academicProgress,
                 invalidCumulativeGPAInput = state.invalidCumulativeGPAInput,
                 invalidSemesterGPAInput = state.invalidSemesterGPAInput,
+                invalidCumulativeGPAAboveMax = state.invalidCumulativeGPAAboveMax,
+                invalidSemesterGPAAboveMax = state.invalidSemesterGPAAboveMax,
                 invalidTotalHoursInput = state.invalidTotalHoursInput,
                 invalidSemesterHoursInput = state.invalidSemesterHoursInput,
                 cumulativeGPA = state.cumulativeGPA,
@@ -59,6 +61,8 @@ fun QuickScreen(
                 academicProgress = state.academicProgress,
                 invalidCumulativeGPAInput = state.invalidCumulativeGPAInput,
                 invalidSemesterGPAInput = state.invalidSemesterGPAInput,
+                invalidCumulativeGPAAboveMax = state.invalidCumulativeGPAAboveMax,
+                invalidSemesterGPAAboveMax = state.invalidSemesterGPAAboveMax,
                 invalidTotalHoursInput = state.invalidTotalHoursInput,
                 invalidSemesterHoursInput = state.invalidSemesterHoursInput,
                 cumulativeGPA = state.cumulativeGPA,
@@ -75,6 +79,8 @@ private fun QuickScreenPortrait(
     academicProgress: UserData.AcademicProgress,
     invalidCumulativeGPAInput: Boolean,
     invalidSemesterGPAInput: Boolean,
+    invalidCumulativeGPAAboveMax: Boolean,
+    invalidSemesterGPAAboveMax: Boolean,
     invalidTotalHoursInput: Boolean,
     invalidSemesterHoursInput: Boolean,
     cumulativeGPA: Float,
@@ -94,6 +100,8 @@ private fun QuickScreenPortrait(
             invalidSemesterGPAInput = invalidSemesterGPAInput,
             invalidTotalHoursInput = invalidTotalHoursInput,
             invalidSemesterHoursInput = invalidSemesterHoursInput,
+            invalidCumulativeGPAAboveMax = invalidCumulativeGPAAboveMax,
+            invalidSemesterGPAAboveMax = invalidSemesterGPAAboveMax,
             onCalculate = onCalculate
         )
 
@@ -117,6 +125,8 @@ private fun QuickScreenLandscape(
     invalidCumulativeGPAInput: Boolean,
     invalidSemesterGPAInput: Boolean,
     invalidTotalHoursInput: Boolean,
+    invalidCumulativeGPAAboveMax: Boolean,
+    invalidSemesterGPAAboveMax: Boolean,
     invalidSemesterHoursInput: Boolean,
     cumulativeGPA: Float,
     cumulativeGPAPercentage: Float,
@@ -144,6 +154,8 @@ private fun QuickScreenLandscape(
             invalidSemesterGPAInput = invalidSemesterGPAInput,
             invalidTotalHoursInput = invalidTotalHoursInput,
             invalidSemesterHoursInput = invalidSemesterHoursInput,
+            invalidCumulativeGPAAboveMax = invalidCumulativeGPAAboveMax,
+            invalidSemesterGPAAboveMax = invalidSemesterGPAAboveMax,
             onCalculate = onCalculate
         )
     }
@@ -161,6 +173,8 @@ fun QuickScreenPortraitPreview() {
         invalidSemesterGPAInput = false,
         invalidTotalHoursInput = false,
         invalidSemesterHoursInput = false,
+        invalidCumulativeGPAAboveMax = true,
+        invalidSemesterGPAAboveMax = false,
         cumulativeGPA = 3.5f,
         cumulativeGPAPercentage = 87.5f,
         onCalculate = {}
@@ -179,6 +193,8 @@ fun QuickScreenLandscapePreview() {
         invalidSemesterGPAInput = false,
         invalidTotalHoursInput = false,
         invalidSemesterHoursInput = false,
+        invalidCumulativeGPAAboveMax = true,
+        invalidSemesterGPAAboveMax = false,
         cumulativeGPA = 3.5f,
         cumulativeGPAPercentage = 87.5f,
         onCalculate = {}
