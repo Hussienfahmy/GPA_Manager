@@ -1,5 +1,6 @@
 package com.hussienfahmy.user_data_domain.di
 
+import com.hussienFahmy.core.domain.gpa_settings.use_case.GetGPASettings
 import com.hussienFahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienFahmy.core.domain.user_data.use_cases.GetAcademicProgress
 import com.hussienFahmy.core.domain.user_data.use_cases.GetUserData
@@ -32,7 +33,8 @@ object Module {
         observeUserData: ObserveUserData,
         getUserData: GetUserData,
         getAcademicProgress: GetAcademicProgress,
-        repository: UserDataRepository
+        repository: UserDataRepository,
+        getGPASettings: GetGPASettings,
     ) = UserDataUseCases(
         observeUserData = observeUserData,
         getUserData = getUserData,
@@ -45,7 +47,7 @@ object Module {
         updateDepartment = UpdateDepartment(repository),
         updateLevel = UpdateLevel(repository),
         updateSemester = UpdateSemester(repository),
-        updateCumulativeGPA = UpdateCumulativeGPA(repository),
+        updateCumulativeGPA = UpdateCumulativeGPA(repository, getGPASettings),
         updateCreditHours = UpdateCreditHours(repository),
     )
 }
