@@ -144,4 +144,6 @@
     <string name="credit_hours">الساعات المعتمدة</string>
     <string name="constant">قيمة ثابتة</string>
     <string name="above_max">الرقم اعلي من الحد الاقصي</string>
+    <string name="more_info">المزيد</string>
+    <string name="thanks">شكرا</string>
 </resources>

@@ -38,7 +38,7 @@ interface SubjectDao {
         FROM subject LEFT JOIN grade ON gradeName = grade.meta_data ORDER BY creditHours DESC
         """
     )
-    val subjectsWithGrades: Flow<Map<Subject, Grade?>>
+    val subjectsWithAssignedGrade: Flow<Map<Subject, Grade?>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(subject: Subject)

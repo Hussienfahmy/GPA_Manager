@@ -64,7 +64,7 @@ dependencies {
     implementation project(":subject_settings:subject_settings_presentation")
     implementation project(':gpa_system_settings:gpa_system_settings_data')
     implementation project(':gpa_system_settings:gpa_system_settings_presentaion')
-    // data module implemented so hilt can generate it's dependencies
+    implementation project(':semester_marks:semester_marks_presentaion')
 
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
