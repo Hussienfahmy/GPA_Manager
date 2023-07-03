@@ -19,11 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hussienFahmy.core.domain.subject_settings.model.SubjectSettings
 import com.hussienFahmy.core_ui.LocalSpacing
 import com.hussienFahmy.core_ui.presentation.components.ExpandableTextField
 import com.hussienFahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienFahmy.myGpaManager.core.R
-import com.hussienfahmy.subject_settings_domain.model.SubjectSettings
 import com.hussienfahmy.subject_settings_presentation.components.SubjectMarksDependsOnItem
 
 @Composable

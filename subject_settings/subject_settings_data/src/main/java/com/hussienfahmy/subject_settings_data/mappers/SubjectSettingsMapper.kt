@@ -1,7 +1,7 @@
 package com.hussienfahmy.subject_settings_data.mappers
 
 import com.hussienfahmy.subject_settings_data.model.SubjectSettings
-import com.hussienfahmy.subject_settings_domain.model.SubjectSettings as DomainSubjectSettings
+import com.hussienFahmy.core.domain.subject_settings.model.SubjectSettings as DomainSubjectSettings
 
 
 internal fun SubjectSettings.toDomain() = DomainSubjectSettings(

@@ -1,6 +1,6 @@
-package com.hussienfahmy.subject_settings_domain.repository
+package com.hussienFahmy.core.domain.subject_settings.repository
 
-import com.hussienfahmy.subject_settings_domain.model.SubjectSettings
+import com.hussienFahmy.core.domain.subject_settings.model.SubjectSettings
 import kotlinx.coroutines.flow.Flow
 
 interface SubjectSettingsRepository {

@@ -1,4 +1,4 @@
-package com.hussienfahmy.subject_settings_domain.model
+package com.hussienFahmy.core.domain.subject_settings.model
 
 data class SubjectSettings(
     val subjectsMarksDependsOn: SubjectsMarksDependsOn,

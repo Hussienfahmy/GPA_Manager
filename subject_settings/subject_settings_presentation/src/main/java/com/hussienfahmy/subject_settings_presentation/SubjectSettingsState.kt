@@ -1,6 +1,6 @@
 package com.hussienfahmy.subject_settings_presentation
 
-import com.hussienfahmy.subject_settings_domain.model.SubjectSettings
+import com.hussienFahmy.core.domain.subject_settings.model.SubjectSettings
 
 sealed class SubjectSettingsState {
     object Loading : SubjectSettingsState()
