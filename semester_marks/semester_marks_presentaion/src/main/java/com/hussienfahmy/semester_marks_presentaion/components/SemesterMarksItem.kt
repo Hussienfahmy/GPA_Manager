@@ -43,6 +43,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hussienFahmy.core_ui.LocalSpacing
+import com.hussienFahmy.core_ui.presentation.components.TipDialogContainer
 import com.hussienFahmy.myGpaManager.core.R
 import com.hussienfahmy.semester_marks_domain.model.Grade
 import com.hussienfahmy.semester_marks_domain.model.Subject

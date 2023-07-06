@@ -1,4 +1,4 @@
-package com.hussienfahmy.semester_marks_presentaion.components
+package com.hussienFahmy.core_ui.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
