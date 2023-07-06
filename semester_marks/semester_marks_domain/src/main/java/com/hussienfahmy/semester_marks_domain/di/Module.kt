@@ -1,9 +1,9 @@
 package com.hussienfahmy.semester_marks_domain.di
 
-import com.hussienFahmy.core.data.local.GradeDao
 import com.hussienFahmy.core.data.local.SubjectDao
 import com.hussienFahmy.core.di.DispatcherDefault
 import com.hussienFahmy.core.di.DispatcherIO
+import com.hussienFahmy.core.domain.grades.use_case.GetActiveGrades
 import com.hussienfahmy.semester_marks_domain.use_case.ChangeMidtermMarks
 import com.hussienfahmy.semester_marks_domain.use_case.ChangeOralMarks
 import com.hussienfahmy.semester_marks_domain.use_case.ChangePracticalMarks
@@ -28,12 +28,16 @@ object Module {
     @ViewModelScoped
     fun provideSemesterMarksUseCases(
         subjectDao: SubjectDao,
-        gradeDao: GradeDao,
+        getActiveGrade: GetActiveGrades,
         @DispatcherIO ioDispatcher: CoroutineDispatcher,
         @DispatcherDefault defaultDispatcher: CoroutineDispatcher,
     ): SemesterMarksUseCases {
         return SemesterMarksUseCases(
-            continuesCalculation = ContinuesCalculation(subjectDao, gradeDao, defaultDispatcher),
+            continuesCalculation = ContinuesCalculation(
+                subjectDao = subjectDao,
+                getActiveGrades = getActiveGrade,
+                defaultDispatcher
+            ),
             resetMarks = ResetMarks(subjectDao, ioDispatcher),
             setOralAvailable = SetOralAvailable(subjectDao, ioDispatcher),
             setPracticalAvailable = SetPracticalAvailable(subjectDao, ioDispatcher),
