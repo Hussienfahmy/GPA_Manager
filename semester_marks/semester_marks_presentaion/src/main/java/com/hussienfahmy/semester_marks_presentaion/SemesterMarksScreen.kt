@@ -15,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hussienFahmy.core_ui.LocalSpacing
+import com.hussienFahmy.core_ui.presentation.components.AddSubjectsHint
 import com.hussienFahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.semester_marks_domain.model.Grade
 import com.hussienfahmy.semester_marks_domain.model.Subject
-import com.hussienfahmy.semester_marks_presentaion.components.AddSubjectsHint
 import com.hussienfahmy.semester_marks_presentaion.components.SemesterMarksItem
 
 @Composable
