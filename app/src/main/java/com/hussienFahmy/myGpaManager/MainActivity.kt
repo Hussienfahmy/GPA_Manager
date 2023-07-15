@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import com.hussienFahmy.myGpaManager.ui.theme.GPAManagerTheme
-import com.hussienfahmy.semester_marks_presentaion.SemesterMarksScreen
+import com.hussienfahmy.semester_subjctets_presentaion.SemesterScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,10 +36,11 @@ class MainActivity : ComponentActivity() {
                         },
                     snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
                 ) { paddingValues ->
-                    SemesterMarksScreen(
+                    SemesterScreen(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(paddingValues)
+                            .padding(paddingValues),
+                        snackBarHostState = snackBarHostState
                     )
                 }
             }

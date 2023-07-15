@@ -43,11 +43,8 @@ interface SubjectDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(subject: Subject)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertAll(subjects: List<Subject>)
-
-    @Delete
-    suspend fun delete(subject: Subject)
+    @Query("DELETE FROM subject WHERE id = :id")
+    suspend fun delete(id: Long)
 
     @Query("DELETE FROM subject")
     suspend fun deleteAll()
@@ -55,12 +52,12 @@ interface SubjectDao {
     @Query(
         "UPDATE subject SET gradeName = NULL WHERE id = :subjectId"
     )
-    suspend fun resetSubject(subjectId: Long)
+    suspend fun clearGrade(subjectId: Long)
 
     @Query(
         "UPDATE subject SET gradeName = NULL"
     )
-    suspend fun resetAllSubjects()
+    suspend fun clearAllGrades()
 
     // ---------------- Subject Update -----------//
 
@@ -80,7 +77,7 @@ interface SubjectDao {
     suspend fun updateTotalMarksPerCredit(marksPerCredit: Double)
 
     @Query("UPDATE subject SET gradeName = :gradeName WHERE id = :subjectId")
-    suspend fun updateGradeName(subjectId: Long, gradeName: GradeName?)
+    suspend fun updateGrade(subjectId: Long, gradeName: GradeName?)
 
     @Query("UPDATE subject SET oral=null, practical=null, midterm=null WHERE id = :subjectId")
     suspend fun resetSubjectMarks(subjectId: Long)

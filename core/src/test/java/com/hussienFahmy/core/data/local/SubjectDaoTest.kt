@@ -71,7 +71,7 @@ class SubjectDaoTest {
     fun getSubjectsWithGrade() = runTest {
         val testGrade = gradeDao.getGradeByName(GradeName.A)
 
-        subjectDao.updateGradeName(templateSubject.id, testGrade?.metaData)
+        subjectDao.updateGrade(templateSubject.id, testGrade?.metaData)
 
         val (_, grade) = subjectDao.subjectsWithAssignedGrade.map {
             it.toList()
@@ -137,7 +137,7 @@ class SubjectDaoTest {
     @Test
     fun updateGradeOrder() = runTest {
         val testGradeName = GradeName.APlus
-        subjectDao.updateGradeName(templateSubject.id, testGradeName)
+        subjectDao.updateGrade(templateSubject.id, testGradeName)
 
         val loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().first
         assertEquals(testGradeName, loaded.gradeName)
