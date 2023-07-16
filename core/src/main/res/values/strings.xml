@@ -158,4 +158,8 @@
     <string name="above_max">Input is higher than max GPA</string>
     <string name="more_info">More Info</string>
     <string name="thanks">Thanks</string>
+    <string name="gpa_settings">GPA Settings</string>
+    <string name="gpa_settings_details">GPA System (4, 5)</string>
+    <string name="subject_settings">Subject Settings</string>
+    <string name="subject_settings_screen_summary">Subject total marks, how it depend on credit hours</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.hussienFahmy.myGpaManager.viewmodels
+package com.hussienFahmy.myGpaManager.navigation.screens.more
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

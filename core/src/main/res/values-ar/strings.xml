@@ -146,4 +146,8 @@
     <string name="above_max">الرقم اعلي من الحد الاقصي</string>
     <string name="more_info">المزيد</string>
     <string name="thanks">شكرا</string>
+    <string name="gpa_settings">اعدادات المعدل التراكمي</string>
+    <string name="gpa_settings_details">نظام المعدل التراكمي (4 او 5)</string>
+    <string name="subject_settings">اعدادات المواد</string>
+    <string name="subject_settings_screen_summary">الدرجة الكلية للمادة و علاقتها بعدد الساعات</string>
 </resources>
