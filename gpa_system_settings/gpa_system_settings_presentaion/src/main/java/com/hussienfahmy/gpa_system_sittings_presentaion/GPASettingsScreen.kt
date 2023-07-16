@@ -17,7 +17,7 @@ import com.hussienfahmy.gpa_system_sittings_presentaion.components.GPASystemItem
 
 @Composable
 fun GPASettingsScreen(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     viewModel: GPASettingsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state

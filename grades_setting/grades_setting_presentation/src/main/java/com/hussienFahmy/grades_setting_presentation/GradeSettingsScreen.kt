@@ -42,7 +42,7 @@ import com.hussienFahmy.myGpaManager.core.R
 
 @Composable
 fun GradeSettingsScreen(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     viewModel: GradeSettingsViewModel = hiltViewModel(),
     snackBarHostState: SnackbarHostState,
 ) {
