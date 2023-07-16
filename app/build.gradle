@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.devtools.ksp' version '1.7.20-1.0.8'
 }
 
 android {
@@ -49,10 +50,16 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    applicationVariants.all { variant ->
+        variant.addJavaSourceFoldersToModel(
+                new File(buildDir, "generated/ksp/${variant.name}/kotlin")
+        )
+    }
 }
 
 dependencies {
 
+    implementation project(":core")
     implementation project(":core-ui")
     implementation project(":grades_setting:grades_setting_presentation")
     // data module implemented so hilt can generate it's dependencies
@@ -70,6 +77,7 @@ dependencies {
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose_version"
 
     implementation platform("org.jetbrains.kotlin:kotlin-bom:$kotlin_bom")
 
@@ -82,6 +90,9 @@ dependencies {
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
     implementation 'androidx.compose.material3:material3'
+
+    implementation "io.github.raamcosta.compose-destinations:core:$raamcosta_version"
+    ksp "io.github.raamcosta.compose-destinations:ksp:$raamcosta_version"
 
     testImplementation 'junit:junit:4.13.2'
 

@@ -38,6 +38,9 @@ buildscript {
 
         // Mockk
         mockk_version = '1.13.5'
+
+        // Compose Destinations
+        raamcosta_version = '1.8.42-beta'
     }
 
     dependencies {
