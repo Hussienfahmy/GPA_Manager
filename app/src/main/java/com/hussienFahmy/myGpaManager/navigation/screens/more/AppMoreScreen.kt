@@ -16,9 +16,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hussienFahmy.core.domain.user_data.model.UserData
 import com.hussienFahmy.core_ui.LocalSpacing
+import com.hussienFahmy.core_ui.presentation.user_data.components.UserInfoCard
 import com.hussienFahmy.myGpaManager.core.R
 import com.hussienFahmy.myGpaManager.navigation.MoreNavGraph
-import com.hussienfahmy.user_data_presentaion.components.UserInfoCard
 import com.ramcosta.composedestinations.annotation.Destination
 
 @MoreNavGraph(start = true)

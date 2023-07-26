@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation project(":core")
+    implementation "io.coil-kt:coil-compose:$coil_version"
 }

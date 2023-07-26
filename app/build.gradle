@@ -64,7 +64,6 @@ dependencies {
     implementation project(":grades_setting:grades_setting_presentation")
     // data module implemented so hilt can generate it's dependencies
     implementation project(":user_data:user_data_data")
-    implementation project(":user_data:user_data_presentaion")
     implementation project(":quick:quick_presentation")
     // data module implemented so hilt can generate it's dependencies
     implementation project(":subject_settings:subject_settings_data")
