@@ -1,6 +1,7 @@
 package com.hussienFahmy.core.domain.user_data.model
 
 data class UserData(
+    val id: String,
     val name: String,
     val photoUrl: String,
     val email: String,

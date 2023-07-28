@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class UserData(
+    val id: String = "id",
     val name: String = "User",
     val photoUrl: String = "",
     val email: String = "email@user.com",
