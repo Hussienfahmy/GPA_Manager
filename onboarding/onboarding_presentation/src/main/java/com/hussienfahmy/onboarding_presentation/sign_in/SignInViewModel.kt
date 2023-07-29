@@ -32,7 +32,7 @@ class SignInViewModel @Inject constructor(
 
                     is SignInResult.Success -> {
                         viewModelScope.launch {
-                            val isUserExists = userDataRepository.isUserExists
+                            val isUserExists = userDataRepository.isUserExists()
                             if (!isUserExists) {
                                 with(event.signInResult.data) {
                                     userDataRepository.createUserData(

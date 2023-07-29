@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserDataRepository {
 
-    val isUserExists: Boolean
+    suspend fun isUserExists(): Boolean
 
     suspend fun createUserData(
         id: String,
@@ -38,4 +38,6 @@ interface UserDataRepository {
     suspend fun updateCumulativeGPA(cumulativeGPA: Double)
 
     suspend fun updateCreditHours(creditHours: Int)
+
+    suspend fun updateFCMToken(fcmToken: String)
 }

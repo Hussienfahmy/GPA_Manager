@@ -1,13 +1,17 @@
 package com.hussienfahmy.user_data_data.di
 
-import android.content.Context
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.firestoreSettings
+import com.google.firebase.firestore.ktx.persistentCacheSettings
+import com.google.firebase.ktx.Firebase
 import com.hussienFahmy.core.domain.user_data.repository.UserDataRepository
-import com.hussienfahmy.user_data_data.local.UserDataStore
-import com.hussienfahmy.user_data_data.repository.UserDataRepositoryImpl
+import com.hussienfahmy.user_data_data.repository.UserDataApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -17,13 +21,26 @@ internal object Module {
 
     @Provides
     @Singleton
-    fun provideUserDataRepository(
-        userDataStore: UserDataStore
-    ): UserDataRepository = UserDataRepositoryImpl(userDataStore)
+    fun provideFirestore(): FirebaseFirestore {
+        val settings = firestoreSettings {
+            setLocalCacheSettings(persistentCacheSettings {
+                setSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+            })
+        }
+
+        val db = Firebase.firestore
+        db.firestoreSettings = settings
+        return db
+    }
 
     @Provides
     @Singleton
-    fun provideUserDataStore(
-        @ApplicationContext context: Context
-    ): UserDataStore = UserDataStore(context)
+    fun provideUserDataApiService(
+        db: FirebaseFirestore,
+    ): UserDataRepository {
+        return UserDataApiService(
+            db = db,
+            auth = Firebase.auth
+        )
+    }
 }

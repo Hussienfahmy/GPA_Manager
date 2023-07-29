@@ -44,6 +44,7 @@ buildscript {
 
         // Firebase
         firebase_auth_version = '22.1.0'
+        firebase_firestore_version = '24.7.0'
 
         // Google
         play_service_auth_version = '20.6.0'
