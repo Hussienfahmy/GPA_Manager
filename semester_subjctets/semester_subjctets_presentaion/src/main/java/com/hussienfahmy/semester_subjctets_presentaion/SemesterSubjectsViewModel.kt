@@ -1,6 +1,5 @@
 package com.hussienfahmy.semester_subjctets_presentaion
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.hussienFahmy.core.data.local.util.UpdateResult
 import com.hussienFahmy.core.domain.grades.use_case.GetActiveGradeNames
@@ -55,25 +54,20 @@ class SemesterSubjectsViewModel @Inject constructor(
                 subject
             }
 
+            if (calculationResult is Calculate.Result.Failed) {
+                _uiEvent.send(
+                    UiEvent.ShowToast(calculationResult.message)
+                )
+            }
+
             when (mode) {
                 is Mode.Normal -> {
-                    when (calculationResult) {
-                        is Calculate.Result.Failed -> {
-                            _uiEvent.send(
-                                UiEvent.ShowToast(calculationResult.message)
-                            )
-                            null
-                        }
-
-                        is Calculate.Result.Success -> {
-                            SemesterSubjectsState.Loaded(
-                                subjects = subjects,
-                                grades = getActiveGradeNames(),
-                                mode = mode,
-                                modeResult = ModeResult.Normal(calculationResult)
-                            )
-                        }
-                    }
+                    SemesterSubjectsState.Loaded(
+                        subjects = subjects,
+                        grades = getActiveGradeNames(),
+                        mode = mode,
+                        modeResult = ModeResult.Normal(calculationResult)
+                    )
                 }
 
                 is Mode.Predict -> {
@@ -83,39 +77,23 @@ class SemesterSubjectsViewModel @Inject constructor(
                         reverseSubjects = mode.reserveSubjects
                     )
 
-                    try {
-                        if (predictionResult is PredictGrades.Result.Failed) predictionResult.message?.let {
-                            _uiEvent.send(UiEvent.ShowSnackBar(it))
-                        }
-
-                        when (calculationResult) {
-                            is Calculate.Result.Failed -> {
-                                _uiEvent.send(
-                                    UiEvent.ShowToast(calculationResult.message)
-                                )
-                                null
-                            }
-
-                            is Calculate.Result.Success -> SemesterSubjectsState.Loaded(
-                                subjects = subjects,
-                                grades = getActiveGradeNames(),
-                                mode = mode,
-                                modeResult = ModeResult.Predict(
-                                    result = calculationResult,
-                                    predictGradesResult = predictionResult
-                                )
-                            )
-                        }
-                    } catch (e: Exception) {
-                        Log.e("Pred", "init: ", e)
-                        null
+                    if (predictionResult is PredictGrades.Result.Failed) predictionResult.message?.let {
+                        _uiEvent.send(UiEvent.ShowSnackBar(it))
                     }
+
+                    SemesterSubjectsState.Loaded(
+                        subjects = subjects,
+                        grades = getActiveGradeNames(),
+                        mode = mode,
+                        modeResult = ModeResult.Predict(
+                            result = calculationResult,
+                            predictGradesResult = predictionResult
+                        )
+                    )
                 }
             }
         }.onEach {
-            if (it != null) {
-                state.value = it
-            }
+            state.value = it
         }.launchIn(viewModelScope)
     }
 

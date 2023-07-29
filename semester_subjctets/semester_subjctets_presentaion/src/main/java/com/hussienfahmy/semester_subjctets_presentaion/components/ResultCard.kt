@@ -66,7 +66,9 @@ fun ResultCard(
                 is Calculate.Result.Failed -> {
                     Text(
                         text = calculationResult.message.asString(context),
-                        modifier = Modifier.padding(spacing.medium),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(spacing.medium),
                         textAlign = TextAlign.Center
                     )
                 }
