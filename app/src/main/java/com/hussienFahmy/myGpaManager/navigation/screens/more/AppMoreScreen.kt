@@ -18,7 +18,7 @@ import com.hussienFahmy.core.domain.user_data.model.UserData
 import com.hussienFahmy.core_ui.LocalSpacing
 import com.hussienFahmy.core_ui.presentation.user_data.components.UserInfoCard
 import com.hussienFahmy.myGpaManager.core.R
-import com.hussienFahmy.myGpaManager.navigation.MoreNavGraph
+import com.hussienFahmy.myGpaManager.navigation.graphs.MoreNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
 
 @MoreNavGraph(start = true)

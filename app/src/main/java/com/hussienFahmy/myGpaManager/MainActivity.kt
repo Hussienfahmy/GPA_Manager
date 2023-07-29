@@ -10,25 +10,52 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.hussienFahmy.myGpaManager.navigation.AppBottomNav
 import com.hussienFahmy.myGpaManager.navigation.AppDestinationsNavHost
+import com.hussienFahmy.myGpaManager.navigation.screens.NavGraphs
+import com.hussienFahmy.myGpaManager.navigation.screens.startAppDestination
 import com.hussienFahmy.myGpaManager.ui.theme.GPAManagerTheme
+import com.hussienfahmy.onboarding_presentation.sign_in.GoogleAuthUiClient
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var googleAuthUiClient: GoogleAuthUiClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycle.addObserver(googleAuthUiClient)
+
         setContent {
             GPAManagerTheme {
                 val localFocusManager = LocalFocusManager.current
                 val snackBarHostState = remember { SnackbarHostState() }
                 val navController = rememberNavController()
+                val currentBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = currentBackStackEntry?.destination?.route
+                val isSingedIn = googleAuthUiClient.isSignedIn
+
+                LaunchedEffect(key1 = isSingedIn) {
+                    if (isSingedIn == false) {
+                        navController.navigate(NavGraphs.onBoarding.startAppDestination.route) {
+                            popUpTo(NavGraphs.root.startAppDestination.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                }
 
                 Scaffold(
                     modifier = Modifier
@@ -40,13 +67,18 @@ class MainActivity : ComponentActivity() {
                         },
                     snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
                     bottomBar = {
-                        AppBottomNav(navController = navController)
+                        if (
+                            currentDestination !in NavGraphs.onBoarding.destinations.map { it.route }
+                        ) {
+                            AppBottomNav(navController = navController)
+                        }
                     }
                 ) { paddingValues ->
                     Box(modifier = Modifier.padding(paddingValues)) {
                         AppDestinationsNavHost(
                             navController = navController,
-                            snackBarHostState = snackBarHostState
+                            snackBarHostState = snackBarHostState,
+                            googleAuthUiClient = googleAuthUiClient,
                         )
                     }
                 }
