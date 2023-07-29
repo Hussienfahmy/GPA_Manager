@@ -41,10 +41,17 @@ buildscript {
 
         // Compose Destinations
         raamcosta_version = '1.8.42-beta'
+
+        // Firebase
+        firebase_auth_version = '22.1.0'
+
+        // Google
+        play_service_auth_version = '20.6.0'
     }
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.15'
     }
 }
 // Top-level build file where you can add configuration options common to all sub-projects/modules.

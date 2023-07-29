@@ -1,4 +1,4 @@
-package com.hussienfahmy.user_data_domain
+package com.hussienfahmy.onboarding_presentation
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

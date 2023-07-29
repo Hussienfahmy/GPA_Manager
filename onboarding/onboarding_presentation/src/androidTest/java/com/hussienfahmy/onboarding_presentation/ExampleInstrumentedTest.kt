@@ -1,4 +1,4 @@
-package com.hussienfahmy.user_data_domain
+package com.hussienfahmy.onboarding_presentation
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.hussienfahmy.user_data_domain.test", appContext.packageName)
+        assertEquals("com.hussienfahmy.onboarding_presentation.test", appContext.packageName)
     }
 }

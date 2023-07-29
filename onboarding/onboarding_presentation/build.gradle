@@ -1,0 +1,12 @@
+apply {
+    from("$rootDir/compose-module.gradle")
+    plugin 'com.google.gms.google-services'
+}
+
+dependencies {
+    implementation project(":core")
+    implementation project(":core-ui")
+
+    implementation("com.google.firebase:firebase-auth-ktx:$firebase_auth_version")
+    implementation("com.google.android.gms:play-services-auth:$play_service_auth_version")
+}
