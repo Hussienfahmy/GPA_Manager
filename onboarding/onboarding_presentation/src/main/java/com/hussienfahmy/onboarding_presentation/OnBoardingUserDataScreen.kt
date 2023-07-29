@@ -17,7 +17,7 @@ import com.hussienFahmy.core_ui.presentation.user_data.UserDataScreen
 @Composable
 fun OnBoardingUserDataScreen(
     snackBarHostState: SnackbarHostState,
-    onStartClick: () -> Unit,
+    onNextClick: () -> Unit,
 ) {
     val spacing = LocalSpacing.current
 
@@ -38,12 +38,12 @@ fun OnBoardingUserDataScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         OutlinedButton(
-            onClick = onStartClick,
+            onClick = onNextClick,
             modifier = Modifier
                 .padding(bottom = spacing.medium)
                 .align(Alignment.CenterHorizontally)
         ) {
-            Text(text = "Start")
+            Text(text = "Next")
         }
     }
 }

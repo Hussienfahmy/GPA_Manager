@@ -11,7 +11,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 @Composable
 fun AppOnBoardingUserDataScreen(
     snackBarHostState: SnackbarHostState,
-    onStartClick: () -> Unit,
+    onNextClick: () -> Unit,
 ) {
-    OnBoardingUserDataScreen(onStartClick = onStartClick, snackBarHostState = snackBarHostState)
+    OnBoardingUserDataScreen(onNextClick = onNextClick, snackBarHostState = snackBarHostState)
 }

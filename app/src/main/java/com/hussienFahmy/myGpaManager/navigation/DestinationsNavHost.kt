@@ -7,11 +7,13 @@ import com.hussienFahmy.myGpaManager.navigation.screens.NavGraphs
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppGPASettingsScreenDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppGradeSettingsScreenDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppMoreScreenDestination
+import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppOnBoardingGradesSettingsScreenDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppOnBoardingScreenDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppOnBoardingUserDataScreenDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppSubjectSettingsScreenDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppUserDataScreenDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.more.AppMoreScreen
+import com.hussienFahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingGradesSettingsScreen
 import com.hussienFahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingScreen
 import com.hussienFahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingUserDataScreen
 import com.hussienFahmy.myGpaManager.navigation.screens.startAppDestination
@@ -66,6 +68,14 @@ fun AppDestinationsNavHost(
         composable(AppOnBoardingUserDataScreenDestination) {
             AppOnBoardingUserDataScreen(
                 snackBarHostState = snackBarHostState,
+                onNextClick = {
+                    navController.navigate(AppOnBoardingGradesSettingsScreenDestination.route)
+                }
+            )
+        }
+
+        composable(AppOnBoardingGradesSettingsScreenDestination) {
+            AppOnBoardingGradesSettingsScreen(
                 onStartClick = {
                     navController.navigate(NavGraphs.root.startAppDestination.route) {
                         popUpTo(AppOnBoardingUserDataScreenDestination.route) {
@@ -73,7 +83,8 @@ fun AppDestinationsNavHost(
                         }
                         launchSingleTop = true
                     }
-                }
+                },
+                snackBarHostState = snackBarHostState
             )
         }
     }
