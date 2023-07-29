@@ -18,7 +18,8 @@ internal fun UserData.toUserData(): UserDataDomain = UserDataDomain(
     academicProgress = UserDataDomain.AcademicProgress(
         cumulativeGPA = academicProgress.cumulativeGPA,
         creditHours = academicProgress.creditHours,
-    )
+    ),
+    id = id
 )
 
 internal fun UserDataDomain.toUserData(): UserData = UserData(
@@ -36,5 +37,6 @@ internal fun UserDataDomain.toUserData(): UserData = UserData(
     academicProgress = UserData.AcademicProgress(
         cumulativeGPA = academicProgress.cumulativeGPA,
         creditHours = academicProgress.creditHours,
-    )
+    ),
+    id = id
 )

@@ -5,6 +5,16 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserDataRepository {
 
+    val isUserExists: Boolean
+
+    suspend fun createUserData(
+        id: String,
+        name: String,
+        photoUrl: String,
+        email: String,
+        isEmailVerified: Boolean
+    )
+
     fun observeUserData(): Flow<UserData>
 
     suspend fun getUserData(): UserData

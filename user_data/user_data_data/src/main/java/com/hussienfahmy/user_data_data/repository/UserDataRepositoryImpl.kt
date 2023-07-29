@@ -11,6 +11,19 @@ import com.hussienfahmy.user_data_data.local.model.UserData as UserDataLocal
 internal class UserDataRepositoryImpl(
     private val userDataStore: UserDataStore,
 ) : UserDataRepository {
+    override val isUserExists: Boolean
+        get() = true
+
+    override suspend fun createUserData(
+        id: String,
+        name: String,
+        photoUrl: String,
+        email: String,
+        isEmailVerified: Boolean
+    ) {
+        /* no-op */
+    }
+
     override fun observeUserData(): Flow<UserData> {
         return userDataStore.observeUserData().map { it.toUserData() }
     }

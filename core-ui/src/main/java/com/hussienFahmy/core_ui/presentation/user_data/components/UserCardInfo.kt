@@ -189,7 +189,8 @@ fun UserInfoCardPreview() {
                 cumulativeGPA = 3.5,
                 creditHours = 120
             ),
-            isEmailVerified = true
+            isEmailVerified = true,
+            id = ""
         )
     )
 }
