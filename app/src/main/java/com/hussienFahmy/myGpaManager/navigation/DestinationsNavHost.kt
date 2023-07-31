@@ -7,12 +7,14 @@ import com.hussienFahmy.myGpaManager.navigation.screens.NavGraphs
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppGPASettingsScreenDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppGradeSettingsScreenDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppMoreScreenDestination
+import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppOnBoardingGPASubjectsSettingsDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppOnBoardingGradesSettingsScreenDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppOnBoardingScreenDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppOnBoardingUserDataScreenDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppSubjectSettingsScreenDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppUserDataScreenDestination
 import com.hussienFahmy.myGpaManager.navigation.screens.more.AppMoreScreen
+import com.hussienFahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingGPASubjectsSettings
 import com.hussienFahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingGradesSettingsScreen
 import com.hussienFahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingScreen
 import com.hussienFahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingUserDataScreen
@@ -76,6 +78,15 @@ fun AppDestinationsNavHost(
 
         composable(AppOnBoardingGradesSettingsScreenDestination) {
             AppOnBoardingGradesSettingsScreen(
+                onNextClick = {
+                    navController.navigate(AppOnBoardingGPASubjectsSettingsDestination.route)
+                },
+                snackBarHostState = snackBarHostState
+            )
+        }
+
+        composable(AppOnBoardingGPASubjectsSettingsDestination) {
+            AppOnBoardingGPASubjectsSettings(
                 onStartClick = {
                     navController.navigate(NavGraphs.root.startAppDestination.route) {
                         popUpTo(AppOnBoardingUserDataScreenDestination.route) {
