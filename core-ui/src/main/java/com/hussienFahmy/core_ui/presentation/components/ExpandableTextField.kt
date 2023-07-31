@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
@@ -30,6 +31,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,6 +45,7 @@ fun ExpandableTextField(
     onNewValueSubmitted: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
     enabled: Boolean = true,
+    singleLine: Boolean = true,
     imageVector: ImageVector? = null,
 ) {
     val spacing = LocalSpacing.current
@@ -107,9 +110,19 @@ fun ExpandableTextField(
                 value = valueState,
                 onValueChange = { valueState = it },
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = keyboardType
+                    keyboardType = keyboardType,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        if (isError) return@KeyboardActions
+
+                        onNewValueSubmitted(valueState)
+                        editMode = false
+                    }
                 ),
                 isError = isError,
+                singleLine = singleLine,
                 label = { Text(text = title) },
                 trailingIcon = {
                     Icon(
