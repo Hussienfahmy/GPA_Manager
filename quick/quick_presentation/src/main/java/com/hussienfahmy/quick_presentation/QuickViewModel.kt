@@ -23,10 +23,12 @@ class QuickViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            state.value = state.value.copy(
-                academicProgress = getAcademicProgress(),
-                isLoading = false
-            )
+            getAcademicProgress()?.let {
+                state.value = state.value.copy(
+                    academicProgress = it,
+                    isLoading = false
+                )
+            }
         }
     }
 

@@ -31,7 +31,7 @@ class GoogleAuthUiClient(
     var isSignedIn by mutableStateOf<Boolean?>(null)
         private set
 
-    val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+    private val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
         isSignedIn = firebaseAuth.currentUser != null
     }
 

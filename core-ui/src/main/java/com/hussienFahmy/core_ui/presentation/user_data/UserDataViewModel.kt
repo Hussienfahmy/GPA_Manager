@@ -6,6 +6,7 @@ import com.hussienFahmy.core.domain.user_data.use_cases.UserDataUseCases
 import com.hussienFahmy.core_ui.presentation.model.UiEvent
 import com.hussienFahmy.core_ui.presentation.viewmodel.UiViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -19,7 +20,7 @@ class UserDataViewModel @Inject constructor(
 ) {
 
     init {
-        userDataUseCases.observeUserData().onEach {
+        userDataUseCases.observeUserData().filterNotNull().onEach {
             state.value = UserDataState.Loaded(it)
         }.launchIn(viewModelScope)
     }

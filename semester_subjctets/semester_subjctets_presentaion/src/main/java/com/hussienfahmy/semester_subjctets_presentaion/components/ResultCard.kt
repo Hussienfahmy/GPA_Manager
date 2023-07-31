@@ -64,13 +64,15 @@ fun ResultCard(
 
             when (calculationResult) {
                 is Calculate.Result.Failed -> {
-                    Text(
-                        text = calculationResult.message.asString(context),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(spacing.medium),
-                        textAlign = TextAlign.Center
-                    )
+                    calculationResult.message?.asString(context)?.let {
+                        Text(
+                            text = it,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(spacing.medium),
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
 
                 is Calculate.Result.Success -> {

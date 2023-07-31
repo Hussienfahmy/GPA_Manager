@@ -5,7 +5,6 @@ import com.hussienFahmy.core.data.local.util.UpdateResult
 import com.hussienFahmy.core.domain.grades.use_case.GetActiveGradeNames
 import com.hussienFahmy.core_ui.presentation.model.UiEvent
 import com.hussienFahmy.core_ui.presentation.viewmodel.UiViewModel
-import com.hussienfahmy.semester_subjctets_domain.use_case.Calculate
 import com.hussienfahmy.semester_subjctets_domain.use_case.CalculationUseCases
 import com.hussienfahmy.semester_subjctets_domain.use_case.ClearGrade
 import com.hussienfahmy.semester_subjctets_domain.use_case.PredictGrades
@@ -52,12 +51,6 @@ class SemesterSubjectsViewModel @Inject constructor(
 
             val subjects = subjectsWithGradeTransformed.map { (subject, _) ->
                 subject
-            }
-
-            if (calculationResult is Calculate.Result.Failed) {
-                _uiEvent.send(
-                    UiEvent.ShowToast(calculationResult.message)
-                )
             }
 
             when (mode) {

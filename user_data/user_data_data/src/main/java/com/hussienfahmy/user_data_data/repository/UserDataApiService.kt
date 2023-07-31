@@ -24,8 +24,8 @@ class UserDataApiService(
 
     private val currentUser = MutableStateFlow(auth.currentUser)
     private val userId = currentUser.filterNotNull().map { it.uid }
-    private val userDoc = userId.map {
-        db.collection(NetworkUserData.COLLECTION_NAME).document(it).also {
+    private val userDoc = userId.map { userId ->
+        db.collection(NetworkUserData.COLLECTION_NAME).document(userId).also {
             Log.d(TAG, "doc path = ${it.path}")
         }
     }
@@ -56,7 +56,7 @@ class UserDataApiService(
         ).await()
     }
 
-    override fun observeUserData(): Flow<UserData> {
+    override fun observeUserData(): Flow<UserData?> {
         return callbackFlow {
             val registration = userDoc.first().addSnapshotListener { value, error ->
                 if (error != null) {
@@ -79,8 +79,8 @@ class UserDataApiService(
         }
     }
 
-    override suspend fun getUserData(): UserData {
-        return userDoc.first().get().await().toObject<NetworkUserData>()!!.toUserData()
+    override suspend fun getUserData(): UserData? {
+        return userDoc.first().get().await().toObject<NetworkUserData>()?.toUserData()
     }
 
     override suspend fun updateName(name: String) {
