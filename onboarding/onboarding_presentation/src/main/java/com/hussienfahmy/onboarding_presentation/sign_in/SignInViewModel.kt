@@ -39,7 +39,6 @@ class SignInViewModel @Inject constructor(
                                         name = name,
                                         email = email,
                                         photoUrl = photoUrl,
-                                        isEmailVerified = isEmailVerified,
                                         id = id
                                     )
                                 }

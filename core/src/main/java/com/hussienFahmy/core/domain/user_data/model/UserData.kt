@@ -5,7 +5,6 @@ data class UserData(
     val name: String,
     val photoUrl: String,
     val email: String,
-    val isEmailVerified: Boolean,
     val academicInfo: AcademicInfo,
     val academicProgress: AcademicProgress,
 ) {

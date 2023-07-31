@@ -10,7 +10,6 @@ internal data class UserData(
     @PropertyName(PROPERTY_NAME) val name: String = "User",
     @PropertyName(PROPERTY_PHOTO_URL) val photoUrl: String = "",
     @PropertyName(PROPERTY_EMAIL) val email: String = "email@user.com",
-    @PropertyName(PROPERTY_IS_EMAIL_VERIFIED) val isEmailVerified: Boolean = false,
     @PropertyName(PROPERTY_ACADEMIC_INFO) val academicInfo: AcademicInfo = AcademicInfo(),
     @PropertyName(PROPERTY_FCM_TOKEN) val fcmToken: String = "",
     @PropertyName(PROPERTY_ACADEMIC_PROGRESS) val academicProgress: AcademicProgress = AcademicProgress(),
@@ -39,7 +38,6 @@ internal data class UserData(
         const val PROPERTY_NAME = "name"
         const val PROPERTY_PHOTO_URL = "photoUrl"
         const val PROPERTY_EMAIL = "email"
-        const val PROPERTY_IS_EMAIL_VERIFIED = "isEmailVerified"
         const val PROPERTY_ACADEMIC_INFO = "academicInfo"
         private const val UNIVERSITY_FIELD = "university"
         private const val FACULTY_FIELD = "faculty"

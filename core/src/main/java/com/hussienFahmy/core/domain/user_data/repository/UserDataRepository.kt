@@ -12,12 +12,11 @@ interface UserDataRepository {
         name: String,
         photoUrl: String,
         email: String,
-        isEmailVerified: Boolean
     )
 
-    fun observeUserData(): Flow<UserData>
+    fun observeUserData(): Flow<UserData?>
 
-    suspend fun getUserData(): UserData
+    suspend fun getUserData(): UserData?
 
     suspend fun updateName(name: String)
 

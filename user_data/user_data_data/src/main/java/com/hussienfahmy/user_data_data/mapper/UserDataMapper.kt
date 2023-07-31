@@ -7,7 +7,6 @@ internal fun UserData.toUserData(): UserDataDomain = UserDataDomain(
     name = name,
     photoUrl = photoUrl,
     email = email,
-    isEmailVerified = isEmailVerified,
     academicInfo = UserDataDomain.AcademicInfo(
         university = academicInfo.university,
         faculty = academicInfo.faculty,

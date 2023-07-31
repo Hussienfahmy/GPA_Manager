@@ -5,5 +5,4 @@ class FirebaseUserData(
     val name: String,
     val photoUrl: String,
     val email: String,
-    val isEmailVerified: Boolean
 )

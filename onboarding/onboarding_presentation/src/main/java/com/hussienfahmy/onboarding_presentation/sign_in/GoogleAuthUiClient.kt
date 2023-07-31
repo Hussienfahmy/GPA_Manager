@@ -73,7 +73,6 @@ class GoogleAuthUiClient(
                             name = displayName ?: "",
                             photoUrl = photoUrl.toString(),
                             email = email ?: "",
-                            isEmailVerified = isEmailVerified
                         )
                     )
                 }

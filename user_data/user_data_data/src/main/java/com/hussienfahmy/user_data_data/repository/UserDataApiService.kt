@@ -45,7 +45,6 @@ class UserDataApiService(
         name: String,
         photoUrl: String,
         email: String,
-        isEmailVerified: Boolean
     ) {
         userDoc.first().set(
             NetworkUserData(
@@ -53,7 +52,6 @@ class UserDataApiService(
                 name = name,
                 photoUrl = photoUrl,
                 email = email,
-                isEmailVerified = isEmailVerified,
             )
         ).await()
     }

@@ -1,8 +1,5 @@
 package com.hussienFahmy.core_ui.presentation.user_data.components
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,12 +16,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,7 +26,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.hussienFahmy.core.domain.user_data.model.UserData
 import com.hussienFahmy.core_ui.LocalSpacing
 import com.hussienFahmy.myGpaManager.core.R
-import com.hussienFahmy.myGpaManager.core_ui.R as CoreUiR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,7 +57,6 @@ fun UserInfoCard(onCardClick: () -> Unit, userData: UserData) {
                     linkTo(start = parent.start, end = academicInfoColumn.start, bias = 0f)
                 },
                 userData = userData,
-                isEmailVerified = userData.isEmailVerified
             )
 
             AcademicInfoColumn(
@@ -138,27 +130,13 @@ fun AcademicInfoColumn(
 fun PersonalDataRow(
     userData: UserData,
     modifier: Modifier,
-    isEmailVerified: Boolean
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         // the image
-        Box(contentAlignment = Alignment.BottomEnd) {
-            UserPhoto(photoUrl = userData.photoUrl, modifier = Modifier.size(60.dp))
-
-            val animatedColor by animateColorAsState(
-                targetValue = if (isEmailVerified) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.error
-            )
-
-            Image(
-                painter = painterResource(id = CoreUiR.drawable.baseline_verified_24),
-                contentDescription = "Email ${if (isEmailVerified) "Verified" else "Not Verified"}",
-                colorFilter = ColorFilter.tint(animatedColor)
-            )
-        }
+        UserPhoto(photoUrl = userData.photoUrl, modifier = Modifier.size(60.dp))
 
         Spacer(modifier = Modifier.width(5.dp))
 
@@ -189,7 +167,6 @@ fun UserInfoCardPreview() {
                 cumulativeGPA = 3.5,
                 creditHours = 120
             ),
-            isEmailVerified = true,
             id = ""
         )
     )
