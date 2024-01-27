@@ -73,6 +73,9 @@ dependencies {
     implementation project(':semester_marks:semester_marks_presentaion')
     implementation project(':semester_subjctets:semester_subjctets_presentaion')
     implementation project(':onboarding:onboarding_presentation')
+    // data module implemented so hilt can generate it's dependencies
+    implementation project(":sync:sync_data")
+    implementation project(":sync:sync_domain")
 
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
@@ -93,6 +96,10 @@ dependencies {
 
     implementation "io.github.raamcosta.compose-destinations:core:$raamcosta_version"
     ksp "io.github.raamcosta.compose-destinations:ksp:$raamcosta_version"
+
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+    implementation "androidx.hilt:hilt-work:$hilt_work_version"
+    kapt "androidx.hilt:hilt-compiler:$hilt_compiler_version"
 
     testImplementation 'junit:junit:4.13.2'
 

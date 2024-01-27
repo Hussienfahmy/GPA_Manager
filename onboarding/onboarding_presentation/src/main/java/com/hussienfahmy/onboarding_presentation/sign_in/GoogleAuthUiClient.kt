@@ -4,9 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -17,6 +14,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.hussienFahmy.myGpaManager.R
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.tasks.await
 import java.util.concurrent.CancellationException
 
@@ -28,11 +27,13 @@ class GoogleAuthUiClient(
 ) : DefaultLifecycleObserver {
     private val auth = Firebase.auth
 
-    var isSignedIn by mutableStateOf<Boolean?>(null)
-        private set
+    private val _isSignedInFlow = MutableStateFlow<Boolean?>(null)
+    val isSignedInFlow = _isSignedInFlow.asStateFlow()
 
     private val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
-        isSignedIn = firebaseAuth.currentUser != null
+        (firebaseAuth.currentUser != null).let {
+            _isSignedInFlow.value = it
+        }
     }
 
     override fun onResume(owner: LifecycleOwner) {

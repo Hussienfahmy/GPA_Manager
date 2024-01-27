@@ -3,7 +3,7 @@ buildscript {
         // ProjectConfig
         app_id = "com.hussienFahmy.myGpaManager"
         compile_sdk_version = 33
-        min_sdk_version = 23
+        min_sdk_version = 26
         target_sdk_version = 33
         version_code = 76
         version_name = "6.4"
@@ -18,7 +18,9 @@ buildscript {
         room_version = "2.4.3"
         // todo  for room max_grade can't be set with higher versions don't upgrade now or fix the issue
         data_store_version = "1.0.0"
+        preferences_data_store_version = "1.0.0"
         constraint_layout_compose_version = '1.0.0'
+        work_version = "2.8.1"
 
         // Compose
         compose_bom = '2023.05.01'
@@ -32,6 +34,8 @@ buildscript {
         // Hilt
         hilt_version = '2.44'
         hilt_navigation_compose_version = '1.0.0'
+        hilt_work_version = "1.0.0"
+        hilt_compiler_version = '1.0.0'
 
         // Coil
         coil_version = '2.3.0'

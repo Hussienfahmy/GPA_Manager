@@ -3,6 +3,7 @@ package com.hussienFahmy.myGpaManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -23,20 +25,17 @@ import com.hussienFahmy.myGpaManager.navigation.AppDestinationsNavHost
 import com.hussienFahmy.myGpaManager.navigation.screens.NavGraphs
 import com.hussienFahmy.myGpaManager.navigation.screens.startAppDestination
 import com.hussienFahmy.myGpaManager.ui.theme.GPAManagerTheme
-import com.hussienfahmy.onboarding_presentation.sign_in.GoogleAuthUiClient
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var googleAuthUiClient: GoogleAuthUiClient
+    private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycle.addObserver(googleAuthUiClient)
+        lifecycle.addObserver(viewModel.googleAuthUiClient)
 
         setContent {
             GPAManagerTheme {
@@ -45,7 +44,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val currentBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = currentBackStackEntry?.destination?.route
-                val isSingedIn = googleAuthUiClient.isSignedIn
+                val isSingedIn by viewModel.isSignedIn.collectAsState()
 
                 LaunchedEffect(key1 = isSingedIn) {
                     if (isSingedIn == false) {
@@ -78,7 +77,7 @@ class MainActivity : ComponentActivity() {
                         AppDestinationsNavHost(
                             navController = navController,
                             snackBarHostState = snackBarHostState,
-                            googleAuthUiClient = googleAuthUiClient,
+                            googleAuthUiClient = viewModel.googleAuthUiClient,
                         )
                     }
                 }

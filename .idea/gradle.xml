@@ -4,10 +4,8 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="testRunner" value="GRADLE" />
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="jbr-17" />
+        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -36,10 +34,14 @@
             <option value="$PROJECT_DIR$/subject_settings/subject_settings_data" />
             <option value="$PROJECT_DIR$/subject_settings/subject_settings_domain" />
             <option value="$PROJECT_DIR$/subject_settings/subject_settings_presentation" />
+            <option value="$PROJECT_DIR$/sync" />
+            <option value="$PROJECT_DIR$/sync/sync_data" />
+            <option value="$PROJECT_DIR$/sync/sync_domain" />
             <option value="$PROJECT_DIR$/user_data" />
             <option value="$PROJECT_DIR$/user_data/user_data_data" />
           </set>
         </option>
+        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
