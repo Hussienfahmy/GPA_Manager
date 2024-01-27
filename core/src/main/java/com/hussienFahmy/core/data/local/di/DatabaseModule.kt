@@ -5,6 +5,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.hussienFahmy.core.data.local.AppDatabase
+import com.hussienFahmy.core.data.local.GradeDao
+import com.hussienFahmy.core.data.local.SubjectDao
 import com.hussienFahmy.core.data.local.entity.Grade
 import dagger.Module
 import dagger.Provides
@@ -53,4 +55,16 @@ object DatabaseModule {
     ).fallbackToDestructiveMigration()
         .addCallback(callback)
         .build()
+
+    @Provides
+    @Singleton
+    fun provideSubjectDao(appDatabase: AppDatabase): SubjectDao {
+        return appDatabase.subjectDao
+    }
+
+    @Provides
+    @Singleton
+    fun provideGradeDao(appDatabase: AppDatabase): GradeDao {
+        return appDatabase.gradeDao
+    }
 }

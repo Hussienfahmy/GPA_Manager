@@ -1,4 +1,4 @@
-package com.hussienfahmy.gpa_system_sittings_domain.use_case
+package com.hussienFahmy.core.domain.gpa_settings.use_case
 
 import com.hussienFahmy.core.domain.gpa_settings.model.GPA
 import com.hussienFahmy.core.domain.gpa_settings.repository.GPASettingsRepository
