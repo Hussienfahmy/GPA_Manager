@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import com.hussienfahmy.subject_settings_data.model.SubjectSettings as SubjectSettingsData
 
-class SubjectSettingsRepositoryImpl(
+internal class SubjectSettingsRepositoryImpl(
     private val subjectSettingsDataSource: SubjectSettingsDataSource
 ) : SubjectSettingsRepository {
 

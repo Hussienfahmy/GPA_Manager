@@ -5,7 +5,6 @@ import com.hussienFahmy.core.domain.user_data.model.UserData
 
 sealed class UserDataEvent {
     data class UpdateName(val name: String) : UserDataEvent()
-    data class UpdateEmail(val email: String) : UserDataEvent()
     data class UploadPhoto(val photoUri: Uri) : UserDataEvent()
     data class UpdateUniversity(val university: String) : UserDataEvent()
     data class UpdateFaculty(val faculty: String) : UserDataEvent()

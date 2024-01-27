@@ -21,5 +21,7 @@ object Module {
 
     @Provides
     @ViewModelScoped
-    fun provideCalculatePercentage() = CalculatePercentage()
+    fun provideCalculatePercentage(
+        getGPASettings: GetGPASettings,
+    ) = CalculatePercentage(getGPASettings)
 }

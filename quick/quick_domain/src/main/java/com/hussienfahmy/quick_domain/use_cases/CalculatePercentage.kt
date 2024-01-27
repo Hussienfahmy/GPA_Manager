@@ -1,13 +1,14 @@
 package com.hussienfahmy.quick_domain.use_cases
 
-class CalculatePercentage {
+import com.hussienFahmy.core.domain.gpa_settings.use_case.GetGPASettings
 
-    // todo use from the settings
-    private val gpaSystemNumber = 4
-
-    operator fun invoke(
+class CalculatePercentage(
+    private val getGPASettings: GetGPASettings,
+) {
+    suspend operator fun invoke(
         cumulativeGPA: Float,
     ): Float {
+        val gpaSystemNumber = getGPASettings().system.number
         return cumulativeGPA / gpaSystemNumber * 100
     }
 }

@@ -16,7 +16,7 @@ buildscript {
         androidx_lifecycle = '2.6.1'
         androidx_activity_compose = '1.7.2'
         room_version = "2.4.3"
-        // todo  for room max_grade can't be set with higher versions don't upgrade now or fix the issue
+        // with new version of room max_grade can't be set in the join table, fix the issue
         data_store_version = "1.0.0"
         preferences_data_store_version = "1.0.0"
         constraint_layout_compose_version = '1.0.0'

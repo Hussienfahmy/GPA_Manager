@@ -6,7 +6,6 @@ data class UserDataUseCases(
     val getAcademicProgress: GetAcademicProgress,
     val updateName: UpdateName,
     val uploadPhoto: UploadPhoto,
-    val updateEmail: UpdateEmail,
     val updateUniversity: UpdateUniversity,
     val updateFaculty: UpdateFaculty,
     val updateDepartment: UpdateDepartment,

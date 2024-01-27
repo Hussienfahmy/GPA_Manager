@@ -19,7 +19,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 @SmallTest
 class GradeDaoTest {
-    // todo refactor in the future
+
     private lateinit var db: AppDatabase
 
     private lateinit var gradeDao: GradeDao

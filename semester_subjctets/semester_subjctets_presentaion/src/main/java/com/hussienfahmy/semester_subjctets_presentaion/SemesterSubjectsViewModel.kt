@@ -33,7 +33,6 @@ class SemesterSubjectsViewModel @Inject constructor(
     private val mode = MutableStateFlow<Mode>(Mode.Normal)
     private val fixedSubjectsIds = MutableStateFlow<List<Long>>(emptyList())
 
-    // todo in the future enhance to use compose states
     init {
         // recalculate when subjects or mode changes
         combine(

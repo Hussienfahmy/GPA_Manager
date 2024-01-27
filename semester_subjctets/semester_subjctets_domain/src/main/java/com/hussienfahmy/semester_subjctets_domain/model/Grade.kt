@@ -13,6 +13,4 @@ data class Grade(
         points = grade.points!!,
         percentage = grade.percentage!!
     )
-    // todo we may make another class called ActiveGrade have points and percentage non-nullable
-    //  and use it with the subjectDao.subjectsWithAssignedGrade
 }

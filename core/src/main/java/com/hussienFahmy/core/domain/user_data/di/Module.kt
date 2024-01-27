@@ -8,7 +8,6 @@ import com.hussienFahmy.core.domain.user_data.use_cases.ObserveUserData
 import com.hussienFahmy.core.domain.user_data.use_cases.UpdateCreditHours
 import com.hussienFahmy.core.domain.user_data.use_cases.UpdateCumulativeGPA
 import com.hussienFahmy.core.domain.user_data.use_cases.UpdateDepartment
-import com.hussienFahmy.core.domain.user_data.use_cases.UpdateEmail
 import com.hussienFahmy.core.domain.user_data.use_cases.UpdateFaculty
 import com.hussienFahmy.core.domain.user_data.use_cases.UpdateLevel
 import com.hussienFahmy.core.domain.user_data.use_cases.UpdateName
@@ -58,7 +57,6 @@ object Module {
         getUserData = getUserData,
         getAcademicProgress = getAcademicProgress,
         updateName = UpdateName(repository),
-        updateEmail = UpdateEmail(repository),
         uploadPhoto = UploadPhoto(repository, UpdatePhotoUrl(repository)),
         updateUniversity = UpdateUniversity(repository),
         updateFaculty = UpdateFaculty(repository),

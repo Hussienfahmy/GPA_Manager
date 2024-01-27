@@ -8,6 +8,6 @@ class UploadPhoto(
     private val updatePhotoUrl: UpdatePhotoUrl,
 ) {
     suspend operator fun invoke(uri: Uri) {
-        // todo: upload photo to firebase storage
+
     }
 }

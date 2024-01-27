@@ -6,7 +6,6 @@ import com.hussienfahmy.subject_settings_data.model.SubjectSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
-// todo make all internal
 class SubjectSettingsDataSource(
     context: Context,
 ) {
