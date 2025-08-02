@@ -30,8 +30,6 @@ android {
         }
     }
     compileOptions {
-        coreLibraryDesugaringEnabled true
-
         sourceCompatibility source_compatibility
         targetCompatibility target_compatibility
     }
