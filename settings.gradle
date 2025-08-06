@@ -43,3 +43,4 @@ include ':onboarding:onboarding_presentation'
 include ':sync'
 include ':sync:sync_domain'
 include ':sync:sync_data'
+includeBuild("build-logic")
