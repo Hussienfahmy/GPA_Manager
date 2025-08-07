@@ -5,9 +5,10 @@ import androidx.compose.runtime.Composable
 import com.hussienFahmy.core_ui.presentation.user_data.UserDataScreen
 import com.hussienFahmy.myGpaManager.navigation.graphs.MoreNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootGraph
 
 @MoreNavGraph
-@Destination
+@Destination<RootGraph>
 @Composable
 fun AppUserDataScreen(
     snackBarHostState: SnackbarHostState,

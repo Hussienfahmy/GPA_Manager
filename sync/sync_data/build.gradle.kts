@@ -7,8 +7,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":sync:sync_domain"))
 
-    implementation(libs.firebase.firestore)
-    implementation(libs.firebase.auth)
+    implementation(libs.bundles.firebase)
 
     implementation(libs.androidx.datastore.preferences)
 }

@@ -6,8 +6,7 @@ import com.hussienfahmy.onboarding_presentation.OnBoardingScreen
 import com.hussienfahmy.onboarding_presentation.sign_in.GoogleAuthUiClient
 import com.ramcosta.composedestinations.annotation.Destination
 
-@OnBoardingNavGraph(start = true)
-@Destination
+@Destination<OnBoardingNavGraph>(start = true)
 @Composable
 fun AppOnBoardingScreen(
     onSignInSuccess: () -> Unit,

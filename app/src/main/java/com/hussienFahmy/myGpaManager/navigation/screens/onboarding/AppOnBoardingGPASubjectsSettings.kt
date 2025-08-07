@@ -19,8 +19,7 @@ import com.hussienfahmy.gpa_system_sittings_presentaion.GPASettingsScreen
 import com.hussienfahmy.subject_settings_presentation.SubjectsSettingsScreen
 import com.ramcosta.composedestinations.annotation.Destination
 
-@OnBoardingNavGraph
-@Destination
+@Destination<OnBoardingNavGraph>
 @Composable
 fun AppOnBoardingGPASubjectsSettings(
     onStartClick: () -> Unit,

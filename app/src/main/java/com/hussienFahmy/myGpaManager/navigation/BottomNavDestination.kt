@@ -8,10 +8,10 @@ import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.hussienFahmy.myGpaManager.core.R
-import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppMoreScreenDestination
-import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppQuickScreenDestination
-import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppSemesterMarksScreenDestination
-import com.hussienFahmy.myGpaManager.navigation.screens.destinations.AppSemesterScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.AppMoreScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.AppQuickScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.AppSemesterMarksScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.AppSemesterScreenDestination
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 
 enum class BottomNavDestination(

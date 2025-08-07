@@ -7,16 +7,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import com.hussienFahmy.myGpaManager.navigation.screens.NavGraphs
-import com.hussienFahmy.myGpaManager.navigation.screens.startAppDestination
+import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
+import com.ramcosta.composedestinations.utils.startDestination
 
 @Composable
 fun AppBottomNav(
     navController: NavHostController
 ) {
     val currentDestination = navController.currentDestinationAsState().value
-        ?: NavGraphs.root.startAppDestination
+        ?: NavGraphs.root.startDestination
 
     NavigationBar {
         BottomNavDestination.values().forEach { destination ->

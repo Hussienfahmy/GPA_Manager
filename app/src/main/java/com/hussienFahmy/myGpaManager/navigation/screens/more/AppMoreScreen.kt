@@ -21,8 +21,7 @@ import com.hussienFahmy.myGpaManager.core.R
 import com.hussienFahmy.myGpaManager.navigation.graphs.MoreNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
 
-@MoreNavGraph(start = true)
-@Destination
+@Destination<MoreNavGraph>(start = true)
 @Composable
 fun AppMoreScreen(
     modifier: Modifier = Modifier,

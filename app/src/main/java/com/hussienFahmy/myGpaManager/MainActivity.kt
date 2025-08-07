@@ -22,9 +22,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.hussienFahmy.myGpaManager.navigation.AppBottomNav
 import com.hussienFahmy.myGpaManager.navigation.AppDestinationsNavHost
-import com.hussienFahmy.myGpaManager.navigation.screens.NavGraphs
-import com.hussienFahmy.myGpaManager.navigation.screens.startAppDestination
 import com.hussienFahmy.myGpaManager.ui.theme.GPAManagerTheme
+import com.ramcosta.composedestinations.generated.NavGraphs
+import com.ramcosta.composedestinations.utils.startDestination
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -48,8 +48,8 @@ class MainActivity : ComponentActivity() {
 
                 LaunchedEffect(key1 = isSingedIn) {
                     if (isSingedIn == false) {
-                        navController.navigate(NavGraphs.onBoarding.startAppDestination.route) {
-                            popUpTo(NavGraphs.root.startAppDestination.route) {
+                        navController.navigate(NavGraphs.onBoarding.startDestination.route) {
+                            popUpTo(NavGraphs.root.startDestination.route) {
                                 inclusive = true
                             }
                         }

@@ -2,62 +2,63 @@
 # Project Config
 appId = "com.hussienFahmy.myGpaManager"
 compileSdk = "36"
+googleid = "1.1.1"
 minSdk = "26"
 targetSdk = "36"
 versionCode = "76"
 versionName = "6.4"
-gradle = "8.11.1"
+gradle = "8.12.0"
 
 # Build Tools
 agp = "8.12.0"
 kotlin = "2.2.0"
-kotlinBom = "1.8.22"
-kotlinxSerialization = "1.3.2"
+kotlinBom = "2.2.0"
+kotlinxSerialization = "1.9.0"
 ksp = "2.2.0-2.0.2"
 
 # AndroidX
-androidxCoreKtx = "1.10.1"
-androidxLifecycle = "2.6.1"
-androidxActivityCompose = "1.7.2"
+androidxCoreKtx = "1.16.0"
+androidxLifecycle = "2.9.2"
+androidxActivityCompose = "1.10.1"
 room = "2.7.2" # last working version is 2.4.3
 dataStore = "1.1.7"
-preferencesDataStore = "1.0.0"
-constraintLayoutCompose = "1.0.0"
-work = "2.8.1"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
+preferencesDataStore = "1.1.7"
+constraintLayoutCompose = "1.1.1"
+work = "2.10.3"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
 
 # Compose
-composeBom = "2023.05.01"
+composeBom = "2025.07.00"
 composeIconsAndroid = "1.0.0"
 
 # Hilt
 hilt = "2.57"
-hiltNavigationCompose = "1.0.0"
-hiltWork = "1.0.0"
+hiltNavigationCompose = "1.2.0"
+hiltWork = "1.2.0"
 hiltCompiler = "1.2.0"
 
 # Third Party Libraries
-coil = "2.3.0"
-mockk = "1.13.5"
-raamcosta = "1.8.42-beta"
+coil = "2.7.0"
+mockk = "1.14.5"
+raamcosta = "2.2.0"
 
 # Firebase
-firebaseAuth = "22.1.0"
-firebaseFirestore = "24.7.0"
+firebaseAuth = "23.2.1"
+firebaseFirestore = "25.1.4"
 
 # Google Services
-playServiceAuth = "20.6.0"
-googleServices = "4.3.15"
-googleServicesVersion = "4.4.3"
+playServiceAuth = "21.4.0"
+googleServices = "4.3.15" #Don't upgrade unless it really needed, note that newer verions doesn't work in modules
+credentials = "1.6.0-alpha04"
 
 # Testing
-androidxTestRunner = "1.5.2"
-androidxTestCore = "1.5.0"
-androidxTestJunitKtx = "1.1.5"
-kotlinxCoroutinesTest = "1.6.4"
+androidxTestRunner = "1.7.0"
+androidxTestCore = "1.7.0"
+androidxTestJunitKtx = "1.3.0"
+kotlinxCoroutinesTest = "1.10.2"
 robolectric = "4.15.1"
-googleTruth = "1.1.5"
+googleTruth = "1.4.4"
 junit = "4.13.2"
 
 [libraries]
@@ -129,9 +130,10 @@ compose-destinations-ksp = { group = "io.github.raamcosta.compose-destinations",
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestore" }
 
-# Google Services
-play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServiceAuth" }
-google-services = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
+# Credentials
+androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
+androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
+googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 
 # Testing
 junit = { module = "junit:junit", version.ref = "junit" }
@@ -207,15 +209,6 @@ test-unit = [
 test-android = [
     "androidx-test-ext-junit",
     "androidx-test-espresso-core"
-]
-
-compose-ui = [
-    "androidx-compose-ui",
-    "androidx-compose-ui-graphics",
-    "androidx-compose-ui-tooling-preview",
-    "androidx-compose-material3",
-    "androidx-compose-material-icons-core",
-    "androidx-compose-material-icons-extended"
 ]
 
 compose-presentation = [

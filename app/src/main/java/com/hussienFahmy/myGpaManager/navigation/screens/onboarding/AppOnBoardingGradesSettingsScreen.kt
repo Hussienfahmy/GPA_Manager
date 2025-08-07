@@ -22,8 +22,7 @@ import com.hussienFahmy.grades_setting_presentation.GradeSettingsScreen
 import com.hussienFahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
 
-@OnBoardingNavGraph
-@Destination
+@Destination<OnBoardingNavGraph>
 @Composable
 fun AppOnBoardingGradesSettingsScreen(
     onNextClick: () -> Unit,

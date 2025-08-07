@@ -6,8 +6,7 @@ import com.hussienFahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
 import com.hussienfahmy.onboarding_presentation.OnBoardingUserDataScreen
 import com.ramcosta.composedestinations.annotation.Destination
 
-@OnBoardingNavGraph
-@Destination
+@Destination<OnBoardingNavGraph>
 @Composable
 fun AppOnBoardingUserDataScreen(
     snackBarHostState: SnackbarHostState,

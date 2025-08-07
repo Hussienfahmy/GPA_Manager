@@ -5,8 +5,7 @@ import com.hussienFahmy.myGpaManager.navigation.graphs.MoreNavGraph
 import com.hussienfahmy.gpa_system_sittings_presentaion.GPASettingsScreen
 import com.ramcosta.composedestinations.annotation.Destination
 
-@MoreNavGraph
-@Destination
+@Destination<MoreNavGraph>
 @Composable
 fun AppGPASettingsScreen() {
     GPASettingsScreen()

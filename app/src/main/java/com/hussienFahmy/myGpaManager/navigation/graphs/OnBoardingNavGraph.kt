@@ -1,10 +1,9 @@
 package com.hussienFahmy.myGpaManager.navigation.graphs
 
 import com.ramcosta.composedestinations.annotation.NavGraph
-import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.annotation.RootGraph
 
-@RootNavGraph
-@NavGraph
+@NavGraph<RootGraph>
 annotation class OnBoardingNavGraph(
     val start: Boolean = false
 )

@@ -1,9 +1,5 @@
 package com.hussienfahmy.onboarding_presentation
 
-import android.app.Activity
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.credentials.CredentialManager
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.android.gms.auth.api.identity.Identity
 import com.hussienFahmy.core_ui.LocalSpacing
 import com.hussienFahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.onboarding_presentation.sign_in.AuthEvent
@@ -35,21 +31,6 @@ fun OnBoardingScreen(
     googleAuthUiClient: GoogleAuthUiClient,
 ) {
     val scope = rememberCoroutineScope()
-
-    val launcher = rememberLauncherForActivityResult(contract =
-    ActivityResultContracts.StartIntentSenderForResult(),
-        onResult = { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                scope.launch {
-                    val signInResult = googleAuthUiClient.signInWithIntent(
-                        intent = result.data ?: return@launch
-                    )
-                    viewModel.onEvent(AuthEvent.OnSignInResult(signInResult))
-                }
-            }
-        }
-    )
-
 
     val state by viewModel.state
 
@@ -74,12 +55,9 @@ fun OnBoardingScreen(
         OutlinedButton(
             onClick = {
                 scope.launch {
-                    val signInIntentSender = googleAuthUiClient.signIn()
-                    launcher.launch(
-                        IntentSenderRequest.Builder(
-                            signInIntentSender ?: return@launch
-                        ).build()
-                    )
+                    val signInResult = googleAuthUiClient.signIn()
+
+                    viewModel.onEvent(AuthEvent.OnSignInResult(signInResult))
                 }
             },
             modifier = Modifier
@@ -99,7 +77,7 @@ fun OnBoardingScreenPreview() {
         onSignInSuccess = {},
         googleAuthUiClient = GoogleAuthUiClient(
             context,
-            Identity.getSignInClient(context.applicationContext)
+            CredentialManager.create(context.applicationContext)
         )
     )
 }

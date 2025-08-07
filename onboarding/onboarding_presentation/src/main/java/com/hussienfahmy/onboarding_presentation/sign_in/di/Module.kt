@@ -1,7 +1,7 @@
 package com.hussienfahmy.onboarding_presentation.sign_in.di
 
 import android.content.Context
-import com.google.android.gms.auth.api.identity.Identity
+import androidx.credentials.CredentialManager
 import com.hussienfahmy.onboarding_presentation.sign_in.GoogleAuthUiClient
 import dagger.Module
 import dagger.Provides
@@ -20,6 +20,6 @@ object Module {
         @ApplicationContext context: Context,
     ) = GoogleAuthUiClient(
         context = context,
-        oneTapClient = Identity.getSignInClient(context.applicationContext)
+        credentialManager = CredentialManager.create(context)
     )
 }

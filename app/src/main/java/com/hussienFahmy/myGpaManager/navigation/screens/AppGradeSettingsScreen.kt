@@ -5,9 +5,10 @@ import androidx.compose.runtime.Composable
 import com.hussienFahmy.grades_setting_presentation.GradeSettingsScreen
 import com.hussienFahmy.myGpaManager.navigation.graphs.MoreNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootGraph
 
 @MoreNavGraph
-@Destination
+@Destination<RootGraph>
 @Composable
 fun AppGradeSettingsScreen(
     snackBarHostState: SnackbarHostState
