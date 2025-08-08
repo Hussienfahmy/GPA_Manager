@@ -25,6 +25,7 @@ import com.hussienFahmy.core.data.local.model.GradeName
 import com.hussienFahmy.core_ui.LocalSpacing
 import com.hussienFahmy.core_ui.presentation.components.AddSubjectsHint
 import com.hussienFahmy.core_ui.presentation.util.UiEventHandler
+import com.hussienfahmy.semester_subjctets_domain.model.Grade
 import com.hussienfahmy.semester_subjctets_domain.model.Subject
 import com.hussienfahmy.semester_subjctets_domain.use_case.Calculate
 import com.hussienfahmy.semester_subjctets_presentaion.components.AddSubjectDialog
@@ -287,19 +288,35 @@ fun SemesterScreenContentPreviewPortrait() {
                     id = 0,
                     name = "Math",
                     creditHours = 3.0,
-                    selectedGradeName = GradeName.A,
+                    assignedGrade = Grade(
+                        name = GradeName.A,
+                        points = 4.0,
+                        percentage = 75.0
+                    ),
                     totalMarks = 150.0,
                     fixedGrade = false,
-                    maxGradeNameCanBeAssigned = GradeName.A,
+                    maxGradeCanBeAssigned = Grade(
+                        name = GradeName.A,
+                        points = 4.0,
+                        percentage = 75.0
+                    ),
                 ),
                 Subject(
                     id = 1,
                     name = "Physics",
                     creditHours = 3.0,
-                    selectedGradeName = GradeName.D,
+                    assignedGrade = Grade(
+                        name = GradeName.D,
+                        points = 2.0,
+                        percentage = 45.0
+                    ),
                     totalMarks = 150.0,
                     fixedGrade = true,
-                    maxGradeNameCanBeAssigned = GradeName.C,
+                    maxGradeCanBeAssigned = Grade(
+                        name = GradeName.C,
+                        points = 2.33,
+                        percentage = 45.0
+                    ),
                 ),
             ),
             grades = listOf(

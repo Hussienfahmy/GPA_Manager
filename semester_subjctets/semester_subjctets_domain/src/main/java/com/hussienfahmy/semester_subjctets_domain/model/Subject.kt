@@ -8,6 +8,9 @@ data class Subject(
     val creditHours: Double,
     val totalMarks: Double,
     val fixedGrade: Boolean,
-    val selectedGradeName: GradeName?,
-    val maxGradeNameCanBeAssigned: GradeName
-)
+    val assignedGrade: Grade?,
+    val maxGradeCanBeAssigned: Grade,
+) {
+    val selectedGradeName: GradeName? = assignedGrade?.name
+    val maxGradeNameCanBeAssigned: GradeName = maxGradeCanBeAssigned.name
+}

@@ -18,14 +18,13 @@ import com.hussienfahmy.semester_subjctets_domain.use_case.Calculate.Result as C
  */
 class PredictGrades(
     private val defaultDispatcher: CoroutineDispatcher,
-    private val ioDispatcher: CoroutineDispatcher,
     private val getActiveGrades: GetActiveGrades,
     private val calculate: Calculate,
     private val setGrade: SetGrade,
     private val getGPASettings: GetGPASettings,
 ) {
     suspend operator fun invoke(
-        subjectWithAssignedGrades: List<Pair<Subject, Grade?>>,
+        subjectWithAssignedGrades: List<Subject>,
         targetCumulativeGPA: String?,
         reverseSubjects: Boolean,
     ): Result {
@@ -68,7 +67,7 @@ class PredictGrades(
 
             // ----------------- BEGIN -----------------//
             activeGradesWithoutF.forEach { grade ->
-                list.forEachIndexed { index, (subject, _) ->
+                list.forEachIndexed { index, subject ->
                     // if the user set a fixed grade so we will not change it an go to the next subject
                     if (subject.fixedGrade) return@forEachIndexed
 
@@ -79,7 +78,7 @@ class PredictGrades(
 
                     // assign the grade to the subject
                     list[index] =
-                        list[index].copy(second = grade)
+                        list[index].copy(assignedGrade = grade)
 
                     when (val assignGradeResult =
                         list.isTargetCumulativeGPAAchieved(target)) {
@@ -106,26 +105,27 @@ class PredictGrades(
         }
     }
 
-    private fun stripAssignedGradesIfNotFixed(list: List<Pair<Subject, Grade?>>): List<Pair<Subject, Grade?>> {
-        return list.map { (subject, grade) ->
+    private fun stripAssignedGradesIfNotFixed(list: List<Subject>): List<Subject> {
+        return list.map { subject ->
             if (subject.fixedGrade) {
-                subject to grade
-            } else subject to null
+                subject
+            } else subject.copy(assignedGrade = null)
         }.toMutableList()
     }
 
     private fun assignLowestGradeToSubjectsWithNullGrade(
-        list: List<Pair<Subject, Grade?>>,
+        list: List<Subject>,
         activeGrades: List<Grade>
-    ) = list.map { (subject, grade) ->
+    ) = list.map { subject ->
+        val grade = subject.assignedGrade
         if (grade == null) {
-            subject to activeGrades.minBy { it.points }
+            subject.copy(assignedGrade = activeGrades.minBy { it.points })
         } else {
-            subject to grade
+            subject
         }
     }.toMutableList()
 
-    private suspend fun MutableList<Pair<Subject, Grade>>.isTargetCumulativeGPAAchieved(
+    private suspend fun MutableList<Subject>.isTargetCumulativeGPAAchieved(
         targetCumulativeGPA: Double
     ): Result {
         return when (val calculationResult = calculate(this)) {
@@ -138,11 +138,9 @@ class PredictGrades(
         }
     }
 
-    private suspend fun MutableList<Pair<Subject, Grade>>.saveGrades() =
-        withContext(ioDispatcher) {
-            forEach { (subject, grade) ->
-                setGrade(subject.id, grade.name)
-            }
+    private suspend fun MutableList<Subject>.saveGrades() =
+        forEach {
+            setGrade(it.id, it.assignedGrade?.name)
         }
 
     sealed class Result {

@@ -6,5 +6,5 @@ class GetActiveGradeNames(
     private val gradeDao: GradeDao,
 ) {
     suspend operator fun invoke() = gradeDao.getActiveGrades()
-        .map { it.metaData }
+        .map { it.name }
 }

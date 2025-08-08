@@ -20,3 +20,9 @@ class AutoMigration10To11Spec : AutoMigrationSpec
     toColumnName = "meta_data"
 )
 class AutoMigration11To12Spec : AutoMigrationSpec
+
+@DeleteColumn(
+    tableName = "subject",
+    columnName = "max_grade"
+)
+class AutoMigration12To13Spec : AutoMigrationSpec

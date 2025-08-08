@@ -20,13 +20,13 @@ class ActivateGrade(
         return if (isActive) {
             // the user want to active the grade so we have to check if that possible
             if (grade.percentage != null && grade.points != null) {
-                gradeDao.setActive(grade.metaData, true)
+                gradeDao.setActive(grade.name, true)
                 UpdateResult.Success
             } else {
                 UpdateResult.Failed(UiText.StringResource(R.string.err_cant_activate))
             }
         } else {
-            gradeDao.setActive(grade.metaData, false)
+            gradeDao.setActive(grade.name, false)
             subjectDao.clearUnAvailableGrades()
             UpdateResult.Success
         }

@@ -12,7 +12,9 @@ class PushSubjects(
 ) {
     suspend operator fun invoke() {
         val subjects: List<Subject> = subjectsDao.subjectsWithAssignedGrade.map {
-            it.keys.map { subject -> Subject(subject) }.toList()
+            it.map { (subjectEntity, maxGrade, _) ->
+                Subject(subjectEntity, maxGrade.name)
+            }
         }.first()
 
         repository.uploadSubjects(subjects)

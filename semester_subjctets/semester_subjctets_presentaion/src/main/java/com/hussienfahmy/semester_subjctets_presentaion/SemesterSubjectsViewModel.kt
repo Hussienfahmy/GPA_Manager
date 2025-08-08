@@ -43,13 +43,10 @@ class SemesterSubjectsViewModel @Inject constructor(
             val calculationResult =
                 calculationUseCases.calculate(subjectsWithGrade)
 
-            val subjectsWithGradeTransformed = subjectsWithGrade.map { (subject, grade) ->
-                (if (fixedSubjectsIds.contains(subject.id)) subject.copy(fixedGrade = true)
-                else subject) to grade
-            }
-
-            val subjects = subjectsWithGradeTransformed.map { (subject, _) ->
-                subject
+            val subjects = subjectsWithGrade.map { subject ->
+                if (fixedSubjectsIds.contains(subject.id))
+                    subject.copy(fixedGrade = true)
+                else subject
             }
 
             when (mode) {
@@ -64,7 +61,7 @@ class SemesterSubjectsViewModel @Inject constructor(
 
                 is Mode.Predict -> {
                     val predictionResult = calculationUseCases.predictGrades(
-                        subjectWithAssignedGrades = subjectsWithGradeTransformed,
+                        subjectWithAssignedGrades = subjects,
                         targetCumulativeGPA = mode.targetCumulativeGPA,
                         reverseSubjects = mode.reserveSubjects
                     )

@@ -13,7 +13,7 @@ data class GradeSetting(
     val symbol = name.symbol
 
     constructor(grade: Grade) : this(
-        name = grade.metaData,
+        name = grade.name,
         percentage = grade.percentage,
         points = grade.points,
         active = grade.active

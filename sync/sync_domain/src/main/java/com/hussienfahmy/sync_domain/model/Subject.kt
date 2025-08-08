@@ -31,7 +31,7 @@ data class Subject(
         val oralAvailable: Boolean = true,
     )
 
-    constructor(subject: SubjectEntity) : this(
+    constructor(subject: SubjectEntity, maxGradeNameCanAchieve: GradeName) : this(
         id = subject.id,
         name = subject.name,
         creditHours = subject.creditHours,
@@ -43,7 +43,7 @@ data class Subject(
             oral = subject.semesterMarks?.oral
         ),
         metadata = MetaData(
-            maxGradeNameCanAchieve = subject.metadata.maxGradeNameCanAchieve,
+            maxGradeNameCanAchieve = maxGradeNameCanAchieve,
             midtermAvailable = subject.metadata.midtermAvailable,
             practicalAvailable = subject.metadata.practicalAvailable,
             oralAvailable = subject.metadata.oralAvailable
@@ -63,7 +63,6 @@ data class Subject(
             oral = semesterMarks?.oral
         ),
         metadata = SubjectEntity.MetaData(
-            maxGradeNameCanAchieve = metadata.maxGradeNameCanAchieve,
             midtermAvailable = metadata.midtermAvailable,
             practicalAvailable = metadata.practicalAvailable,
             oralAvailable = metadata.oralAvailable

@@ -7,7 +7,6 @@ import com.hussienFahmy.core.domain.grades.use_case.GetGradeByPoints
 import com.hussienFahmy.core.domain.user_data.use_cases.GetAcademicProgress
 import com.hussienFahmy.core.model.UiText
 import com.hussienFahmy.myGpaManager.core.R
-import com.hussienfahmy.semester_subjctets_domain.model.Grade
 import com.hussienfahmy.semester_subjctets_domain.model.Subject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -21,12 +20,12 @@ class Calculate(
 ) {
     /**
      * calculate the given list of subjects and assigned grades
-     * @param list List<Pair<Subject, Grade?>> we could fetch it from the database using [SubjectDao]
+     * @param list List<Subject> we could fetch it from the database using [SubjectDao]
      *  but to be able to test all cases we need to supply the list itself
      * @return CalculationResult
      */
     suspend operator fun invoke(
-        list: List<Pair<Subject, Grade?>>,
+        list: List<Subject>,
     ): Result = withContext(defaultDispatcher) {
         // the user data (current academic progress)
         val academicProgress = getAcademicProgress() ?: return@withContext Result.Failed(null)
@@ -39,10 +38,10 @@ class Calculate(
         var semesterPointsBigDecimal = BigDecimal("0.0")
         if (list.isEmpty()) return@withContext Result.Failed(UiText.StringResource(R.string.err_waiting_to_add_subjects))
 
-        list.forEach { (subject, grade) ->
+        list.forEach { subject ->
             semesterHours += subject.creditHours
-            if (grade != null) {
-                semesterPointsBigDecimal += BigDecimal("${grade.points * subject.creditHours}")
+            if (subject.assignedGrade != null) {
+                semesterPointsBigDecimal += BigDecimal("${subject.assignedGrade.points * subject.creditHours}")
             }
         }
 
@@ -67,12 +66,12 @@ class Calculate(
             Result.Success(
                 semester = Result.Success.Data(
                     gpa = semesterGPA,
-                    grade = semesterGrade.metaData,
+                    grade = semesterGrade.name,
                     percentage = (100.0 * semesterGPA / gpaSystemNumber).toFloat()
                 ),
                 cumulative = Result.Success.Data(
                     gpa = cumulativeGPA,
-                    grade = cumulativeGrade.metaData,
+                    grade = cumulativeGrade.name,
                     percentage = (100.0 * cumulativeGPA / gpaSystemNumber).toFloat()
                 )
             )

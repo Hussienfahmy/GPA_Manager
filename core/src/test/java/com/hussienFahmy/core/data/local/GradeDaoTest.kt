@@ -50,7 +50,7 @@ class GradeDaoTest {
     fun getGradeByName() = runTest {
         val loadedBPlusGrade = gradeDao.getGradeByName(GradeName.BPlus)
 
-        assertEquals(initialData.find { it.metaData == GradeName.BPlus }, loadedBPlusGrade)
+        assertEquals(initialData.find { it.name == GradeName.BPlus }, loadedBPlusGrade)
     }
 
     @Test
@@ -59,9 +59,9 @@ class GradeDaoTest {
         val loadedBGrade = gradeDao.getGradeByPoints(3.1)
         val loadedAGrade = gradeDao.getGradeByPoints(3.67)
 
-        assertEquals(initialData.find { it.metaData == GradeName.BPlus }, loadedBPlusGrade)
-        assertEquals(initialData.find { it.metaData == GradeName.B }, loadedBGrade)
-        assertEquals(initialData.find { it.metaData == GradeName.AMinus }, loadedAGrade)
+        assertEquals(initialData.find { it.name == GradeName.BPlus }, loadedBPlusGrade)
+        assertEquals(initialData.find { it.name == GradeName.B }, loadedBGrade)
+        assertEquals(initialData.find { it.name == GradeName.AMinus }, loadedAGrade)
     }
 
     @Test
@@ -70,7 +70,7 @@ class GradeDaoTest {
 
         gradeDao.upsert(testGrade)
 
-        val loadedGrade = gradeDao.getGradeByName(testGrade.metaData)
+        val loadedGrade = gradeDao.getGradeByName(testGrade.name)
 
         assertEquals(testGrade, loadedGrade)
     }

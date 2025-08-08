@@ -54,12 +54,10 @@ data class Subject(
 
     /**
      * other data related to the subject
-     * @property maxGradeNameCanAchieve Name the max grade the user can achieve in this subject (depends on the semester mark value)
      * and always be calculated when retrieve the data from database
      * @constructor
      */
     data class MetaData(
-        @ColumnInfo(name = "max_grade") val maxGradeNameCanAchieve: GradeName = GradeName.A,
         @ColumnInfo(defaultValue = "1") val midtermAvailable: Boolean = true,
         @ColumnInfo(defaultValue = "1") val practicalAvailable: Boolean = true,
         @ColumnInfo(defaultValue = "1") val oralAvailable: Boolean = true,

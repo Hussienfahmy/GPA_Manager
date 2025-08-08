@@ -1,44 +1,18 @@
 package com.hussienFahmy.core.data.local
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.hussienFahmy.core.data.local.entity.Grade
 import com.hussienFahmy.core.data.local.entity.Subject
 import com.hussienFahmy.core.data.local.model.GradeName
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 
 @Dao
 interface SubjectDao {
-
-
-    /**
-     * Get all subjects with their grades
-     *
-     * the max_grade field will be the grade with highest active percentage value of there is no semester mark values
-     * otherwise will be the grade withe percentage equal or just below the semester mark percentage + the lowest grade percentage
-     *
-     * example:
-     * oral is null and midterm is null and practical is null the max_grade will be A
-     * oral is 10 and midterm is 5 and practical is 10 and the total marks is 100
-     * the semester mark will be 25 from 100
-     * e.g 25% + 60% (D grade) = 85% and max_grade will be A-
-     */
-    @get:Query(
-        """
-        SELECT*,
-            CASE 
-                WHEN midterm is null AND practical is null AND oral is null 
-                    THEN (SELECT grade.meta_data as max_grade FROM grade
-                                 WHERE grade.active ORDER BY grade.percentage DESC LIMIT 1)
-                
-                ELSE (SELECT grade.meta_data  FROM grade WHERE grade.active 
-                        AND grade.percentage <= ((100 * (COALESCE(midterm, 0) + COALESCE(practical, 0) + COALESCE(oral, 0)) / totalMarks)
-                        + (SELECT percentage FROM grade WHERE percentage > 0 ORDER BY percentage ASC LIMIT 1))
-                        ORDER BY percentage DESC LIMIT 1)
-            END as max_grade
-        FROM subject LEFT JOIN grade ON gradeName = grade.meta_data ORDER BY creditHours DESC
-        """
-    )
-    val subjectsWithAssignedGrade: Flow<Map<Subject, Grade?>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(subject: Subject)
@@ -116,4 +90,80 @@ interface SubjectDao {
 
     @Query("UPDATE subject SET oralAvailable = :available WHERE id = :subjectId")
     suspend fun setOralAvailability(subjectId: Long, available: Boolean)
+
+
+    // ---------------- Semester with max grade can be achieved -----------//
+
+    data class SubjectWithGrades(
+        val subject: Subject,
+        val maxGradeCanBeAssigned: Grade,
+        val assignedGrade: Grade?
+    )
+
+    /**
+     * Get all subjects ordered by credit hours
+     */
+    @Query("SELECT * FROM subject ORDER BY creditHours DESC")
+    fun getAllSubjects(): Flow<List<Subject>>
+
+    /**
+     * Get all active grades
+     */
+    @Query("SELECT * FROM grade WHERE active ORDER BY percentage DESC")
+    fun getAllActiveGrades(): Flow<List<Grade>>
+
+    /**
+     * Get all subjects with their grades
+     *
+     * the max_grade field will be the grade with highest active percentage value of there is no semester mark values
+     * otherwise will be the grade withe percentage equal or just below the semester mark percentage + the lowest grade percentage
+     *
+     * example:
+     * oral is null and midterm is null and practical is null the max_grade will be A
+     * oral is 10 and midterm is 5 and practical is 10 and the total marks is 100
+     * the semester mark will be 25 from 100
+     * e.g 25% + 60% (D grade) = 85% and max_grade will be A-
+     */
+    val subjectsWithAssignedGrade: Flow<List<SubjectWithGrades>>
+        get() {
+            return combine(
+                getAllSubjects(), getAllActiveGrades()
+                    .map {
+                        it.filter { grade ->
+                            grade.name != GradeName.F
+                        }
+                    }) { subjects, grades ->
+                val highestGrade =
+                    grades.maxByOrNull { it.percentage!! } // active grades always have percentage value
+                val lowestPercentage = grades.minByOrNull { it.percentage!! }?.percentage ?: 0.0
+
+                subjects.map { subject ->
+                    val semesterMarks = subject.semesterMarks
+                    val maxGrade =
+                        if (semesterMarks?.midterm == null && semesterMarks?.practical == null && semesterMarks?.oral == null) {
+                            highestGrade
+                        } else {
+                            val semesterPercentage = (100.0 * (
+                                    (semesterMarks.midterm ?: 0.0) +
+                                            (semesterMarks.practical ?: 0.0) +
+                                            (semesterMarks.oral ?: 0.0)
+                                    ) / subject.totalMarks)
+                            val threshold = semesterPercentage + lowestPercentage
+
+                            grades.filter { it.percentage!! <= threshold }
+                                .maxByOrNull { it.percentage!! }
+                        }
+
+                    val assignedGrade = subject.gradeName?.let { gradeName ->
+                        grades.find { it.name == gradeName }
+                    }
+
+                    SubjectWithGrades(
+                        subject = subject,
+                        maxGradeCanBeAssigned = maxGrade!!,
+                        assignedGrade = assignedGrade
+                    )
+                }
+            }
+        }
 }

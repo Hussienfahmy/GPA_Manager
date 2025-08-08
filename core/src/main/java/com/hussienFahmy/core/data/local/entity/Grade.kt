@@ -18,7 +18,7 @@ import com.hussienFahmy.core.data.local.model.GradeName
 data class Grade(
     @ColumnInfo(name = "meta_data")
     @PrimaryKey
-    val metaData: GradeName, // todo 'name' make conflict when joining with subjects table, change to name and fix the issue
+    val name: GradeName,
     val active: Boolean,
     val points: Double? = null,
     val percentage: Double? = null
@@ -49,7 +49,7 @@ data class Grade(
         // to order any list as same as the order in the enum
         object Comparator : kotlin.Comparator<Grade> {
             override fun compare(o1: Grade, o2: Grade): Int =
-                o2.metaData.ordinal.compareTo(o1.metaData.ordinal)
+                o2.name.ordinal.compareTo(o1.name.ordinal)
         }
     }
 }

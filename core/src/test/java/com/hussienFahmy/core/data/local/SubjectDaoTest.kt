@@ -71,7 +71,7 @@ class SubjectDaoTest {
     fun getSubjectsWithGrade() = runTest {
         val testGrade = gradeDao.getGradeByName(GradeName.A)
 
-        subjectDao.updateGrade(templateSubject.id, testGrade?.metaData)
+        subjectDao.updateGrade(templateSubject.id, testGrade?.name)
 
         val (_, grade) = subjectDao.subjectsWithAssignedGrade.map {
             it.toList()
@@ -82,7 +82,8 @@ class SubjectDaoTest {
 
     @Test
     fun getSubjects() = runTest {
-        val loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().first
+        val loaded =
+            subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().subject
 
         assertEquals(templateSubject, loaded)
     }
@@ -100,8 +101,8 @@ class SubjectDaoTest {
 
         val loaded =
             subjectDao.subjectsWithAssignedGrade.map { subjectGradeMap ->
-                subjectGradeMap.keys.find { it.id == subject.id }
-            }.first()
+                subjectGradeMap.find { it.subject.id == subject.id }
+            }.first()?.subject
 
         assertNotNull(loaded)
         assertEquals(subject, loaded)
@@ -111,7 +112,8 @@ class SubjectDaoTest {
     fun updateName() = runTest {
         val testName = "Test"
         subjectDao.updateName(templateSubject.id, testName)
-        val loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().first
+        val loaded =
+            subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().subject
 
         assertEquals(testName, loaded.name)
     }
@@ -121,7 +123,8 @@ class SubjectDaoTest {
         val testCreditHours = 4.0
         subjectDao.updateCreditHours(templateSubject.id, testCreditHours)
 
-        val loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().first
+        val loaded =
+            subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().subject
         assertEquals(testCreditHours, loaded.creditHours, 0.0)
     }
 
@@ -130,7 +133,8 @@ class SubjectDaoTest {
         val testTotalMarks = 200.0
         subjectDao.updateTotalMarks(templateSubject.id, testTotalMarks)
 
-        val loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().first
+        val loaded =
+            subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().subject
         assertEquals(testTotalMarks, loaded.totalMarks, 0.0)
     }
 
@@ -139,7 +143,8 @@ class SubjectDaoTest {
         val testGradeName = GradeName.APlus
         subjectDao.updateGrade(templateSubject.id, testGradeName)
 
-        val loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().first
+        val loaded =
+            subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().subject
         assertEquals(testGradeName, loaded.gradeName)
     }
 
@@ -148,7 +153,8 @@ class SubjectDaoTest {
         val testMidterm = 15.0
         subjectDao.updateMidterm(templateSubject.id, testMidterm)
 
-        val loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().first
+        val loaded =
+            subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().subject
 
         assertEquals(testMidterm, loaded.semesterMarks?.midterm!!, 0.0)
     }
@@ -158,7 +164,8 @@ class SubjectDaoTest {
         val testPractical = 15.0
         subjectDao.updatePractical(templateSubject.id, testPractical)
 
-        val loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().first
+        val loaded =
+            subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().subject
 
         assertEquals(testPractical, loaded.semesterMarks?.practical!!, 0.0)
     }
@@ -168,7 +175,8 @@ class SubjectDaoTest {
         val testOral = 15.0
         subjectDao.updateOral(templateSubject.id, testOral)
 
-        val loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().first
+        val loaded =
+            subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().subject
 
         assertEquals(testOral, loaded.semesterMarks?.oral!!, 0.0)
     }
@@ -180,9 +188,9 @@ class SubjectDaoTest {
         subjectDao.updatePractical(templateSubject.id, null)
         subjectDao.updateOral(templateSubject.id, null)
 
-        val loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().first
+        val loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first()
 
-        assertEquals(GradeName.A, loaded.metadata.maxGradeNameCanAchieve)
+        assertEquals(GradeName.A, loaded.maxGradeCanBeAssigned.name)
     }
 
     @Test
@@ -190,13 +198,13 @@ class SubjectDaoTest {
         subjectDao.updateMidterm(templateSubject.id, 5.0)
         subjectDao.updatePractical(templateSubject.id, 10.0)
 
-        var loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().first
+        var loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first()
 
-        assertEquals(GradeName.B, loaded.metadata.maxGradeNameCanAchieve)
+        assertEquals(GradeName.B, loaded.maxGradeCanBeAssigned.name)
 
         subjectDao.updateMidterm(templateSubject.id, 4.0)
-        loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first().first
+        loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first()
 
-        assertEquals(GradeName.CPlus, loaded.metadata.maxGradeNameCanAchieve)
+        assertEquals(GradeName.CPlus, loaded.maxGradeCanBeAssigned.name)
     }
 }

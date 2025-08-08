@@ -10,22 +10,22 @@ class ObserveSubjects(
 ) {
     operator fun invoke() = subjectDao.subjectsWithAssignedGrade
         .map {
-            it.map { (subjectEntity, gradeEntity) ->
-                val subject = Subject(
+            it.map { (subjectEntity, maxGrade, assignedGrade) ->
+                val grade = assignedGrade?.let {
+                    Grade(assignedGrade)
+                }
+
+                val maxGradeCanBeAssigned = Grade(maxGrade)
+
+                Subject(
                     id = subjectEntity.id,
                     name = subjectEntity.name,
                     creditHours = subjectEntity.creditHours,
                     totalMarks = subjectEntity.totalMarks,
                     fixedGrade = false,
-                    selectedGradeName = subjectEntity.gradeName,
-                    maxGradeNameCanBeAssigned = subjectEntity.metadata.maxGradeNameCanAchieve,
+                    assignedGrade = grade,
+                    maxGradeCanBeAssigned = maxGradeCanBeAssigned,
                 )
-
-                val grade = gradeEntity?.let {
-                    Grade(gradeEntity)
-                }
-
-                subject to grade
             }
         }
 }

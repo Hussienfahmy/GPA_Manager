@@ -18,11 +18,11 @@ class ContinuesCalculation(
     suspend operator fun invoke(): Flow<List<Subject>> =
         withContext(backgroundDispatcher) {
             val activeGrades = getActiveGrades().filter {
-                it.metaData != GradeName.F
+                it.name != GradeName.F
             }
 
             return@withContext subjectDao.subjectsWithAssignedGrade.map {
-                it.map { (subjectEntity, _) ->
+                it.map { (subjectEntity, maxGrade, assignedGrade) ->
                     Subject(
                         id = subjectEntity.id,
                         name = subjectEntity.name,
@@ -39,9 +39,9 @@ class ContinuesCalculation(
                             val marksAchieved = subjectEntity.semesterMarks?.value
 
                             Grade(
-                                symbol = gradeEntity.metaData.symbol,
+                                symbol = gradeEntity.name.symbol,
                                 achievable = if (
-                                    gradeEntity.metaData <= subjectEntity.metadata.maxGradeNameCanAchieve
+                                    gradeEntity.name <= maxGrade.name
                                     && marksAchieved != null
                                 ) {
                                     val neededMarks =

@@ -9,7 +9,7 @@ data class Grade(
     val percentage: Double,
 ) {
     constructor(grade: Grade) : this(
-        name = grade.metaData,
+        name = grade.name,
         points = grade.points!!,
         percentage = grade.percentage!!
     )

@@ -75,7 +75,6 @@ object Module {
         return CalculationUseCases(
             calculate = calculate,
             predictGrades = PredictGrades(
-                ioDispatcher = ioDispatcher,
                 defaultDispatcher = defaultDispatcher,
                 getActiveGrades = getActiveGrades,
                 calculate = calculate,

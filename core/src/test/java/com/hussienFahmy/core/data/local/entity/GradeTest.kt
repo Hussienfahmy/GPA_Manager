@@ -10,23 +10,23 @@ import org.junit.Test
 class GradeTest {
 
     private val testGradeB = Grade(
-        metaData = GradeName.B,
+        name = GradeName.B,
         active = true,
     )
 
     @Test
     fun compareTo_Equals() {
-        assertThat(testGradeB.metaData >= GradeName.B, `is`(true))
-        assertThat(testGradeB.metaData <= GradeName.B, `is`(true))
+        assertThat(testGradeB.name >= GradeName.B, `is`(true))
+        assertThat(testGradeB.name <= GradeName.B, `is`(true))
     }
 
     @Test
     fun compareTo_More() {
-        assertThat(testGradeB.metaData > GradeName.C, `is`(true))
+        assertThat(testGradeB.name > GradeName.C, `is`(true))
     }
 
     @Test
     fun compareTo_Less() {
-        assertThat(testGradeB.metaData < GradeName.A, `is`(true))
+        assertThat(testGradeB.name < GradeName.A, `is`(true))
     }
 }

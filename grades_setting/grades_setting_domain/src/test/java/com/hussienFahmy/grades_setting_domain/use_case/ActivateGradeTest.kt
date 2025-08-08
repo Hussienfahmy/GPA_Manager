@@ -1,6 +1,8 @@
 package com.hussienFahmy.grades_setting_domain.use_case
 
-import com.google.common.truth.Truth.*
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.SmallTest
+import com.google.common.truth.Truth.assertThat
 import com.hussienFahmy.core.data.local.GradeDao
 import com.hussienFahmy.core.data.local.SubjectDao
 import com.hussienFahmy.core.data.local.entity.Grade
@@ -13,9 +15,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(AndroidJUnit4::class)
+@SmallTest
 class ActivateGradeTest {
 
     private lateinit var activateGrade: ActivateGrade
@@ -41,7 +46,7 @@ class ActivateGradeTest {
     @Test
     fun `DeActivate SubjectsClearTheGrade ReturnSuccess`() = runTest {
         val testGrade = Grade(
-            metaData = GradeName.A,
+            name = GradeName.A,
             percentage = null,
             points = null,
             active = true
@@ -58,7 +63,7 @@ class ActivateGradeTest {
     @Test
     fun `Activate PercentageNullAndPointsNull ReturnFailed`() = runTest {
         val testGrade = Grade(
-            metaData = GradeName.A,
+            name = GradeName.A,
             percentage = null,
             points = null,
             active = false
@@ -73,7 +78,7 @@ class ActivateGradeTest {
     @Test
     fun `Activate PercentageAndPointsNotNull ReturnFailed`() = runTest {
         val testGrade = Grade(
-            metaData = GradeName.A,
+            name = GradeName.A,
             percentage = 85.0,
             points = 3.67,
             active = false

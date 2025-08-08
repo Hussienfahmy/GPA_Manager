@@ -28,7 +28,7 @@ data class NetworkGrade(
 
 fun List<Grade>.toNetworkGrades() = map {
     NetworkGrade(
-        it.metaData,
+        it.name,
         it.active,
         it.points,
         it.percentage
