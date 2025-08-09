@@ -18,7 +18,7 @@ fun CircularProgressIndicatorWithBackground(
 ) {
     // background
     CircularProgressIndicator(
-        progress = totalProgress,
+        progress = { totalProgress },
         color = backgroundColor,
         strokeWidth = strokeWidth,
         modifier = modifier
@@ -26,7 +26,7 @@ fun CircularProgressIndicatorWithBackground(
 
     // foreground
     CircularProgressIndicator(
-        progress = progress * totalProgress,
+        progress = { progress * totalProgress },
         color = color,
         strokeWidth = strokeWidth,
         modifier = modifier
