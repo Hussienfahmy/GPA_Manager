@@ -19,7 +19,7 @@ fun AppBottomNav(
         ?: NavGraphs.root.startDestination
 
     NavigationBar {
-        BottomNavDestination.values().forEach { destination ->
+        BottomNavDestination.entries.forEach { destination ->
             NavigationBarItem(
                 selected = currentDestination == destination.direction,
                 onClick = {

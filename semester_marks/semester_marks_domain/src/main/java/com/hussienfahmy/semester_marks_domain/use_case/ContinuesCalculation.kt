@@ -21,8 +21,8 @@ class ContinuesCalculation(
                 it.name != GradeName.F
             }
 
-            return@withContext subjectDao.subjectsWithAssignedGrade.map {
-                it.map { (subjectEntity, maxGrade, assignedGrade) ->
+            subjectDao.subjectsWithAssignedGrade.map {
+                it.map { (subjectEntity, maxGrade, _) ->
                     Subject(
                         id = subjectEntity.id,
                         name = subjectEntity.name,

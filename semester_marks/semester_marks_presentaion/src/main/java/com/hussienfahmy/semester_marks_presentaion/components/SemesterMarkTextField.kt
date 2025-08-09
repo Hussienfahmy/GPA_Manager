@@ -14,7 +14,7 @@ fun SemesterMarkTextField(
     title: String,
     value: String,
     onValueChanged: (String) -> Unit,
-    keyboardType: KeyboardType
+    keyboardType: KeyboardType = KeyboardType.Number
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -34,6 +34,5 @@ fun SemesterMarkTextFieldPreview() {
         title = "Midterm",
         value = "50",
         onValueChanged = {},
-        keyboardType = KeyboardType.Number
     )
 }

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.hussienFahmy.core_ui.LocalSpacing
 import com.hussienFahmy.core_ui.presentation.components.CircularProgressIndicatorWithBackground
 import com.hussienFahmy.myGpaManager.core.R
+import java.util.Locale
 
 @Composable
 fun QuickResultCard(
@@ -57,7 +58,7 @@ fun QuickResultCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = String.format("%.2f", cumulativeGPAProgress),
+                    text = String.format(Locale.getDefault(), "%.2f", cumulativeGPAProgress),
                     style = MaterialTheme.typography.titleLarge,
                 )
 

@@ -4,6 +4,4 @@ import com.ramcosta.composedestinations.annotation.NavGraph
 import com.ramcosta.composedestinations.annotation.RootGraph
 
 @NavGraph<RootGraph>
-annotation class OnBoardingNavGraph(
-    val start: Boolean = false
-)
+annotation class OnBoardingNavGraph

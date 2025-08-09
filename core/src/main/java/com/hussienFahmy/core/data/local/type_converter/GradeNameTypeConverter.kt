@@ -6,7 +6,7 @@ import com.hussienFahmy.core.data.local.model.GradeName
 class GradeNameTypeConverter {
     @TypeConverter
     fun toGradeName(symbol: String?): GradeName? {
-        return GradeName.values().firstOrNull { it.symbol == symbol }
+        return GradeName.entries.firstOrNull { it.symbol == symbol }
     }
 
     @TypeConverter

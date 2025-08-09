@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -182,7 +181,6 @@ private fun SemesterWork(
             title = stringResource(R.string.midterm),
             value = midtermInput,
             onValueChanged = onMidTermMarksChange,
-            keyboardType = KeyboardType.Number,
         )
 
         if (practicalAvailable) SemesterMarkTextField(
@@ -190,7 +188,6 @@ private fun SemesterWork(
             title = stringResource(R.string.practical),
             value = practicalInput,
             onValueChanged = onPracticalMarksChange,
-            keyboardType = KeyboardType.Number,
         )
 
         if (oralAvailable) SemesterMarkTextField(
@@ -198,7 +195,6 @@ private fun SemesterWork(
             title = stringResource(R.string.oral),
             value = oralInput,
             onValueChanged = onOralMarksChange,
-            keyboardType = KeyboardType.Number,
         )
     }
 }
