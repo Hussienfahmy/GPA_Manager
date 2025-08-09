@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,12 +28,13 @@ import androidx.compose.ui.unit.dp
 import com.hussienFahmy.core.domain.user_data.model.UserData
 import com.hussienFahmy.core_ui.LocalSpacing
 import com.hussienFahmy.core_ui.presentation.components.ExpandableTextField
+import com.hussienFahmy.core_ui.presentation.user_data.UserDataState
 import com.hussienFahmy.myGpaManager.core.R
 
 @Composable
 fun UserDataScreenContent(
     modifier: Modifier,
-    userData: UserData,
+    state: UserDataState.Loaded,
     onChangePhotoClick: () -> Unit,
     onUpdateName: (String) -> Unit,
     onUpdateCumulativeGPA: (String) -> Unit,
@@ -45,6 +47,7 @@ fun UserDataScreenContent(
     enablePhotoEditing: Boolean = true,
 ) {
     val spacing = LocalSpacing.current
+    val userData = state.userData
 
     Column(
         verticalArrangement = Arrangement.spacedBy(spacing.small),
@@ -60,13 +63,26 @@ fun UserDataScreenContent(
                         .padding(top = spacing.small),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Box(contentAlignment = Alignment.BottomEnd) {
-                        UserPhoto(photoUrl = userData.photoUrl, modifier = Modifier.size(120.dp))
+                    Box(
+                        modifier = Modifier
+                            .size(120.dp)
+                    ) {
+                        if (state.uploadingPhoto) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+                        } else {
+                            UserPhoto(
+                                photoUrl = userData.photoUrl,
+                                modifier = Modifier.matchParentSize()
+                            )
+                        }
                         if (enablePhotoEditing) {
                             Icon(
                                 imageVector = Icons.Filled.PhotoCamera,
                                 contentDescription = stringResource(R.string.change_photo),
                                 modifier = Modifier
+                                    .align(Alignment.BottomEnd)
                                     .scale(1.5f)
                                     .clickable { onChangePhotoClick() }
                             )

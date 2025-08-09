@@ -46,6 +46,7 @@ raamcosta = "2.2.0"
 # Firebase
 firebaseAuth = "23.2.1"
 firebaseFirestore = "25.1.4"
+firebaseStorage = "22.0.0"
 
 # Google Services
 playServiceAuth = "21.4.0"
@@ -129,6 +130,7 @@ compose-destinations-ksp = { group = "io.github.raamcosta.compose-destinations",
 # Firebase
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestore" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 
 # Credentials
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }

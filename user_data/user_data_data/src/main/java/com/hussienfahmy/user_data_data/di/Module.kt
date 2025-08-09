@@ -1,12 +1,12 @@
 package com.hussienfahmy.user_data_data.di
 
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.firestoreSettings
+import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.persistentCacheSettings
-import com.google.firebase.ktx.Firebase
 import com.hussienFahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienfahmy.user_data_data.repository.UserDataApiService
 import dagger.Module

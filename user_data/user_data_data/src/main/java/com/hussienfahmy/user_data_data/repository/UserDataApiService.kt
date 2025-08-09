@@ -3,7 +3,7 @@ package com.hussienfahmy.user_data_data.repository
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.firestore.toObject
 import com.hussienFahmy.core.domain.user_data.model.UserData
 import com.hussienFahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienfahmy.user_data_data.mapper.toUserData

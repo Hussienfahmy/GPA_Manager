@@ -1,9 +1,9 @@
 package com.hussienfahmy.sync_data.repository
 
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import com.hussienfahmy.sync_domain.model.NetworkSubjects
 import com.hussienfahmy.sync_domain.model.Settings
 import com.hussienfahmy.sync_domain.model.Subject
@@ -14,10 +14,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 
-class SyncRepositoryImpl : SyncRepository {
+class SyncRepositoryImpl(
+    db: FirebaseFirestore
+) : SyncRepository {
     private val auth = Firebase.auth
     private val userId = MutableStateFlow(auth.currentUser?.uid)
-    private val db = Firebase.firestore
 
     private val subjectsDoc = userId.filterNotNull().map {
         db.collection(SUBJECTS_COLLECTION).document(it)

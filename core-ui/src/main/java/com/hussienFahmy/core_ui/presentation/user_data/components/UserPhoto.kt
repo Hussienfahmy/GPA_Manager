@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -30,6 +31,7 @@ fun UserPhoto(
             .build(),
         contentDescription = stringResource(R.string.user_photo),
         error = painterResource(id = CoreUiR.drawable.baseline_person_24),
+        contentScale = ContentScale.Crop,
         modifier = modifier
             .clip(CircleShape)
             .border(

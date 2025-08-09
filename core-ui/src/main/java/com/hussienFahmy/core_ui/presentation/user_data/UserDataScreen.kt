@@ -46,7 +46,7 @@ fun UserDataScreen(
         is UserDataState.Loaded -> {
             UserDataScreenContent(
                 modifier = modifier,
-                userData = (state as UserDataState.Loaded).userData,
+                state = (state as UserDataState.Loaded),
                 onChangePhotoClick = { galleryLauncher.launch("image/*") },
                 onUpdateName = { viewModel.onEvent(UserDataEvent.UpdateName(it)) },
                 onUpdateCumulativeGPA = { viewModel.onEvent(UserDataEvent.UpdateCumulativeGPA(it)) },

@@ -1,6 +1,7 @@
 package com.hussienfahmy.sync_data.di
 
 import android.content.Context
+import com.google.firebase.firestore.FirebaseFirestore
 import com.hussienfahmy.sync_data.datastore.AppDatastore
 import com.hussienfahmy.sync_data.repository.AppDataRepositoryImpl
 import com.hussienfahmy.sync_data.repository.SyncRepositoryImpl
@@ -19,8 +20,12 @@ object Module {
 
     @Provides
     @Singleton
-    fun provideSyncRepository(): SyncRepository {
-        return SyncRepositoryImpl()
+    fun provideSyncRepository(
+        db: FirebaseFirestore
+    ): SyncRepository {
+        return SyncRepositoryImpl(
+            db = db
+        )
     }
 
     @Provides

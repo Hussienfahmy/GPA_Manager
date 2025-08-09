@@ -29,7 +29,11 @@ class UserDataViewModel @Inject constructor(
         viewModelScope.launch {
             val updateResult: Any = when (event) {
                 is UserDataEvent.UpdateName -> userDataUseCases.updateName(event.name)
-                is UserDataEvent.UploadPhoto -> userDataUseCases.uploadPhoto(event.photoUri)
+                is UserDataEvent.UploadPhoto -> {
+                    state.value = (state.value as UserDataState.Loaded).copy(uploadingPhoto = true)
+                    userDataUseCases.uploadPhoto(event.photoUri)
+                    state.value = (state.value as UserDataState.Loaded).copy(uploadingPhoto = false)
+                }
                 is UserDataEvent.UpdateUniversity -> userDataUseCases.updateUniversity(event.university)
                 is UserDataEvent.UpdateFaculty -> userDataUseCases.updateFaculty(event.faculty)
                 is UserDataEvent.UpdateDepartment -> userDataUseCases.updateDepartment(event.department)
