@@ -9,7 +9,6 @@ import com.hussienFahmy.core.data.local.entity.Subject
 import com.hussienFahmy.core.data.local.model.GradeName
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 
 @Dao
 interface SubjectDao {
@@ -134,14 +133,14 @@ interface SubjectDao {
         get() {
             return combine(
                 getAllSubjects(), getAllActiveGrades()
-                    .map {
-                        it.filter { grade ->
-                            grade.name != GradeName.F
-                        }
-                    }) { subjects, grades ->
-                val highestGrade =
-                    grades.maxByOrNull { it.percentage!! } // active grades always have percentage value
-                val lowestPercentage = grades.minByOrNull { it.percentage!! }?.percentage ?: 0.0
+            ) { subjects, allGrades ->
+                val gradesForMax = allGrades.filter { grade ->
+                    grade.name != GradeName.F
+                }
+                val highestGrade = (gradesForMax.ifEmpty { allGrades })
+                    .maxByOrNull { it.percentage!! } // active grades always have percentage value
+                val lowestPercentage = (gradesForMax.ifEmpty { allGrades })
+                    .minByOrNull { it.percentage!! }?.percentage ?: 0.0
 
                 subjects.map { subject ->
                     val semesterMarks = subject.semesterMarks
@@ -153,12 +152,12 @@ interface SubjectDao {
                                 (100.0 * semesterMarks.value / subject.totalMarks)
                             val threshold = semesterPercentage + lowestPercentage
 
-                            grades.filter { it.percentage!! <= threshold }
+                            gradesForMax.filter { it.percentage!! <= threshold }
                                 .maxByOrNull { it.percentage!! }
                         }
 
                     val assignedGrade = subject.gradeName?.let { gradeName ->
-                        grades.find { it.name == gradeName }
+                        allGrades.find { it.name == gradeName }
                     }
 
                     SubjectWithGrades(
