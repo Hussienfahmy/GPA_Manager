@@ -15,12 +15,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object Module {
 
-    @DispatcherIO
-    @Singleton
-    @Provides
-    fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
-
-
     @DispatcherDefault
     @Singleton
     @Provides
@@ -30,10 +24,6 @@ object Module {
     @Singleton
     fun provideApplicationScope() = CoroutineScope(Dispatchers.Main + SupervisorJob())
 }
-
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-annotation class DispatcherIO
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier

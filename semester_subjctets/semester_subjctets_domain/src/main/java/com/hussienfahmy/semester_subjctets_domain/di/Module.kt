@@ -2,7 +2,6 @@ package com.hussienfahmy.semester_subjctets_domain.di
 
 import com.hussienFahmy.core.data.local.SubjectDao
 import com.hussienFahmy.core.di.DispatcherDefault
-import com.hussienFahmy.core.di.DispatcherIO
 import com.hussienFahmy.core.domain.gpa_settings.use_case.GetGPASettings
 import com.hussienFahmy.core.domain.grades.use_case.GetActiveGrades
 import com.hussienFahmy.core.domain.grades.use_case.GetGradeByPoints
@@ -58,7 +57,6 @@ object Module {
     @ViewModelScoped
     fun provideCalculationUseCases(
         @DispatcherDefault defaultDispatcher: CoroutineDispatcher,
-        @DispatcherIO ioDispatcher: CoroutineDispatcher,
         getAcademicProgress: GetAcademicProgress,
         getGradeByPoints: GetGradeByPoints,
         getGPASettings: GetGPASettings,

@@ -2,7 +2,6 @@ package com.hussienfahmy.semester_marks_domain.di
 
 import com.hussienFahmy.core.data.local.SubjectDao
 import com.hussienFahmy.core.di.DispatcherDefault
-import com.hussienFahmy.core.di.DispatcherIO
 import com.hussienFahmy.core.domain.grades.use_case.GetActiveGrades
 import com.hussienfahmy.semester_marks_domain.use_case.ChangeMidtermMarks
 import com.hussienfahmy.semester_marks_domain.use_case.ChangeOralMarks
@@ -31,7 +30,6 @@ object Module {
     fun provideSemesterMarksUseCases(
         subjectDao: SubjectDao,
         getActiveGrade: GetActiveGrades,
-        @DispatcherIO ioDispatcher: CoroutineDispatcher,
         @DispatcherDefault defaultDispatcher: CoroutineDispatcher,
     ): SemesterMarksUseCases {
         return SemesterMarksUseCases(
@@ -40,15 +38,15 @@ object Module {
                 getActiveGrades = getActiveGrade,
                 defaultDispatcher
             ),
-            resetMarks = ResetMarks(subjectDao, ioDispatcher),
-            setOralAvailable = SetOralAvailable(subjectDao, ioDispatcher),
-            setPracticalAvailable = SetPracticalAvailable(subjectDao, ioDispatcher),
-            setMidtermAvailable = SetMidtermAvailable(subjectDao, ioDispatcher),
-            setProjectAvailable = SetProjectAvailable(subjectDao, ioDispatcher),
-            changeMidtermMarks = ChangeMidtermMarks(subjectDao, ioDispatcher),
-            changeOralMarks = ChangeOralMarks(subjectDao, ioDispatcher),
-            changePracticalMarks = ChangePracticalMarks(subjectDao, ioDispatcher),
-            changeProjectMarks = ChangeProjectMarks(subjectDao, ioDispatcher),
+            resetMarks = ResetMarks(subjectDao),
+            setOralAvailable = SetOralAvailable(subjectDao),
+            setPracticalAvailable = SetPracticalAvailable(subjectDao),
+            setMidtermAvailable = SetMidtermAvailable(subjectDao),
+            setProjectAvailable = SetProjectAvailable(subjectDao),
+            changeMidtermMarks = ChangeMidtermMarks(subjectDao),
+            changeOralMarks = ChangeOralMarks(subjectDao),
+            changePracticalMarks = ChangePracticalMarks(subjectDao),
+            changeProjectMarks = ChangeProjectMarks(subjectDao),
         )
     }
 }
