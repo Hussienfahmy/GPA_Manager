@@ -91,7 +91,11 @@ class SemesterSubjectsViewModel @Inject constructor(
             val updateResult: Any = when (event) {
                 is SemesterSubjectsEvent.AddSubject -> subjectUseCases.addSubject(
                     event.subjectName,
-                    event.creditHours
+                    event.creditHours,
+                    event.midtermAvailable,
+                    event.practicalAvailable,
+                    event.oralAvailable,
+                    event.projectAvailable
                 )
 
                 is SemesterSubjectsEvent.CLearAll -> subjectUseCases.clearGrade(ClearGrade.Request.All)

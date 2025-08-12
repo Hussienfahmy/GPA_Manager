@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 13,
-    "identityHash": "428945341f39b226195aee46219e6549",
+    "identityHash": "d7f13f3c7ca067c66c60315e78c9714f",
     "entities": [
       {
         "tableName": "subject",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `creditHours` REAL NOT NULL, `gradeName` TEXT, `totalMarks` REAL NOT NULL, `midterm` REAL, `practical` REAL, `oral` REAL, `project` REAL, `midtermAvailable` INTEGER NOT NULL DEFAULT 1, `practicalAvailable` INTEGER NOT NULL DEFAULT 1, `oralAvailable` INTEGER NOT NULL DEFAULT 1, `projectAvailable` INTEGER NOT NULL DEFAULT 0)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `creditHours` REAL NOT NULL, `gradeName` TEXT, `totalMarks` REAL NOT NULL, `midterm` REAL, `practical` REAL, `oral` REAL, `project` REAL, `midtermAvailable` INTEGER NOT NULL DEFAULT 1, `oralAvailable` INTEGER NOT NULL DEFAULT 1, `practicalAvailable` INTEGER NOT NULL DEFAULT 0, `projectAvailable` INTEGER NOT NULL DEFAULT 0)",
         "fields": [
           {
             "fieldPath": "id",
@@ -65,18 +65,18 @@
             "defaultValue": "1"
           },
           {
-            "fieldPath": "metadata.practicalAvailable",
-            "columnName": "practicalAvailable",
-            "affinity": "INTEGER",
-            "notNull": true,
-            "defaultValue": "1"
-          },
-          {
             "fieldPath": "metadata.oralAvailable",
             "columnName": "oralAvailable",
             "affinity": "INTEGER",
             "notNull": true,
             "defaultValue": "1"
+          },
+          {
+            "fieldPath": "metadata.practicalAvailable",
+            "columnName": "practicalAvailable",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "metadata.projectAvailable",
@@ -130,7 +130,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '428945341f39b226195aee46219e6549')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd7f13f3c7ca067c66c60315e78c9714f')"
     ]
   }
 }

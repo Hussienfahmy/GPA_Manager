@@ -6,8 +6,14 @@ sealed class SemesterSubjectsEvent {
     object CLearAll : SemesterSubjectsEvent()
     data class ClearGrade(val subjectId: Long) : SemesterSubjectsEvent()
     data class DeleteSubject(val subjectId: Long) : SemesterSubjectsEvent()
-    data class AddSubject(val subjectName: String, val creditHours: String) :
-        SemesterSubjectsEvent()
+    data class AddSubject(
+        val subjectName: String,
+        val creditHours: String,
+        val midtermAvailable: Boolean,
+        val practicalAvailable: Boolean,
+        val oralAvailable: Boolean,
+        val projectAvailable: Boolean,
+    ) : SemesterSubjectsEvent()
 
     data class UpdateName(val subjectId: Long, val subjectName: String) : SemesterSubjectsEvent()
     data class SetGrade(val subjectId: Long, val gradeName: GradeName) : SemesterSubjectsEvent()

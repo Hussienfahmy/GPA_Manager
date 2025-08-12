@@ -21,7 +21,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -121,11 +121,11 @@ fun SemesterMarksItem(
                 onResetClick = { showResetConfirmationDialog = true },
             )
 
-            Divider()
+            HorizontalDivider()
 
             Marks(courseMarks = subject.courseMarks, courseTotalMarks = subject.courseTotalMarks)
 
-            Divider()
+            HorizontalDivider()
 
             SemesterWork(
                 midtermAvailable = subject.midtermAvailable,
@@ -154,7 +154,7 @@ fun SemesterMarksItem(
                 }
             )
 
-            Divider()
+            HorizontalDivider()
 
             Column {
                 if (showHint) {
@@ -320,7 +320,7 @@ private fun AvailableGrades(grades: List<Grade>) {
                     grade = grade,
                 )
                 // add divider between the grades
-                if (index != grades.lastIndex) Divider(
+                if (index != grades.lastIndex) HorizontalDivider(
                     modifier = Modifier
                         .fillMaxHeight()
                         .width(1.dp)

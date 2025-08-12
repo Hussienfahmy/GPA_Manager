@@ -12,7 +12,14 @@ class AddSubject(
     private val subjectDao: SubjectDao,
     private val getSubjectsSettings: GetSubjectsSettings,
 ) {
-    suspend operator fun invoke(name: String, hours: String): UpdateResult {
+    suspend operator fun invoke(
+        name: String,
+        hours: String,
+        midtermAvailable: Boolean,
+        practicalAvailable: Boolean,
+        oralAvailable: Boolean,
+        projectAvailable: Boolean,
+    ): UpdateResult {
         val creditHours = hours.toDoubleOrNull()
             ?: return UpdateResult.Failed(UiText.StringResource(R.string.invalid_input))
 
@@ -27,7 +34,13 @@ class AddSubject(
             totalMarks = when (subjectSettings.subjectsMarksDependsOn) {
                 SubjectSettings.SubjectsMarksDependsOn.CREDIT -> subjectSettings.marksPerCreditHour * creditHours
                 SubjectSettings.SubjectsMarksDependsOn.CONSTANT -> subjectSettings.constantMarks
-            }
+            },
+            metadata = Subject.MetaData(
+                midtermAvailable = midtermAvailable,
+                practicalAvailable = practicalAvailable,
+                oralAvailable = oralAvailable,
+                projectAvailable = projectAvailable,
+            )
         )
 
         subjectDao.upsert(subject)

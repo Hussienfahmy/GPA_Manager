@@ -61,8 +61,8 @@ data class Subject(
      */
     data class MetaData(
         @ColumnInfo(defaultValue = "1") val midtermAvailable: Boolean = true,
-        @ColumnInfo(defaultValue = "1") val practicalAvailable: Boolean = true,
         @ColumnInfo(defaultValue = "1") val oralAvailable: Boolean = true,
-        @ColumnInfo(defaultValue = "0") val projectAvailable: Boolean = true,
+        @ColumnInfo(defaultValue = "0") val practicalAvailable: Boolean = false,
+        @ColumnInfo(defaultValue = "0") val projectAvailable: Boolean = false,
     )
 }

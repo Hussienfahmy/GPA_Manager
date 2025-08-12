@@ -50,9 +50,16 @@ fun SemesterScreen(
     if (showAddDialog) {
         AddSubjectDialog(
             onDismissClick = { showAddDialog = false },
-            onAddSubject = { name, creditHours ->
+            onAddSubject = { name, creditHours, midtermAvailable, practicalAvailable, oralAvailable, projectAvailable ->
                 viewModel.onEvent(
-                    SemesterSubjectsEvent.AddSubject(name, creditHours)
+                    SemesterSubjectsEvent.AddSubject(
+                        name,
+                        creditHours,
+                        midtermAvailable,
+                        practicalAvailable,
+                        oralAvailable,
+                        projectAvailable
+                    )
                 )
             }
         )

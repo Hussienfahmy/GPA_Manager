@@ -1,5 +1,6 @@
 package com.hussienfahmy.semester_subjctets_presentaion.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,22 +33,42 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.hussienFahmy.core_ui.LocalSpacing
+import com.hussienFahmy.core_ui.presentation.components.SemesterMarkChooser
 import com.hussienFahmy.myGpaManager.core.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddSubjectDialog(
-    onAddSubject: (subjectName: String, creditHours: String) -> Unit,
+    onAddSubject: (
+        subjectName: String,
+        creditHours: String,
+        midtermAvailable: Boolean,
+        practicalAvailable: Boolean,
+        oralAvailable: Boolean,
+        projectAvailable: Boolean,
+    ) -> Unit,
     onDismissClick: () -> Unit,
 ) {
     var subjectName by remember { mutableStateOf("") }
     var creditHours by remember { mutableStateOf("") }
-
+    var midtermAvailable by remember { mutableStateOf(true) }
+    var practicalAvailable by remember { mutableStateOf(false) }
+    var oralAvailable by remember { mutableStateOf(true) }
+    var projectAvailable by remember { mutableStateOf(false) }
 
     val validSubjectName = subjectName.isNotBlank()
     val validCreditHours = creditHours.isNotBlank()
 
-    val saveSubject = { onAddSubject(subjectName, creditHours) }
+    val saveSubject = {
+        onAddSubject(
+            subjectName,
+            creditHours,
+            midtermAvailable,
+            practicalAvailable,
+            oralAvailable,
+            projectAvailable
+        )
+    }
 
     val subjectNameFocusRequester = FocusRequester()
     val creditHoursFocusRequester = FocusRequester()
@@ -61,8 +82,8 @@ fun AddSubjectDialog(
 
     val spacing = LocalSpacing.current
 
-    AlertDialog(
-        onDismissRequest = { onDismissClick() }
+    BasicAlertDialog(
+        onDismissRequest = { onDismissClick() },
     ) {
         Surface(
             modifier = Modifier
@@ -134,6 +155,31 @@ fun AddSubjectDialog(
 
                 Spacer(modifier = Modifier.height(spacing.medium))
 
+                Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
+                    SemesterMarkChooser(
+                        title = stringResource(R.string.midterm),
+                        available = midtermAvailable,
+                        onCheckChanges = { midtermAvailable = it }
+                    )
+                    SemesterMarkChooser(
+                        title = stringResource(R.string.oral),
+                        available = oralAvailable,
+                        onCheckChanges = { oralAvailable = it }
+                    )
+                    SemesterMarkChooser(
+                        title = stringResource(R.string.practical),
+                        available = practicalAvailable,
+                        onCheckChanges = { practicalAvailable = it }
+                    )
+                    SemesterMarkChooser(
+                        title = stringResource(R.string.project),
+                        available = projectAvailable,
+                        onCheckChanges = { projectAvailable = it }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(spacing.medium))
+
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
@@ -173,5 +219,5 @@ fun AddSubjectDialog(
 @Preview
 @Composable
 fun AddSubjectDialogPreview() {
-    AddSubjectDialog(onAddSubject = { _, _ -> }, onDismissClick = {})
+    AddSubjectDialog(onAddSubject = { _, _, _, _, _, _ -> }, onDismissClick = {})
 }
