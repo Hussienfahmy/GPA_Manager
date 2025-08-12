@@ -53,7 +53,7 @@ interface SubjectDao {
     @Query("UPDATE subject SET gradeName = :gradeName WHERE id = :subjectId")
     suspend fun updateGrade(subjectId: Long, gradeName: GradeName?)
 
-    @Query("UPDATE subject SET oral=null, practical=null, midterm=null WHERE id = :subjectId")
+    @Query("UPDATE subject SET oral=null, practical=null, midterm=null, project=null WHERE id = :subjectId")
     suspend fun resetSubjectMarks(subjectId: Long)
 
     /**
@@ -80,6 +80,9 @@ interface SubjectDao {
     @Query("UPDATE subject SET oral = :oral WHERE id = :subjectId")
     suspend fun updateOral(subjectId: Long, oral: Double?)
 
+    @Query("UPDATE subject SET project = :project WHERE id = :subjectId")
+    suspend fun updateProject(subjectId: Long, project: Double?)
+
     // ---------------- MetaData Update -----------//
 
     @Query("UPDATE subject SET midtermAvailable = :available WHERE id = :subjectId")
@@ -90,6 +93,9 @@ interface SubjectDao {
 
     @Query("UPDATE subject SET oralAvailable = :available WHERE id = :subjectId")
     suspend fun setOralAvailability(subjectId: Long, available: Boolean)
+
+    @Query("UPDATE subject SET projectAvailable = :available WHERE id = :subjectId")
+    suspend fun setProjectAvailability(subjectId: Long, available: Boolean)
 
 
     // ---------------- Semester with max grade can be achieved -----------//
@@ -140,14 +146,11 @@ interface SubjectDao {
                 subjects.map { subject ->
                     val semesterMarks = subject.semesterMarks
                     val maxGrade =
-                        if (semesterMarks?.midterm == null && semesterMarks?.practical == null && semesterMarks?.oral == null) {
+                        if (semesterMarks?.midterm == null && semesterMarks?.practical == null && semesterMarks?.oral == null && semesterMarks?.project == null) {
                             highestGrade
                         } else {
-                            val semesterPercentage = (100.0 * (
-                                    (semesterMarks.midterm ?: 0.0) +
-                                            (semesterMarks.practical ?: 0.0) +
-                                            (semesterMarks.oral ?: 0.0)
-                                    ) / subject.totalMarks)
+                            val semesterPercentage =
+                                (100.0 * semesterMarks.value / subject.totalMarks)
                             val threshold = semesterPercentage + lowestPercentage
 
                             grades.filter { it.percentage!! <= threshold }

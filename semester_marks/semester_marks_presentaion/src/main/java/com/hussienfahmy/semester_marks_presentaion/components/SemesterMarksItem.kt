@@ -54,11 +54,13 @@ fun SemesterMarksItem(
     onMidTermMarksChange: (String) -> Unit,
     onOralMarksChange: (String) -> Unit,
     onPracticalMarksChange: (String) -> Unit,
+    onProjectMarksChange: (String) -> Unit,
     onResetClick: () -> Unit,
     showHint: Boolean,
     onMidtermAvailabilityCheckChanges: (Boolean) -> Unit,
     onPracticalAvailabilityCheckChanges: (Boolean) -> Unit,
     onOralAvailabilityCheckChanges: (Boolean) -> Unit,
+    onProjectAvailabilityCheckChanges: (Boolean) -> Unit,
 ) {
     val spacing = LocalSpacing.current
 
@@ -67,6 +69,8 @@ fun SemesterMarksItem(
     var practicalInput by remember { mutableStateOf(subject.practicalMarks?.toString() ?: "") }
 
     var oralInput by remember { mutableStateOf(subject.oralMarks?.toString() ?: "") }
+
+    var projectInput by remember { mutableStateOf(subject.projectMarks?.toString() ?: "") }
 
     var showResetConfirmationDialog by remember { mutableStateOf(false) }
 
@@ -86,6 +90,7 @@ fun SemesterMarksItem(
         midtermAvailable = subject.midtermAvailable,
         practicalAvailable = subject.practicalAvailable,
         oralAvailable = subject.oralAvailable,
+        projectAvailable = subject.projectAvailable,
         onMidtermCheckChanges = { enabled ->
             if (!enabled) midtermInput = ""
             onMidtermAvailabilityCheckChanges(enabled)
@@ -97,6 +102,10 @@ fun SemesterMarksItem(
         onOralCheckChanges = { enabled ->
             if (!enabled) oralInput = ""
             onOralAvailabilityCheckChanges(enabled)
+        },
+        onProjectCheckChanges = { enabled ->
+            if (!enabled) projectInput = ""
+            onProjectAvailabilityCheckChanges(enabled)
         }
     )
 
@@ -122,6 +131,7 @@ fun SemesterMarksItem(
                 midtermAvailable = subject.midtermAvailable,
                 practicalAvailable = subject.practicalAvailable,
                 oralAvailable = subject.oralAvailable,
+                projectAvailable = subject.projectAvailable,
                 midtermInput = midtermInput,
                 onMidTermMarksChange = {
                     midtermInput = it
@@ -137,6 +147,11 @@ fun SemesterMarksItem(
                     oralInput = it
                     onOralMarksChange(it)
                 },
+                projectInput = projectInput,
+                onProjectMarksChange = {
+                    projectInput = it
+                    onProjectMarksChange(it)
+                }
             )
 
             Divider()
@@ -164,12 +179,15 @@ private fun SemesterWork(
     midtermAvailable: Boolean,
     practicalAvailable: Boolean,
     oralAvailable: Boolean,
+    projectAvailable: Boolean,
     midtermInput: String,
     onMidTermMarksChange: (String) -> Unit,
     practicalInput: String,
     onPracticalMarksChange: (String) -> Unit,
     oralInput: String,
     onOralMarksChange: (String) -> Unit,
+    projectInput: String,
+    onProjectMarksChange: (String) -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -195,6 +213,13 @@ private fun SemesterWork(
             title = stringResource(R.string.oral),
             value = oralInput,
             onValueChanged = onOralMarksChange,
+        )
+
+        if (projectAvailable) SemesterMarkTextField(
+            modifier = Modifier.weight(1f),
+            title = stringResource(R.string.project),
+            value = projectInput,
+            onValueChanged = onProjectMarksChange,
         )
     }
 }
@@ -355,10 +380,12 @@ fun SemesterMarksItemPreview() {
             practicalMarks = 10.0,
             midtermMarks = 10.0,
             oralMarks = 10.0,
+            projectMarks = 10.0,
             courseTotalMarks = 100.0,
             midtermAvailable = true,
             practicalAvailable = true,
             oralAvailable = true,
+            projectAvailable = true,
             grades = listOf(
                 Grade(
                     symbol = "A",
@@ -385,9 +412,11 @@ fun SemesterMarksItemPreview() {
         onMidTermMarksChange = {},
         onPracticalMarksChange = {},
         onOralMarksChange = {},
+        onProjectMarksChange = {},
         onMidtermAvailabilityCheckChanges = {},
         onPracticalAvailabilityCheckChanges = {},
         onOralAvailabilityCheckChanges = {},
+        onProjectAvailabilityCheckChanges = {},
         onResetClick = {},
         showHint = true
     )

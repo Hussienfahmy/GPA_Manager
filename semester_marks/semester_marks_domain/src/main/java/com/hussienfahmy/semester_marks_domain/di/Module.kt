@@ -7,12 +7,14 @@ import com.hussienFahmy.core.domain.grades.use_case.GetActiveGrades
 import com.hussienfahmy.semester_marks_domain.use_case.ChangeMidtermMarks
 import com.hussienfahmy.semester_marks_domain.use_case.ChangeOralMarks
 import com.hussienfahmy.semester_marks_domain.use_case.ChangePracticalMarks
+import com.hussienfahmy.semester_marks_domain.use_case.ChangeProjectMarks
 import com.hussienfahmy.semester_marks_domain.use_case.ContinuesCalculation
 import com.hussienfahmy.semester_marks_domain.use_case.ResetMarks
 import com.hussienfahmy.semester_marks_domain.use_case.SemesterMarksUseCases
 import com.hussienfahmy.semester_marks_domain.use_case.SetMidtermAvailable
 import com.hussienfahmy.semester_marks_domain.use_case.SetOralAvailable
 import com.hussienfahmy.semester_marks_domain.use_case.SetPracticalAvailable
+import com.hussienfahmy.semester_marks_domain.use_case.SetProjectAvailable
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,9 +44,11 @@ object Module {
             setOralAvailable = SetOralAvailable(subjectDao, ioDispatcher),
             setPracticalAvailable = SetPracticalAvailable(subjectDao, ioDispatcher),
             setMidtermAvailable = SetMidtermAvailable(subjectDao, ioDispatcher),
+            setProjectAvailable = SetProjectAvailable(subjectDao, ioDispatcher),
             changeMidtermMarks = ChangeMidtermMarks(subjectDao, ioDispatcher),
             changeOralMarks = ChangeOralMarks(subjectDao, ioDispatcher),
             changePracticalMarks = ChangePracticalMarks(subjectDao, ioDispatcher),
+            changeProjectMarks = ChangeProjectMarks(subjectDao, ioDispatcher),
         )
     }
 }

@@ -29,9 +29,11 @@ class ContinuesCalculation(
                         practicalAvailable = subjectEntity.metadata.practicalAvailable,
                         midtermAvailable = subjectEntity.metadata.midtermAvailable,
                         oralAvailable = subjectEntity.metadata.oralAvailable,
+                        projectAvailable = subjectEntity.metadata.projectAvailable,
                         practicalMarks = subjectEntity.semesterMarks?.practical,
                         midtermMarks = subjectEntity.semesterMarks?.midterm,
                         oralMarks = subjectEntity.semesterMarks?.oral,
+                        projectMarks = subjectEntity.semesterMarks?.project,
                         courseTotalMarks = subjectEntity.totalMarks,
                         grades = activeGrades.map { gradeEntity ->
                             val requiredMarksToAchieveThisGrade =

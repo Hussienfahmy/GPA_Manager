@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 13,
-    "identityHash": "3fa798a32debd0ce7c67af2744b976ac",
+    "identityHash": "428945341f39b226195aee46219e6549",
     "entities": [
       {
         "tableName": "subject",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `creditHours` REAL NOT NULL, `gradeName` TEXT, `totalMarks` REAL NOT NULL, `midterm` REAL, `practical` REAL, `oral` REAL, `midtermAvailable` INTEGER NOT NULL DEFAULT 1, `practicalAvailable` INTEGER NOT NULL DEFAULT 1, `oralAvailable` INTEGER NOT NULL DEFAULT 1)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `creditHours` REAL NOT NULL, `gradeName` TEXT, `totalMarks` REAL NOT NULL, `midterm` REAL, `practical` REAL, `oral` REAL, `project` REAL, `midtermAvailable` INTEGER NOT NULL DEFAULT 1, `practicalAvailable` INTEGER NOT NULL DEFAULT 1, `oralAvailable` INTEGER NOT NULL DEFAULT 1, `projectAvailable` INTEGER NOT NULL DEFAULT 0)",
         "fields": [
           {
             "fieldPath": "id",
@@ -53,6 +53,11 @@
             "affinity": "REAL"
           },
           {
+            "fieldPath": "semesterMarks.project",
+            "columnName": "project",
+            "affinity": "REAL"
+          },
+          {
             "fieldPath": "metadata.midtermAvailable",
             "columnName": "midtermAvailable",
             "affinity": "INTEGER",
@@ -72,6 +77,13 @@
             "affinity": "INTEGER",
             "notNull": true,
             "defaultValue": "1"
+          },
+          {
+            "fieldPath": "metadata.projectAvailable",
+            "columnName": "projectAvailable",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
           }
         ],
         "primaryKey": {
@@ -86,7 +98,7 @@
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`meta_data` TEXT NOT NULL, `active` INTEGER NOT NULL, `points` REAL, `percentage` REAL, PRIMARY KEY(`meta_data`))",
         "fields": [
           {
-            "fieldPath": "metaData",
+            "fieldPath": "name",
             "columnName": "meta_data",
             "affinity": "TEXT",
             "notNull": true
@@ -118,7 +130,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3fa798a32debd0ce7c67af2744b976ac')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '428945341f39b226195aee46219e6549')"
     ]
   }
 }

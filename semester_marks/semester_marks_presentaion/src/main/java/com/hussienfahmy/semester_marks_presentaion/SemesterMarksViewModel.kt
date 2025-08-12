@@ -42,6 +42,11 @@ class SemesterMarksViewModel @Inject constructor(
                     event.mark
                 )
 
+                is SemesterMarksEvent.ChangeProjectMark -> useCases.changeProjectMarks(
+                    event.subjectId,
+                    event.mark
+                )
+
                 is SemesterMarksEvent.ResetMarks -> useCases.resetMarks(event.subjectId)
                 is SemesterMarksEvent.SetMidtermAvailability -> {
                     useCases.setMidtermAvailable(
@@ -65,6 +70,14 @@ class SemesterMarksViewModel @Inject constructor(
                         event.isAvailable
                     )
                     useCases.changePracticalMarks(event.subjectId, "0")
+                }
+
+                is SemesterMarksEvent.SetProjectAvailability -> {
+                    useCases.setProjectAvailable(
+                        event.subjectId,
+                        event.isAvailable
+                    )
+                    useCases.changeProjectMarks(event.subjectId, "0")
                 }
             }
 

@@ -27,9 +27,11 @@ fun SemesterWorkAvailabilityDialog(
     midtermAvailable: Boolean,
     oralAvailable: Boolean,
     practicalAvailable: Boolean,
+    projectAvailable: Boolean,
     onMidtermCheckChanges: (Boolean) -> Unit,
     onPracticalCheckChanges: (Boolean) -> Unit,
-    onOralCheckChanges: (Boolean) -> Unit
+    onOralCheckChanges: (Boolean) -> Unit,
+    onProjectCheckChanges: (Boolean) -> Unit
 ) {
     val spacing = LocalSpacing.current
 
@@ -57,6 +59,11 @@ fun SemesterWorkAvailabilityDialog(
                     title = stringResource(id = R.string.oral),
                     available = oralAvailable,
                     onCheckChanges = onOralCheckChanges
+                )
+                SemesterMarkChooser(
+                    title = stringResource(id = R.string.project),
+                    available = projectAvailable,
+                    onCheckChanges = onProjectCheckChanges
                 )
             }
         }
@@ -87,9 +94,11 @@ fun SemesterWorkAvailabilityChooserPreview() {
         practicalAvailable = true,
         oralAvailable = true,
         midtermAvailable = false,
+        projectAvailable = true,
         onDismiss = {},
         onMidtermCheckChanges = {},
         onPracticalCheckChanges = {},
-        onOralCheckChanges = {}
+        onOralCheckChanges = {},
+        onProjectCheckChanges = {}
     )
 }

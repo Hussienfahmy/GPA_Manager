@@ -38,6 +38,7 @@ data class Subject(
         val midterm: Double? = null,
         val practical: Double? = null,
         val oral: Double? = null,
+        val project: Double? = null,
     ) {
         // room will create the SemesterMark object only if
         // one of the fields is not null so am sure we will get a value (number)
@@ -47,6 +48,7 @@ data class Subject(
                 midterm?.let { output += it }
                 practical?.let { output += it }
                 oral?.let { output += it }
+                project?.let { output += it }
 
                 return output
             }
@@ -61,5 +63,6 @@ data class Subject(
         @ColumnInfo(defaultValue = "1") val midtermAvailable: Boolean = true,
         @ColumnInfo(defaultValue = "1") val practicalAvailable: Boolean = true,
         @ColumnInfo(defaultValue = "1") val oralAvailable: Boolean = true,
+        @ColumnInfo(defaultValue = "0") val projectAvailable: Boolean = true,
     )
 }

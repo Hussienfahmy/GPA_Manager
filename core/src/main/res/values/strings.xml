@@ -32,6 +32,7 @@
     <string name="err_subject_name_empty">Subject Name Can not be Empty</string>
     <string name="err_subject_oral_negative">Oral can not be less than zero</string>
     <string name="err_subject_practical_negative">Practical marks can not be less than zero</string>
+    <string name="err_subject_project_negative">Project marks can not be less than zero</string>
     <string name="err_subject_total_must_more_than_zero">Total Marks must be more than zero</string>
     <string name="err_waiting_to_add_subjects">Waiting to add subjects</string>
     <string name="error_happened">Error happened</string>
@@ -127,6 +128,7 @@
     <string name="midterm">Midterm</string>
     <string name="practical">Practical</string>
     <string name="oral">Oral</string>
+    <string name="project">Project</string>
     <string name="change_photo">Change Photo</string>
     <string name="app_settings">App Settings</string>
     <string name="modify_app_sittings">Modify app settings (dark mode, etc..)</string>

@@ -53,6 +53,11 @@ fun SemesterMarksScreen(
                     SemesterMarksEvent.ChangePracticalMark(subjectId, marks)
                 )
             },
+            onProjectMarksChange = { subjectId, marks ->
+                viewModel.onEvent(
+                    SemesterMarksEvent.ChangeProjectMark(subjectId, marks)
+                )
+            },
             onResetClick = { subjectId ->
                 viewModel.onEvent(
                     SemesterMarksEvent.ResetMarks(subjectId)
@@ -73,6 +78,11 @@ fun SemesterMarksScreen(
                     SemesterMarksEvent.SetOralAvailability(subjectId, newAvailability)
                 )
             },
+            onProjectAvailabilityCheckChanges = { subjectId, newAvailability ->
+                viewModel.onEvent(
+                    SemesterMarksEvent.SetProjectAvailability(subjectId, newAvailability)
+                )
+            },
         )
     }
 }
@@ -84,10 +94,12 @@ fun SemesterMarksScreenContent(
     onMidTermMarksChange: (subjectId: Long, newMarks: String) -> Unit,
     onOralMarksChange: (subjectId: Long, newMarks: String) -> Unit,
     onPracticalMarksChange: (subjectId: Long, newMarks: String) -> Unit,
+    onProjectMarksChange: (subjectId: Long, newMarks: String) -> Unit,
     onResetClick: (subjectId: Long) -> Unit,
     onMidtermAvailabilityCheckChanges: (subjectId: Long, newAvailability: Boolean) -> Unit,
     onPracticalAvailabilityCheckChanges: (subjectId: Long, newAvailability: Boolean) -> Unit,
     onOralAvailabilityCheckChanges: (subjectId: Long, newAvailability: Boolean) -> Unit,
+    onProjectAvailabilityCheckChanges: (subjectId: Long, newAvailability: Boolean) -> Unit,
 ) {
     val spacing = LocalSpacing.current
 
@@ -105,6 +117,7 @@ fun SemesterMarksScreenContent(
                     onMidTermMarksChange = { onMidTermMarksChange(subject.id, it) },
                     onOralMarksChange = { onOralMarksChange(subject.id, it) },
                     onPracticalMarksChange = { onPracticalMarksChange(subject.id, it) },
+                    onProjectMarksChange = { onProjectMarksChange(subject.id, it) },
                     onResetClick = { onResetClick(subject.id) },
                     showHint = index == 0,
                     onMidtermAvailabilityCheckChanges = {
@@ -121,6 +134,12 @@ fun SemesterMarksScreenContent(
                     },
                     onOralAvailabilityCheckChanges = {
                         onOralAvailabilityCheckChanges(
+                            subject.id,
+                            it
+                        )
+                    },
+                    onProjectAvailabilityCheckChanges = {
+                        onProjectAvailabilityCheckChanges(
                             subject.id,
                             it
                         )
@@ -142,9 +161,11 @@ fun SemesterMarksScreenContentPreview() {
                 id = 1L,
                 name = "Math",
                 practicalAvailable = false,
+                projectAvailable = true,
                 midtermAvailable = true,
                 oralAvailable = true,
                 practicalMarks = 0.0,
+                projectMarks = 0.0,
                 midtermMarks = 10.0,
                 oralMarks = 15.0,
                 courseTotalMarks = 25.0,
@@ -177,9 +198,11 @@ fun SemesterMarksScreenContentPreview() {
         onMidTermMarksChange = { _, _ -> },
         onOralMarksChange = { _, _ -> },
         onPracticalMarksChange = { _, _ -> },
+        onProjectMarksChange = { _, _ -> },
         onResetClick = { },
         onMidtermAvailabilityCheckChanges = { _, _ -> },
         onPracticalAvailabilityCheckChanges = { _, _ -> },
-        onOralAvailabilityCheckChanges = { _, _ -> }
+        onOralAvailabilityCheckChanges = { _, _ -> },
+        onProjectAvailabilityCheckChanges = { _, _ -> }
     )
 }

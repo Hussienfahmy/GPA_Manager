@@ -31,6 +31,7 @@
     <string name="err_subject_name_empty">اسم المادة لا يمكن أن يكون فارغا</string>
     <string name="err_subject_oral_negative">"درجات الشفوي لا يمكن أن تكون أقل من الصفر "</string>
     <string name="err_subject_practical_negative">درجات العملي لا يمكن أن تكون أقل من صفر</string>
+    <string name="err_subject_project_negative">درجات المشروع لا يمكن أن تكون أقل من صفر</string>
     <string name="err_subject_total_must_more_than_zero">إجمالي الدرجات يجب أن يكون أكثر من الصفر</string>
     <string name="err_waiting_to_add_subjects">في انتظار إضافة مادة</string>
     <string name="error_happened">حدث خطأ</string>
@@ -118,6 +119,7 @@
     <string name="midterm">الميدترم</string>
     <string name="practical">العملي</string>
     <string name="oral">الشفوي</string>
+    <string name="project">المشروع</string>
     <string name="change_photo">تغيير الصورة</string>
     <string name="app_settings">اعدادات التطبيق</string>
     <string name="modify_app_sittings">قم بالتعديل علي اعدادات التطبيق مثل الوضع اليلي</string>

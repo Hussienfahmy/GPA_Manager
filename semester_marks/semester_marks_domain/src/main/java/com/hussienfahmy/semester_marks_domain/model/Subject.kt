@@ -6,9 +6,11 @@ data class Subject(
     val practicalAvailable: Boolean,
     val midtermAvailable: Boolean,
     val oralAvailable: Boolean,
+    val projectAvailable: Boolean,
     val practicalMarks: Double?,
     val midtermMarks: Double?,
     val oralMarks: Double?,
+    val projectMarks: Double?,
     val courseTotalMarks: Double,
     val grades: List<Grade>
 ) {
@@ -18,6 +20,7 @@ data class Subject(
             midtermMarks?.let { output += it }
             practicalMarks?.let { output += it }
             oralMarks?.let { output += it }
+            projectMarks?.let { output += it }
 
             return output
         }
