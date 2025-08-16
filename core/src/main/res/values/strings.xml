@@ -133,7 +133,9 @@
     <string name="app_settings">App Settings</string>
     <string name="modify_app_sittings">Modify app settings (dark mode, etc..)</string>
     <string name="enable_dark_mode">Enable Dark Mode</string>
-    <string name="sign_out">Signe Out</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_out_details">Sign out from this device</string>
+    <string name="sign_out_confirmation_message">You will be signed out and need to sign in again to sync and backup your data. Continue?</string>
     <string name="tip_modes"><b>Normal Mode</b>: you choose the grade for each subject and see how the cumulative GPA will be affected\n\n<b>Predictive Mode</b>: you only choose the cumulative GPA you want to achieve this semester, then you will see the required grade for each subject (and optionally modify each grade by yourself to refine the result)</string>
     <string name="tip_required_marks">After you enter the midterm, practical and oral. If you see B+ with a 45 below it for example, so you need to get 45 marks (in the final exam) to achieve B+ in this subject</string>
     <string name="done">Done</string>

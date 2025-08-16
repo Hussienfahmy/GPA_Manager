@@ -6,8 +6,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -42,6 +49,8 @@ fun AppMoreScreen(
             onGPASettingsClick = onGPASettingsClick,
             onGradeSettingsClick = onGradeSettingsClick,
             onSubjectSettingsClick = onSubjectSettingsClick,
+            onSignOutClick = { moreViewModel.signOut() },
+            isSigningOut = moreViewModel.isSigningOut,
         )
     } else {
         Box(modifier = modifier.fillMaxSize()) {
@@ -58,9 +67,12 @@ fun MoreScreenContent(
     onGPASettingsClick: () -> Unit,
     onGradeSettingsClick: () -> Unit,
     onSubjectSettingsClick: () -> Unit,
+    onSignOutClick: () -> Unit,
+    isSigningOut: Boolean,
 ) {
     val spacing = LocalSpacing.current
     val context = LocalContext.current
+    var showSignOutDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -90,6 +102,12 @@ fun MoreScreenContent(
         )
 
         MoreItem(
+            onClick = { if (!isSigningOut) showSignOutDialog = true },
+            title = stringResource(R.string.sign_out),
+            summary = stringResource(R.string.sign_out_details)
+        )
+
+        MoreItem(
             onClick = {
                 context.startActivity(
                     Intent(
@@ -100,6 +118,28 @@ fun MoreScreenContent(
             },
             title = stringResource(R.string.is_app_useful),
             summary = stringResource(R.string.is_app_useful_details)
+        )
+    }
+
+    if (showSignOutDialog) {
+        AlertDialog(
+            onDismissRequest = { if (!isSigningOut) showSignOutDialog = false },
+            title = { Text(text = stringResource(id = R.string.are_you_sure)) },
+            text = { Text(text = stringResource(id = R.string.sign_out_confirmation_message)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onSignOutClick()
+                        showSignOutDialog = false
+                    }
+                ) { Text(text = stringResource(id = R.string.ok)) }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { showSignOutDialog = false },
+                    enabled = !isSigningOut
+                ) { Text(text = stringResource(id = R.string.cancel)) }
+            }
         )
     }
 }
