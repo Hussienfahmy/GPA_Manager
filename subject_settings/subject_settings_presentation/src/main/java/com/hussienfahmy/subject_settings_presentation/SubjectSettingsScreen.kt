@@ -37,12 +37,12 @@ fun SubjectsSettingsScreen(
     val state by viewModel.state
 
     when (state) {
-        SubjectSettingsState.Loading -> Box(modifier = Modifier.fillMaxSize()) {
+        SubjectSettingsState.Loading -> Box(modifier = modifier.fillMaxSize()) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
 
         is SubjectSettingsState.Success -> SubjectsSettingsScreenContent(
-            modifier = modifier,
+            modifier = modifier.fillMaxSize(),
             subjectsSettings = (state as SubjectSettingsState.Success).subjectSettings,
             onSubjectsDependsOnChanged = {
                 viewModel.onEvent(
@@ -69,33 +69,35 @@ fun SubjectsSettingsScreenContent(
 ) {
     val spacing = LocalSpacing.current
 
-    Card(modifier = modifier.padding(vertical = spacing.small)) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(spacing.small)
-        ) {
-            SubjectMarksDependsOnItem(
-                currentSubjectsMarksDependsOn = subjectsSettings.subjectsMarksDependsOn,
-                onNewSubjectsMarksDependsOnSelected = onSubjectsDependsOnChanged
-            )
+    Box(modifier = modifier.padding(vertical = spacing.small)) {
+        Card {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(spacing.small)
+            ) {
+                SubjectMarksDependsOnItem(
+                    currentSubjectsMarksDependsOn = subjectsSettings.subjectsMarksDependsOn,
+                    onNewSubjectsMarksDependsOnSelected = onSubjectsDependsOnChanged
+                )
 
-            ExpandableTextField(
-                title = stringResource(id = R.string.subject_marks_per_credit),
-                value = subjectsSettings.marksPerCreditHour.toString(),
-                onNewValueSubmitted = onMarksPerCreditHourChanged,
-                keyboardType = KeyboardType.Number,
-                enabled = subjectsSettings.subjectsMarksDependsOn == SubjectSettings.SubjectsMarksDependsOn.CREDIT,
-                imageVector = Icons.Outlined.CreditScore,
-            )
+                ExpandableTextField(
+                    title = stringResource(id = R.string.subject_marks_per_credit),
+                    value = subjectsSettings.marksPerCreditHour.toString(),
+                    onNewValueSubmitted = onMarksPerCreditHourChanged,
+                    keyboardType = KeyboardType.Number,
+                    enabled = subjectsSettings.subjectsMarksDependsOn == SubjectSettings.SubjectsMarksDependsOn.CREDIT,
+                    imageVector = Icons.Outlined.CreditScore,
+                )
 
-            ExpandableTextField(
-                title = stringResource(id = R.string.const_subject_marks),
-                value = subjectsSettings.constantMarks.toString(),
-                onNewValueSubmitted = onConstantMarksChanged,
-                keyboardType = KeyboardType.Number,
-                enabled = subjectsSettings.subjectsMarksDependsOn == SubjectSettings.SubjectsMarksDependsOn.CONSTANT,
-                imageVector = Icons.Outlined.Pin,
-            )
+                ExpandableTextField(
+                    title = stringResource(id = R.string.const_subject_marks),
+                    value = subjectsSettings.constantMarks.toString(),
+                    onNewValueSubmitted = onConstantMarksChanged,
+                    keyboardType = KeyboardType.Number,
+                    enabled = subjectsSettings.subjectsMarksDependsOn == SubjectSettings.SubjectsMarksDependsOn.CONSTANT,
+                    imageVector = Icons.Outlined.Pin,
+                )
+            }
         }
     }
 }

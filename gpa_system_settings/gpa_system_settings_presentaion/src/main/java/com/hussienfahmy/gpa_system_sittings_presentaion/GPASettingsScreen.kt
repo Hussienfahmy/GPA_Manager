@@ -32,7 +32,7 @@ fun GPASettingsScreen(
         is GPAState.Loaded -> {
             val gpa = (state as GPAState.Loaded).gpa
             GPASettingsContent(
-                modifier = modifier,
+                modifier = modifier.fillMaxSize(),
                 gpa = gpa,
                 onGPASystemChanged = { viewModel.onEvent(GPAEvent.UpdateGPASystem(it)) }
             )
