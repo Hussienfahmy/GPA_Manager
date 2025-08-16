@@ -40,9 +40,14 @@ fun AppOnBoardingGPASubjectsSettings(
 
         Spacer(modifier = Modifier.height(spacing.medium))
 
-        GPASettingsScreen()
+        GPASettingsScreen(
+            modifier = Modifier.weight(1f)
+        )
 
-        SubjectsSettingsScreen(snackBarHostState = snackBarHostState)
+        SubjectsSettingsScreen(
+            modifier = Modifier.weight(1f),
+            snackBarHostState = snackBarHostState
+        )
 
         OutlinedButton(
             onClick = onStartClick,
