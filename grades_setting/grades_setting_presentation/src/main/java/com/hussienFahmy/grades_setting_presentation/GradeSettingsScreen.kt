@@ -15,14 +15,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -55,7 +59,9 @@ fun GradeSettingsScreen(
 
     val state by viewModel.state
 
-    Column {
+    Column(
+        modifier = modifier.padding(horizontal = spacing.small)
+    ) {
         Spacer(modifier = Modifier.heightIn(spacing.small))
         // Title
         Row(
@@ -63,31 +69,53 @@ fun GradeSettingsScreen(
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            TextButton(
+            val isOnlyActiveSelected = state.mode == Mode.ONLY_ACTIVE
+            FilterChip(
+                selected = isOnlyActiveSelected,
                 onClick = { viewModel.onModeChange(Mode.ONLY_ACTIVE) },
-                modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(spacing.medium),
-                enabled = state.mode != Mode.ONLY_ACTIVE,
-            ) {
-                Text(
-                    text = stringResource(R.string.active_grades_only),
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
-                )
-            }
+                label = {
+                    Text(
+                        text = stringResource(R.string.active_grades_only),
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Center,
+                    )
+                },
+                leadingIcon = if (isOnlyActiveSelected) {
+                    {
+                        Icon(
+                            imageVector = Icons.Filled.Done,
+                            contentDescription = "Done icon",
+                            modifier = Modifier.size(FilterChipDefaults.IconSize)
+                        )
+                    }
+                } else {
+                    null
+                }
+            )
 
-            TextButton(
+            val isAllSelected = state.mode == Mode.ALL
+            FilterChip(
+                selected = isAllSelected,
                 onClick = { viewModel.onModeChange(Mode.ALL) },
-                modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(spacing.medium),
-                enabled = state.mode != Mode.ALL,
-            ) {
-                Text(
-                    text = stringResource(R.string.all_grades),
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
-                )
-            }
+                label = {
+                    Text(
+                        text = stringResource(R.string.all_grades),
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Center,
+                    )
+                },
+                leadingIcon = if (isAllSelected) {
+                    {
+                        Icon(
+                            imageVector = Icons.Filled.Done,
+                            contentDescription = "Done icon",
+                            modifier = Modifier.size(FilterChipDefaults.IconSize)
+                        )
+                    }
+                } else {
+                    null
+                }
+            )
         }
 
         Spacer(modifier = Modifier.padding(spacing.small))
