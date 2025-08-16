@@ -19,10 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.hussienFahmy.core_ui.LocalSpacing
 import com.hussienFahmy.grades_setting_presentation.GradeSettingsScreen
+import com.hussienFahmy.myGpaManager.navigation.SlideTransitions
 import com.hussienFahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
 
-@Destination<OnBoardingNavGraph>
+@Destination<OnBoardingNavGraph>(style = SlideTransitions::class)
 @Composable
 fun AppOnBoardingGradesSettingsScreen(
     onNextClick: () -> Unit,
