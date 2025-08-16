@@ -8,6 +8,10 @@ import com.hussienFahmy.myGpaManager.core.R
 import com.hussienfahmy.semester_subjctets_domain.model.Grade
 import com.hussienfahmy.semester_subjctets_domain.model.Subject
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 import com.hussienfahmy.semester_subjctets_domain.use_case.Calculate.Result as CalculationResult
 
@@ -17,12 +21,21 @@ import com.hussienfahmy.semester_subjctets_domain.use_case.Calculate.Result as C
  * the assigned grades is finally updated to the database
  */
 class PredictGrades(
+    getActiveGrades: GetActiveGrades,
+    appScope: CoroutineScope,
     private val defaultDispatcher: CoroutineDispatcher,
-    private val getActiveGrades: GetActiveGrades,
     private val calculate: Calculate,
     private val setGrade: SetGrade,
     private val getGPASettings: GetGPASettings,
 ) {
+    val activeGrades = getActiveGrades().map { list ->
+        list.map { Grade(it) }
+    }.stateIn(
+        scope = appScope,
+        started = SharingStarted.Lazily,
+        initialValue = emptyList()
+    )
+
     suspend operator fun invoke(
         subjectWithAssignedGrades: List<Subject>,
         targetCumulativeGPA: String?,
@@ -45,8 +58,6 @@ class PredictGrades(
                 )
 
             // -------------- PREPARE ----------------//
-            val activeGrades = getActiveGrades().map { Grade(it) }
-
             val strippedSubjectsWithGrades =
                 stripAssignedGradesIfNotFixed(subjectWithAssignedGrades)
 
@@ -54,14 +65,17 @@ class PredictGrades(
             // have to be f as initial value and we will assign after that start from D
             // that's mean the first calculation result all grades of subjects will be D
             val subjectsWithAssignedGrades =
-                assignLowestGradeToSubjectsWithNullGrade(strippedSubjectsWithGrades, activeGrades)
+                assignLowestGradeToSubjectsWithNullGrade(
+                    strippedSubjectsWithGrades,
+                    activeGrades.value
+                )
 
             val list = if (reverseSubjects) subjectsWithAssignedGrades.asReversed()
             else subjectsWithAssignedGrades
 
             // reversed to have a list containing (d, c, c+, b-, b, b+, a-, a, a+)
             //  as we want to assign the grade from the lower to higher to get the minimum grades needed
-            val activeGradesWithoutF = activeGrades.filter {
+            val activeGradesWithoutF = activeGrades.value.filter {
                 it.name != GradeName.F
             }.reversed()
 

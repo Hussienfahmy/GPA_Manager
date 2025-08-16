@@ -20,6 +20,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -31,12 +32,14 @@ object Module {
         subjectDao: SubjectDao,
         getActiveGrade: GetActiveGrades,
         @DispatcherDefault defaultDispatcher: CoroutineDispatcher,
+        appScope: CoroutineScope,
     ): SemesterMarksUseCases {
         return SemesterMarksUseCases(
             continuesCalculation = ContinuesCalculation(
                 subjectDao = subjectDao,
                 getActiveGrades = getActiveGrade,
-                defaultDispatcher
+                defaultDispatcher = defaultDispatcher,
+                appScope = appScope
             ),
             resetMarks = ResetMarks(subjectDao),
             setOralAvailable = SetOralAvailable(subjectDao),

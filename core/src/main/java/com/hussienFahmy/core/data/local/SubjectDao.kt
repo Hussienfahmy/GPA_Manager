@@ -7,8 +7,10 @@ import androidx.room.Query
 import com.hussienFahmy.core.data.local.entity.Grade
 import com.hussienFahmy.core.data.local.entity.Subject
 import com.hussienFahmy.core.data.local.model.GradeName
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
 
 @Dao
 interface SubjectDao {
@@ -166,6 +168,6 @@ interface SubjectDao {
                         assignedGrade = assignedGrade
                     )
                 }
-            }
+            }.flowOn(Dispatchers.IO)
         }
 }

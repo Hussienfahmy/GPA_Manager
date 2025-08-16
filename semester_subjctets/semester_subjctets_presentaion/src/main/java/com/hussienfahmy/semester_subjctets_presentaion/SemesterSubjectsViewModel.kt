@@ -39,7 +39,8 @@ class SemesterSubjectsViewModel @Inject constructor(
             subjectsWithGrade.distinctUntilChanged(),
             mode,
             fixedSubjectsIds,
-        ) { subjectsWithGrade, mode, fixedSubjectsIds ->
+            getActiveGradeNames()
+        ) { subjectsWithGrade, mode, fixedSubjectsIds, activeGradeNames ->
             val calculationResult =
                 calculationUseCases.calculate(subjectsWithGrade)
 
@@ -53,7 +54,7 @@ class SemesterSubjectsViewModel @Inject constructor(
                 is Mode.Normal -> {
                     SemesterSubjectsState.Loaded(
                         subjects = subjects,
-                        grades = getActiveGradeNames(),
+                        grades = activeGradeNames,
                         mode = mode,
                         modeResult = ModeResult.Normal(calculationResult)
                     )
@@ -72,7 +73,7 @@ class SemesterSubjectsViewModel @Inject constructor(
 
                     SemesterSubjectsState.Loaded(
                         subjects = subjects,
-                        grades = getActiveGradeNames(),
+                        grades = activeGradeNames,
                         mode = mode,
                         modeResult = ModeResult.Predict(
                             result = calculationResult,

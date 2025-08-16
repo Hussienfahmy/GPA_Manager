@@ -5,5 +5,5 @@ import com.hussienFahmy.core.data.local.GradeDao
 class GetActiveGrades(
     private val gradeDao: GradeDao,
 ) {
-    suspend operator fun invoke() = gradeDao.getActiveGrades()
+    operator fun invoke() = gradeDao.getActiveGrades()
 }

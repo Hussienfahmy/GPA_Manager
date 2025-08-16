@@ -6,20 +6,33 @@ import com.hussienFahmy.core.domain.grades.use_case.GetActiveGrades
 import com.hussienfahmy.semester_marks_domain.model.Grade
 import com.hussienfahmy.semester_marks_domain.model.Subject
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 
 class ContinuesCalculation(
+    getActiveGrades: GetActiveGrades,
+    appScope: CoroutineScope,
     private val subjectDao: SubjectDao,
-    private val getActiveGrades: GetActiveGrades,
-    private val backgroundDispatcher: CoroutineDispatcher,
+    private val defaultDispatcher: CoroutineDispatcher,
 ) {
+    val activeGrades = getActiveGrades().map { list ->
+        list.filter {
+            it.name != GradeName.F
+        }
+    }.stateIn(
+        scope = appScope,
+        started = SharingStarted.Lazily,
+        initialValue = emptyList()
+    )
+
     suspend operator fun invoke(): Flow<List<Subject>> =
-        withContext(backgroundDispatcher) {
-            val activeGrades = getActiveGrades().filter {
-                it.name != GradeName.F
-            }
+        withContext(defaultDispatcher) {
+            if (activeGrades.value.isEmpty()) return@withContext flowOf()
 
             subjectDao.subjectsWithAssignedGrade.map {
                 it.map { (subjectEntity, maxGrade, _) ->
@@ -35,7 +48,7 @@ class ContinuesCalculation(
                         oralMarks = subjectEntity.semesterMarks?.oral,
                         projectMarks = subjectEntity.semesterMarks?.project,
                         courseTotalMarks = subjectEntity.totalMarks,
-                        grades = activeGrades.map { gradeEntity ->
+                        grades = activeGrades.value.map { gradeEntity ->
                             val requiredMarksToAchieveThisGrade =
                                 (subjectEntity.totalMarks * gradeEntity.percentage!!) / 100.0
                             val marksAchieved = subjectEntity.semesterMarks?.value

@@ -15,7 +15,7 @@ interface GradeDao {
     val grades: Flow<List<Grade>>
 
     @Query("SELECT * FROM grade WHERE active = 1 ORDER BY points DESC")
-    suspend fun getActiveGrades(): List<Grade>
+    fun getActiveGrades(): Flow<List<Grade>>
 
     @Query("SELECT * FROM grade WHERE meta_data = :gradeName")
     suspend fun getGradeByName(gradeName: GradeName): Grade?
