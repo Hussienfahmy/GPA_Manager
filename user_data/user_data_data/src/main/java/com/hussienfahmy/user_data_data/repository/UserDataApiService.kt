@@ -25,9 +25,7 @@ class UserDataApiService(
     private val currentUser = MutableStateFlow(auth.currentUser)
     private val userId = currentUser.filterNotNull().map { it.uid }
     private val userDoc = userId.map { userId ->
-        db.collection(NetworkUserData.COLLECTION_NAME).document(userId).also {
-            Log.d(TAG, "doc path = ${it.path}")
-        }
+        db.collection(NetworkUserData.COLLECTION_NAME).document(userId)
     }
 
     init {
