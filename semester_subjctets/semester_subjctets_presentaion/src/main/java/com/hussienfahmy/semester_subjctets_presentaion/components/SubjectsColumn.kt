@@ -5,7 +5,6 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -60,7 +59,6 @@ import com.hussienFahmy.myGpaManager.core.R
 import com.hussienfahmy.semester_subjctets_domain.model.Subject
 import com.hussienfahmy.semester_subjctets_presentaion.model.Mode
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SubjectsColumn(
     subjects: List<Subject>,
@@ -71,8 +69,12 @@ fun SubjectsColumn(
     onResetClick: (subjectId: Long) -> Unit,
     onGradeClick: (subjectId: Long, grade: GradeName) -> Unit,
     mode: Mode,
+    modifier: Modifier = Modifier
 ) {
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    LazyColumn(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         items(items = subjects, key = { it.id }) { subject ->
             Subject(
                 modifier = Modifier.animateItem(),

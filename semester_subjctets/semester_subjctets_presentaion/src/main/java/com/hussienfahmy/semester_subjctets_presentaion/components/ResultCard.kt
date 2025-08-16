@@ -287,6 +287,9 @@ fun ResultCardPredictivePreview() {
             )
         ),
         onTargetGPAChange = { _, _ -> },
-        mode = Mode.Normal,
+        mode = Mode.Predict(
+            targetCumulativeGPA = "3.5",
+            reverseSubjects = false
+        ),
     )
 }

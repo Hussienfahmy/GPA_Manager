@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hussienFahmy.core.data.local.model.GradeName
 import com.hussienFahmy.core_ui.LocalSpacing
@@ -84,7 +85,7 @@ fun SemesterScreen(
     val spacing = LocalSpacing.current
 
     when (state) {
-        is SemesterSubjectsState.Loading -> Box(modifier = Modifier.fillMaxSize()) {
+        is SemesterSubjectsState.Loading -> Box(modifier = modifier) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
 
@@ -258,6 +259,9 @@ fun SemesterContentLandscape(
 
         Row {
             ResultCard(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(0.5f),
                 calculationResult = state.modeResult.calculationResult,
                 onTargetGPAChange = { targetGPA, reverseOrder ->
                     onPredictDataChange(targetGPA to reverseOrder)
@@ -268,9 +272,12 @@ fun SemesterContentLandscape(
             Spacer(modifier = Modifier.width(spacing.small))
 
             if (state.subjects.isEmpty()) {
-                AddSubjectsHint()
+                AddSubjectsHint(
+                    modifier = Modifier.weight(0.7f),
+                )
             } else {
                 SubjectsColumn(
+                    modifier = Modifier.weight(1f),
                     subjects = state.subjects,
                     activeGrades = state.grades,
                     mode = state.mode,
@@ -285,10 +292,11 @@ fun SemesterContentLandscape(
     }
 }
 
-@Preview
+@PreviewScreenSizes
+@Preview(showBackground = true)
 @Composable
 fun SemesterScreenContentPreviewPortrait() {
-    SemesterContentPortrait(
+    SemesterScreenContent(
         state = SemesterSubjectsState.Loaded(
             subjects = listOf(
                 Subject(

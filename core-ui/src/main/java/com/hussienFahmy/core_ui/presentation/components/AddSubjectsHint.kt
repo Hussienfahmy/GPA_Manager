@@ -12,11 +12,13 @@ import androidx.compose.ui.res.stringResource
 import com.hussienFahmy.myGpaManager.core.R
 
 @Composable
-fun AddSubjectsHint() {
+fun AddSubjectsHint(
+    modifier: Modifier = Modifier
+) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
             text = stringResource(R.string.no_subjects),

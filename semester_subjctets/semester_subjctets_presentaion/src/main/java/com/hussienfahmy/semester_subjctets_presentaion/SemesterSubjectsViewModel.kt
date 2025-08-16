@@ -63,7 +63,7 @@ class SemesterSubjectsViewModel @Inject constructor(
                     val predictionResult = calculationUseCases.predictGrades(
                         subjectWithAssignedGrades = subjects,
                         targetCumulativeGPA = mode.targetCumulativeGPA,
-                        reverseSubjects = mode.reserveSubjects
+                        reverseSubjects = mode.reverseSubjects
                     )
 
                     if (predictionResult is PredictGrades.Result.Failed) predictionResult.message?.let {
@@ -125,7 +125,7 @@ class SemesterSubjectsViewModel @Inject constructor(
                 is SemesterSubjectsEvent.SubmitPredictiveData -> {
                     mode.value = Mode.Predict(
                         targetCumulativeGPA = event.targetCumulativeGPA,
-                        reserveSubjects = event.reserveSubjects
+                        reverseSubjects = event.reserveSubjects
                     )
                 }
 

@@ -4,6 +4,6 @@ sealed class Mode {
     object Normal : Mode()
     data class Predict(
         val targetCumulativeGPA: String = "0.0",
-        val reserveSubjects: Boolean = false
+        val reverseSubjects: Boolean = false
     ) : Mode()
 }
