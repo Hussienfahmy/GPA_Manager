@@ -1,8 +1,8 @@
 package com.hussienfahmy.sync_domain.use_case
 
-import com.hussienFahmy.core.data.local.GradeDao
-import com.hussienFahmy.core.domain.gpa_settings.use_case.UpdateGPASystem
-import com.hussienFahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
+import com.hussienfahmy.core.data.local.GradeDao
+import com.hussienfahmy.core.domain.gpa_settings.use_case.UpdateGPASystem
+import com.hussienfahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
 import com.hussienfahmy.sync_domain.model.toGrades
 import com.hussienfahmy.sync_domain.repository.SyncRepository
 

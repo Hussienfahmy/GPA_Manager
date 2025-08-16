@@ -1,6 +1,6 @@
 package com.hussienfahmy.semester_subjctets_presentaion
 
-import com.hussienFahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core.data.local.model.GradeName
 
 sealed class SemesterSubjectsEvent {
     object CLearAll : SemesterSubjectsEvent()

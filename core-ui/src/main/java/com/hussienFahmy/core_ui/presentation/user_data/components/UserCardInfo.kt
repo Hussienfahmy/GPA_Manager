@@ -1,4 +1,4 @@
-package com.hussienFahmy.core_ui.presentation.user_data.components
+package com.hussienfahmy.core_ui.presentation.user_data.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,9 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.hussienFahmy.core.domain.user_data.model.UserData
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.myGpaManager.core.R
+import com.hussienfahmy.core.domain.user_data.model.UserData
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.myGpaManager.core.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

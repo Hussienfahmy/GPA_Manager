@@ -19,9 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hussienFahmy.core.domain.user_data.model.UserData
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.core_ui.presentation.util.UiEventHandler
+import com.hussienfahmy.core.domain.user_data.model.UserData
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.quick_domain.model.QuickCalculationRequest
 import com.hussienfahmy.quick_presentation.components.InputCard
 import com.hussienfahmy.quick_presentation.components.QuickResultCard

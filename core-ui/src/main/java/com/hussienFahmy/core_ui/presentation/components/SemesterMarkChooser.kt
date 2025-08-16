@@ -1,4 +1,4 @@
-package com.hussienFahmy.core_ui.presentation.components
+package com.hussienfahmy.core_ui.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

@@ -1,4 +1,4 @@
-package com.hussienFahmy.core.data.local
+package com.hussienfahmy.core.data.local
 
 import androidx.room.DeleteColumn
 import androidx.room.RenameColumn

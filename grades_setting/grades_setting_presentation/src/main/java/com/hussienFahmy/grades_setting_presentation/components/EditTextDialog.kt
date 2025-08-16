@@ -1,4 +1,4 @@
-package com.hussienFahmy.grades_setting_presentation.components
+package com.hussienfahmy.grades_setting_presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,8 +24,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.myGpaManager.core.R
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.myGpaManager.core.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

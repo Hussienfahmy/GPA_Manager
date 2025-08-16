@@ -1,4 +1,4 @@
-package com.hussienFahmy.myGpaManager.navigation.screens.more
+package com.hussienfahmy.myGpaManager.navigation.screens.more
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.hussienFahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.LocalSpacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

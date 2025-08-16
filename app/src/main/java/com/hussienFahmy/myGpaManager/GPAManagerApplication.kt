@@ -1,4 +1,4 @@
-package com.hussienFahmy.myGpaManager
+package com.hussienfahmy.myGpaManager
 
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory

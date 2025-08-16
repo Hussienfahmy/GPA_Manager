@@ -1,4 +1,4 @@
-package com.hussienFahmy.core_ui.presentation.components
+package com.hussienfahmy.core_ui.presentation.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -35,8 +35,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.myGpaManager.core.R
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.myGpaManager.core.R
 
 @Composable
 fun ExpandableTextField(

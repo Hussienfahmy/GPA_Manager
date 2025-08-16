@@ -1,8 +1,8 @@
 package com.hussienfahmy.subject_settings_domain.use_case
 
-import com.hussienFahmy.core.data.local.util.UpdateResult
-import com.hussienFahmy.core.domain.subject_settings.model.SubjectSettings
-import com.hussienFahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
+import com.hussienfahmy.core.data.local.util.UpdateResult
+import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
+import com.hussienfahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
 
 class UpdateSubjectsDependsOn(
     private val repository: SubjectSettingsRepository,

@@ -1,4 +1,4 @@
-package com.hussienFahmy.core.domain.user_data.use_cases
+package com.hussienfahmy.core.domain.user_data.use_cases
 
 import android.content.ContentResolver
 import android.graphics.Bitmap
@@ -7,7 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import com.google.firebase.storage.FirebaseStorage
-import com.hussienFahmy.core.domain.user_data.repository.UserDataRepository
+import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
 import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
 

@@ -1,7 +1,7 @@
 package com.hussienfahmy.gpa_system_settings_data.di
 
 import android.content.Context
-import com.hussienFahmy.core.domain.gpa_settings.repository.GPASettingsRepository
+import com.hussienfahmy.core.domain.gpa_settings.repository.GPASettingsRepository
 import com.hussienfahmy.gpa_system_settings_data.datastore.GPADatastore
 import com.hussienfahmy.gpa_system_settings_data.repository.GPASettingsRepositoryImpl
 import dagger.Module

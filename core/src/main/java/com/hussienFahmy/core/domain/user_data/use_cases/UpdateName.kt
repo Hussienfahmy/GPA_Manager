@@ -1,9 +1,9 @@
-package com.hussienFahmy.core.domain.user_data.use_cases
+package com.hussienfahmy.core.domain.user_data.use_cases
 
-import com.hussienFahmy.core.data.local.util.UpdateResult
-import com.hussienFahmy.core.domain.user_data.repository.UserDataRepository
-import com.hussienFahmy.core.model.UiText
-import com.hussienFahmy.myGpaManager.core.R
+import com.hussienfahmy.core.data.local.util.UpdateResult
+import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
+import com.hussienfahmy.core.model.UiText
+import com.hussienfahmy.myGpaManager.core.R
 
 class UpdateName(
     private val repository: UserDataRepository,

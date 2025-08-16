@@ -1,4 +1,4 @@
-package com.hussienFahmy.myGpaManager.navigation.screens.onboarding
+package com.hussienfahmy.myGpaManager.navigation.screens.onboarding
 
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
@@ -17,10 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.grades_setting_presentation.GradeSettingsScreen
-import com.hussienFahmy.myGpaManager.navigation.SlideTransitions
-import com.hussienFahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.grades_setting_presentation.GradeSettingsScreen
+import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
+import com.hussienfahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination<OnBoardingNavGraph>(style = SlideTransitions::class)

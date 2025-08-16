@@ -1,7 +1,7 @@
-package com.hussienFahmy.grades_setting_domain.use_case
+package com.hussienfahmy.grades_setting_domain.use_case
 
-import com.hussienFahmy.core.data.local.GradeDao
-import com.hussienFahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core.data.local.GradeDao
+import com.hussienfahmy.core.data.local.model.GradeName
 
 class GetGradeByName(
     private val gradeDao: GradeDao,

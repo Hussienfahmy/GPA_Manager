@@ -1,4 +1,4 @@
-package com.hussienFahmy.core.util
+package com.hussienfahmy.core.util
 
 import java.math.BigDecimal
 import java.math.RoundingMode

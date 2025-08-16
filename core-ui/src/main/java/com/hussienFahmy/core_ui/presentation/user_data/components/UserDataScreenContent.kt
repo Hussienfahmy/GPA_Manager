@@ -1,4 +1,4 @@
-package com.hussienFahmy.core_ui.presentation.user_data.components
+package com.hussienfahmy.core_ui.presentation.user_data.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -25,11 +25,11 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.hussienFahmy.core.domain.user_data.model.UserData
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.core_ui.presentation.components.ExpandableTextField
-import com.hussienFahmy.core_ui.presentation.user_data.UserDataState
-import com.hussienFahmy.myGpaManager.core.R
+import com.hussienfahmy.core.domain.user_data.model.UserData
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.ExpandableTextField
+import com.hussienfahmy.core_ui.presentation.user_data.UserDataState
+import com.hussienfahmy.myGpaManager.core.R
 
 @Composable
 fun UserDataScreenContent(

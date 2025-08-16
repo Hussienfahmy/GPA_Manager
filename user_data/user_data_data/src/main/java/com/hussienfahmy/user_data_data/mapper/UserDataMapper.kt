@@ -1,7 +1,7 @@
 package com.hussienfahmy.user_data_data.mapper
 
 import com.hussienfahmy.user_data_data.model.UserData
-import com.hussienFahmy.core.domain.user_data.model.UserData as UserDataDomain
+import com.hussienfahmy.core.domain.user_data.model.UserData as UserDataDomain
 
 internal fun UserData.toUserData(): UserDataDomain = UserDataDomain(
     name = name,

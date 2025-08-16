@@ -1,4 +1,4 @@
-package com.hussienFahmy.core_ui.presentation.components
+package com.hussienfahmy.core_ui.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,8 +31,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.myGpaManager.core.R
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.myGpaManager.core.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

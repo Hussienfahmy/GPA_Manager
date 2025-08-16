@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import com.hussienFahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.LocalSpacing
 
 enum class OptionType { Horizontal, Vertical }
 

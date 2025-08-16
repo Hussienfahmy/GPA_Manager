@@ -1,4 +1,4 @@
-package com.hussienFahmy.myGpaManager
+package com.hussienfahmy.myGpaManager
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

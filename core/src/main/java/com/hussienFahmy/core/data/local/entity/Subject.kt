@@ -1,10 +1,11 @@
-package com.hussienFahmy.core.data.local.entity
+package com.hussienfahmy.core.data.local.entity
 
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.hussienFahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core.data.local.model.GradeName
 
 /**
  * Subject is the main object of the app
@@ -18,6 +19,7 @@ import com.hussienFahmy.core.data.local.model.GradeName
  * @property metadata MetaData the other data related to this subject that not fixed and used in calculation
  */
 @Entity(tableName = "subject")
+@Keep
 data class Subject(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String = "",
@@ -34,6 +36,7 @@ data class Subject(
      * @property oral Double? oral marks (null means the user didn't take this exam yet so there is no marks)
      * @property value Double the sum of all the marks
      */
+    @Keep
     data class SemesterMarks(
         val midterm: Double? = null,
         val practical: Double? = null,
@@ -59,6 +62,7 @@ data class Subject(
      * and always be calculated when retrieve the data from database
      * @constructor
      */
+    @Keep
     data class MetaData(
         @ColumnInfo(defaultValue = "1") val midtermAvailable: Boolean = true,
         @ColumnInfo(defaultValue = "1") val oralAvailable: Boolean = true,

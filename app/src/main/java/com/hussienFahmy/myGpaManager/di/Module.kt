@@ -1,4 +1,4 @@
-package com.hussienFahmy.myGpaManager.di
+package com.hussienfahmy.myGpaManager.di
 
 import android.content.Context
 import androidx.work.WorkManager

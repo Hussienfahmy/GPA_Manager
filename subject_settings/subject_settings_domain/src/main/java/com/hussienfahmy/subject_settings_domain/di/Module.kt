@@ -1,8 +1,8 @@
 package com.hussienfahmy.subject_settings_domain.di
 
-import com.hussienFahmy.core.data.local.SubjectDao
-import com.hussienFahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
-import com.hussienFahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
+import com.hussienfahmy.core.data.local.SubjectDao
+import com.hussienfahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
+import com.hussienfahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
 import com.hussienfahmy.subject_settings_domain.use_case.ApplySettingsToSubjects
 import com.hussienfahmy.subject_settings_domain.use_case.ObserveSubjectsSettings
 import com.hussienfahmy.subject_settings_domain.use_case.SubjectSettingsUseCases

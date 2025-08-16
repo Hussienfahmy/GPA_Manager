@@ -1,8 +1,8 @@
 package com.hussienfahmy.semester_marks_domain.di
 
-import com.hussienFahmy.core.data.local.SubjectDao
-import com.hussienFahmy.core.di.DispatcherDefault
-import com.hussienFahmy.core.domain.grades.use_case.GetActiveGrades
+import com.hussienfahmy.core.data.local.SubjectDao
+import com.hussienfahmy.core.di.DispatcherDefault
+import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
 import com.hussienfahmy.semester_marks_domain.use_case.ChangeMidtermMarks
 import com.hussienfahmy.semester_marks_domain.use_case.ChangeOralMarks
 import com.hussienfahmy.semester_marks_domain.use_case.ChangePracticalMarks

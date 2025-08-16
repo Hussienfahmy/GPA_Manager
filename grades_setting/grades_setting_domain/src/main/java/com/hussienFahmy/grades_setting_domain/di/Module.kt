@@ -1,13 +1,13 @@
-package com.hussienFahmy.grades_setting_domain.di
+package com.hussienfahmy.grades_setting_domain.di
 
-import com.hussienFahmy.core.data.local.GradeDao
-import com.hussienFahmy.core.data.local.SubjectDao
-import com.hussienFahmy.grades_setting_domain.use_case.ActivateGrade
-import com.hussienFahmy.grades_setting_domain.use_case.GetGradeByName
-import com.hussienFahmy.grades_setting_domain.use_case.GradeSettingsUseCases
-import com.hussienFahmy.grades_setting_domain.use_case.LoadGrades
-import com.hussienFahmy.grades_setting_domain.use_case.UpdatePercentage
-import com.hussienFahmy.grades_setting_domain.use_case.UpdatePoints
+import com.hussienfahmy.core.data.local.GradeDao
+import com.hussienfahmy.core.data.local.SubjectDao
+import com.hussienfahmy.grades_setting_domain.use_case.ActivateGrade
+import com.hussienfahmy.grades_setting_domain.use_case.GetGradeByName
+import com.hussienfahmy.grades_setting_domain.use_case.GradeSettingsUseCases
+import com.hussienfahmy.grades_setting_domain.use_case.LoadGrades
+import com.hussienfahmy.grades_setting_domain.use_case.UpdatePercentage
+import com.hussienfahmy.grades_setting_domain.use_case.UpdatePoints
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

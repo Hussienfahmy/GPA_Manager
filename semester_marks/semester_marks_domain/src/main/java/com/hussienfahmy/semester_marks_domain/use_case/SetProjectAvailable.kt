@@ -1,6 +1,6 @@
 package com.hussienfahmy.semester_marks_domain.use_case
 
-import com.hussienFahmy.core.data.local.SubjectDao
+import com.hussienfahmy.core.data.local.SubjectDao
 
 class SetProjectAvailable(
     private val subjectDao: SubjectDao,

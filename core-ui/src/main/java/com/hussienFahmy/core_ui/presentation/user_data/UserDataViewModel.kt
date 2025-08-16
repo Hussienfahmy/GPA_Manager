@@ -1,10 +1,10 @@
-package com.hussienFahmy.core_ui.presentation.user_data
+package com.hussienfahmy.core_ui.presentation.user_data
 
 import androidx.lifecycle.viewModelScope
-import com.hussienFahmy.core.data.local.util.UpdateResult
-import com.hussienFahmy.core.domain.user_data.use_cases.UserDataUseCases
-import com.hussienFahmy.core_ui.presentation.model.UiEvent
-import com.hussienFahmy.core_ui.presentation.viewmodel.UiViewModel
+import com.hussienfahmy.core.data.local.util.UpdateResult
+import com.hussienfahmy.core.domain.user_data.use_cases.UserDataUseCases
+import com.hussienfahmy.core_ui.presentation.model.UiEvent
+import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn

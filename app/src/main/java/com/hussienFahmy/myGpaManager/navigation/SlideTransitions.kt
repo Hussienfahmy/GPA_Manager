@@ -1,4 +1,4 @@
-package com.hussienFahmy.myGpaManager.navigation
+package com.hussienfahmy.myGpaManager.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition

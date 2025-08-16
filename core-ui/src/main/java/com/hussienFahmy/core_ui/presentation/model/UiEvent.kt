@@ -1,6 +1,6 @@
-package com.hussienFahmy.core_ui.presentation.model
+package com.hussienfahmy.core_ui.presentation.model
 
-import com.hussienFahmy.core.model.UiText
+import com.hussienfahmy.core.model.UiText
 
 sealed class UiEvent {
     data class ShowToast(val message: UiText) : UiEvent()

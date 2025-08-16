@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "${libs.versions.appId.get()}.core"
+    namespace = "${libs.versions.nameSpace.get()}.core"
 
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")

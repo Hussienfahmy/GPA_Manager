@@ -1,7 +1,7 @@
 package com.hussienfahmy.semester_subjctets_domain.use_case
 
-import com.hussienFahmy.core.data.local.SubjectDao
-import com.hussienFahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core.data.local.SubjectDao
+import com.hussienfahmy.core.data.local.model.GradeName
 
 class SetGrade(
     private val subjectDao: SubjectDao,

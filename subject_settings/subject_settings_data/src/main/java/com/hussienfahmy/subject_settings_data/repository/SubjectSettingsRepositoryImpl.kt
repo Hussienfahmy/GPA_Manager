@@ -1,7 +1,7 @@
 package com.hussienfahmy.subject_settings_data.repository
 
-import com.hussienFahmy.core.domain.subject_settings.model.SubjectSettings
-import com.hussienFahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
+import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
+import com.hussienfahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
 import com.hussienfahmy.subject_settings_data.datastore.SubjectSettingsDataSource
 import com.hussienfahmy.subject_settings_data.mappers.toDomain
 import kotlinx.coroutines.flow.Flow

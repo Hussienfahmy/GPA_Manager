@@ -1,4 +1,4 @@
-package com.hussienFahmy.grades_setting_presentation
+package com.hussienfahmy.grades_setting_presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -35,13 +35,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hussienFahmy.core.data.local.model.GradeName
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.core_ui.presentation.util.UiEventHandler
-import com.hussienFahmy.grades_setting_domain.model.GradeSetting
-import com.hussienFahmy.grades_setting_presentation.components.GradeItem
-import com.hussienFahmy.grades_setting_presentation.model.Mode
-import com.hussienFahmy.myGpaManager.core.R
+import com.hussienfahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
+import com.hussienfahmy.grades_setting_domain.model.GradeSetting
+import com.hussienfahmy.grades_setting_presentation.components.GradeItem
+import com.hussienfahmy.grades_setting_presentation.model.Mode
+import com.hussienfahmy.myGpaManager.core.R
 
 
 @Composable

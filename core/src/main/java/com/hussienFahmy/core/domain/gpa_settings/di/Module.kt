@@ -1,7 +1,7 @@
-package com.hussienFahmy.core.domain.gpa_settings.di
+package com.hussienfahmy.core.domain.gpa_settings.di
 
-import com.hussienFahmy.core.domain.gpa_settings.repository.GPASettingsRepository
-import com.hussienFahmy.core.domain.gpa_settings.use_case.GetGPASettings
+import com.hussienfahmy.core.domain.gpa_settings.repository.GPASettingsRepository
+import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

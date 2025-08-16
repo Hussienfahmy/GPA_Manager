@@ -14,7 +14,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkerParameters
-import com.hussienFahmy.myGpaManager.core.R
+import com.hussienfahmy.myGpaManager.core.R
 import com.hussienfahmy.sync_domain.use_case.GetIsFirstTimeInstall
 import com.hussienfahmy.sync_domain.use_case.PullSettings
 import com.hussienfahmy.sync_domain.use_case.PullSubjects

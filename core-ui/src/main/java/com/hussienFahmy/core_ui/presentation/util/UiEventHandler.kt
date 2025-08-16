@@ -1,4 +1,4 @@
-package com.hussienFahmy.core_ui.presentation.util
+package com.hussienfahmy.core_ui.presentation.util
 
 import android.widget.Toast
 import androidx.compose.material3.SnackbarHostState
@@ -7,7 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import com.hussienFahmy.core_ui.presentation.model.UiEvent
+import com.hussienfahmy.core_ui.presentation.model.UiEvent
 import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalComposeUiApi::class)

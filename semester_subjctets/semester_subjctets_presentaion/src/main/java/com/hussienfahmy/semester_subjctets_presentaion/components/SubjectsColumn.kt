@@ -52,10 +52,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.hussienFahmy.core.data.local.model.GradeName
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.core_ui.presentation.components.ConfirmationDialog
-import com.hussienFahmy.myGpaManager.core.R
+import com.hussienfahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.ConfirmationDialog
+import com.hussienfahmy.myGpaManager.core.R
 import com.hussienfahmy.semester_subjctets_domain.model.Subject
 import com.hussienfahmy.semester_subjctets_presentaion.model.Mode
 

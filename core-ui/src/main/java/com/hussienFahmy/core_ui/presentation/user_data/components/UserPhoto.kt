@@ -1,4 +1,4 @@
-package com.hussienFahmy.core_ui.presentation.user_data.components
+package com.hussienfahmy.core_ui.presentation.user_data.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -16,8 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.hussienFahmy.myGpaManager.core.R
-import com.hussienFahmy.myGpaManager.core_ui.R as CoreUiR
+import com.hussienfahmy.myGpaManager.core.R
+import com.hussienfahmy.myGpaManager.core_ui.R as CoreUiR
 
 @Composable
 fun UserPhoto(

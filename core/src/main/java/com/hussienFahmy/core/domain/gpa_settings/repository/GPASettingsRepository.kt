@@ -1,6 +1,6 @@
-package com.hussienFahmy.core.domain.gpa_settings.repository
+package com.hussienfahmy.core.domain.gpa_settings.repository
 
-import com.hussienFahmy.core.domain.gpa_settings.model.GPA
+import com.hussienfahmy.core.domain.gpa_settings.model.GPA
 import kotlinx.coroutines.flow.Flow
 
 interface GPASettingsRepository {

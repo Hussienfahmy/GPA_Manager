@@ -1,10 +1,10 @@
 package com.hussienfahmy.onboarding_presentation.sign_in
 
 import androidx.lifecycle.viewModelScope
-import com.hussienFahmy.core.domain.user_data.repository.UserDataRepository
-import com.hussienFahmy.core.model.UiText.DynamicString
-import com.hussienFahmy.core_ui.presentation.model.UiEvent.ShowSnackBar
-import com.hussienFahmy.core_ui.presentation.viewmodel.UiViewModel
+import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
+import com.hussienfahmy.core.model.UiText.DynamicString
+import com.hussienfahmy.core_ui.presentation.model.UiEvent.ShowSnackBar
+import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

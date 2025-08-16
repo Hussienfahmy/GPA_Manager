@@ -1,4 +1,4 @@
-package com.hussienFahmy.core_ui.presentation.components
+package com.hussienfahmy.core_ui.presentation.components
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable

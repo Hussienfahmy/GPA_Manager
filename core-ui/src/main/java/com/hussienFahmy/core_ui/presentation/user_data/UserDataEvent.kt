@@ -1,7 +1,7 @@
-package com.hussienFahmy.core_ui.presentation.user_data
+package com.hussienfahmy.core_ui.presentation.user_data
 
 import android.net.Uri
-import com.hussienFahmy.core.domain.user_data.model.UserData
+import com.hussienfahmy.core.domain.user_data.model.UserData
 
 sealed class UserDataEvent {
     data class UpdateName(val name: String) : UserDataEvent()

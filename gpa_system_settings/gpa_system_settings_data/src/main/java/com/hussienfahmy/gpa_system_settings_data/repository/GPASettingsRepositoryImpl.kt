@@ -1,7 +1,7 @@
 package com.hussienfahmy.gpa_system_settings_data.repository
 
-import com.hussienFahmy.core.domain.gpa_settings.model.GPA
-import com.hussienFahmy.core.domain.gpa_settings.repository.GPASettingsRepository
+import com.hussienfahmy.core.domain.gpa_settings.model.GPA
+import com.hussienfahmy.core.domain.gpa_settings.repository.GPASettingsRepository
 import com.hussienfahmy.gpa_system_settings_data.datastore.GPADatastore
 import com.hussienfahmy.gpa_system_settings_data.mappers.toDomain
 import kotlinx.coroutines.flow.Flow

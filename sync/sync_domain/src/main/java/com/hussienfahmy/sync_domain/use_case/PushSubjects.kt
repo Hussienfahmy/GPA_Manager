@@ -1,6 +1,6 @@
 package com.hussienfahmy.sync_domain.use_case
 
-import com.hussienFahmy.core.data.local.SubjectDao
+import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.sync_domain.model.Subject
 import com.hussienfahmy.sync_domain.repository.SyncRepository
 import kotlinx.coroutines.flow.first

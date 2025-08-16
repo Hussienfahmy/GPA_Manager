@@ -1,4 +1,4 @@
-package com.hussienFahmy.core.model
+package com.hussienfahmy.core.model
 
 import android.content.Context
 import androidx.annotation.StringRes

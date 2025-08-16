@@ -1,4 +1,4 @@
-package com.hussienFahmy.myGpaManager.navigation
+package com.hussienfahmy.myGpaManager.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -7,7 +7,7 @@ import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.hussienFahmy.myGpaManager.core.R
+import com.hussienfahmy.myGpaManager.core.R
 import com.ramcosta.composedestinations.generated.destinations.AppMoreScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.AppQuickScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.AppSemesterMarksScreenDestination

@@ -1,4 +1,4 @@
-package com.hussienFahmy.myGpaManager
+package com.hussienfahmy.myGpaManager
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -20,9 +20,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.hussienFahmy.myGpaManager.navigation.AppBottomNav
-import com.hussienFahmy.myGpaManager.navigation.AppDestinationsNavHost
-import com.hussienFahmy.myGpaManager.ui.theme.GPAManagerTheme
+import com.hussienfahmy.myGpaManager.navigation.AppBottomNav
+import com.hussienfahmy.myGpaManager.navigation.AppDestinationsNavHost
+import com.hussienfahmy.myGpaManager.ui.theme.GPAManagerTheme
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.utils.startDestination
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,6 +1,6 @@
-package com.hussienFahmy.core.domain.user_data.repository
+package com.hussienfahmy.core.domain.user_data.repository
 
-import com.hussienFahmy.core.domain.user_data.model.UserData
+import com.hussienfahmy.core.domain.user_data.model.UserData
 import kotlinx.coroutines.flow.Flow
 
 interface UserDataRepository {

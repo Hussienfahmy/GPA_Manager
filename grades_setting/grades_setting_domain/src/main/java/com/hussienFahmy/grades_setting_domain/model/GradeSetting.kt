@@ -1,7 +1,7 @@
-package com.hussienFahmy.grades_setting_domain.model
+package com.hussienfahmy.grades_setting_domain.model
 
-import com.hussienFahmy.core.data.local.entity.Grade
-import com.hussienFahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core.data.local.entity.Grade
+import com.hussienfahmy.core.data.local.model.GradeName
 
 data class GradeSetting(
     val name: GradeName,

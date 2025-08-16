@@ -1,7 +1,7 @@
 package com.hussienfahmy.semester_subjctets_domain.model
 
-import com.hussienFahmy.core.data.local.entity.Grade
-import com.hussienFahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core.data.local.entity.Grade
+import com.hussienfahmy.core.data.local.model.GradeName
 
 data class Grade(
     val name: GradeName,

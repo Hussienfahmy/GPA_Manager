@@ -1,7 +1,7 @@
-package com.hussienFahmy.core.domain.subject_settings.di
+package com.hussienfahmy.core.domain.subject_settings.di
 
-import com.hussienFahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
-import com.hussienFahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
+import com.hussienfahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
+import com.hussienfahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

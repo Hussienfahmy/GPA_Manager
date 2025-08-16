@@ -1,4 +1,4 @@
-package com.hussienFahmy.myGpaManager.navigation.screens.more
+package com.hussienfahmy.myGpaManager.navigation.screens.more
 
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
@@ -21,12 +21,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hussienFahmy.core.domain.user_data.model.UserData
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.core_ui.presentation.user_data.components.UserInfoCard
-import com.hussienFahmy.myGpaManager.core.R
-import com.hussienFahmy.myGpaManager.navigation.SlideTransitions
-import com.hussienFahmy.myGpaManager.navigation.graphs.MoreNavGraph
+import com.hussienfahmy.core.domain.user_data.model.UserData
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.user_data.components.UserInfoCard
+import com.hussienfahmy.myGpaManager.core.R
+import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
+import com.hussienfahmy.myGpaManager.navigation.graphs.MoreNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination<MoreNavGraph>(start = true, style = SlideTransitions::class)

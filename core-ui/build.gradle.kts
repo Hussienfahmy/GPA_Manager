@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "${libs.versions.appId.get()}.core_ui"
+    namespace = "${libs.versions.nameSpace.get()}.core_ui"
 }
 
 dependencies {

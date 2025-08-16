@@ -1,7 +1,7 @@
-package com.hussienFahmy.core.data.local.entity
+package com.hussienfahmy.core.data.local.entity
 
 import androidx.test.filters.SmallTest
-import com.hussienFahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core.data.local.model.GradeName
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test

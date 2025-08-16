@@ -22,10 +22,10 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hussienFahmy.core.data.local.model.GradeName
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.core_ui.presentation.components.AddSubjectsHint
-import com.hussienFahmy.core_ui.presentation.util.UiEventHandler
+import com.hussienfahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.AddSubjectsHint
+import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.semester_subjctets_domain.model.Grade
 import com.hussienfahmy.semester_subjctets_domain.model.Subject
 import com.hussienfahmy.semester_subjctets_domain.use_case.Calculate

@@ -1,12 +1,12 @@
 package com.hussienfahmy.semester_subjctets_domain.di
 
-import com.hussienFahmy.core.data.local.SubjectDao
-import com.hussienFahmy.core.di.DispatcherDefault
-import com.hussienFahmy.core.domain.gpa_settings.use_case.GetGPASettings
-import com.hussienFahmy.core.domain.grades.use_case.GetActiveGrades
-import com.hussienFahmy.core.domain.grades.use_case.GetGradeByPoints
-import com.hussienFahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
-import com.hussienFahmy.core.domain.user_data.use_cases.GetAcademicProgress
+import com.hussienfahmy.core.data.local.SubjectDao
+import com.hussienfahmy.core.di.DispatcherDefault
+import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
+import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
+import com.hussienfahmy.core.domain.grades.use_case.GetGradeByPoints
+import com.hussienfahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
+import com.hussienfahmy.core.domain.user_data.use_cases.GetAcademicProgress
 import com.hussienfahmy.semester_subjctets_domain.use_case.AddSubject
 import com.hussienfahmy.semester_subjctets_domain.use_case.Calculate
 import com.hussienfahmy.semester_subjctets_domain.use_case.CalculationUseCases

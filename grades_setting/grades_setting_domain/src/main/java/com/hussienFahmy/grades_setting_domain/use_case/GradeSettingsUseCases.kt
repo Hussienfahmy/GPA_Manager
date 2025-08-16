@@ -1,4 +1,4 @@
-package com.hussienFahmy.grades_setting_domain.use_case
+package com.hussienfahmy.grades_setting_domain.use_case
 
 data class GradeSettingsUseCases(
     val loadGrades: LoadGrades,

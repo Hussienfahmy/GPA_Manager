@@ -1,10 +1,10 @@
 package com.hussienfahmy.sync_domain.di
 
-import com.hussienFahmy.core.data.local.GradeDao
-import com.hussienFahmy.core.data.local.SubjectDao
-import com.hussienFahmy.core.domain.gpa_settings.use_case.GetGPASettings
-import com.hussienFahmy.core.domain.gpa_settings.use_case.UpdateGPASystem
-import com.hussienFahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
+import com.hussienfahmy.core.data.local.GradeDao
+import com.hussienfahmy.core.data.local.SubjectDao
+import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
+import com.hussienfahmy.core.domain.gpa_settings.use_case.UpdateGPASystem
+import com.hussienfahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
 import com.hussienfahmy.sync_domain.repository.AppDataRepository
 import com.hussienfahmy.sync_domain.repository.SyncRepository
 import com.hussienfahmy.sync_domain.use_case.GetIsFirstTimeInstall

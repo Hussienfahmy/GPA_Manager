@@ -19,9 +19,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.core_ui.presentation.components.TipDialogContainer
-import com.hussienFahmy.myGpaManager.core.R
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.TipDialogContainer
+import com.hussienfahmy.myGpaManager.core.R
 import com.hussienfahmy.semester_subjctets_presentaion.model.Mode
 
 @Composable

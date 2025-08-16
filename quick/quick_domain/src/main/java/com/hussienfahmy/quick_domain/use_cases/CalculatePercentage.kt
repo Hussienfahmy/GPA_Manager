@@ -1,6 +1,6 @@
 package com.hussienfahmy.quick_domain.use_cases
 
-import com.hussienFahmy.core.domain.gpa_settings.use_case.GetGPASettings
+import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
 
 class CalculatePercentage(
     private val getGPASettings: GetGPASettings,

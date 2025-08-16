@@ -1,4 +1,4 @@
-package com.hussienFahmy.myGpaManager.navigation.screens.onboarding
+package com.hussienfahmy.myGpaManager.navigation.screens.onboarding
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,10 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.myGpaManager.navigation.SlideTransitions
-import com.hussienFahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
+import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.gpa_system_sittings_presentaion.GPASettingsScreen
+import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
+import com.hussienfahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
 import com.hussienfahmy.subject_settings_presentation.SubjectsSettingsScreen
 import com.ramcosta.composedestinations.annotation.Destination
 

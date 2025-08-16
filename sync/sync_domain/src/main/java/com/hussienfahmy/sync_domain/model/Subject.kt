@@ -2,8 +2,8 @@ package com.hussienfahmy.sync_domain.model
 
 import androidx.annotation.Keep
 import com.google.firebase.firestore.Exclude
-import com.hussienFahmy.core.data.local.model.GradeName
-import com.hussienFahmy.core.data.local.entity.Subject as SubjectEntity
+import com.hussienfahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core.data.local.entity.Subject as SubjectEntity
 
 @Keep
 data class Subject(

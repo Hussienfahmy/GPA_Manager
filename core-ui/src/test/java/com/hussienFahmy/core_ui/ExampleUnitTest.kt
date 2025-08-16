@@ -1,4 +1,4 @@
-package com.hussienFahmy.core_ui
+package com.hussienfahmy.core_ui
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

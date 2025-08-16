@@ -1,6 +1,6 @@
 package com.hussienfahmy.subject_settings_presentation
 
-import com.hussienFahmy.core.domain.subject_settings.model.SubjectSettings
+import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
 
 sealed class SubjectSettingsEvent {
     data class UpdateSubjectMarksDependsOn(val dependsOn: SubjectSettings.SubjectsMarksDependsOn) :

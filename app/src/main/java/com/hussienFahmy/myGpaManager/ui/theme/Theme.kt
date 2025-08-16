@@ -1,4 +1,4 @@
-package com.hussienFahmy.myGpaManager.ui.theme
+package com.hussienfahmy.myGpaManager.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.hussienFahmy.core_ui.Dimensions
-import com.hussienFahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.Dimensions
+import com.hussienfahmy.core_ui.LocalSpacing
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,

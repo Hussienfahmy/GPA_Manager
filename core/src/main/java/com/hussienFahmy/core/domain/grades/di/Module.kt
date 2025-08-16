@@ -1,9 +1,9 @@
-package com.hussienFahmy.core.domain.grades.di
+package com.hussienfahmy.core.domain.grades.di
 
-import com.hussienFahmy.core.data.local.GradeDao
-import com.hussienFahmy.core.domain.grades.use_case.GetActiveGradeNames
-import com.hussienFahmy.core.domain.grades.use_case.GetActiveGrades
-import com.hussienFahmy.core.domain.grades.use_case.GetGradeByPoints
+import com.hussienfahmy.core.data.local.GradeDao
+import com.hussienfahmy.core.domain.grades.use_case.GetActiveGradeNames
+import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
+import com.hussienfahmy.core.domain.grades.use_case.GetGradeByPoints
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

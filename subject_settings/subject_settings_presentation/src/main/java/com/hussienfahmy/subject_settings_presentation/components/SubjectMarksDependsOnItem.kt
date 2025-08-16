@@ -19,9 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.hussienFahmy.core.domain.subject_settings.model.SubjectSettings
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.myGpaManager.core.R
+import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.myGpaManager.core.R
 
 
 @Composable

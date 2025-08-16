@@ -16,8 +16,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.credentials.CredentialManager
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hussienFahmy.core_ui.LocalSpacing
-import com.hussienFahmy.core_ui.presentation.util.UiEventHandler
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.onboarding_presentation.sign_in.AuthEvent
 import com.hussienfahmy.onboarding_presentation.sign_in.GoogleAuthUiClient
 import com.hussienfahmy.onboarding_presentation.sign_in.SignInState

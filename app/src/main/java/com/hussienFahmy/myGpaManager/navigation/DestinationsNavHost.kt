@@ -1,13 +1,13 @@
-package com.hussienFahmy.myGpaManager.navigation
+package com.hussienfahmy.myGpaManager.navigation
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import com.hussienFahmy.myGpaManager.navigation.screens.more.AppMoreScreen
-import com.hussienFahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingGPASubjectsSettings
-import com.hussienFahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingGradesSettingsScreen
-import com.hussienFahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingScreen
-import com.hussienFahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingUserDataScreen
+import com.hussienfahmy.myGpaManager.navigation.screens.more.AppMoreScreen
+import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingGPASubjectsSettings
+import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingGradesSettingsScreen
+import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingScreen
+import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingUserDataScreen
 import com.hussienfahmy.onboarding_presentation.sign_in.GoogleAuthUiClient
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.generated.NavGraphs

@@ -1,6 +1,6 @@
 package com.hussienfahmy.semester_subjctets_domain.use_case
 
-import com.hussienFahmy.core.data.local.SubjectDao
+import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.semester_subjctets_domain.model.Grade
 import com.hussienfahmy.semester_subjctets_domain.model.Subject
 import kotlinx.coroutines.flow.map

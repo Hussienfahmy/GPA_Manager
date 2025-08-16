@@ -1,9 +1,9 @@
 package com.hussienfahmy.semester_marks_presentaion
 
 import androidx.lifecycle.viewModelScope
-import com.hussienFahmy.core.data.local.util.UpdateResult
-import com.hussienFahmy.core_ui.presentation.model.UiEvent
-import com.hussienFahmy.core_ui.presentation.viewmodel.UiViewModel
+import com.hussienfahmy.core.data.local.util.UpdateResult
+import com.hussienfahmy.core_ui.presentation.model.UiEvent
+import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
 import com.hussienfahmy.semester_marks_domain.use_case.SemesterMarksUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

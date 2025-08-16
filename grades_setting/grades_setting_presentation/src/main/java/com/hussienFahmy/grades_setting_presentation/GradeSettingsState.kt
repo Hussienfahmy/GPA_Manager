@@ -1,7 +1,7 @@
-package com.hussienFahmy.grades_setting_presentation
+package com.hussienfahmy.grades_setting_presentation
 
-import com.hussienFahmy.grades_setting_domain.model.GradeSetting
-import com.hussienFahmy.grades_setting_presentation.model.Mode
+import com.hussienfahmy.grades_setting_domain.model.GradeSetting
+import com.hussienfahmy.grades_setting_presentation.model.Mode
 
 data class GradeSettingsState(
     val gradesSetting: List<GradeSetting> = emptyList(),

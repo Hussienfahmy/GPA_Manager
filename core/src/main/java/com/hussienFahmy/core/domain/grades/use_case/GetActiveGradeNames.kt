@@ -1,6 +1,6 @@
-package com.hussienFahmy.core.domain.grades.use_case
+package com.hussienfahmy.core.domain.grades.use_case
 
-import com.hussienFahmy.core.data.local.GradeDao
+import com.hussienfahmy.core.data.local.GradeDao
 import kotlinx.coroutines.flow.map
 
 class GetActiveGradeNames(

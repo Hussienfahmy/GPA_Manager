@@ -1,6 +1,6 @@
-package com.hussienFahmy.core.domain.subject_settings.use_case
+package com.hussienfahmy.core.domain.subject_settings.use_case
 
-import com.hussienFahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
+import com.hussienfahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
 
 class GetSubjectsSettings(
     private val repository: SubjectSettingsRepository

@@ -1,6 +1,6 @@
 package com.hussienfahmy.semester_subjctets_domain.use_case
 
-import com.hussienFahmy.core.data.local.SubjectDao
+import com.hussienfahmy.core.data.local.SubjectDao
 
 class ClearGrade(
     private val subjectDao: SubjectDao,

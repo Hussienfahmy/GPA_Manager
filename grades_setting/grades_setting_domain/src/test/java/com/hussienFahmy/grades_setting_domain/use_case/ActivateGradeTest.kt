@@ -1,14 +1,14 @@
-package com.hussienFahmy.grades_setting_domain.use_case
+package com.hussienfahmy.grades_setting_domain.use_case
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
-import com.hussienFahmy.core.data.local.GradeDao
-import com.hussienFahmy.core.data.local.SubjectDao
-import com.hussienFahmy.core.data.local.entity.Grade
-import com.hussienFahmy.core.data.local.model.GradeName
-import com.hussienFahmy.core.data.local.util.UpdateResult
-import com.hussienFahmy.grades_setting_domain.model.GradeSetting
+import com.hussienfahmy.core.data.local.GradeDao
+import com.hussienfahmy.core.data.local.SubjectDao
+import com.hussienfahmy.core.data.local.entity.Grade
+import com.hussienfahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core.data.local.util.UpdateResult
+import com.hussienfahmy.grades_setting_domain.model.GradeSetting
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -1,4 +1,4 @@
-package com.hussienFahmy.myGpaManager.navigation
+package com.hussienfahmy.myGpaManager.navigation
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar

@@ -1,12 +1,12 @@
-package com.hussienFahmy.core.data.local
+package com.hussienfahmy.core.data.local
 
 import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.hussienFahmy.core.data.local.entity.Grade
-import com.hussienFahmy.core.data.local.entity.Subject
-import com.hussienFahmy.core.data.local.type_converter.GradeNameTypeConverter
+import com.hussienfahmy.core.data.local.entity.Grade
+import com.hussienfahmy.core.data.local.entity.Subject
+import com.hussienfahmy.core.data.local.type_converter.GradeNameTypeConverter
 
 @Database(
     entities = [Subject::class, Grade::class],

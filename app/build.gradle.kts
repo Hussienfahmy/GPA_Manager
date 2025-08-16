@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = libs.versions.appId.get()
+    namespace = libs.versions.nameSpace.get()
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

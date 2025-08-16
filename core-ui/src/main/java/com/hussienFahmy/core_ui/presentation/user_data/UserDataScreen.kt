@@ -1,4 +1,4 @@
-package com.hussienFahmy.core_ui.presentation.user_data
+package com.hussienfahmy.core_ui.presentation.user_data
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -11,8 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hussienFahmy.core_ui.presentation.user_data.components.UserDataScreenContent
-import com.hussienFahmy.core_ui.presentation.util.UiEventHandler
+import com.hussienfahmy.core_ui.presentation.user_data.components.UserDataScreenContent
+import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 
 @Composable
 fun UserDataScreen(

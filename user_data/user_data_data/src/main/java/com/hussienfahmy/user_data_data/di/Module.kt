@@ -7,7 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.persistentCacheSettings
-import com.hussienFahmy.core.domain.user_data.repository.UserDataRepository
+import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienfahmy.user_data_data.repository.UserDataApiService
 import dagger.Module
 import dagger.Provides

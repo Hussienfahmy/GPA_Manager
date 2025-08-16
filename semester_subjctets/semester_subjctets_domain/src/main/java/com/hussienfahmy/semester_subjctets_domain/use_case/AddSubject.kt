@@ -1,12 +1,12 @@
 package com.hussienfahmy.semester_subjctets_domain.use_case
 
-import com.hussienFahmy.core.data.local.SubjectDao
-import com.hussienFahmy.core.data.local.entity.Subject
-import com.hussienFahmy.core.data.local.util.UpdateResult
-import com.hussienFahmy.core.domain.subject_settings.model.SubjectSettings
-import com.hussienFahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
-import com.hussienFahmy.core.model.UiText
-import com.hussienFahmy.myGpaManager.core.R
+import com.hussienfahmy.core.data.local.SubjectDao
+import com.hussienfahmy.core.data.local.entity.Subject
+import com.hussienfahmy.core.data.local.util.UpdateResult
+import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
+import com.hussienfahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
+import com.hussienfahmy.core.model.UiText
+import com.hussienfahmy.myGpaManager.core.R
 
 class AddSubject(
     private val subjectDao: SubjectDao,

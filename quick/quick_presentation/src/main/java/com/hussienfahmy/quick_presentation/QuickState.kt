@@ -1,6 +1,6 @@
 package com.hussienfahmy.quick_presentation
 
-import com.hussienFahmy.core.domain.user_data.model.UserData
+import com.hussienfahmy.core.domain.user_data.model.UserData
 
 data class QuickState(
     val isLoading: Boolean = true,

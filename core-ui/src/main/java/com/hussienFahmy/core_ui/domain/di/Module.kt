@@ -1,6 +1,6 @@
-package com.hussienFahmy.core_ui.domain.di
+package com.hussienfahmy.core_ui.domain.di
 
-import com.hussienFahmy.core_ui.domain.use_cases.FilterToDigitsOnly
+import com.hussienfahmy.core_ui.domain.use_cases.FilterToDigitsOnly
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

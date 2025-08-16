@@ -1,7 +1,7 @@
-package com.hussienFahmy.myGpaManager.navigation.screens
+package com.hussienfahmy.myGpaManager.navigation.screens
 
 import androidx.compose.runtime.Composable
-import com.hussienFahmy.myGpaManager.navigation.SlideTransitions
+import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
 import com.hussienfahmy.semester_marks_presentaion.SemesterMarksScreen
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
