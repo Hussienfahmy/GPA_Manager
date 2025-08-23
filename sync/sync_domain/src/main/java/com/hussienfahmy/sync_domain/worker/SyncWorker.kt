@@ -4,7 +4,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
-import androidx.hilt.work.HiltWorker
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
@@ -21,8 +20,6 @@ import com.hussienfahmy.sync_domain.use_case.PullSubjects
 import com.hussienfahmy.sync_domain.use_case.PushSettings
 import com.hussienfahmy.sync_domain.use_case.PushSubjects
 import com.hussienfahmy.sync_domain.use_case.SetIsFirstTimeInstall
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
@@ -30,10 +27,9 @@ import kotlin.time.toJavaDuration
 
 private const val TAG = "SyncWorker"
 
-@HiltWorker
-class SyncWorker @AssistedInject constructor(
-    @Assisted appContext: Context,
-    @Assisted workerParams: WorkerParameters,
+class SyncWorker(
+    appContext: Context,
+    workerParams: WorkerParameters,
     private val pullSubjects: PullSubjects,
     private val pushSubjects: PushSubjects,
     private val pushSettings: PushSettings,

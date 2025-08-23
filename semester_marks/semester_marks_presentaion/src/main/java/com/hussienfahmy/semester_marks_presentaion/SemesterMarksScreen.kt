@@ -13,18 +13,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.AddSubjectsHint
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.semester_marks_domain.model.Grade
 import com.hussienfahmy.semester_marks_domain.model.Subject
 import com.hussienfahmy.semester_marks_presentaion.components.SemesterMarksItem
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SemesterMarksScreen(
     modifier: Modifier = Modifier,
-    viewModel: SemesterMarksViewModel = hiltViewModel(),
+    viewModel: SemesterMarksViewModel = koinViewModel(),
 ) {
     UiEventHandler(uiEvent = viewModel.uiEvent)
 

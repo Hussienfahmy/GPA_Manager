@@ -6,14 +6,11 @@ import com.hussienfahmy.core_ui.presentation.model.UiEvent
 import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
 import com.hussienfahmy.grades_setting_domain.use_case.GradeSettingsUseCases
 import com.hussienfahmy.grades_setting_presentation.model.Mode
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class GradeSettingsViewModel @Inject constructor(
+class GradeSettingsViewModel(
     private val gradeSettingsUseCases: GradeSettingsUseCases
 ) : UiViewModel<GradeEvent, GradeSettingsState>(
     initialState = { GradeSettingsState() }

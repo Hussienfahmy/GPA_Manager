@@ -12,10 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.credentials.CredentialManager
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.onboarding_presentation.sign_in.AuthEvent
@@ -23,13 +20,15 @@ import com.hussienfahmy.onboarding_presentation.sign_in.GoogleAuthUiClient
 import com.hussienfahmy.onboarding_presentation.sign_in.SignInState
 import com.hussienfahmy.onboarding_presentation.sign_in.SignInViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun OnBoardingScreen(
-    viewModel: SignInViewModel = hiltViewModel(),
-    onSignInSuccess: () -> Unit,
-    googleAuthUiClient: GoogleAuthUiClient,
+    viewModel: SignInViewModel = koinViewModel(),
+    onSignInSuccess: () -> Unit
 ) {
+    val googleAuthUiClient = koinInject<GoogleAuthUiClient>()
     val scope = rememberCoroutineScope()
 
     val state by viewModel.state
@@ -72,12 +71,7 @@ fun OnBoardingScreen(
 @Preview
 @Composable
 fun OnBoardingScreenPreview() {
-    val context = LocalContext.current
     OnBoardingScreen(
-        onSignInSuccess = {},
-        googleAuthUiClient = GoogleAuthUiClient(
-            context,
-            CredentialManager.create(context.applicationContext)
-        )
+        onSignInSuccess = {}
     )
 }

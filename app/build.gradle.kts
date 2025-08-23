@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.compose)
 }
@@ -55,25 +54,31 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":core-ui"))
     implementation(project(":grades_setting:grades_setting_presentation"))
-    // data module implemented so hilt can generate it's dependencies
+    implementation(project(":grades_setting:grades_setting_domain"))
+    // data module for dependency resolution
     implementation(project(":user_data:user_data_data"))
     implementation(project(":quick:quick_presentation"))
-    // data module implemented so hilt can generate it's dependencies
+    implementation(project(":quick:quick_domain"))
+    // data module for dependency resolution
     implementation(project(":subject_settings:subject_settings_data"))
+    implementation(project(":subject_settings:subject_settings_domain"))
     implementation(project(":subject_settings:subject_settings_presentation"))
     implementation(project(":gpa_system_settings:gpa_system_settings_data"))
     implementation(project(":gpa_system_settings:gpa_system_settings_presentaion"))
+    implementation(project(":semester_marks:semester_marks_domain"))
     implementation(project(":semester_marks:semester_marks_presentaion"))
+    implementation(project(":semester_subjctets:semester_subjctets_domain"))
     implementation(project(":semester_subjctets:semester_subjctets_presentaion"))
     implementation(project(":onboarding:onboarding_presentation"))
-    // data module implemented so hilt can generate it's dependencies
+    // data module for dependency resolution
     implementation(project(":sync:sync_data"))
     implementation(project(":sync:sync_domain"))
 
-    // Hilt
-    implementation(libs.bundles.hilt.android)
-    ksp(libs.hilt.compiler)
-    ksp(libs.androidx.hilt.compiler)
+
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.worker)
 
     // Kotlin BOM
     implementation(platform(libs.kotlin.bom))
@@ -93,13 +98,21 @@ dependencies {
 
     // Work Manager
     implementation(libs.androidx.work.runtime.ktx)
-    implementation(libs.hilt.work)
+
+    // Firebase
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.storage)
 
     // Debug
     debugImplementation(libs.bundles.compose.debug)
 
     // Testing
     testImplementation(libs.junit)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.koin.test.junit4)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     // Android testing
     androidTestImplementation(libs.androidx.test.ext.junit)

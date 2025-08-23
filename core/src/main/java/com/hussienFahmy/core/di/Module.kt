@@ -1,30 +1,17 @@
 package com.hussienfahmy.core.di
 
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import javax.inject.Qualifier
-import javax.inject.Singleton
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object Module {
-
-    @DispatcherDefault
-    @Singleton
-    @Provides
-    fun provideDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
-
-    @Provides
-    @Singleton
-    fun provideApplicationScope() = CoroutineScope(Dispatchers.Main + SupervisorJob())
+object CoreQualifiers {
+    const val DEFAULT_DISPATCHER = "defaultDispatcher"
 }
 
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-annotation class DispatcherDefault
+val coreModule = module {
+    single<CoroutineDispatcher>(named(CoreQualifiers.DEFAULT_DISPATCHER)) { Dispatchers.Default }
+    single<CoroutineScope> { CoroutineScope(Dispatchers.Main + SupervisorJob()) }
+}

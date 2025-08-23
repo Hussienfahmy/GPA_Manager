@@ -18,18 +18,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.ExpandableTextField
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.myGpaManager.core.R
 import com.hussienfahmy.subject_settings_presentation.components.SubjectMarksDependsOnItem
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SubjectsSettingsScreen(
     modifier: Modifier = Modifier,
-    viewModel: SubjectsSettingsViewModel = hiltViewModel(),
+    viewModel: SubjectsSettingsViewModel = koinViewModel(),
     snackBarHostState: SnackbarHostState
 ) {
     UiEventHandler(uiEvent = viewModel.uiEvent, snackBarHostState = snackBarHostState)

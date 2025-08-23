@@ -22,8 +22,7 @@ class BaseModulePlugin : Plugin<Project> {
                         "kotlin.android",
                         "kotlin.parcelize",
                         "kotlin.serialization",
-                        "ksp",
-                        "hilt"
+                        "ksp"
                     )
                 )
             }
@@ -32,9 +31,9 @@ class BaseModulePlugin : Plugin<Project> {
                 addDependencies(
                     libs = libs,
                     dependencies = arrayOf(
-                        "implementation" to "hilt-android",
-                        "ksp" to "hilt-compiler",
-                        "ksp" to "androidx-hilt-compiler",
+                        "implementation" to "koin-core",
+                        "implementation" to "koin-android",
+                        "implementation" to "koin-androidx-worker",
                     )
                 )
 

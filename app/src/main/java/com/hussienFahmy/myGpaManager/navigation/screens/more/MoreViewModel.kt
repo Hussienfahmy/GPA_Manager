@@ -8,12 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
 import com.hussienfahmy.onboarding_presentation.sign_in.GoogleAuthUiClient
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MoreViewModel @Inject constructor(
+class MoreViewModel(
     getUserData: GetUserData,
     private val googleAuthUiClient: GoogleAuthUiClient,
 ) : ViewModel() {

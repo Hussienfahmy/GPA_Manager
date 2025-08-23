@@ -10,14 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.hussienfahmy.core_ui.presentation.user_data.components.UserDataScreenContent
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun UserDataScreen(
     modifier: Modifier = Modifier,
-    viewModel: UserDataViewModel = hiltViewModel(),
+    viewModel: UserDataViewModel = koinViewModel(),
     snackBarHostState: SnackbarHostState,
 ) {
     UiEventHandler(

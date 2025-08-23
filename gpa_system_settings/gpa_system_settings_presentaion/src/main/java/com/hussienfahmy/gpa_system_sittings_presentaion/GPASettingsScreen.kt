@@ -10,15 +10,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.hussienfahmy.core.domain.gpa_settings.model.GPA
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.gpa_system_sittings_presentaion.components.GPASystemItem
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun GPASettingsScreen(
     modifier: Modifier = Modifier,
-    viewModel: GPASettingsViewModel = hiltViewModel(),
+    viewModel: GPASettingsViewModel = koinViewModel(),
 ) {
     val state by viewModel.state
 

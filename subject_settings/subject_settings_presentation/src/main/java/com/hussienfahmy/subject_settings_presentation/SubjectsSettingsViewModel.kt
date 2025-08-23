@@ -5,14 +5,11 @@ import com.hussienfahmy.core.data.local.util.UpdateResult
 import com.hussienfahmy.core_ui.presentation.model.UiEvent
 import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
 import com.hussienfahmy.subject_settings_domain.use_case.SubjectSettingsUseCases
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class SubjectsSettingsViewModel @Inject constructor(
+class SubjectsSettingsViewModel(
     private val useCases: SubjectSettingsUseCases,
 ) : UiViewModel<SubjectSettingsEvent, SubjectSettingsState>(initialState = {
     SubjectSettingsState.Loading

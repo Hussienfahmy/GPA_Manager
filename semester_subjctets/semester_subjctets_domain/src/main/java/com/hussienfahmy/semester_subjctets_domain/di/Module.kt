@@ -1,12 +1,6 @@
 package com.hussienfahmy.semester_subjctets_domain.di
 
-import com.hussienfahmy.core.data.local.SubjectDao
-import com.hussienfahmy.core.di.DispatcherDefault
-import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
-import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
-import com.hussienfahmy.core.domain.grades.use_case.GetGradeByPoints
-import com.hussienfahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
-import com.hussienfahmy.core.domain.user_data.use_cases.GetAcademicProgress
+import com.hussienfahmy.core.di.CoreQualifiers
 import com.hussienfahmy.semester_subjctets_domain.use_case.AddSubject
 import com.hussienfahmy.semester_subjctets_domain.use_case.Calculate
 import com.hussienfahmy.semester_subjctets_domain.use_case.CalculationUseCases
@@ -17,70 +11,40 @@ import com.hussienfahmy.semester_subjctets_domain.use_case.PredictGrades
 import com.hussienfahmy.semester_subjctets_domain.use_case.SetGrade
 import com.hussienfahmy.semester_subjctets_domain.use_case.SubjectUseCases
 import com.hussienfahmy.semester_subjctets_domain.use_case.UpdateName
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
-@Module
-@InstallIn(ViewModelComponent::class)
-object Module {
+val semesterSubjectsDomainModule = module {
+    single { SetGrade(get()) }
 
-    @Provides
-    @ViewModelScoped
-    fun provideSetGrade(
-        subjectDao: SubjectDao,
-    ): SetGrade {
-        return SetGrade(subjectDao)
-    }
-
-    @Provides
-    @ViewModelScoped
-    fun provideSubjectUseCases(
-        subjectDao: SubjectDao,
-        getSubjectsSettings: GetSubjectsSettings,
-        setGrade: SetGrade,
-    ): SubjectUseCases {
-        return SubjectUseCases(
-            observeSubjectsWithGrades = ObserveSubjects(subjectDao),
-            clearGrade = ClearGrade(subjectDao),
-            deleteSubject = DeleteSubject(subjectDao),
-            addSubject = AddSubject(subjectDao, getSubjectsSettings),
-            updateName = UpdateName(subjectDao),
-            setGrade = setGrade,
+    single {
+        SubjectUseCases(
+            observeSubjectsWithGrades = ObserveSubjects(get()),
+            clearGrade = ClearGrade(get()),
+            deleteSubject = DeleteSubject(get()),
+            addSubject = AddSubject(get(), get()),
+            updateName = UpdateName(get()),
+            setGrade = get(),
         )
     }
 
-    @Provides
-    @ViewModelScoped
-    fun provideCalculationUseCases(
-        @DispatcherDefault defaultDispatcher: CoroutineDispatcher,
-        getAcademicProgress: GetAcademicProgress,
-        getGradeByPoints: GetGradeByPoints,
-        getGPASettings: GetGPASettings,
-        getActiveGrades: GetActiveGrades,
-        setGrade: SetGrade,
-        appScope: CoroutineScope,
-    ): CalculationUseCases {
+    single {
         val calculate = Calculate(
-            defaultDispatcher = defaultDispatcher,
-            getAcademicProgress = getAcademicProgress,
-            getGradeByPoints = getGradeByPoints,
-            getGPASettings = getGPASettings,
+            defaultDispatcher = get(named(CoreQualifiers.DEFAULT_DISPATCHER)),
+            getAcademicProgress = get(),
+            getGradeByPoints = get(),
+            getGPASettings = get(),
         )
 
-        return CalculationUseCases(
+        CalculationUseCases(
             calculate = calculate,
             predictGrades = PredictGrades(
-                defaultDispatcher = defaultDispatcher,
-                getActiveGrades = getActiveGrades,
+                defaultDispatcher = get(named(CoreQualifiers.DEFAULT_DISPATCHER)),
+                getActiveGrades = get(),
                 calculate = calculate,
-                setGrade = setGrade,
-                getGPASettings = getGPASettings,
-                appScope = appScope
+                setGrade = get(),
+                getGPASettings = get(),
+                appScope = get()
             ),
         )
     }

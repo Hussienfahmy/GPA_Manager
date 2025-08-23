@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.user_data.components.UserInfoCard
@@ -28,12 +27,13 @@ import com.hussienfahmy.myGpaManager.core.R
 import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
 import com.hussienfahmy.myGpaManager.navigation.graphs.MoreNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
+import org.koin.androidx.compose.koinViewModel
 
 @Destination<MoreNavGraph>(start = true, style = SlideTransitions::class)
 @Composable
 fun AppMoreScreen(
     modifier: Modifier = Modifier,
-    moreViewModel: MoreViewModel = hiltViewModel(),
+    moreViewModel: MoreViewModel = koinViewModel(),
     onUserDataCardClick: () -> Unit,
     onGPASettingsClick: () -> Unit,
     onGradeSettingsClick: () -> Unit,

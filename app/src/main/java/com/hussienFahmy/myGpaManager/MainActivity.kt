@@ -3,7 +3,6 @@ package com.hussienfahmy.myGpaManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,17 +24,14 @@ import com.hussienfahmy.myGpaManager.navigation.AppDestinationsNavHost
 import com.hussienfahmy.myGpaManager.ui.theme.GPAManagerTheme
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.utils.startDestination
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        lifecycle.addObserver(viewModel.googleAuthUiClient)
 
         setContent {
             GPAManagerTheme {
@@ -77,7 +73,6 @@ class MainActivity : ComponentActivity() {
                         AppDestinationsNavHost(
                             navController = navController,
                             snackBarHostState = snackBarHostState,
-                            googleAuthUiClient = viewModel.googleAuthUiClient,
                         )
                     }
                 }

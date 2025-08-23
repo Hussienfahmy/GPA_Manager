@@ -8,7 +8,6 @@ import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoarding
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingGradesSettingsScreen
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingScreen
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingUserDataScreen
-import com.hussienfahmy.onboarding_presentation.sign_in.GoogleAuthUiClient
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.generated.destinations.AppGPASettingsScreenDestination
@@ -28,7 +27,6 @@ import com.ramcosta.composedestinations.utils.startDestination
 fun AppDestinationsNavHost(
     navController: NavHostController,
     snackBarHostState: SnackbarHostState,
-    googleAuthUiClient: GoogleAuthUiClient,
 ) {
     DestinationsNavHost(
         navGraph = NavGraphs.root,
@@ -56,7 +54,6 @@ fun AppDestinationsNavHost(
 
         composable(AppOnBoardingScreenDestination) {
             AppOnBoardingScreen(
-                googleAuthUiClient = googleAuthUiClient,
                 onSignInSuccess = {
                     navController.navigate(AppOnBoardingUserDataScreenDestination.route) {
                         popUpTo(NavGraphs.onBoarding.startDestination.route) {

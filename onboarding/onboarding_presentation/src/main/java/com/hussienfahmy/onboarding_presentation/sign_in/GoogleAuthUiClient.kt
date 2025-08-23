@@ -8,13 +8,10 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.auth
 import com.hussienFahmy.myGpaManager.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,8 +23,8 @@ private const val TAG = "GoogleAuthUiClient"
 class GoogleAuthUiClient(
     private val context: Context,
     private val credentialManager: CredentialManager,
+    private val auth: FirebaseAuth
 ) : DefaultLifecycleObserver {
-    private val auth = Firebase.auth
 
     private val _isSignedInFlow = MutableStateFlow<Boolean?>(null)
     val isSignedInFlow = _isSignedInFlow.asStateFlow()
@@ -38,14 +35,8 @@ class GoogleAuthUiClient(
         }
     }
 
-    override fun onResume(owner: LifecycleOwner) {
-        super.onResume(owner)
+    init {
         auth.addAuthStateListener(authStateListener)
-    }
-
-    override fun onPause(owner: LifecycleOwner) {
-        super.onPause(owner)
-        auth.removeAuthStateListener(authStateListener)
     }
 
     suspend fun signIn(): SignInResult? {

@@ -1,8 +1,6 @@
 package com.hussienfahmy.semester_marks_domain.di
 
-import com.hussienfahmy.core.data.local.SubjectDao
-import com.hussienfahmy.core.di.DispatcherDefault
-import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
+import com.hussienfahmy.core.di.CoreQualifiers
 import com.hussienfahmy.semester_marks_domain.use_case.ChangeMidtermMarks
 import com.hussienfahmy.semester_marks_domain.use_case.ChangeOralMarks
 import com.hussienfahmy.semester_marks_domain.use_case.ChangePracticalMarks
@@ -14,42 +12,27 @@ import com.hussienfahmy.semester_marks_domain.use_case.SetMidtermAvailable
 import com.hussienfahmy.semester_marks_domain.use_case.SetOralAvailable
 import com.hussienfahmy.semester_marks_domain.use_case.SetPracticalAvailable
 import com.hussienfahmy.semester_marks_domain.use_case.SetProjectAvailable
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
-@Module
-@InstallIn(ViewModelComponent::class)
-object Module {
-
-    @Provides
-    @ViewModelScoped
-    fun provideSemesterMarksUseCases(
-        subjectDao: SubjectDao,
-        getActiveGrade: GetActiveGrades,
-        @DispatcherDefault defaultDispatcher: CoroutineDispatcher,
-        appScope: CoroutineScope,
-    ): SemesterMarksUseCases {
-        return SemesterMarksUseCases(
+val semesterMarksDomainModule = module {
+    single {
+        SemesterMarksUseCases(
             continuesCalculation = ContinuesCalculation(
-                subjectDao = subjectDao,
-                getActiveGrades = getActiveGrade,
-                defaultDispatcher = defaultDispatcher,
-                appScope = appScope
+                subjectDao = get(),
+                getActiveGrades = get(),
+                defaultDispatcher = get(named(CoreQualifiers.DEFAULT_DISPATCHER)),
+                appScope = get()
             ),
-            resetMarks = ResetMarks(subjectDao),
-            setOralAvailable = SetOralAvailable(subjectDao),
-            setPracticalAvailable = SetPracticalAvailable(subjectDao),
-            setMidtermAvailable = SetMidtermAvailable(subjectDao),
-            setProjectAvailable = SetProjectAvailable(subjectDao),
-            changeMidtermMarks = ChangeMidtermMarks(subjectDao),
-            changeOralMarks = ChangeOralMarks(subjectDao),
-            changePracticalMarks = ChangePracticalMarks(subjectDao),
-            changeProjectMarks = ChangeProjectMarks(subjectDao),
+            resetMarks = ResetMarks(get()),
+            setOralAvailable = SetOralAvailable(get()),
+            setPracticalAvailable = SetPracticalAvailable(get()),
+            setMidtermAvailable = SetMidtermAvailable(get()),
+            setProjectAvailable = SetProjectAvailable(get()),
+            changeMidtermMarks = ChangeMidtermMarks(get()),
+            changeOralMarks = ChangeOralMarks(get()),
+            changePracticalMarks = ChangePracticalMarks(get()),
+            changeProjectMarks = ChangeProjectMarks(get()),
         )
     }
 }

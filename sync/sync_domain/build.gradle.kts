@@ -7,6 +7,4 @@ dependencies {
 
     implementation(libs.firebase.firestore)
     implementation(libs.androidx.work.runtime.ktx)
-    implementation(libs.hilt.work)
-    ksp(libs.androidx.hilt.compiler)
 }

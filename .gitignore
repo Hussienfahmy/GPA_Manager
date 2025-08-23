@@ -16,3 +16,4 @@ local.properties
 /onboarding/onboarding_presentation/google-services.json
 /user_data/user_data_data/google-services.json
 /sync/sync_data/google-services.json
+/.claude/*

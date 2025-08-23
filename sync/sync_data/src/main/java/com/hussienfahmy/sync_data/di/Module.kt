@@ -1,46 +1,26 @@
 package com.hussienfahmy.sync_data.di
 
-import android.content.Context
-import com.google.firebase.firestore.FirebaseFirestore
 import com.hussienfahmy.sync_data.datastore.AppDatastore
 import com.hussienfahmy.sync_data.repository.AppDataRepositoryImpl
 import com.hussienfahmy.sync_data.repository.SyncRepositoryImpl
 import com.hussienfahmy.sync_domain.repository.AppDataRepository
 import com.hussienfahmy.sync_domain.repository.SyncRepository
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.module
 
-@InstallIn(SingletonComponent::class)
-@Module
-object Module {
-
-    @Provides
-    @Singleton
-    fun provideSyncRepository(
-        db: FirebaseFirestore
-    ): SyncRepository {
-        return SyncRepositoryImpl(
-            db = db
+val syncDataModule = module {
+    single<SyncRepository> {
+        SyncRepositoryImpl(
+            db = get(),
+            auth = get()
         )
     }
 
-    @Provides
-    @Singleton
-    fun provideAppDatastore(
-        @ApplicationContext context: Context
-    ): AppDatastore {
-        return AppDatastore(context)
+    single {
+        AppDatastore(androidContext())
     }
 
-    @Singleton
-    @Provides
-    fun provideAppDataRepository(
-        appDatastore: AppDatastore
-    ): AppDataRepository {
-        return AppDataRepositoryImpl(appDatastore)
+    single<AppDataRepository> {
+        AppDataRepositoryImpl(get())
     }
 }

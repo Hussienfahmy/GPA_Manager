@@ -27,8 +27,9 @@ class BaseComposeModulePlugin : Plugin<Project> {
                 addDependencies(
                     libs = libs,
                     dependencies = arrayOf(
-                        "implementation" to "hilt-navigation-compose",
+                        "implementation" to "koin-androidx-compose",
                         "implementation" to "compose-icons-font-awesome",
+                        "implementation" to "androidx-activity-compose",
                     )
                 )
 

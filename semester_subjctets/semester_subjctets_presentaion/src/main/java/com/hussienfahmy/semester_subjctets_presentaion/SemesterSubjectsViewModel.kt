@@ -11,17 +11,14 @@ import com.hussienfahmy.semester_subjctets_domain.use_case.PredictGrades
 import com.hussienfahmy.semester_subjctets_domain.use_case.SubjectUseCases
 import com.hussienfahmy.semester_subjctets_presentaion.model.Mode
 import com.hussienfahmy.semester_subjctets_presentaion.model.ModeResult
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class SemesterSubjectsViewModel @Inject constructor(
+class SemesterSubjectsViewModel(
     private val calculationUseCases: CalculationUseCases,
     private val subjectUseCases: SubjectUseCases,
     private val getActiveGradeNames: GetActiveGradeNames,

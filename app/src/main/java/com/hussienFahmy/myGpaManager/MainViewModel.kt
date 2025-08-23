@@ -7,15 +7,12 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
 import com.hussienfahmy.onboarding_presentation.sign_in.GoogleAuthUiClient
 import com.hussienfahmy.sync_domain.worker.SyncWorker
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(
-    val googleAuthUiClient: GoogleAuthUiClient,
+class MainViewModel(
+    googleAuthUiClient: GoogleAuthUiClient,
     private val workManager: WorkManager,
 ) : ViewModel() {
 

@@ -5,15 +5,12 @@ import com.hussienfahmy.core.data.local.util.UpdateResult
 import com.hussienfahmy.core.domain.user_data.use_cases.UserDataUseCases
 import com.hussienfahmy.core_ui.presentation.model.UiEvent
 import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class UserDataViewModel @Inject constructor(
+class UserDataViewModel(
     private val userDataUseCases: UserDataUseCases,
 ) : UiViewModel<UserDataEvent, UserDataState>(
     initialState = { UserDataState.Loading }

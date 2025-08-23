@@ -5,12 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.hussienfahmy.core_ui.domain.use_cases.FilterToDigitsOnly
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class EditTextDialogViewModel @Inject constructor(
-    private val filterToDigitsOnly: FilterToDigitsOnly,
+class EditTextDialogViewModel(
+    private val filterToDigitsOnly: FilterToDigitsOnly
 ) : ViewModel() {
 
     var value by mutableStateOf("")

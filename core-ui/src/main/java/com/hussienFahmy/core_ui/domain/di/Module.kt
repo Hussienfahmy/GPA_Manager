@@ -1,19 +1,11 @@
 package com.hussienfahmy.core_ui.domain.di
 
 import com.hussienfahmy.core_ui.domain.use_cases.FilterToDigitsOnly
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
-@Module
-@InstallIn(ViewModelComponent::class)
-object Module {
+import com.hussienfahmy.core_ui.presentation.user_data.UserDataViewModel
+import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.module
 
-    @Provides
-    @ViewModelScoped
-    fun provideFilterToDigitsOnly(): FilterToDigitsOnly {
-        return FilterToDigitsOnly()
-    }
+val coreUiDomainModule = module {
+    single { FilterToDigitsOnly() }
+    viewModel { UserDataViewModel(get()) }
 }
-

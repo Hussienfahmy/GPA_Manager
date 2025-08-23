@@ -5,12 +5,9 @@ import com.hussienfahmy.core.data.local.util.UpdateResult
 import com.hussienfahmy.core_ui.presentation.model.UiEvent
 import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
 import com.hussienfahmy.semester_marks_domain.use_case.SemesterMarksUseCases
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class SemesterMarksViewModel @Inject constructor(
+class SemesterMarksViewModel(
     private val useCases: SemesterMarksUseCases,
 ) : UiViewModel<SemesterMarksEvent, SemesterMarksState>(initialState = {
     SemesterMarksState.Loading

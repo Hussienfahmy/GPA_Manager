@@ -8,12 +8,9 @@ import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
 import com.hussienfahmy.myGpaManager.core.R
 import com.hussienfahmy.quick_domain.use_cases.CalculatePercentage
 import com.hussienfahmy.quick_domain.use_cases.QuickCalculate
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class QuickViewModel @Inject constructor(
+class QuickViewModel(
     getAcademicProgress: GetAcademicProgress,
     private val quickCalculate: QuickCalculate,
     private val calculatePercentage: CalculatePercentage,

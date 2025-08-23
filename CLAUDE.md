@@ -7,7 +7,8 @@ repository.
 
 GPA Manager is a multi-module Android application built with Jetpack Compose for managing student
 GPA calculations, grades, and academic data. The app uses clean architecture with feature-based
-modular structure, Hilt for dependency injection, and Firebase for data synchronization.
+modular structure and has successfully migrated from Hilt to Koin for dependency injection, with
+Firebase for data synchronization.
 
 ## Build Commands
 
@@ -77,20 +78,22 @@ Key features:
 - **sync**: Firebase data synchronization
 - **user_data**: User profile and preferences
 
-### Dependency Injection with Hilt
+### Dependency Injection (Koin)
 
-- Uses **Hilt** for dependency injection throughout the codebase
-- Each module has its own DI module in `{module}/di/Module.kt`
-- Application class (`GPAManagerApplication`) annotated with `@HiltAndroidApp`
-- Core module provides base dependencies like `@DispatcherDefault` coroutine dispatcher and
-  application scope
-- WorkManager integration with `HiltWorkerFactory`
+- **Successfully migrated from Hilt to Koin** for dependency injection
+- Application class (`GPAManagerApplication`) uses pure Koin initialization with WorkManager
+  integration
+- **Koin modules**: Located in `{module}/di/KoinModule.kt` files throughout all modules
+- **Core dispatcher**: Provided via Koin with named qualifier `CoreQualifiers.DEFAULT_DISPATCHER`
+- **All modules migrated**: All feature modules now use Koin for dependency injection
+- **WorkManager integration**: Uses Koin's native `workManagerFactory()` for worker creation
+- **Legacy Hilt code**: Completely removed from the codebase
 
 ### Custom Build Logic
 
 Two custom Gradle plugins in `build-logic` provide consistent configuration:
 
-- `base-module`: Base configuration for Android library modules (Hilt, testing, Kotlin setup)
+- `base-module`: Base configuration for Android library modules (Koin, testing, Kotlin setup)
 - `base-compose-module`: Additional Compose-specific configuration and dependencies
 
 ## Technology Stack
@@ -100,7 +103,7 @@ Two custom Gradle plugins in `build-logic` provide consistent configuration:
 - **Kotlin** (2.2.0) with Java 17 compatibility
 - **Android Gradle Plugin** (8.12.0)
 - **Compose** (2025.07.00 BOM) for UI with Kotlin Compose plugin
-- **Hilt** (2.57) for dependency injection
+- **Koin** (3.5.6) for dependency injection (migrated from Hilt)
 - **KSP** (KSP2 enabled) for annotation processing
 
 ### Key Libraries
@@ -160,8 +163,8 @@ When creating new modules:
 
 - Apply `base-module` plugin for standard Android library setup
 - Apply `base-compose-module` plugin for Compose-enabled modules
-- These plugins automatically configure Hilt, testing dependencies, build settings, and Compose
-  features
+- These plugins automatically configure Koin dependencies, testing dependencies, build settings, and
+  Compose features
 
 ## Firebase Integration
 
@@ -179,13 +182,18 @@ When creating new modules:
 
 - Follow established pattern: `com.hussienfahmy.{module_name}`
 - Clean architecture layers: data/domain/presentation
-- DI modules consistently placed in `di/Module.kt`
-- Use Hilt annotations: `@Module`, `@InstallIn(SingletonComponent::class)`, `@Provides`,
-  `@Singleton`
+- DI modules consistently placed in `di/KoinModule.kt`
+- Use Koin DSL: `module { }`, `single { }`, `factory { }`, `viewModel { }`
 
 ### Dependency Injection Patterns
 
-- Use custom qualifiers like `@DispatcherDefault` for specific dispatcher injection
-- Provide application-scoped coroutine scope from core module
-- WorkManager integration through Hilt for background tasks
+**Koin Dependency Injection Patterns**:
+
+- **Named qualifiers**: Use `named(CoreQualifiers.DEFAULT_DISPATCHER)` for coroutine dispatcher
+  injection
+- **ViewModels**: Use Koin `viewModel { }` DSL for ViewModel definitions
+- **Screens**: Use `koinViewModel()` in Composables for ViewModel injection
+- **Module structure**: All modules have `KoinModule.kt` files with proper dependency definitions
+- **Application setup**: All Koin modules registered in `GPAManagerApplication.onCreate()`
+- **Constants**: Use `CoreQualifiers` object for consistent named qualifier constants
 - Each feature module manages its own dependencies while depending on core providers

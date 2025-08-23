@@ -33,11 +33,9 @@ espressoCore = "3.7.0"
 composeBom = "2025.07.00"
 composeIconsAndroid = "1.0.0"
 
-# Hilt
-hilt = "2.57"
-hiltNavigationCompose = "1.2.0"
-hiltWork = "1.2.0"
-hiltCompiler = "1.2.0"
+
+# Koin
+koin = "4.1.0"
 
 # Third Party Libraries
 coil = "2.7.0"
@@ -113,16 +111,17 @@ compose-icons-font-awesome = { group = "br.com.devsrsouza.compose.icons.android"
 kotlin-bom = { group = "org.jetbrains.kotlin", name = "kotlin-bom", version.ref = "kotlinBom" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 
-# Hilt
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltWork" }
-androidx-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltCompiler" }
+
+# Koin
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+koin-androidx-worker = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koin" }
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
+koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koin" }
 
 # Third Party
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 # Compose Destinations
 compose-destinations-core = { group = "io.github.raamcosta.compose-destinations", name = "core", version.ref = "raamcosta" }
@@ -147,6 +146,7 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 google-truth = { group = "com.google.truth", name = "truth", version.ref = "googleTruth" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -154,7 +154,6 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
@@ -190,11 +189,6 @@ firebase = [
     "firebase-firestore"
 ]
 
-hilt-android = [
-    "hilt-android",
-    "hilt-navigation-compose",
-    "hilt-work"
-]
 
 test-unit = [
     "junit",

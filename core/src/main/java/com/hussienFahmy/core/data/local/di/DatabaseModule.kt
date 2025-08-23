@@ -8,33 +8,22 @@ import com.hussienfahmy.core.data.local.AppDatabase
 import com.hussienfahmy.core.data.local.GradeDao
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.entity.Grade
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Provider
-import javax.inject.Singleton
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DatabaseModule {
+val databaseModule = module {
 
-    @Provides
-    @Singleton
-    fun provideInitialDataCallback(
-        database: Provider<AppDatabase>,
-        applicationScope: CoroutineScope
-    ): RoomDatabase.Callback {
-        return object : RoomDatabase.Callback() {
+    // Room database callback for initial data
+    factory<RoomDatabase.Callback> {
+        object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 // called after the build() has finished - after the first time opening the database
-                // to add the initial grade data
-                applicationScope.launch(Dispatchers.IO) {
-                    val gradesDao = database.get().gradeDao
+                // to add the initial grade data using lazy injection to avoid circular dependency
+                get<CoroutineScope>().launch(Dispatchers.IO) {
+                    val gradesDao = getKoin().get<AppDatabase>().gradeDao
                     Grade.generateInitialData().forEach {
                         gradesDao.upsert(it)
                     }
@@ -43,28 +32,24 @@ object DatabaseModule {
         }
     }
 
-    @Provides
-    @Singleton
-    fun provideDatabase(
-        app: Application,
-        callback: RoomDatabase.Callback,
-    ) = Room.databaseBuilder(
-        app,
-        AppDatabase::class.java,
-        "database"
-    ).fallbackToDestructiveMigration()
-        .addCallback(callback)
-        .build()
-
-    @Provides
-    @Singleton
-    fun provideSubjectDao(appDatabase: AppDatabase): SubjectDao {
-        return appDatabase.subjectDao
+    // Room database
+    single<AppDatabase> {
+        Room.databaseBuilder(
+            get<Application>(),
+            AppDatabase::class.java,
+            "database"
+        ).fallbackToDestructiveMigration(false)
+            .addCallback(get<RoomDatabase.Callback>())
+            .build()
     }
 
-    @Provides
-    @Singleton
-    fun provideGradeDao(appDatabase: AppDatabase): GradeDao {
-        return appDatabase.gradeDao
+    // Subject DAO
+    single<SubjectDao> {
+        get<AppDatabase>().subjectDao
+    }
+
+    // Grade DAO
+    single<GradeDao> {
+        get<AppDatabase>().gradeDao
     }
 }

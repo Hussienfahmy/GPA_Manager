@@ -1,33 +1,23 @@
 package com.hussienfahmy.gpa_system_settings_data.di
 
-import android.content.Context
 import com.hussienfahmy.core.domain.gpa_settings.repository.GPASettingsRepository
+import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
+import com.hussienfahmy.core.domain.gpa_settings.use_case.UpdateGPASystem
 import com.hussienfahmy.gpa_system_settings_data.datastore.GPADatastore
 import com.hussienfahmy.gpa_system_settings_data.repository.GPASettingsRepositoryImpl
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import com.hussienfahmy.gpa_system_sittings_domain.use_case.ObserveGPASettings
+import org.koin.core.module.Module
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal object Module {
+// Koin module for GPA System Settings Data
+val gpaSystemSettingsDataModule: Module = module {
+    single { GPADatastore(get()) }
 
-    @Provides
-    @Singleton
-    fun provideGPASystemRepository(
-        dataStore: GPADatastore
-    ): GPASettingsRepository {
-        return GPASettingsRepositoryImpl(dataStore)
-    }
+    // Repository binding
+    single<GPASettingsRepository> { GPASettingsRepositoryImpl(get()) }
 
-    @Provides
-    @Singleton
-    fun provideGPADatastore(
-        @ApplicationContext context: Context
-    ): GPADatastore {
-        return GPADatastore(context)
-    }
+    // Use cases
+    single { GetGPASettings(get()) }
+    single { ObserveGPASettings(get()) }
+    single { UpdateGPASystem(get()) }
 }

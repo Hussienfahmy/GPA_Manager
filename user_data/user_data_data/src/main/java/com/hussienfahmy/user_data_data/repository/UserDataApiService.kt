@@ -18,8 +18,8 @@ import kotlinx.coroutines.tasks.await
 import com.hussienfahmy.user_data_data.model.UserData as NetworkUserData
 
 class UserDataApiService(
-    private val db: FirebaseFirestore,
     auth: FirebaseAuth,
+    private val db: FirebaseFirestore,
 ) : UserDataRepository {
 
     private val currentUser = MutableStateFlow(auth.currentUser)

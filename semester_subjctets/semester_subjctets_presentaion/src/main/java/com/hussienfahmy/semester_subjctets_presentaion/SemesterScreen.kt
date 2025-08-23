@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.AddSubjectsHint
@@ -36,13 +35,14 @@ import com.hussienfahmy.semester_subjctets_presentaion.components.ResultCard
 import com.hussienfahmy.semester_subjctets_presentaion.components.SubjectsColumn
 import com.hussienfahmy.semester_subjctets_presentaion.model.Mode
 import com.hussienfahmy.semester_subjctets_presentaion.model.ModeResult
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun SemesterScreen(
     modifier: Modifier = Modifier,
     snackBarHostState: SnackbarHostState,
-    viewModel: SemesterSubjectsViewModel = hiltViewModel(),
+    viewModel: SemesterSubjectsViewModel = koinViewModel(),
 ) {
     UiEventHandler(uiEvent = viewModel.uiEvent, snackBarHostState = snackBarHostState)
 
