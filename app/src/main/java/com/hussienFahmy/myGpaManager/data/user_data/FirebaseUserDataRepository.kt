@@ -1,12 +1,13 @@
-package com.hussienfahmy.user_data_data.repository
+package com.hussienfahmy.myGpaManager.data.user_data
 
 import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
+import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
-import com.hussienfahmy.user_data_data.mapper.toUserData
+import com.hussienfahmy.myGpaManager.data.user_data.mapper.toDomain
+import com.hussienfahmy.myGpaManager.data.user_data.model.FirebaseUserData
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,22 +16,20 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import com.hussienfahmy.user_data_data.model.UserData as NetworkUserData
 
-class UserDataApiService(
-    auth: FirebaseAuth,
+class FirebaseUserDataRepository(
+    authRepository: AuthRepository,
     private val db: FirebaseFirestore,
 ) : UserDataRepository {
 
-    private val currentUser = MutableStateFlow(auth.currentUser)
-    private val userId = currentUser.filterNotNull().map { it.uid }
-    private val userDoc = userId.map { userId ->
-        db.collection(NetworkUserData.COLLECTION_NAME).document(userId)
+    private val currentUserId = MutableStateFlow<String?>(null)
+    private val userDoc = currentUserId.filterNotNull().map { userId ->
+        db.collection(FirebaseUserData.COLLECTION_NAME).document(userId)
     }
 
     init {
-        auth.addAuthStateListener {
-            currentUser.value = it.currentUser
+        authRepository.addAuthStateListener { userId ->
+            currentUserId.value = userId
         }
     }
 
@@ -45,7 +44,7 @@ class UserDataApiService(
         email: String,
     ) {
         userDoc.first().set(
-            NetworkUserData(
+            FirebaseUserData(
                 id = id,
                 name = name,
                 photoUrl = photoUrl,
@@ -63,8 +62,8 @@ class UserDataApiService(
                 }
 
                 if (value != null && value.exists()) {
-                    value.toObject<NetworkUserData>()?.let {
-                        trySend(it.toUserData())
+                    value.toObject<FirebaseUserData>()?.let {
+                        trySend(it.toDomain())
                     } ?: kotlin.run {
                         Log.e(TAG, "observeUserData: snapshot is null or empty")
                     }
@@ -78,31 +77,31 @@ class UserDataApiService(
     }
 
     override suspend fun getUserData(): UserData? {
-        return userDoc.first().get().await().toObject<NetworkUserData>()?.toUserData()
+        return userDoc.first().get().await().toObject<FirebaseUserData>()?.toDomain()
     }
 
     override suspend fun updateName(name: String) {
         userDoc.first()
-            .update(NetworkUserData.PROPERTY_NAME, name)
+            .update(FirebaseUserData.PROPERTY_NAME, name)
             .await()
     }
 
     override suspend fun updatePhotoUrl(photoUrl: String) {
         userDoc.first()
-            .update(NetworkUserData.PROPERTY_PHOTO_URL, photoUrl)
+            .update(FirebaseUserData.PROPERTY_PHOTO_URL, photoUrl)
             .await()
     }
 
     override suspend fun updateEmail(email: String) {
         userDoc.first()
-            .update(NetworkUserData.PROPERTY_EMAIL, email)
+            .update(FirebaseUserData.PROPERTY_EMAIL, email)
             .await()
     }
 
     override suspend fun updateUniversity(university: String) {
         userDoc.first()
             .update(
-                NetworkUserData.PROPERTY_ACADEMIC_INFO_UNIVERSITY,
+                FirebaseUserData.PROPERTY_ACADEMIC_INFO_UNIVERSITY,
                 university
             )
             .await()
@@ -111,7 +110,7 @@ class UserDataApiService(
     override suspend fun updateFaculty(faculty: String) {
         userDoc.first()
             .update(
-                NetworkUserData.PROPERTY_ACADEMIC_INFO_FACULTY,
+                FirebaseUserData.PROPERTY_ACADEMIC_INFO_FACULTY,
                 faculty
             )
             .await()
@@ -120,7 +119,7 @@ class UserDataApiService(
     override suspend fun updateDepartment(department: String) {
         userDoc.first()
             .update(
-                NetworkUserData.PROPERTY_ACADEMIC_INFO_DEPARTMENT,
+                FirebaseUserData.PROPERTY_ACADEMIC_INFO_DEPARTMENT,
                 department
             )
             .await()
@@ -129,7 +128,7 @@ class UserDataApiService(
     override suspend fun updateLevel(level: Int) {
         userDoc.first()
             .update(
-                NetworkUserData.PROPERTY_ACADEMIC_INFO_LEVEL,
+                FirebaseUserData.PROPERTY_ACADEMIC_INFO_LEVEL,
                 level
             )
             .await()
@@ -138,10 +137,10 @@ class UserDataApiService(
     override suspend fun updateSemester(semester: UserData.AcademicInfo.Semester) {
         userDoc.first()
             .update(
-                NetworkUserData.PROPERTY_ACADEMIC_INFO_SEMESTER,
+                FirebaseUserData.PROPERTY_ACADEMIC_INFO_SEMESTER,
                 when (semester) {
-                    UserData.AcademicInfo.Semester.First -> NetworkUserData.AcademicInfo.Semester.First
-                    UserData.AcademicInfo.Semester.Second -> NetworkUserData.AcademicInfo.Semester.Second
+                    UserData.AcademicInfo.Semester.First -> FirebaseUserData.AcademicInfo.Semester.First
+                    UserData.AcademicInfo.Semester.Second -> FirebaseUserData.AcademicInfo.Semester.Second
                 }
             )
             .await()
@@ -150,7 +149,7 @@ class UserDataApiService(
     override suspend fun updateCumulativeGPA(cumulativeGPA: Double) {
         userDoc.first()
             .update(
-                NetworkUserData.PROPERTY_ACADEMIC_PROGRESS_CUMULATIVE_GPA,
+                FirebaseUserData.PROPERTY_ACADEMIC_PROGRESS_CUMULATIVE_GPA,
                 cumulativeGPA
             )
             .await()
@@ -159,7 +158,7 @@ class UserDataApiService(
     override suspend fun updateCreditHours(creditHours: Int) {
         userDoc.first()
             .update(
-                NetworkUserData.PROPERTY_ACADEMIC_PROGRESS_CREDIT_HOURS,
+                FirebaseUserData.PROPERTY_ACADEMIC_PROGRESS_CREDIT_HOURS,
                 creditHours
             )
             .await()
@@ -167,11 +166,11 @@ class UserDataApiService(
 
     override suspend fun updateFCMToken(fcmToken: String) {
         userDoc.first()
-            .update(NetworkUserData.PROPERTY_FCM_TOKEN, fcmToken)
+            .update(FirebaseUserData.PROPERTY_FCM_TOKEN, fcmToken)
             .await()
     }
 
     companion object {
-        private const val TAG = "UserDataApiService"
+        private const val TAG = "FirebaseUserDataRepository"
     }
 }

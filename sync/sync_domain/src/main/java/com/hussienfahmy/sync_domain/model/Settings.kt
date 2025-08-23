@@ -12,6 +12,7 @@ data class Settings(
     val calculationSettings: CalculationSettings = CalculationSettings()
 )
 
+@Keep
 data class CalculationSettings(
     val gpaSystem: GPA.System = GPA.System.FOUR,
     val subjectsMarksDependsOn: SubjectSettings.SubjectsMarksDependsOn = SubjectSettings.SubjectsMarksDependsOn.CREDIT,
@@ -19,6 +20,7 @@ data class CalculationSettings(
     val marksPerCreditHour: Double = 50.0,
 )
 
+@Keep
 data class NetworkGrade(
     val fullName: GradeName = GradeName.F,
     val active: Boolean = true,

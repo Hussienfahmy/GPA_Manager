@@ -5,21 +5,21 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
-import com.hussienfahmy.onboarding_presentation.sign_in.GoogleAuthUiClient
+import com.hussienfahmy.core.domain.auth.service.AuthService
 import com.hussienfahmy.sync_domain.worker.SyncWorker
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class MainViewModel(
-    googleAuthUiClient: GoogleAuthUiClient,
+    authService: AuthService,
     private val workManager: WorkManager,
 ) : ViewModel() {
 
-    val isSignedIn = googleAuthUiClient.isSignedInFlow
+    val isSignedIn = authService.isSignedInFlow
 
     init {
-        googleAuthUiClient.isSignedInFlow.filterNotNull().onEach { signedIn ->
+        authService.isSignedInFlow.filterNotNull().onEach { signedIn ->
             if (signedIn) {
                 workManager
                     .enqueueUniqueWork(

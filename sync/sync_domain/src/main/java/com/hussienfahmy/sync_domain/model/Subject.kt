@@ -1,7 +1,6 @@
 package com.hussienfahmy.sync_domain.model
 
 import androidx.annotation.Keep
-import com.google.firebase.firestore.Exclude
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core.data.local.entity.Subject as SubjectEntity
 
@@ -50,7 +49,6 @@ data class Subject(
         )
     )
 
-    @Exclude
     fun toEntity(): SubjectEntity = SubjectEntity(
         id = id,
         name = name,

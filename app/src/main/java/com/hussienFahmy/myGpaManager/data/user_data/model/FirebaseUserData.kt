@@ -1,11 +1,11 @@
-package com.hussienfahmy.user_data_data.model
+package com.hussienfahmy.myGpaManager.data.user_data.model
 
 import androidx.annotation.Keep
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.PropertyName
 
 @Keep
-internal data class UserData(
+internal data class FirebaseUserData(
     @DocumentId val id: String = "id",
     @PropertyName(PROPERTY_NAME) val name: String = "User",
     @PropertyName(PROPERTY_PHOTO_URL) val photoUrl: String = "",

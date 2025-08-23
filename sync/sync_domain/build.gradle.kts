@@ -5,6 +5,5 @@ plugins {
 dependencies {
     implementation(project(":core"))
 
-    implementation(libs.firebase.firestore)
     implementation(libs.androidx.work.runtime.ktx)
 }

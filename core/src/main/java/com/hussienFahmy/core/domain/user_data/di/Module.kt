@@ -31,7 +31,7 @@ val coreUserDataDomainModule = module {
             uploadPhoto = UploadPhoto(
                 repository = get(),
                 updatePhotoUrl = UpdatePhotoUrl(get()),
-                storage = get(),
+                storageRepository = get(),
                 contentResolver = get<Context>().contentResolver
             ),
             updateUniversity = UpdateUniversity(get()),

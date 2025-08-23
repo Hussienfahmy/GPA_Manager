@@ -1,6 +1,7 @@
 package com.hussienfahmy.onboarding_presentation.sign_in
 
 import androidx.lifecycle.viewModelScope
+import com.hussienfahmy.core.domain.auth.service.AuthServiceResult
 import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienfahmy.core.model.UiText.DynamicString
 import com.hussienfahmy.core_ui.presentation.model.UiEvent.ShowSnackBar
@@ -17,11 +18,11 @@ class SignInViewModel(
         when (event) {
             is AuthEvent.OnSignInResult -> {
                 when (event.signInResult) {
-                    is SignInResult.Success -> {
+                    is AuthServiceResult.Success -> {
                         viewModelScope.launch {
                             val isUserExists = userDataRepository.isUserExists()
                             if (!isUserExists) {
-                                with(event.signInResult.data) {
+                                with(event.signInResult.userData) {
                                     userDataRepository.createUserData(
                                         name = name,
                                         email = email,
@@ -39,7 +40,7 @@ class SignInViewModel(
                         _uiEvent.send(
                             ShowSnackBar(
                                 DynamicString(
-                                    (event.signInResult as? SignInResult.Error)?.message
+                                    (event.signInResult as? AuthServiceResult.Error)?.message
                                         ?: "Unknown error"
                                 )
                             )

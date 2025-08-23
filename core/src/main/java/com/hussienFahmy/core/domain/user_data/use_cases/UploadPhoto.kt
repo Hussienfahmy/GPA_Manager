@@ -6,35 +6,23 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import com.google.firebase.storage.FirebaseStorage
+import com.hussienfahmy.core.domain.storage.repository.StorageRepository
 import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
-import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
 
 class UploadPhoto(
     private val repository: UserDataRepository,
     private val updatePhotoUrl: UpdatePhotoUrl,
-    private val storage: FirebaseStorage,
+    private val storageRepository: StorageRepository,
     private val contentResolver: ContentResolver,
 ) {
     suspend operator fun invoke(uri: Uri) {
         val user = repository.getUserData() ?: return
 
         val thumbnail = createThumbnail(uri)
-        val photoRef = storage.reference.child("users/${user.id}")
+        val downloadUrl = storageRepository.uploadUserPhoto(user.id, thumbnail)
 
-        val uploadTask = photoRef.putBytes(thumbnail)
-
-        val downloadUrl = uploadTask.continueWithTask { task ->
-            if (!task.isSuccessful) {
-                task.exception?.let {
-                    throw it
-                }
-            }
-            photoRef.downloadUrl
-        }.await()
-
-        updatePhotoUrl(downloadUrl.toString())
+        updatePhotoUrl(downloadUrl)
     }
 
     private fun createThumbnail(uri: Uri): ByteArray {

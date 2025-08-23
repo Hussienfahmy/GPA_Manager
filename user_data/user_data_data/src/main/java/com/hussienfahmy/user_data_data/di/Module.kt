@@ -1,14 +1,8 @@
 package com.hussienfahmy.user_data_data.di
 
-import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
-import com.hussienfahmy.user_data_data.repository.UserDataApiService
 import org.koin.dsl.module
 
+// UserDataRepository is now provided by the app module via Firebase implementation
 val userDataDataModule = module {
-    single<UserDataRepository> {
-        UserDataApiService(
-            db = get(),
-            auth = get()
-        )
-    }
+    // Empty module - UserDataRepository moved to app module
 }

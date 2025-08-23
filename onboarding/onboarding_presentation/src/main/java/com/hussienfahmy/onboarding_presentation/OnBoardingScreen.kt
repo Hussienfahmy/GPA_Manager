@@ -13,10 +13,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.hussienfahmy.core.domain.auth.service.AuthService
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.onboarding_presentation.sign_in.AuthEvent
-import com.hussienfahmy.onboarding_presentation.sign_in.GoogleAuthUiClient
 import com.hussienfahmy.onboarding_presentation.sign_in.SignInState
 import com.hussienfahmy.onboarding_presentation.sign_in.SignInViewModel
 import kotlinx.coroutines.launch
@@ -28,7 +28,7 @@ fun OnBoardingScreen(
     viewModel: SignInViewModel = koinViewModel(),
     onSignInSuccess: () -> Unit
 ) {
-    val googleAuthUiClient = koinInject<GoogleAuthUiClient>()
+    val authService = koinInject<AuthService>()
     val scope = rememberCoroutineScope()
 
     val state by viewModel.state
@@ -54,7 +54,7 @@ fun OnBoardingScreen(
         OutlinedButton(
             onClick = {
                 scope.launch {
-                    val signInResult = googleAuthUiClient.signIn()
+                    val signInResult = authService.signIn()
 
                     viewModel.onEvent(AuthEvent.OnSignInResult(signInResult))
                 }

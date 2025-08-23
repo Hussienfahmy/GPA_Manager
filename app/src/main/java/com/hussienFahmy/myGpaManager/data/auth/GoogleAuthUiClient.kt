@@ -1,4 +1,4 @@
-package com.hussienfahmy.onboarding_presentation.sign_in
+package com.hussienfahmy.myGpaManager.data.auth
 
 import android.content.Context
 import android.util.Log
@@ -10,12 +10,10 @@ import androidx.credentials.GetCredentialRequest
 import androidx.lifecycle.DefaultLifecycleObserver
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import com.hussienFahmy.myGpaManager.R
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.tasks.await
+import com.hussienfahmy.core.domain.auth.repository.AuthRepository
+import com.hussienfahmy.core.domain.auth.repository.AuthResult
+import com.hussienfahmy.myGpaManager.R
+import kotlinx.coroutines.flow.StateFlow
 import java.util.concurrent.CancellationException
 
 private const val TAG = "GoogleAuthUiClient"
@@ -23,21 +21,10 @@ private const val TAG = "GoogleAuthUiClient"
 class GoogleAuthUiClient(
     private val context: Context,
     private val credentialManager: CredentialManager,
-    private val auth: FirebaseAuth
+    private val authRepository: AuthRepository
 ) : DefaultLifecycleObserver {
 
-    private val _isSignedInFlow = MutableStateFlow<Boolean?>(null)
-    val isSignedInFlow = _isSignedInFlow.asStateFlow()
-
-    private val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
-        (firebaseAuth.currentUser != null).let {
-            _isSignedInFlow.value = it
-        }
-    }
-
-    init {
-        auth.addAuthStateListener(authStateListener)
-    }
+    val isSignedInFlow: StateFlow<Boolean?> = authRepository.isSignedInFlow as StateFlow<Boolean?>
 
     suspend fun signIn(): SignInResult? {
         return try {
@@ -66,31 +53,23 @@ class GoogleAuthUiClient(
     }
 
     suspend fun signInWithCredential(idToken: String): SignInResult {
-        val googleCredential = GoogleAuthProvider.getCredential(idToken, null)
+        return when (val result = authRepository.signInWithCredential(idToken)) {
+            is AuthResult.Success -> SignInResult.Success(
+                FirebaseUserData(
+                    id = result.userData.id,
+                    name = result.userData.name,
+                    photoUrl = result.userData.photoUrl,
+                    email = result.userData.email,
+                )
+            )
 
-        return try {
-            auth.signInWithCredential(googleCredential)
-                .await()
-                .user!!.run {
-                    SignInResult.Success(
-                        FirebaseUserData(
-                            id = uid,
-                            name = displayName ?: "",
-                            photoUrl = photoUrl.toString(),
-                            email = email ?: "",
-                        )
-                    )
-                }
-        } catch (e: Exception) {
-            Log.e(TAG, "signIn: ", e)
-            if (e is CancellationException) throw e
-            else SignInResult.Error(e.message ?: "Unknown error")
+            is AuthResult.Error -> SignInResult.Error(result.message)
         }
     }
 
     suspend fun signOut() {
         try {
-            auth.signOut()
+            authRepository.signOut()
             val clearRequest = ClearCredentialStateRequest()
             credentialManager.clearCredentialState(clearRequest)
         } catch (e: Exception) {
@@ -111,3 +90,15 @@ class GoogleAuthUiClient(
             .addCredentialOption(googleIdOption)
             .build()
 }
+
+sealed interface SignInResult {
+    data class Success(val userData: FirebaseUserData) : SignInResult
+    data class Error(val message: String) : SignInResult
+}
+
+data class FirebaseUserData(
+    val id: String,
+    val name: String,
+    val photoUrl: String,
+    val email: String,
+)
