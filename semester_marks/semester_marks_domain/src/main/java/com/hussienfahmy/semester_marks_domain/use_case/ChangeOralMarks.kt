@@ -1,9 +1,9 @@
 package com.hussienfahmy.semester_marks_domain.use_case
 
+import com.hussienfahmy.core.R
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.util.UpdateResult
 import com.hussienfahmy.core.model.UiText
-import com.hussienfahmy.myGpaManager.core.R
 
 class ChangeOralMarks(
     private val subjectDao: SubjectDao,

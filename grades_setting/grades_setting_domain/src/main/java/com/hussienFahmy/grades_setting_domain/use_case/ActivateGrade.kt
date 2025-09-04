@@ -1,11 +1,11 @@
 package com.hussienfahmy.grades_setting_domain.use_case
 
+import com.hussienfahmy.core.R
 import com.hussienfahmy.core.data.local.GradeDao
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.util.UpdateResult
 import com.hussienfahmy.core.model.UiText
 import com.hussienfahmy.grades_setting_domain.model.GradeSetting
-import com.hussienfahmy.myGpaManager.core.R
 
 class ActivateGrade(
     private val gradeDao: GradeDao,

@@ -1,11 +1,11 @@
 package com.hussienfahmy.quick_presentation
 
 import androidx.lifecycle.viewModelScope
+import com.hussienfahmy.core.R
 import com.hussienfahmy.core.domain.user_data.use_cases.GetAcademicProgress
 import com.hussienfahmy.core.model.UiText
 import com.hussienfahmy.core_ui.presentation.model.UiEvent
 import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
-import com.hussienfahmy.myGpaManager.core.R
 import com.hussienfahmy.quick_domain.use_cases.CalculatePercentage
 import com.hussienfahmy.quick_domain.use_cases.QuickCalculate
 import kotlinx.coroutines.launch

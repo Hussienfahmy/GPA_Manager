@@ -38,11 +38,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.hussienfahmy.core.R
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core.util.toTwoDecimals
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.CircularProgressIndicatorWithBackground
-import com.hussienfahmy.myGpaManager.core.R
 import com.hussienfahmy.semester_subjctets_domain.use_case.Calculate
 import com.hussienfahmy.semester_subjctets_presentaion.model.Mode
 

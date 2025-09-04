@@ -25,10 +25,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import com.hussienfahmy.core.R
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.grades_setting_domain.model.GradeSetting
-import com.hussienfahmy.myGpaManager.core.R
 
 @Composable
 fun GradeItem(

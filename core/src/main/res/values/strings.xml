@@ -59,7 +59,7 @@
     <string name="hours">Hours</string>
     <string name="include_your_email">Include your email with your feedback to get a replay, or keep it private</string>
     <string name="level">Level</string>
-    <string name="level_semester">Level %d %s Semester</string>
+    <string name="level_semester">Level %1$d %2$s Semester</string>
     <string name="mode_normal">Normal</string>
     <string name="mode_predictive">Predictive</string>
     <string name="more">More</string>

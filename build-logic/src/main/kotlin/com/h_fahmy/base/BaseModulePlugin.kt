@@ -56,7 +56,7 @@ class BaseModulePlugin : Plugin<Project> {
 
 
             extensions.getByType<LibraryExtension>().apply {
-                namespace = libs.findVersion("appId").get().toString()
+                namespace = libs.findVersion("nameSpace").get().toString()
                 compileSdk = libs.findVersion("compileSdk").get().toString().toInt()
 
                 defaultConfig {
@@ -67,16 +67,6 @@ class BaseModulePlugin : Plugin<Project> {
 
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                     consumerProguardFiles("consumer-rules.pro")
-                }
-
-                buildTypes {
-                    release {
-                        isMinifyEnabled = true
-                        proguardFiles(
-                            getDefaultProguardFile("proguard-android-optimize.txt"),
-                            "proguard-rules.pro"
-                        )
-                    }
                 }
 
                 compileOptions {

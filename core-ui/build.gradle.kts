@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "${libs.versions.nameSpace.get()}.core_ui"
+    namespace = "com.hussienfahmy.core_ui"
 }
 
 dependencies {

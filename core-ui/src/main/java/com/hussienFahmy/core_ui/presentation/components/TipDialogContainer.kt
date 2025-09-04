@@ -31,8 +31,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import com.hussienfahmy.core.R
 import com.hussienfahmy.core_ui.LocalSpacing
-import com.hussienfahmy.myGpaManager.core.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

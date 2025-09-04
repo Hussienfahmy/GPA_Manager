@@ -35,8 +35,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.hussienfahmy.core.R
 import com.hussienfahmy.core_ui.LocalSpacing
-import com.hussienfahmy.myGpaManager.core.R
 
 @Composable
 fun ExpandableTextField(

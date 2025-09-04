@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "${libs.versions.nameSpace.get()}.core"
+    namespace = "com.hussienfahmy.core"
 
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")

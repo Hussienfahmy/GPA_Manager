@@ -26,6 +26,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -54,27 +55,35 @@ dependencies {
     // Local modules
     implementation(project(":core"))
     implementation(project(":core-ui"))
-    implementation(project(":grades_setting:grades_setting_presentation"))
+
+    implementation(project(":gpa_system_settings:gpa_system_settings_data"))
+    implementation(project(":gpa_system_settings:gpa_system_settings_domain"))
+    implementation(project(":gpa_system_settings:gpa_system_settings_presentaion"))
+
     implementation(project(":grades_setting:grades_setting_domain"))
-    // data module for dependency resolution
-    implementation(project(":user_data:user_data_data"))
-    implementation(project(":quick:quick_presentation"))
+    implementation(project(":grades_setting:grades_setting_presentation"))
+
+    implementation(project(":onboarding:onboarding_presentation"))
+
     implementation(project(":quick:quick_domain"))
-    // data module for dependency resolution
+    implementation(project(":quick:quick_presentation"))
+
+    implementation(project(":user_data:user_data_data"))
+
+    implementation(project(":semester_marks:semester_marks_domain"))
+    implementation(project(":semester_marks:semester_marks_presentaion"))
+
+    implementation(project(":semester_subjctets:semester_subjctets_domain"))
+    implementation(project(":semester_subjctets:semester_subjctets_presentaion"))
+
     implementation(project(":subject_settings:subject_settings_data"))
     implementation(project(":subject_settings:subject_settings_domain"))
     implementation(project(":subject_settings:subject_settings_presentation"))
-    implementation(project(":gpa_system_settings:gpa_system_settings_data"))
-    implementation(project(":gpa_system_settings:gpa_system_settings_presentaion"))
-    implementation(project(":semester_marks:semester_marks_domain"))
-    implementation(project(":semester_marks:semester_marks_presentaion"))
-    implementation(project(":semester_subjctets:semester_subjctets_domain"))
-    implementation(project(":semester_subjctets:semester_subjctets_presentaion"))
-    implementation(project(":onboarding:onboarding_presentation"))
-    // data module for dependency resolution
+
     implementation(project(":sync:sync_data"))
     implementation(project(":sync:sync_domain"))
 
+    implementation(project(":user_data:user_data_data"))
 
     // Koin
     implementation(libs.koin.android)
@@ -99,6 +108,9 @@ dependencies {
 
     // Work Manager
     implementation(libs.androidx.work.runtime.ktx)
+
+    // Baseline Profile
+    implementation(libs.androidx.profileinstaller)
 
     // Firebase
     implementation(libs.firebase.firestore)

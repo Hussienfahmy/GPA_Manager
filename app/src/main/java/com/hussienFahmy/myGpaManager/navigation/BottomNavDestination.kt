@@ -7,7 +7,7 @@ import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.hussienfahmy.myGpaManager.core.R
+import com.hussienfahmy.core.R
 import com.ramcosta.composedestinations.generated.destinations.AppMoreScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.AppQuickScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.AppSemesterMarksScreenDestination

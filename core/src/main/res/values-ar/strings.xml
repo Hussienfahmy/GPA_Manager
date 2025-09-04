@@ -57,7 +57,7 @@
     <string name="hours">الساعات</string>
     <string name="include_your_email">اضف بريدك الإلكتروني إذا اردت تلقي رد على ملاحظاتك، أو أرسل ملاحظات خاصة بدون بريد الكتروني</string>
     <string name="level">المستوى</string>
-    <string name="level_semester">المستوى %d الفصل الدراسي %s</string>
+    <string name="level_semester">المستوى %1$d الفصل الدراسي %2$s</string>
     <string name="mode_normal">العادي</string>
     <string name="mode_predictive">توقع</string>
     <string name="more">المزيد</string>

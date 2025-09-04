@@ -1,10 +1,10 @@
 package com.hussienfahmy.semester_subjctets_domain.use_case
 
+import com.hussienfahmy.core.R
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
 import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
 import com.hussienfahmy.core.model.UiText
-import com.hussienfahmy.myGpaManager.core.R
 import com.hussienfahmy.semester_subjctets_domain.model.Grade
 import com.hussienfahmy.semester_subjctets_domain.model.Subject
 import kotlinx.coroutines.CoroutineDispatcher

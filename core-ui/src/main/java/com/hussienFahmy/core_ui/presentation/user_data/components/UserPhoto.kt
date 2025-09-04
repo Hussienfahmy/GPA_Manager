@@ -16,8 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.hussienfahmy.myGpaManager.core.R
-import com.hussienfahmy.myGpaManager.core_ui.R as CoreUiR
+import com.hussienfahmy.core.R
+import com.hussienfahmy.core_ui.R as CoreUiR
 
 @Composable
 fun UserPhoto(
