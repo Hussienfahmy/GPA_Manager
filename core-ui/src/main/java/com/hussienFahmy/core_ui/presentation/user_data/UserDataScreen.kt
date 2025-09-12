@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hussienfahmy.core_ui.presentation.user_data.components.UserDataScreenContent
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import org.koin.androidx.compose.koinViewModel
@@ -34,7 +35,7 @@ fun UserDataScreen(
         }
     )
 
-    val state by viewModel.state
+    val state by viewModel.customState.collectAsStateWithLifecycle()
 
     when (state) {
         is UserDataState.Loading -> {
@@ -47,6 +48,7 @@ fun UserDataScreen(
             UserDataScreenContent(
                 modifier = modifier,
                 state = (state as UserDataState.Loaded),
+                uploadingPhoto = viewModel.uploadingPhoto,
                 onChangePhotoClick = { galleryLauncher.launch("image/*") },
                 onUpdateName = { viewModel.onEvent(UserDataEvent.UpdateName(it)) },
                 onUpdateCumulativeGPA = { viewModel.onEvent(UserDataEvent.UpdateCumulativeGPA(it)) },

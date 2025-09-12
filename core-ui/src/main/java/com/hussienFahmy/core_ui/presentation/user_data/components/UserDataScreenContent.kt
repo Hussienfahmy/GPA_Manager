@@ -35,6 +35,7 @@ import com.hussienfahmy.core_ui.presentation.user_data.UserDataState
 fun UserDataScreenContent(
     modifier: Modifier,
     state: UserDataState.Loaded,
+    uploadingPhoto: Boolean,
     onChangePhotoClick: () -> Unit,
     onUpdateName: (String) -> Unit,
     onUpdateCumulativeGPA: (String) -> Unit,
@@ -67,7 +68,7 @@ fun UserDataScreenContent(
                         modifier = Modifier
                             .size(120.dp)
                     ) {
-                        if (state.uploadingPhoto) {
+                        if (uploadingPhoto) {
                             CircularProgressIndicator(
                                 modifier = Modifier.align(Alignment.Center)
                             )

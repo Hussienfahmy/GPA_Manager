@@ -1,13 +1,17 @@
 package com.hussienfahmy.core_ui.presentation.user_data
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.data.local.util.UpdateResult
 import com.hussienfahmy.core.domain.user_data.use_cases.UserDataUseCases
 import com.hussienfahmy.core_ui.presentation.model.UiEvent
 import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class UserDataViewModel(
@@ -16,20 +20,26 @@ class UserDataViewModel(
     initialState = { UserDataState.Loading }
 ) {
 
-    init {
-        userDataUseCases.observeUserData().filterNotNull().onEach {
-            state.value = UserDataState.Loaded(it)
-        }.launchIn(viewModelScope)
-    }
+    val customState = userDataUseCases.observeUserData().filterNotNull()
+        .map {
+            UserDataState.Loaded(it)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(1000),
+            initialValue = UserDataState.Loading
+        )
+
+    var uploadingPhoto by mutableStateOf(false)
 
     override fun onEvent(event: UserDataEvent) {
         viewModelScope.launch {
             val updateResult: Any = when (event) {
                 is UserDataEvent.UpdateName -> userDataUseCases.updateName(event.name)
                 is UserDataEvent.UploadPhoto -> {
-                    state.value = (state.value as UserDataState.Loaded).copy(uploadingPhoto = true)
+                    uploadingPhoto = true
                     userDataUseCases.uploadPhoto(event.photoUri)
-                    state.value = (state.value as UserDataState.Loaded).copy(uploadingPhoto = false)
+                    uploadingPhoto = false
                 }
                 is UserDataEvent.UpdateUniversity -> userDataUseCases.updateUniversity(event.university)
                 is UserDataEvent.UpdateFaculty -> userDataUseCases.updateFaculty(event.faculty)
