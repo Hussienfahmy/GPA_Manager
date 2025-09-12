@@ -1,8 +1,6 @@
 package com.hussienfahmy.grades_setting_presentation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,7 +15,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -43,16 +40,26 @@ fun EditTextDialog(
     val spacing = LocalSpacing.current
 
     AlertDialog(
-        onDismissRequest = onDismiss, modifier = Modifier
+        onDismissRequest = onDismiss,
+        modifier = Modifier
             .fillMaxHeight(0.5f)
             .clip(RoundedCornerShape(spacing.medium))
             .background(MaterialTheme.colorScheme.surface)
-            .padding(spacing.medium)
-    ) {
-        Column(
-            verticalArrangement = Arrangement.SpaceAround,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+            .padding(spacing.medium),
+        confirmButton = {
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    onSaveClick(viewModel.value)
+                    onDismiss()
+                }
+            ) {
+                Text(
+                    text = stringResource(R.string.save)
+                )
+            }
+        },
+        text = {
             OutlinedTextField(
                 value = viewModel.value,
                 onValueChange = { viewModel.onValueChanged(it) },
@@ -68,18 +75,6 @@ fun EditTextDialog(
                     }
                 )
             )
-
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    onSaveClick(viewModel.value)
-                    onDismiss()
-                }
-            ) {
-                Text(
-                    text = stringResource(R.string.save)
-                )
-            }
         }
-    }
+    )
 }
