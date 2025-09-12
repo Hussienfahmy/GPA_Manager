@@ -7,8 +7,6 @@ import com.hussienfahmy.sync_domain.model.NetworkSubjects
 import com.hussienfahmy.sync_domain.model.Settings
 import com.hussienfahmy.sync_domain.model.Subject
 import com.hussienfahmy.sync_domain.repository.SyncRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
@@ -17,20 +15,13 @@ class FirebaseSyncRepository(
     db: FirebaseFirestore,
     authRepository: AuthRepository
 ) : SyncRepository {
-    private val userId = MutableStateFlow<String?>(null)
 
-    private val subjectsDoc = userId.filterNotNull().map {
+    private val subjectsDoc = authRepository.userId.map {
         db.collection(SUBJECTS_COLLECTION).document(it)
     }
 
-    private val settingsDoc = userId.filterNotNull().map {
+    private val settingsDoc = authRepository.userId.map {
         db.collection(SETTINGS_COLLECTION).document(it)
-    }
-
-    init {
-        authRepository.addAuthStateListener { newUserId ->
-            userId.value = newUserId
-        }
     }
 
     override suspend fun uploadSubjects(subjects: List<Subject>) {

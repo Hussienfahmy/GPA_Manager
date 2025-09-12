@@ -10,9 +10,7 @@ import com.hussienfahmy.myGpaManager.data.user_data.mapper.toDomain
 import com.hussienfahmy.myGpaManager.data.user_data.model.FirebaseUserData
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
@@ -22,15 +20,8 @@ class FirebaseUserDataRepository(
     private val db: FirebaseFirestore,
 ) : UserDataRepository {
 
-    private val currentUserId = MutableStateFlow<String?>(null)
-    private val userDoc = currentUserId.filterNotNull().map { userId ->
+    private val userDoc = authRepository.userId.map { userId ->
         db.collection(FirebaseUserData.COLLECTION_NAME).document(userId)
-    }
-
-    init {
-        authRepository.addAuthStateListener { userId ->
-            currentUserId.value = userId
-        }
     }
 
     override suspend fun isUserExists(): Boolean {
