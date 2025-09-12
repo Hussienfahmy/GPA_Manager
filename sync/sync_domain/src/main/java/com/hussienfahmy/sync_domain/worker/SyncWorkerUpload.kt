@@ -12,7 +12,7 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkerParameters
 import com.hussienfahmy.core.R
-import com.hussienfahmy.sync_domain.use_case.SyncUpload
+import com.hussienfahmy.core.domain.sync.SyncUpload
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
