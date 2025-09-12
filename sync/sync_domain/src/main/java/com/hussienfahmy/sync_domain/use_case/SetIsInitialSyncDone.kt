@@ -2,10 +2,10 @@ package com.hussienfahmy.sync_domain.use_case
 
 import com.hussienfahmy.sync_domain.repository.AppDataRepository
 
-class SetIsFirstTimeInstall(
+class SetIsInitialSyncDone(
     private val appDataRepository: AppDataRepository,
 ) {
     suspend operator fun invoke(isFirstTimeInstall: Boolean) {
-        appDataRepository.setFirstTimeInstall(isFirstTimeInstall)
+        appDataRepository.setInitialSyncDone(isFirstTimeInstall)
     }
 }

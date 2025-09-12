@@ -13,4 +13,5 @@ android {
 dependencies {
     implementation(libs.bundles.room)
     ksp(libs.androidx.room.compiler)
+    implementation(project(":sync:sync_domain"))
 }

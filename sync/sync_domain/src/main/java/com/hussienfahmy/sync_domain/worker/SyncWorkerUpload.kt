@@ -9,38 +9,23 @@ import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkerParameters
 import com.hussienfahmy.core.R
-import com.hussienfahmy.sync_domain.use_case.GetIsFirstTimeInstall
-import com.hussienfahmy.sync_domain.use_case.PullSettings
-import com.hussienfahmy.sync_domain.use_case.PullSubjects
-import com.hussienfahmy.sync_domain.use_case.PushSettings
-import com.hussienfahmy.sync_domain.use_case.PushSubjects
-import com.hussienfahmy.sync_domain.use_case.SetIsFirstTimeInstall
+import com.hussienfahmy.sync_domain.use_case.SyncUpload
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.toJavaDuration
 
-private const val TAG = "SyncWorker"
-
-class SyncWorker(
+class SyncWorkerUpload(
     appContext: Context,
     workerParams: WorkerParameters,
-    private val pullSubjects: PullSubjects,
-    private val pushSubjects: PushSubjects,
-    private val pushSettings: PushSettings,
-    private val pullSettings: PullSettings,
-    private val setIsFirstTimeInstall: SetIsFirstTimeInstall,
-    private val getIsFirstTimeInstall: GetIsFirstTimeInstall,
+    private val syncUpload: SyncUpload
 ) : CoroutineWorker(
     appContext,
     workerParams
 ) {
-
     override suspend fun getForegroundInfo(): ForegroundInfo {
         val id = "sync_channel"
         val notificationId = 1
@@ -49,7 +34,7 @@ class SyncWorker(
 
         val notification = NotificationCompat.Builder(applicationContext, id)
             .setContentTitle("Sync Data")
-            .setContentText("Fetch your subjects and settings...")
+            .setContentText("Uploading your subjects and settings...")
             .setSmallIcon(R.drawable.baseline_sync_24)
             .setOngoing(true)
             .build()
@@ -71,34 +56,17 @@ class SyncWorker(
     }
 
     override suspend fun doWork(): Result {
-        if (getIsFirstTimeInstall()) {
-            pullSubjects()
-            pullSettings()
-            setIsFirstTimeInstall(false)
-        } else {
-            pushSettings()
-            pushSubjects()
+        return try {
+            syncUpload()
+            Result.success()
+        } catch (_: Exception) {
+            Result.retry()
         }
-        return Result.success()
     }
 
     companion object {
-        val downloadWorkRequest
-            get() = OneTimeWorkRequestBuilder<SyncWorker>()
-                .setConstraints(
-                    Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .setRequiresCharging(false)
-                        .setRequiresDeviceIdle(false)
-                        .setRequiresBatteryNotLow(false)
-                        .setRequiresStorageNotLow(false)
-                        .build()
-                )
-                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-                .build()
-
-        val uploadWorkRequest
-            get() = PeriodicWorkRequestBuilder<SyncWorker>(1.days.toJavaDuration())
+        val request
+            get() = PeriodicWorkRequestBuilder<SyncWorkerUpload>(1.days.toJavaDuration())
                 .setConstraints(
                     Constraints.Builder()
                         .setRequiredNetworkType(NetworkType.CONNECTED)

@@ -7,12 +7,12 @@ class AppDataRepositoryImpl(
     private val appDatastore: AppDatastore,
 ) : AppDataRepository {
 
-    override suspend fun isFirstTimeInstall(): Boolean {
-        return appDatastore.isFirstTimeInstall()
+    override suspend fun isInitialSyncDone(): Boolean {
+        return appDatastore.isInitialSyncDone()
     }
 
-    override suspend fun setFirstTimeInstall(isFirstTimeInstall: Boolean) {
-        appDatastore.setFirstTimeInstall(isFirstTimeInstall)
+    override suspend fun setInitialSyncDone(isFirstTimeInstall: Boolean) {
+        appDatastore.setInitialSyncDone(isFirstTimeInstall)
     }
 
 }

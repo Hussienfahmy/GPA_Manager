@@ -17,7 +17,7 @@ import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 enum class BottomNavDestination(
     val direction: DirectionDestinationSpec,
     val icon: ImageVector,
-    @StringRes val label: Int
+    @param:StringRes val label: Int
 ) {
     Semester(
         direction = AppSemesterScreenDestination,

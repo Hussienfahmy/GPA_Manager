@@ -12,18 +12,18 @@ class AppDatastore(
     private val Context.dataStore by preferencesDataStore("app_datastore")
     private val datastore = context.dataStore
 
-    suspend fun isFirstTimeInstall(): Boolean {
+    suspend fun isInitialSyncDone(): Boolean {
         val preferences = datastore.data.first()
-        return preferences[firstInstallKey] ?: true
+        return preferences[initialSyncDoneKey] ?: false
     }
 
-    suspend fun setFirstTimeInstall(isFirstTimeInstall: Boolean) {
+    suspend fun setInitialSyncDone(isInitialSyncDone: Boolean) {
         datastore.edit { preferences ->
-            preferences[firstInstallKey] = isFirstTimeInstall
+            preferences[initialSyncDoneKey] = isInitialSyncDone
         }
     }
 
     companion object {
-        private val firstInstallKey = booleanPreferencesKey("first_install")
+        private val initialSyncDoneKey = booleanPreferencesKey("initial_sync_done")
     }
 }

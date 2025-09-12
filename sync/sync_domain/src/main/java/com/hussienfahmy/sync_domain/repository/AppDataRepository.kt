@@ -2,7 +2,7 @@ package com.hussienfahmy.sync_domain.repository
 
 interface AppDataRepository {
 
-    suspend fun isFirstTimeInstall(): Boolean
+    suspend fun isInitialSyncDone(): Boolean
 
-    suspend fun setFirstTimeInstall(isFirstTimeInstall: Boolean)
+    suspend fun setInitialSyncDone(isFirstTimeInstall: Boolean)
 }

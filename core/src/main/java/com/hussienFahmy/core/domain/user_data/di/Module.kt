@@ -4,6 +4,7 @@ import android.content.Context
 import com.hussienfahmy.core.domain.user_data.use_cases.GetAcademicProgress
 import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
 import com.hussienfahmy.core.domain.user_data.use_cases.ObserveUserData
+import com.hussienfahmy.core.domain.user_data.use_cases.SignOut
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateCreditHours
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateCumulativeGPA
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateDepartment
@@ -41,6 +42,14 @@ val coreUserDataDomainModule = module {
             updateSemester = UpdateSemester(get()),
             updateCumulativeGPA = UpdateCumulativeGPA(get(), get()),
             updateCreditHours = UpdateCreditHours(get()),
+        )
+    }
+    single {
+        SignOut(
+            authService = get(),
+            subjectDao = get(),
+            syncUpload = get(),
+            setIsInitialSyncDone = get(),
         )
     }
 }
