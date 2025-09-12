@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
 import com.hussienfahmy.core.domain.auth.service.AuthService
+import com.hussienfahmy.core.domain.sync.SyncDownload
 import com.hussienfahmy.sync_domain.use_case.GetIsInitialSyncDone
-import com.hussienfahmy.sync_domain.use_case.SyncDownload
 import com.hussienfahmy.sync_domain.worker.SyncWorkerUpload
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn

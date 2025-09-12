@@ -2,8 +2,8 @@ package com.hussienfahmy.core.domain.user_data.use_cases
 
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.domain.auth.service.AuthService
-import com.hussienfahmy.sync_domain.use_case.SetIsInitialSyncDone
-import com.hussienfahmy.sync_domain.use_case.SyncUpload
+import com.hussienfahmy.core.domain.sync.SetIsInitialSyncDone
+import com.hussienfahmy.core.domain.sync.SyncUpload
 
 class SignOut(
     private val authService: AuthService,

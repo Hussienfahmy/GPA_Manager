@@ -1,5 +1,6 @@
 package com.hussienfahmy.sync_domain.di
 
+import com.hussienfahmy.core.domain.sync.SetIsInitialSyncDone
 import com.hussienfahmy.core.domain.sync.SyncDownload
 import com.hussienfahmy.core.domain.sync.SyncUpload
 import com.hussienfahmy.sync_domain.use_case.GetIsInitialSyncDone
@@ -7,7 +8,7 @@ import com.hussienfahmy.sync_domain.use_case.PullSettings
 import com.hussienfahmy.sync_domain.use_case.PullSubjects
 import com.hussienfahmy.sync_domain.use_case.PushSettings
 import com.hussienfahmy.sync_domain.use_case.PushSubjects
-import com.hussienfahmy.sync_domain.use_case.SetIsInitialSyncDone
+import com.hussienfahmy.sync_domain.use_case.SetIsInitialSyncDoneImpl
 import com.hussienfahmy.sync_domain.use_case.SyncDownloadImpl
 import com.hussienfahmy.sync_domain.use_case.SyncUploadImpl
 import com.hussienfahmy.sync_domain.worker.SyncWorkerUpload
@@ -55,10 +56,10 @@ val syncDomainModule = module {
     }
 
     single {
-        SetIsInitialSyncDone(
+        SetIsInitialSyncDoneImpl(
             appDataRepository = get(),
         )
-    }
+    }.bind<SetIsInitialSyncDone>()
 
     single {
         SyncDownloadImpl(

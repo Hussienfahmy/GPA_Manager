@@ -1,5 +1,6 @@
 package com.hussienfahmy.sync_domain.use_case
 
+import com.hussienfahmy.core.domain.sync.SetIsInitialSyncDone
 import com.hussienfahmy.core.domain.sync.SyncDownload
 
 class SyncDownloadImpl(
