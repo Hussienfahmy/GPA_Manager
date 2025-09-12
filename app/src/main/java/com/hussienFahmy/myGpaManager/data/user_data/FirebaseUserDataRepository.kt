@@ -21,7 +21,7 @@ class FirebaseUserDataRepository(
 ) : UserDataRepository {
 
     private val userDoc = authRepository.userId.map { userId ->
-        db.collection(FirebaseUserData.COLLECTION_NAME).document(userId)
+        db.collection(FirebaseUserData.USERS_COLLECTION_NAME).document(userId)
     }
 
     override suspend fun isUserExists(): Boolean {

@@ -2,6 +2,7 @@ package com.hussienfahmy.myGpaManager.data.storage
 
 import com.google.firebase.storage.FirebaseStorage
 import com.hussienfahmy.core.domain.storage.repository.StorageRepository
+import com.hussienfahmy.myGpaManager.data.user_data.model.FirebaseUserData
 import kotlinx.coroutines.tasks.await
 
 class FirebaseStorageRepository(
@@ -9,7 +10,7 @@ class FirebaseStorageRepository(
 ) : StorageRepository {
 
     override suspend fun uploadUserPhoto(userId: String, imageData: ByteArray): String {
-        val photoRef = storage.reference.child("users/$userId")
+        val photoRef = storage.reference.child("${FirebaseUserData.USERS_COLLECTION_NAME}/$userId")
 
         val uploadTask = photoRef.putBytes(imageData)
 

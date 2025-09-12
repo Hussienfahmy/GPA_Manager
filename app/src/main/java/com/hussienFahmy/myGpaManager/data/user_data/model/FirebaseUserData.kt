@@ -34,7 +34,7 @@ internal data class FirebaseUserData(
     )
 
     companion object {
-        const val COLLECTION_NAME = "users"
+        const val USERS_COLLECTION_NAME = "users"
         const val PROPERTY_NAME = "name"
         const val PROPERTY_PHOTO_URL = "photoUrl"
         const val PROPERTY_EMAIL = "email"
