@@ -152,12 +152,10 @@ fun Subject(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                AnimatedVisibility(mode is Mode.Predict) {
-                    Text(
-                        text = "C.H: ${subject.creditHours}",
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
+                Text(
+                    text = "C.H: ${subject.creditHours}",
+                    color = MaterialTheme.colorScheme.primary,
+                )
 
                 val expandIcon = if (isExpanded) Icons.AutoMirrored.Filled.KeyboardArrowLeft
                 else Icons.Default.KeyboardArrowDown
@@ -236,11 +234,12 @@ fun Grades(
     ) {
         availableGrades.forEach { availableGrade ->
             // disable if the grade is not fixed in predictive mode OR th student can't achieve it
+            val selected = availableGrade == subject.selectedGradeName
             GradeButton(
                 grade = availableGrade,
-                selected = availableGrade == subject.selectedGradeName,
+                selected = selected,
                 disabled = availableGrade > subject.maxGradeNameCanBeAssigned
-                        || (mode is Mode.Predict && !subject.fixedGrade),
+                        || (mode is Mode.Predict && !subject.fixedGrade && !selected),
                 onGradeClick = { onGradeClick(subject.id, availableGrade) }
             )
         }
