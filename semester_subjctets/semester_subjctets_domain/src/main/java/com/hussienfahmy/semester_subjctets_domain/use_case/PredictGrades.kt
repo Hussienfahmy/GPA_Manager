@@ -32,7 +32,7 @@ class PredictGrades(
         list.map { Grade(it) }
     }.stateIn(
         scope = appScope,
-        started = SharingStarted.Lazily,
+        started = SharingStarted.Eagerly,
         initialValue = emptyList()
     )
 
