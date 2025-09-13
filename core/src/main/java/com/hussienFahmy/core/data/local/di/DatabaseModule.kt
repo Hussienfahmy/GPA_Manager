@@ -6,6 +6,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.hussienfahmy.core.data.local.AppDatabase
 import com.hussienfahmy.core.data.local.GradeDao
+import com.hussienfahmy.core.data.local.MIGRATION_10_11
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.entity.Grade
 import kotlinx.coroutines.CoroutineScope
@@ -40,6 +41,7 @@ val databaseModule = module {
             "database"
         ).fallbackToDestructiveMigration(false)
             .addCallback(get<RoomDatabase.Callback>())
+            .addMigrations(MIGRATION_10_11)
             .build()
     }
 
