@@ -164,7 +164,7 @@ private fun QuickScreenLandscape(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun QuickScreenPortraitPreview() {
     QuickScreenPortrait(
@@ -184,7 +184,10 @@ fun QuickScreenPortraitPreview() {
     )
 }
 
-@Preview
+@Preview(
+    showBackground = true,
+    device = "spec:width=411dp,height=891dp,dpi=420,isRound=false,chinSize=0dp,orientation=landscape"
+)
 @Composable
 fun QuickScreenLandscapePreview() {
     QuickScreenLandscape(

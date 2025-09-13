@@ -20,7 +20,7 @@ class QuickViewModel(
 
     init {
         viewModelScope.launch {
-            getAcademicProgress()?.let {
+            getAcademicProgress().let {
                 state.value = state.value.copy(
                     academicProgress = it,
                     isLoading = false
@@ -118,6 +118,8 @@ class QuickViewModel(
                         invalidSemesterGPAInput = false,
                         invalidSemesterHoursInput = false,
                         invalidTotalHoursInput = false,
+                        invalidCumulativeGPAAboveMax = false,
+                        invalidSemesterGPAAboveMax = false,
                     )
             }
         }

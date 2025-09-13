@@ -62,6 +62,16 @@ fun InputCard(
 
     // send the inputs to view model to be calculated on when any inputs change
     LaunchedEffect(cumulativeGPA, totalHours, semesterGPA, semesterHours) {
+        val skip = listOf(
+            cumulativeGPA,
+            totalHours,
+            semesterGPA,
+            semesterHours,
+        ).any {
+            it.isBlank()
+        }
+        if (skip) return@LaunchedEffect
+
         onCalculate(
             QuickCalculationRequest(
                 cumulativeGPA = cumulativeGPA,
