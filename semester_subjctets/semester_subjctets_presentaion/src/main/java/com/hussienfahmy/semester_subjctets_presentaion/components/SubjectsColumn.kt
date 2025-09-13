@@ -257,7 +257,7 @@ fun GradeButton(
     val spacing = LocalSpacing.current
 
     val buttonSize = spacing.large
-    val disabledAlpha by animateFloatAsState(targetValue = if (disabled) 0.5f else 1f)
+    val disabledAlpha by animateFloatAsState(targetValue = if (disabled) 0.3f else 1f)
 
     val selectedAlpha by animateFloatAsState(targetValue = if (selected) 1f else 0.7f)
 
