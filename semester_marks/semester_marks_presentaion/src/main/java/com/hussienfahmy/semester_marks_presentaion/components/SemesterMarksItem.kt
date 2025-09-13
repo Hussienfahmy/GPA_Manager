@@ -23,8 +23,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -45,6 +45,7 @@ import com.hussienfahmy.core.R
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.ConfirmationDialog
 import com.hussienfahmy.core_ui.presentation.components.TipDialogContainer
+import com.hussienfahmy.core_ui.presentation.util.toStringWithOptionalDecimals
 import com.hussienfahmy.semester_marks_domain.model.Grade
 import com.hussienfahmy.semester_marks_domain.model.Subject
 
@@ -116,14 +117,16 @@ fun SemesterMarksItem(
             verticalArrangement = Arrangement.spacedBy(spacing.small)
         ) {
             SubjectTitle(
-                subjectName = subject.name,
+                subject = subject,
                 onEditCLick = { showSemesterWorkAvailabilityDialog = true },
                 onResetClick = { showResetConfirmationDialog = true },
             )
 
-            HorizontalDivider()
-
-            Marks(courseMarks = subject.courseMarks, courseTotalMarks = subject.courseTotalMarks)
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth(),
+                progress = { subject.courseMarksPercentage },
+                drawStopIndicator = {}
+            )
 
             HorizontalDivider()
 
@@ -225,46 +228,8 @@ private fun SemesterWork(
 }
 
 @Composable
-private fun Marks(
-    courseMarks: Double?,
-    courseTotalMarks: Double,
-) {
-    val spacing = LocalSpacing.current
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        OutlinedTextField(
-            modifier = Modifier.weight(1f),
-            value = courseMarks?.toString() ?: "",
-            onValueChange = {},
-            enabled = false,
-            label = {
-                Text(
-                    text = stringResource(R.string.semester_marks),
-                )
-            },
-        )
-
-        Spacer(modifier = Modifier.width(spacing.medium))
-
-        OutlinedTextField(
-            modifier = Modifier.weight(1f),
-            value = courseTotalMarks.toString(),
-            onValueChange = {},
-            enabled = false,
-            label = {
-                Text(
-                    text = stringResource(R.string.total_marks),
-                )
-            },
-        )
-    }
-}
-
-@Composable
 private fun SubjectTitle(
-    subjectName: String,
+    subject: Subject,
     onResetClick: () -> Unit,
     onEditCLick: () -> Unit,
 ) {
@@ -272,10 +237,18 @@ private fun SubjectTitle(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(text = subjectName, style = MaterialTheme.typography.titleLarge)
+        Text(text = subject.name, style = MaterialTheme.typography.titleLarge)
+
+        Spacer(modifier = Modifier.width(spacing.medium))
+
+        Text(
+            text = "${subject.courseMarks.toStringWithOptionalDecimals()}/${subject.courseTotalMarks.toStringWithOptionalDecimals()}",
+            style = MaterialTheme.typography.bodyLarge
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
 
         Row(
             verticalAlignment = Alignment.CenterVertically,

@@ -24,4 +24,7 @@ data class Subject(
 
             return output
         }
+
+    val courseMarksPercentage: Float
+        get() = (courseMarks / courseTotalMarks).toFloat()
 }
