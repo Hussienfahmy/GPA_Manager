@@ -96,7 +96,10 @@ class SemesterSubjectsViewModel(
                     event.projectAvailable
                 )
 
-                is SemesterSubjectsEvent.CLearAll -> subjectUseCases.clearGrade(ClearGrade.Request.All)
+                is SemesterSubjectsEvent.CLearAll -> {
+                    mode.value = Mode.Normal
+                    subjectUseCases.clearGrade(ClearGrade.Request.All)
+                }
 
                 is SemesterSubjectsEvent.ClearGrade -> subjectUseCases.clearGrade(
                     ClearGrade.Request.ById(
