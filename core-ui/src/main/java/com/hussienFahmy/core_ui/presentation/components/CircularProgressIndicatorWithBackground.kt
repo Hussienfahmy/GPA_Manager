@@ -10,25 +10,16 @@ import androidx.compose.ui.unit.Dp
 @Composable
 fun CircularProgressIndicatorWithBackground(
     modifier: Modifier = Modifier,
-    backgroundColor: Color = Color.LightGray,
     color: Color,
     strokeWidth: Dp,
     progress: Float,
     totalProgress: Float = 1f
 ) {
-    // background
-    CircularProgressIndicator(
-        progress = { totalProgress },
-        color = backgroundColor,
-        strokeWidth = strokeWidth,
-        modifier = modifier
-    )
-
-    // foreground
     CircularProgressIndicator(
         progress = { progress * totalProgress },
         color = color,
         strokeWidth = strokeWidth,
+        trackColor = color.copy(alpha = 0.3f),
         modifier = modifier
     )
 }
