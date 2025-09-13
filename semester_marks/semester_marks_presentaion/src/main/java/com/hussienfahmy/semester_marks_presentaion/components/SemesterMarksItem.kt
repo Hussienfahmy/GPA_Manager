@@ -1,20 +1,21 @@
 package com.hussienfahmy.semester_marks_presentaion.components
 
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -23,9 +24,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -122,12 +123,6 @@ fun SemesterMarksItem(
                 onResetClick = { showResetConfirmationDialog = true },
             )
 
-            LinearProgressIndicator(
-                modifier = Modifier.fillMaxWidth(),
-                progress = { subject.courseMarksPercentage },
-                drawStopIndicator = {}
-            )
-
             HorizontalDivider()
 
             SemesterWork(
@@ -157,21 +152,26 @@ fun SemesterMarksItem(
                 }
             )
 
-            HorizontalDivider()
-
-            Column {
-                if (showHint) {
-                    TipDialogContainer(tipText = stringResource(R.string.tip_required_marks)) {
-                        Text(
-                            text = "The required marks you need to get to achieve the grade",
-                            maxLines = 1,
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(spacing.small))
+            if (showHint) {
+                TipDialogContainer(tipText = stringResource(R.string.tip_required_marks)) {
+                    Text(
+                        text = "The required marks you need to get to achieve the grade",
+                        maxLines = 1,
+                        style = MaterialTheme.typography.bodySmall
+                    )
                 }
+            }
 
-                AvailableGrades(subject.grades)
+            val achievableGrades = subject.grades.filter { it.achievable is Grade.Achievable.Yes }
+
+            AnimatedVisibility(achievableGrades.isNotEmpty()) {
+                Column {
+                    HorizontalDivider()
+
+                    Spacer(modifier = Modifier.height(spacing.small))
+
+                    AvailableGrades(achievableGrades)
+                }
             }
         }
     }
@@ -277,27 +277,31 @@ private fun AvailableGrades(grades: List<Grade>) {
         shape = RoundedCornerShape(spacing.small),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary
-        ),
+        )
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(IntrinsicSize.Min)
-                .padding(horizontal = 3.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            grades.forEachIndexed { index, grade ->
-                GradeWithNeededMarksItem(
-                    modifier = Modifier.weight(1f),
-                    grade = grade,
-                )
-                // add divider between the grades
-                if (index != grades.lastIndex) HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(1.dp)
-                )
+        BoxWithConstraints {
+            val itemWidth = this.maxWidth / grades.size
+
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                itemsIndexed(grades, key = { _, grade -> grade.symbol }) { index, grade ->
+                    GradeWithNeededMarksItem(
+                        modifier = Modifier
+                            .width(itemWidth)
+                            .animateItem(),
+                        grade = grade
+                    )
+
+                    // add divider between the grades
+                    if (index != grades.lastIndex) VerticalDivider(
+                        modifier = Modifier
+                            .height(50.dp)
+                    )
+                }
             }
         }
     }
@@ -316,13 +320,13 @@ private fun GradeWithNeededMarksItem(
         modifier = modifier
             .heightIn(min = 50.dp)
             .padding(horizontal = 3.dp, vertical = 3.dp)
-            .alpha(animatedAlpha),
+            .graphicsLayer {
+                alpha = animatedAlpha
+            },
     ) {
         Column(
             modifier = Modifier
-                .align(Alignment.Center)
-                .fillMaxWidth()
-                .animateContentSize(),
+                .align(Alignment.Center),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
