@@ -3,7 +3,7 @@ package com.hussienfahmy.core.domain.auth.repository
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
-    val userId: Flow<String>
+    val userId: Flow<String?>
     val isSignedInFlow: Flow<Boolean?>
 
     suspend fun signInWithCredential(idToken: String): AuthResult

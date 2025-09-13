@@ -5,30 +5,26 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.auth.repository.AuthResult
 import com.hussienfahmy.core.domain.auth.repository.AuthUserData
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.concurrent.CancellationException
 
 class FirebaseAuthRepository(
-    private val auth: FirebaseAuth,
-    private val scope: CoroutineScope
+    private val auth: FirebaseAuth
 ) : AuthRepository {
 
-    private val _userId = MutableSharedFlow<String>(replay = 1)
-    override val userId: Flow<String> = _userId
+    private val _userId = MutableStateFlow<String?>(null)
+    override val userId: Flow<String?> = _userId.asStateFlow()
         .onStart {
             auth.addAuthStateListener(firebaseAuthStateListener)
         }.onCompletion {
             auth.removeAuthStateListener(firebaseAuthStateListener)
-        }.filter { it.isNotBlank() }
+        }
 
     private val _isSignedInFlow = MutableStateFlow<Boolean?>(null)
     override val isSignedInFlow = _isSignedInFlow.asStateFlow()
@@ -37,11 +33,7 @@ class FirebaseAuthRepository(
     private val firebaseAuthStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
         val userId = firebaseAuth.currentUser?.uid
         _isSignedInFlow.value = userId != null
-        if (userId != null) {
-            scope.launch {
-                _userId.emit(userId)
-            }
-        }
+        _userId.value = userId
     }
 
     override suspend fun signInWithCredential(idToken: String): AuthResult {
@@ -67,6 +59,11 @@ class FirebaseAuthRepository(
     }
 
     override suspend fun signOut() {
+        auth.removeAuthStateListener(firebaseAuthStateListener)
         auth.signOut()
+        while (auth.currentUser?.uid != null) {
+            delay(100)
+        }
+        _userId.value = null
     }
 }

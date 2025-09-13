@@ -16,29 +16,29 @@ class FirebaseSyncRepository(
     authRepository: AuthRepository
 ) : SyncRepository {
 
-    private val subjectsDoc = authRepository.userId.map {
-        db.collection(SUBJECTS_COLLECTION).document(it)
+    private val subjectsDoc = authRepository.userId.map { userId ->
+        userId?.let { db.collection(SUBJECTS_COLLECTION).document(it) }
     }
 
-    private val settingsDoc = authRepository.userId.map {
-        db.collection(SETTINGS_COLLECTION).document(it)
+    private val settingsDoc = authRepository.userId.map { userId ->
+        userId?.let { db.collection(SETTINGS_COLLECTION).document(it) }
     }
 
     override suspend fun uploadSubjects(subjects: List<Subject>) {
         val networkSubjects = NetworkSubjects(subjects)
-        subjectsDoc.first().set(networkSubjects).await()
+        subjectsDoc.first()?.set(networkSubjects)?.await()
     }
 
     override suspend fun downloadSubjects(): NetworkSubjects? {
-        return subjectsDoc.first().get().await().toObject<NetworkSubjects>()
+        return subjectsDoc.first()?.get()?.await()?.toObject<NetworkSubjects>()
     }
 
     override suspend fun uploadSettings(settings: Settings) {
-        settingsDoc.first().set(settings).await()
+        settingsDoc.first()?.set(settings)?.await()
     }
 
     override suspend fun downloadSettings(): Settings? {
-        return settingsDoc.first().get().await().toObject<Settings>()
+        return settingsDoc.first()?.get()?.await()?.toObject<Settings>()
     }
 
     companion object {

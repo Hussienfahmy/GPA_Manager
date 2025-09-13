@@ -46,7 +46,7 @@ val firebaseModule = module {
 
     // Repository implementations
     single<AuthRepository> {
-        FirebaseAuthRepository(get(), get())
+        FirebaseAuthRepository(get())
     }
 
     single<StorageRepository> {

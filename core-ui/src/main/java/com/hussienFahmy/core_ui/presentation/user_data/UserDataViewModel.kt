@@ -9,7 +9,6 @@ import com.hussienfahmy.core.domain.user_data.use_cases.UserDataUseCases
 import com.hussienfahmy.core_ui.presentation.model.UiEvent
 import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -20,9 +19,11 @@ class UserDataViewModel(
     initialState = { UserDataState.Loading }
 ) {
 
-    val customState = userDataUseCases.observeUserData().filterNotNull()
-        .map {
-            UserDataState.Loaded(it)
+    val customState = userDataUseCases.observeUserData()
+        .map { data ->
+            data?.let {
+                UserDataState.Loaded(it)
+            } ?: UserDataState.Loading
         }
         .stateIn(
             scope = viewModelScope,

@@ -21,11 +21,13 @@ class FirebaseUserDataRepository(
 ) : UserDataRepository {
 
     private val userDoc = authRepository.userId.map { userId ->
-        db.collection(FirebaseUserData.USERS_COLLECTION_NAME).document(userId)
+        userId?.let {
+            db.collection(FirebaseUserData.USERS_COLLECTION_NAME).document(it)
+        }
     }
 
     override suspend fun isUserExists(): Boolean {
-        return userDoc.first().get().await().exists()
+        return userDoc.first()?.get()?.await()?.exists() ?: false
     }
 
     override suspend fun createUserData(
@@ -34,19 +36,27 @@ class FirebaseUserDataRepository(
         photoUrl: String,
         email: String,
     ) {
-        userDoc.first().set(
+        userDoc.first()?.set(
             FirebaseUserData(
                 id = id,
                 name = name,
                 photoUrl = photoUrl,
                 email = email,
             )
-        ).await()
+        )?.await()
     }
 
     override fun observeUserData(): Flow<UserData?> {
         return callbackFlow {
-            val registration = userDoc.first().addSnapshotListener { value, error ->
+            val docRef = userDoc.first()
+            if (docRef == null) {
+                // User is signed out, emit null and close
+                trySend(null)
+                close()
+                return@callbackFlow
+            }
+
+            val registration = docRef.addSnapshotListener { value, error ->
                 if (error != null) {
                     close(error)
                     return@addSnapshotListener
@@ -68,97 +78,75 @@ class FirebaseUserDataRepository(
     }
 
     override suspend fun getUserData(): UserData? {
-        return userDoc.first().get().await().toObject<FirebaseUserData>()?.toDomain()
+        return userDoc.first()?.get()?.await()?.toObject<FirebaseUserData>()?.toDomain()
     }
 
     override suspend fun updateName(name: String) {
-        userDoc.first()
-            .update(FirebaseUserData.PROPERTY_NAME, name)
-            .await()
+        userDoc.first()?.update(FirebaseUserData.PROPERTY_NAME, name)?.await()
     }
 
     override suspend fun updatePhotoUrl(photoUrl: String) {
-        userDoc.first()
-            .update(FirebaseUserData.PROPERTY_PHOTO_URL, photoUrl)
-            .await()
+        userDoc.first()?.update(FirebaseUserData.PROPERTY_PHOTO_URL, photoUrl)?.await()
     }
 
     override suspend fun updateEmail(email: String) {
-        userDoc.first()
-            .update(FirebaseUserData.PROPERTY_EMAIL, email)
-            .await()
+        userDoc.first()?.update(FirebaseUserData.PROPERTY_EMAIL, email)?.await()
     }
 
     override suspend fun updateUniversity(university: String) {
-        userDoc.first()
-            .update(
-                FirebaseUserData.PROPERTY_ACADEMIC_INFO_UNIVERSITY,
-                university
-            )
-            .await()
+        userDoc.first()?.update(
+            FirebaseUserData.PROPERTY_ACADEMIC_INFO_UNIVERSITY,
+            university
+        )?.await()
     }
 
     override suspend fun updateFaculty(faculty: String) {
-        userDoc.first()
-            .update(
-                FirebaseUserData.PROPERTY_ACADEMIC_INFO_FACULTY,
-                faculty
-            )
-            .await()
+        userDoc.first()?.update(
+            FirebaseUserData.PROPERTY_ACADEMIC_INFO_FACULTY,
+            faculty
+        )?.await()
     }
 
     override suspend fun updateDepartment(department: String) {
-        userDoc.first()
-            .update(
-                FirebaseUserData.PROPERTY_ACADEMIC_INFO_DEPARTMENT,
-                department
-            )
-            .await()
+        userDoc.first()?.update(
+            FirebaseUserData.PROPERTY_ACADEMIC_INFO_DEPARTMENT,
+            department
+        )?.await()
     }
 
     override suspend fun updateLevel(level: Int) {
-        userDoc.first()
-            .update(
-                FirebaseUserData.PROPERTY_ACADEMIC_INFO_LEVEL,
-                level
-            )
-            .await()
+        userDoc.first()?.update(
+            FirebaseUserData.PROPERTY_ACADEMIC_INFO_LEVEL,
+            level
+        )?.await()
     }
 
     override suspend fun updateSemester(semester: UserData.AcademicInfo.Semester) {
-        userDoc.first()
-            .update(
-                FirebaseUserData.PROPERTY_ACADEMIC_INFO_SEMESTER,
-                when (semester) {
-                    UserData.AcademicInfo.Semester.First -> FirebaseUserData.AcademicInfo.Semester.First
-                    UserData.AcademicInfo.Semester.Second -> FirebaseUserData.AcademicInfo.Semester.Second
-                }
-            )
-            .await()
+        userDoc.first()?.update(
+            FirebaseUserData.PROPERTY_ACADEMIC_INFO_SEMESTER,
+            when (semester) {
+                UserData.AcademicInfo.Semester.First -> FirebaseUserData.AcademicInfo.Semester.First
+                UserData.AcademicInfo.Semester.Second -> FirebaseUserData.AcademicInfo.Semester.Second
+            }
+        )?.await()
     }
 
     override suspend fun updateCumulativeGPA(cumulativeGPA: Double) {
-        userDoc.first()
-            .update(
-                FirebaseUserData.PROPERTY_ACADEMIC_PROGRESS_CUMULATIVE_GPA,
-                cumulativeGPA
-            )
-            .await()
+        userDoc.first()?.update(
+            FirebaseUserData.PROPERTY_ACADEMIC_PROGRESS_CUMULATIVE_GPA,
+            cumulativeGPA
+        )?.await()
     }
 
     override suspend fun updateCreditHours(creditHours: Int) {
-        userDoc.first()
-            .update(
-                FirebaseUserData.PROPERTY_ACADEMIC_PROGRESS_CREDIT_HOURS,
-                creditHours
-            )
-            .await()
+        userDoc.first()?.update(
+            FirebaseUserData.PROPERTY_ACADEMIC_PROGRESS_CREDIT_HOURS,
+            creditHours
+        )?.await()
     }
 
     override suspend fun updateFCMToken(fcmToken: String) {
-        userDoc.first()
-            .update(FirebaseUserData.PROPERTY_FCM_TOKEN, fcmToken)
-            .await()
+        userDoc.first()?.update(FirebaseUserData.PROPERTY_FCM_TOKEN, fcmToken)?.await()
     }
 
     companion object {
