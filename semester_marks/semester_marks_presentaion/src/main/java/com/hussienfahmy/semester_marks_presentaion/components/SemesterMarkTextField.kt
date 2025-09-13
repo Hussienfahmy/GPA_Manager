@@ -1,6 +1,7 @@
 package com.hussienfahmy.semester_marks_presentaion.components
 
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,13 +21,13 @@ fun SemesterMarkTextField(
         modifier = modifier,
         value = value,
         onValueChange = onValueChanged,
-        label = { Text(text = title) },
+        label = { Text(text = title, style = MaterialTheme.typography.bodySmall) },
         isError = value.isNotBlank() && value.toDoubleOrNull() == null,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SemesterMarkTextFieldPreview() {
     SemesterMarkTextField(
