@@ -52,8 +52,16 @@ fun AddSubjectDialog(
     var oralAvailable by remember { mutableStateOf(true) }
     var projectAvailable by remember { mutableStateOf(false) }
 
-    val validSubjectName = subjectName.isNotBlank()
-    val validCreditHours = creditHours.isNotBlank()
+    var validSubjectName by remember { mutableStateOf(true) }
+    var validCreditHours by remember { mutableStateOf(true) }
+
+    val validateSubjectName = {
+        validSubjectName = subjectName.isNotBlank()
+    }
+
+    val validateCreditHours = {
+        validCreditHours = creditHours.isNotBlank() && creditHours.all { it.isDigit() }
+    }
 
     val saveSubject = {
         onAddSubject(
@@ -122,7 +130,7 @@ fun AddSubjectDialog(
 
                     OutlinedTextField(
                         value = creditHours,
-                        onValueChange = { creditHours = it },
+                        onValueChange = { creditHours = it.filter { char -> char.isDigit() } },
                         label = {
                             Text(text = stringResource(R.string.hours))
                         },
@@ -176,32 +184,36 @@ fun AddSubjectDialog(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
+                        validateSubjectName()
+                        validateCreditHours()
+
                         if (validSubjectName && validCreditHours) {
                             saveSubject()
                             resetInputs()
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
                 ) {
                     Text(
                         text = stringResource(R.string.add_another_subject),
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                     )
                 }
 
                 Button(
                     onClick = {
+                        validateSubjectName()
+                        validateCreditHours()
+
                         if (validSubjectName && validCreditHours) {
                             saveSubject()
                             onDismissClick()
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
                         text = stringResource(R.string.add_and_close),
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
             }
