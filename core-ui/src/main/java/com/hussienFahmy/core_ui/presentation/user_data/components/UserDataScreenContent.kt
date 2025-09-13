@@ -1,8 +1,6 @@
 package com.hussienfahmy.core_ui.presentation.user_data.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material3.Card
@@ -52,7 +51,9 @@ fun UserDataScreenContent(
 
     Column(
         verticalArrangement = Arrangement.spacedBy(spacing.small),
-        modifier = modifier.scrollable(rememberScrollState(), Orientation.Vertical)
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(spacing.small)
     ) {
         Spacer(modifier = Modifier.height(spacing.extraSmall))
 
