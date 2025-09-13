@@ -24,7 +24,6 @@ data class Subject(
 
     @Keep
     data class MetaData(
-        val maxGradeNameCanAchieve: GradeName = GradeName.A,
         val midtermAvailable: Boolean = true,
         val practicalAvailable: Boolean = true,
         val oralAvailable: Boolean = true,
@@ -42,7 +41,6 @@ data class Subject(
             oral = subject.semesterMarks?.oral
         ),
         metadata = MetaData(
-            maxGradeNameCanAchieve = maxGradeNameCanAchieve,
             midtermAvailable = subject.metadata.midtermAvailable,
             practicalAvailable = subject.metadata.practicalAvailable,
             oralAvailable = subject.metadata.oralAvailable
