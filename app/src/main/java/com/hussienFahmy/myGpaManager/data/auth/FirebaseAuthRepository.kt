@@ -5,26 +5,34 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.auth.repository.AuthResult
 import com.hussienfahmy.core.domain.auth.repository.AuthUserData
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.tasks.await
 import java.util.concurrent.CancellationException
 
 class FirebaseAuthRepository(
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    scope: CoroutineScope
 ) : AuthRepository {
 
     private val _userId = MutableStateFlow<String?>(null)
-    override val userId: Flow<String?> = _userId.asStateFlow()
+    override val userId: Flow<String?> = _userId
         .onStart {
             auth.addAuthStateListener(firebaseAuthStateListener)
         }.onCompletion {
             auth.removeAuthStateListener(firebaseAuthStateListener)
-        }
+        }.stateIn(
+            scope = scope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = null
+        )
 
     private val _isSignedInFlow = MutableStateFlow<Boolean?>(null)
     override val isSignedInFlow = _isSignedInFlow.asStateFlow()
