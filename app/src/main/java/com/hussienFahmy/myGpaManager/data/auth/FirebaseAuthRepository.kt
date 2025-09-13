@@ -10,7 +10,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -30,17 +30,20 @@ class FirebaseAuthRepository(
             auth.removeAuthStateListener(firebaseAuthStateListener)
         }.stateIn(
             scope = scope,
-            started = SharingStarted.WhileSubscribed(5_000),
+            started = SharingStarted.Eagerly,
             initialValue = null
         )
 
-    private val _isSignedInFlow = MutableStateFlow<Boolean?>(null)
-    override val isSignedInFlow = _isSignedInFlow.asStateFlow()
+    override val isSignedInFlow = userId.map { it != null }
+        .stateIn(
+            scope = scope,
+            started = SharingStarted.Eagerly,
+            initialValue = false
+        )
 
 
     private val firebaseAuthStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
         val userId = firebaseAuth.currentUser?.uid
-        _isSignedInFlow.value = userId != null
         _userId.value = userId
     }
 
@@ -67,7 +70,6 @@ class FirebaseAuthRepository(
     }
 
     override suspend fun signOut() {
-        auth.removeAuthStateListener(firebaseAuthStateListener)
         auth.signOut()
         while (auth.currentUser?.uid != null) {
             delay(100)

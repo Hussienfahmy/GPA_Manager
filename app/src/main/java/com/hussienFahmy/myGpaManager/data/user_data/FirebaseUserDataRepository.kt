@@ -84,7 +84,7 @@ class FirebaseUserDataRepository(
                 awaitClose {
                     registration.remove()
                 }
-        }
+            }
         }.stateIn(
             scope = scope,
             started = SharingStarted.WhileSubscribed(1_000),
