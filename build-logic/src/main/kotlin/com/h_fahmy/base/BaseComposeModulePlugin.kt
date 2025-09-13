@@ -56,6 +56,14 @@ class BaseComposeModulePlugin : Plugin<Project> {
                         "compose-debug"
                     )
                 )
+
+                addBundles(
+                    libs = libs,
+                    configurationNane = "implementation",
+                    bundles = arrayOf(
+                        "compose-debug"
+                    )
+                )
             }
 
 
