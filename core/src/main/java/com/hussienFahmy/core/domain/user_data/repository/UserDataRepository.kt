@@ -14,9 +14,7 @@ interface UserDataRepository {
         email: String,
     )
 
-    fun observeUserData(): Flow<UserData?>
-
-    suspend fun getUserData(): UserData?
+    val userData: Flow<UserData?>
 
     suspend fun updateName(name: String)
 

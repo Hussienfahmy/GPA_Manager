@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
 import com.hussienfahmy.core.domain.user_data.use_cases.SignOut
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class MoreViewModel(
@@ -23,7 +25,7 @@ class MoreViewModel(
 
     init {
         viewModelScope.launch {
-            userData = getUserData()
+            userData = getUserData().filterNotNull().first()
         }
     }
 

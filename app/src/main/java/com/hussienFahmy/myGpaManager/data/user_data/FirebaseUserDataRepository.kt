@@ -8,15 +8,22 @@ import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienfahmy.myGpaManager.data.user_data.mapper.toDomain
 import com.hussienfahmy.myGpaManager.data.user_data.model.FirebaseUserData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class FirebaseUserDataRepository(
     authRepository: AuthRepository,
+    scope: CoroutineScope,
     private val db: FirebaseFirestore,
 ) : UserDataRepository {
 
@@ -46,40 +53,43 @@ class FirebaseUserDataRepository(
         )?.await()
     }
 
-    override fun observeUserData(): Flow<UserData?> {
-        return callbackFlow {
-            val docRef = userDoc.first()
-            if (docRef == null) {
-                // User is signed out, emit null and close
-                trySend(null)
-                close()
-                return@callbackFlow
-            }
-
-            val registration = docRef.addSnapshotListener { value, error ->
-                if (error != null) {
-                    close(error)
-                    return@addSnapshotListener
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val userData: Flow<UserData?> =
+        userDoc.flatMapLatest { docRef ->
+            callbackFlow {
+                if (docRef == null) {
+                    // User is signed out, emit null and close
+                    trySend(null)
+                    close()
+                    return@callbackFlow
                 }
 
-                if (value != null && value.exists()) {
-                    value.toObject<FirebaseUserData>()?.let {
-                        trySend(it.toDomain())
-                    } ?: kotlin.run {
-                        Log.e(TAG, "observeUserData: snapshot is null or empty")
+                val registration = docRef.addSnapshotListener { value, error ->
+                    if (error != null) {
+                        close(error)
+                        return@addSnapshotListener
+                    }
+
+                    if (value != null && value.exists()) {
+                        value.toObject<FirebaseUserData>()?.let {
+                            scope.launch {
+                                send(it.toDomain())
+                            }
+                        } ?: kotlin.run {
+                            Log.e(TAG, "observeUserData: snapshot is null or empty")
+                        }
                     }
                 }
-            }
 
-            awaitClose {
-                registration.remove()
-            }
+                awaitClose {
+                    registration.remove()
+                }
         }
-    }
-
-    override suspend fun getUserData(): UserData? {
-        return userDoc.first()?.get()?.await()?.toObject<FirebaseUserData>()?.toDomain()
-    }
+        }.stateIn(
+            scope = scope,
+            started = SharingStarted.WhileSubscribed(1_000),
+            initialValue = null
+        )
 
     override suspend fun updateName(name: String) {
         userDoc.first()?.update(FirebaseUserData.PROPERTY_NAME, name)?.await()

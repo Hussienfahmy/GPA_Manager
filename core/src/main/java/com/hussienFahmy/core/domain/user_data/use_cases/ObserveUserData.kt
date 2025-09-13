@@ -5,5 +5,5 @@ import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
 class ObserveUserData(
     private val repository: UserDataRepository
 ) {
-    operator fun invoke() = repository.observeUserData()
+    operator fun invoke() = repository.userData
 }

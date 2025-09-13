@@ -5,5 +5,5 @@ import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
 class GetUserData(
     private val repository: UserDataRepository
 ) {
-    suspend operator fun invoke() = repository.getUserData()
+    operator fun invoke() = repository.userData
 }

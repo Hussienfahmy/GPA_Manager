@@ -8,6 +8,7 @@ import android.os.Build
 import android.provider.MediaStore
 import com.hussienfahmy.core.domain.storage.repository.StorageRepository
 import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
+import kotlinx.coroutines.flow.first
 import java.io.ByteArrayOutputStream
 
 class UploadPhoto(
@@ -17,7 +18,7 @@ class UploadPhoto(
     private val contentResolver: ContentResolver,
 ) {
     suspend operator fun invoke(uri: Uri) {
-        val user = repository.getUserData() ?: return
+        val user = repository.userData.first() ?: return
 
         val thumbnail = createThumbnail(uri)
         val downloadUrl = storageRepository.uploadUserPhoto(user.id, thumbnail)

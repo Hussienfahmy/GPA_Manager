@@ -28,7 +28,7 @@ class Calculate(
         list: List<Subject>,
     ): Result = withContext(defaultDispatcher) {
         // the user data (current academic progress)
-        val academicProgress = getAcademicProgress() ?: return@withContext Result.Failed(null)
+        val academicProgress = getAcademicProgress()
         val currentTotalHours = academicProgress.creditHours
         val currentCGpa = academicProgress.cumulativeGPA
         val currentTotalPoints = currentCGpa * currentTotalHours

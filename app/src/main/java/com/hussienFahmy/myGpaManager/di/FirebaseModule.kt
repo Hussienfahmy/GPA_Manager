@@ -54,7 +54,7 @@ val firebaseModule = module {
     }
 
     single<UserDataRepository> {
-        FirebaseUserDataRepository(get(), get())
+        FirebaseUserDataRepository(get(), get(), get())
     }
 
     single<SyncRepository> {
