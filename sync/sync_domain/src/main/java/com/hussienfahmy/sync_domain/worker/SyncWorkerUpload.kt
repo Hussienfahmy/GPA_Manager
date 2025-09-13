@@ -4,19 +4,15 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
-import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkerParameters
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.domain.sync.SyncUpload
-import java.util.concurrent.TimeUnit
-import kotlin.time.Duration.Companion.days
-import kotlin.time.Duration.Companion.hours
-import kotlin.time.toJavaDuration
 
 class SyncWorkerUpload(
     appContext: Context,
@@ -66,7 +62,7 @@ class SyncWorkerUpload(
 
     companion object {
         val request
-            get() = PeriodicWorkRequestBuilder<SyncWorkerUpload>(1.days.toJavaDuration())
+            get() = OneTimeWorkRequestBuilder<SyncWorkerUpload>()
                 .setConstraints(
                     Constraints.Builder()
                         .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -75,12 +71,7 @@ class SyncWorkerUpload(
                         .setRequiresDeviceIdle(false)
                         .build()
                 )
-                .setBackoffCriteria(
-                    BackoffPolicy.LINEAR,
-                    1,
-                    TimeUnit.HOURS
-                )
-                .setInitialDelay(1.hours.toJavaDuration())
+                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
                 .build()
     }
 }

@@ -1,6 +1,8 @@
 package com.hussienfahmy.myGpaManager
 
 import android.app.Application
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
 import com.hussienfahmy.core.data.local.di.databaseModule
 import com.hussienfahmy.core.di.coreModule
 import com.hussienfahmy.core.domain.grades.di.coreGradesDomainModule
@@ -25,6 +27,7 @@ import com.hussienfahmy.subject_settings_domain.di.subjectSettingsDomainModule
 import com.hussienfahmy.subject_settings_presentation.di.subjectSettingsPresentationModule
 import com.hussienfahmy.sync_data.di.syncDataModule
 import com.hussienfahmy.sync_domain.di.syncDomainModule
+import com.hussienfahmy.sync_domain.worker.SyncWorkerUpload
 import com.hussienfahmy.user_data_data.di.userDataDataModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.koin.workManagerFactory
@@ -64,6 +67,19 @@ class GPAManagerApplication : Application(), KoinComponent {
                 onboardingPresentationModule,
                 appKoinModule,
                 firebaseModule
+            )
+        }
+    }
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        if (level >= TRIM_MEMORY_UI_HIDDEN) {
+            // App is going to background, trigger sync
+            val workManager = getKoin().get<WorkManager>()
+            workManager.enqueueUniqueWork(
+                "upload_worker",
+                ExistingWorkPolicy.KEEP,
+                SyncWorkerUpload.request
             )
         }
     }
