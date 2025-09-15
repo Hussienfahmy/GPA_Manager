@@ -46,10 +46,16 @@ raamcosta = "2.2.0"
 firebaseAuth = "23.2.1"
 firebaseFirestore = "25.1.4"
 firebaseStorage = "22.0.0"
+firebaseCrashlytics = "19.4.4"
+firebaseAnalytics = "22.5.0"
+firebaseInAppMessaging = "21.0.2"
+firebaseMessaging = "24.1.2"
+
 
 # Google Services
 playServiceAuth = "21.4.0"
 googleServices = "4.3.15" #Don't upgrade unless it really needed, note that newer verions doesn't work in modules
+firebaseCrashlyticsGradle = "3.0.6"
 credentials = "1.6.0-alpha04"
 
 # Baseline Profile
@@ -137,6 +143,11 @@ compose-destinations-ksp = { group = "io.github.raamcosta.compose-destinations",
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestore" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref = "firebaseCrashlytics" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "firebaseAnalytics" }
+firebase-inappmessaging = { group = "com.google.firebase", name = "firebase-inappmessaging-display-ktx", version.ref = "firebaseInAppMessaging" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessaging" }
+
 
 # Credentials
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
@@ -166,6 +177,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 base-module = { id = "com.gpa.base_module" }
 base-module-compose = { id = "com.gpa.base_compose_module" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsGradle" }
 
 [bundles]
 compose = [

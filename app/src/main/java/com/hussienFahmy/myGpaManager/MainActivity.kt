@@ -19,6 +19,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.hussienfahmy.core.util.PermissionHelper
 import com.hussienfahmy.myGpaManager.navigation.AppBottomNav
 import com.hussienfahmy.myGpaManager.navigation.AppDestinationsNavHost
 import com.hussienfahmy.myGpaManager.ui.theme.GPAManagerTheme
@@ -32,6 +33,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Request notification permission
+        if (!PermissionHelper.hasNotificationPermission(this)) {
+            PermissionHelper.requestNotificationPermission(this) { granted ->
+                /* no-op */
+            }
+        }
 
         setContent {
             GPAManagerTheme {
