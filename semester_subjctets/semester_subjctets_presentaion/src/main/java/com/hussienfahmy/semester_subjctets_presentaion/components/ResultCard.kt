@@ -106,7 +106,7 @@ fun ResultChart(
                 modifier = Modifier.weight(1f),
                 data = calculationResult.semester,
                 title = stringResource(R.string.semester),
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.error
             )
             ResultData(
                 modifier = Modifier.weight(1f),
