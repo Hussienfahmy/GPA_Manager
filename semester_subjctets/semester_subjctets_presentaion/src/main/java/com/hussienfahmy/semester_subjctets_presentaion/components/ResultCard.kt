@@ -160,7 +160,7 @@ private fun PredictiveModeControllers(
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            isError = targetGPA.toDoubleOrNull() == null
+            isError = targetGPA.isNotBlank() && targetGPA.toDoubleOrNull() == null
         )
         Row(
             modifier = Modifier
