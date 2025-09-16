@@ -12,7 +12,7 @@
 
 ### Authentication Events
 - [x] Sign in completion (SignInViewModel:35)
-- [ ] Sign out (SignOut use case) - logSignOut method exists but not called
+- [x] Sign out (SignOut use case) - implemented in MoreViewModel:40
 - [x] Profile setup completion (OnBoardingUserDataScreen)
 
 ### Quick Calculator Events

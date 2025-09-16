@@ -296,7 +296,6 @@ class AnalyticsLogger(
                 val gpaSystemValue = when (gpaSettings.system) {
                     com.hussienfahmy.core.domain.gpa_settings.model.GPA.System.FOUR -> AnalyticsValues.GPA_SYSTEM_4_POINT
                     com.hussienfahmy.core.domain.gpa_settings.model.GPA.System.FIVE -> AnalyticsValues.GPA_SYSTEM_5_POINT
-                    else -> AnalyticsValues.GPA_SYSTEM_4_POINT // Default fallback
                 }
 
                 setUserAcademicContext(
@@ -307,7 +306,7 @@ class AnalyticsLogger(
                     department = data.academicInfo.department
                 )
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Handle error silently for analytics
         }
     }

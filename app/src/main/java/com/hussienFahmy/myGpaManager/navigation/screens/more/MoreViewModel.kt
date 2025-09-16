@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
 import com.hussienfahmy.core.domain.user_data.use_cases.SignOut
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 
 class MoreViewModel(
     getUserData: GetUserData,
-    private val signOutUseCase: SignOut
+    private val signOutUseCase: SignOut,
+    private val analyticsLogger: AnalyticsLogger
 ) : ViewModel() {
 
     var userData by mutableStateOf<UserData?>(null)
@@ -35,6 +37,7 @@ class MoreViewModel(
             try {
                 isSigningOut = true
                 signOutUseCase()
+                analyticsLogger.logSignOut()
                 userData = null
             } finally {
                 isSigningOut = false
