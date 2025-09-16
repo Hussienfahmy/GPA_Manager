@@ -1,6 +1,14 @@
 package com.hussienfahmy.core.domain.analytics
 
-class AnalyticsLogger(private val analyticsService: AnalyticsService) {
+import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
+import com.hussienfahmy.core.domain.user_data.use_cases.UserDataUseCases
+import kotlinx.coroutines.flow.first
+
+class AnalyticsLogger(
+    private val analyticsService: AnalyticsService,
+    private val userDataUseCases: UserDataUseCases,
+    private val getGPASettings: GetGPASettings
+) {
 
     // Authentication Events
     fun logSignInCompleted(userId: String, isNewUser: Boolean) {
@@ -86,7 +94,11 @@ class AnalyticsLogger(private val analyticsService: AnalyticsService) {
 
 
     // Predictive Mode Events
-    fun logPredictiveModeEnabled(targetGpa: Double, subjectsCount: Int, reverseCalculation: Boolean) {
+    fun logPredictiveModeEnabled(
+        targetGpa: Double,
+        subjectsCount: Int,
+        reverseCalculation: Boolean
+    ) {
         analyticsService.logEvent(
             AnalyticsEvents.PredictiveMode.ENABLED,
             mapOf(
@@ -132,9 +144,12 @@ class AnalyticsLogger(private val analyticsService: AnalyticsService) {
             AnalyticsEvents.SubjectManagement.SUBJECT_ADDED,
             mapOf(
                 AnalyticsParameters.CREDIT_HOURS to creditHours,
-                AnalyticsValues.HAS_MIDTERM to (hasAssessments[AnalyticsValues.ASSESSMENT_MIDTERM] ?: false),
-                AnalyticsValues.HAS_PRACTICAL to (hasAssessments[AnalyticsValues.ASSESSMENT_PRACTICAL] ?: false),
-                AnalyticsValues.HAS_ORAL to (hasAssessments[AnalyticsValues.ASSESSMENT_ORAL] ?: false)
+                AnalyticsValues.HAS_MIDTERM to (hasAssessments[AnalyticsValues.ASSESSMENT_MIDTERM]
+                    ?: false),
+                AnalyticsValues.HAS_PRACTICAL to (hasAssessments[AnalyticsValues.ASSESSMENT_PRACTICAL]
+                    ?: false),
+                AnalyticsValues.HAS_ORAL to (hasAssessments[AnalyticsValues.ASSESSMENT_ORAL]
+                    ?: false)
             )
         )
     }
@@ -220,7 +235,12 @@ class AnalyticsLogger(private val analyticsService: AnalyticsService) {
         )
     }
 
-    fun logGradeSystemConfigured(gradeName: String, points: Double, percentage: Double, isActive: Boolean) {
+    fun logGradeSystemConfigured(
+        gradeName: String,
+        points: Double,
+        percentage: Double,
+        isActive: Boolean
+    ) {
         analyticsService.logEvent(
             AnalyticsEvents.Settings.GRADE_SYSTEM_CONFIGURED,
             mapOf(
@@ -265,5 +285,30 @@ class AnalyticsLogger(private val analyticsService: AnalyticsService) {
 
     fun setGpaSystemPreference(gpaSystem: String) {
         analyticsService.setUserProperty(UserProperties.GPA_SYSTEM, gpaSystem)
+    }
+
+    suspend fun updateUserAcademicProperties() {
+        try {
+            val userData = userDataUseCases.getUserData().first()
+            val gpaSettings = getGPASettings()
+
+            userData?.let { data ->
+                val gpaSystemValue = when (gpaSettings.system) {
+                    com.hussienfahmy.core.domain.gpa_settings.model.GPA.System.FOUR -> AnalyticsValues.GPA_SYSTEM_4_POINT
+                    com.hussienfahmy.core.domain.gpa_settings.model.GPA.System.FIVE -> AnalyticsValues.GPA_SYSTEM_5_POINT
+                    else -> AnalyticsValues.GPA_SYSTEM_4_POINT // Default fallback
+                }
+
+                setUserAcademicContext(
+                    gpaSystem = gpaSystemValue,
+                    academicLevel = data.academicInfo.level,
+                    university = data.academicInfo.university,
+                    faculty = data.academicInfo.faculty,
+                    department = data.academicInfo.department
+                )
+            }
+        } catch (e: Exception) {
+            // Handle error silently for analytics
+        }
     }
 }

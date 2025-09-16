@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.data.local.util.UpdateResult
 import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
-import com.hussienfahmy.core.domain.analytics.AnalyticsValues
+import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
 import com.hussienfahmy.core.domain.user_data.use_cases.UserDataUseCases
 import com.hussienfahmy.core_ui.presentation.model.UiEvent
 import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
@@ -48,28 +48,28 @@ class UserDataViewModel(
                 is UserDataEvent.UpdateUniversity -> {
                     val result = userDataUseCases.updateUniversity(event.university)
                     if (result is UpdateResult.Success) {
-                        updateUserAcademicProperties()
+                        analyticsLogger.updateUserAcademicProperties()
                     }
                     result
                 }
                 is UserDataEvent.UpdateFaculty -> {
                     val result = userDataUseCases.updateFaculty(event.faculty)
                     if (result is UpdateResult.Success) {
-                        updateUserAcademicProperties()
+                        analyticsLogger.updateUserAcademicProperties()
                     }
                     result
                 }
                 is UserDataEvent.UpdateDepartment -> {
                     val result = userDataUseCases.updateDepartment(event.department)
                     if (result is UpdateResult.Success) {
-                        updateUserAcademicProperties()
+                        analyticsLogger.updateUserAcademicProperties()
                     }
                     result
                 }
                 is UserDataEvent.UpdateLevel -> {
                     val result = userDataUseCases.updateLevel(event.level)
                     if (result is UpdateResult.Success) {
-                        updateUserAcademicProperties()
+                        analyticsLogger.updateUserAcademicProperties()
                     }
                     result
                 }
@@ -85,16 +85,6 @@ class UserDataViewModel(
                     )
                 )
             }
-        }
-    }
-
-    private suspend fun updateUserAcademicProperties() {
-        try {
-            // Note: User properties could be set here when profile data changes
-            // For now, we'll track the update events themselves
-            // Future enhancement: Get current user data and update analytics properties
-        } catch (e: Exception) {
-            // Handle error silently for analytics
         }
     }
 }
