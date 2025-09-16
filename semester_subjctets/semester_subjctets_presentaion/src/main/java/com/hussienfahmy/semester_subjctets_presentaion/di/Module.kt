@@ -5,5 +5,5 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val semesterSubjectsPresentationModule = module {
-    viewModel { SemesterSubjectsViewModel(get(), get(), get()) }
+    viewModel { SemesterSubjectsViewModel(get(), get(), get(), get()) }
 }

@@ -6,7 +6,7 @@ compileSdk = "36"
 googleid = "1.1.1"
 minSdk = "26"
 targetSdk = "36"
-versionCode = "76"
+versionCode = "80"
 versionName = "6.4"
 gradle = "8.12.0"
 

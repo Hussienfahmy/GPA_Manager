@@ -1,6 +1,7 @@
 package com.hussienfahmy.onboarding_presentation.sign_in
 
 import androidx.lifecycle.viewModelScope
+import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import com.hussienfahmy.core.domain.auth.service.AuthServiceResult
 import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienfahmy.core.model.UiText.DynamicString
@@ -10,6 +11,7 @@ import kotlinx.coroutines.launch
 
 class SignInViewModel(
     private val userDataRepository: UserDataRepository,
+    private val analyticsLogger: AnalyticsLogger,
 ) : UiViewModel<AuthEvent, SignInState>(initialState = {
     SignInState.Initial
 }) {
@@ -31,6 +33,11 @@ class SignInViewModel(
                                     )
                                 }
                             }
+
+                            analyticsLogger.logSignInCompleted(
+                                userId = event.signInResult.userData.id,
+                                isNewUser = !isUserExists
+                            )
 
                             state.value = SignInState.Success
                         }

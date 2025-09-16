@@ -2,6 +2,7 @@ package com.hussienfahmy.quick_presentation
 
 import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.R
+import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import com.hussienfahmy.core.domain.user_data.use_cases.GetAcademicProgress
 import com.hussienfahmy.core.model.UiText
 import com.hussienfahmy.core_ui.presentation.model.UiEvent
@@ -14,6 +15,7 @@ class QuickViewModel(
     getAcademicProgress: GetAcademicProgress,
     private val quickCalculate: QuickCalculate,
     private val calculatePercentage: CalculatePercentage,
+    private val analyticsLogger: AnalyticsLogger,
 ) : UiViewModel<QuickEvent, QuickState>(initialState = {
     QuickState()
 }) {
@@ -25,14 +27,16 @@ class QuickViewModel(
                     academicProgress = it,
                     isLoading = false
                 )
+
+                analyticsLogger.logQuickCalculatorOpened()
             }
         }
     }
 
     override fun onEvent(event: QuickEvent) {
         viewModelScope.launch {
-            val result = when (event) {
-                is QuickEvent.Calculate -> quickCalculate(event.calculationRequest)
+            val (result, calculationRequest) = when (event) {
+                is QuickEvent.Calculate -> quickCalculate(event.calculationRequest) to event.calculationRequest
             }
 
             when (result) {
@@ -110,7 +114,15 @@ class QuickViewModel(
                     )
                 )
 
-                is QuickCalculate.Result.Success ->
+                is QuickCalculate.Result.Success -> {
+                    analyticsLogger.logQuickCalculationCompleted(
+                        targetGpa = calculationRequest.semesterGPA.toDoubleOrNull() ?: 0.0,
+                        currentGpa = calculationRequest.cumulativeGPA.toDoubleOrNull() ?: 0.0,
+                        creditHours = calculationRequest.totalHours.toIntOrNull() ?: 0,
+                        achievedGpa = result.newCumulativeGPA.toDouble(),
+                        isSuccess = true
+                    )
+
                     state.value = state.value.copy(
                         cumulativeGPA = result.newCumulativeGPA,
                         cumulativeGPAPercentage = calculatePercentage(result.newCumulativeGPA),
@@ -121,6 +133,7 @@ class QuickViewModel(
                         invalidCumulativeGPAAboveMax = false,
                         invalidSemesterGPAAboveMax = false,
                     )
+                }
             }
         }
     }

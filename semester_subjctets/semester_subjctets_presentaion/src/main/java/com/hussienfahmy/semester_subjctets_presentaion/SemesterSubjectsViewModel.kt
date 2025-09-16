@@ -2,6 +2,8 @@ package com.hussienfahmy.semester_subjctets_presentaion
 
 import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.data.local.util.UpdateResult
+import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
+import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core.domain.grades.use_case.GetActiveGradeNames
 import com.hussienfahmy.core_ui.presentation.model.UiEvent
 import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
@@ -22,6 +24,7 @@ class SemesterSubjectsViewModel(
     private val calculationUseCases: CalculationUseCases,
     private val subjectUseCases: SubjectUseCases,
     private val getActiveGradeNames: GetActiveGradeNames,
+    private val analyticsLogger: AnalyticsLogger,
 ) : UiViewModel<SemesterSubjectsEvent, SemesterSubjectsState>(
     initialState = { SemesterSubjectsState.Loading },
 ) {
@@ -64,6 +67,12 @@ class SemesterSubjectsViewModel(
                         reverseSubjects = mode.reverseSubjects
                     )
 
+                    // Log prediction calculation
+                    analyticsLogger.logPredictionCalculated(
+                        isAchievable = predictionResult is PredictGrades.Result.TargetAchieved,
+                        fixedSubjectsCount = fixedSubjectsIds.size
+                    )
+
                     if (predictionResult is PredictGrades.Result.Failed) predictionResult.message?.let {
                         _uiEvent.send(UiEvent.ShowSnackBar(it))
                     }
@@ -87,16 +96,31 @@ class SemesterSubjectsViewModel(
     override fun onEvent(event: SemesterSubjectsEvent) {
         viewModelScope.launch {
             val updateResult: Any = when (event) {
-                is SemesterSubjectsEvent.AddSubject -> subjectUseCases.addSubject(
-                    event.subjectName,
-                    event.creditHours,
-                    event.midtermAvailable,
-                    event.practicalAvailable,
-                    event.oralAvailable,
-                    event.projectAvailable
-                )
+                is SemesterSubjectsEvent.AddSubject -> {
+                    analyticsLogger.logSubjectAdded(
+                        creditHours = event.creditHours.toDoubleOrNull() ?: 0.0,
+                        hasAssessments = mapOf(
+                            AnalyticsValues.ASSESSMENT_MIDTERM to event.midtermAvailable,
+                            AnalyticsValues.ASSESSMENT_PRACTICAL to event.practicalAvailable,
+                            AnalyticsValues.ASSESSMENT_ORAL to event.oralAvailable
+                        )
+                    )
+                    subjectUseCases.addSubject(
+                        event.subjectName,
+                        event.creditHours,
+                        event.midtermAvailable,
+                        event.practicalAvailable,
+                        event.oralAvailable,
+                        event.projectAvailable
+                    )
+                }
 
                 is SemesterSubjectsEvent.CLearAll -> {
+                    val currentSubjects = (state.value as? SemesterSubjectsState.Loaded)?.subjects ?: emptyList()
+                    analyticsLogger.logBulkAction(
+                        actionType = AnalyticsValues.BULK_ACTION_CLEAR_ALL,
+                        affectedCount = currentSubjects.size
+                    )
                     mode.value = Mode.Normal
                     subjectUseCases.clearGrade(ClearGrade.Request.All)
                 }
@@ -107,23 +131,67 @@ class SemesterSubjectsViewModel(
                     )
                 )
 
-                is SemesterSubjectsEvent.DeleteSubject -> subjectUseCases.deleteSubject(event.subjectId)
-                is SemesterSubjectsEvent.SetGrade -> subjectUseCases.setGrade(
-                    event.subjectId,
-                    event.gradeName
-                )
+                is SemesterSubjectsEvent.DeleteSubject -> {
+                    analyticsLogger.logSubjectDeleted(event.subjectId)
+                    subjectUseCases.deleteSubject(event.subjectId)
+                }
+                is SemesterSubjectsEvent.SetGrade -> {
+                    analyticsLogger.logGradeAssigned(
+                        subjectId = event.subjectId,
+                        gradeName = event.gradeName.name,
+                    )
+                    subjectUseCases.setGrade(
+                        event.subjectId,
+                        event.gradeName
+                    )
+                }
 
                 is SemesterSubjectsEvent.UpdateName -> subjectUseCases.updateName(
                     event.subjectId,
                     event.subjectName
                 )
 
-                is SemesterSubjectsEvent.ChangeMode -> mode.value = when (mode.value) {
-                    Mode.Normal -> Mode.Predict()
-                    is Mode.Predict -> Mode.Normal
+                is SemesterSubjectsEvent.ChangeMode -> {
+                    val currentSubjects = (state.value as? SemesterSubjectsState.Loaded)?.subjects ?: emptyList()
+                    val currentSubjectsCount = currentSubjects.size
+                    val fromMode = when (mode.value) {
+                        Mode.Normal -> AnalyticsValues.MODE_NORMAL
+                        is Mode.Predict -> AnalyticsValues.MODE_PREDICTIVE
+                    }
+
+                    mode.value = when (mode.value) {
+                        Mode.Normal -> {
+                            analyticsLogger.logCalculationModeSwitched(
+                                fromMode = fromMode,
+                                toMode = AnalyticsValues.MODE_PREDICTIVE,
+                                subjectsCount = currentSubjectsCount
+                            )
+                            Mode.Predict()
+                        }
+                        is Mode.Predict -> {
+                            analyticsLogger.logCalculationModeSwitched(
+                                fromMode = fromMode,
+                                toMode = AnalyticsValues.MODE_NORMAL,
+                                subjectsCount = currentSubjectsCount
+                            )
+                            Mode.Normal
+                        }
+                    }
                 }
 
                 is SemesterSubjectsEvent.SubmitPredictiveData -> {
+                    val currentSubjects = (state.value as? SemesterSubjectsState.Loaded)?.subjects ?: emptyList()
+                    analyticsLogger.logPredictiveModeEnabled(
+                        targetGpa = event.targetCumulativeGPA.toDoubleOrNull() ?: 0.0,
+                        subjectsCount = currentSubjects.size,
+                        reverseCalculation = event.reserveSubjects
+                    )
+
+                    analyticsLogger.logTargetGpaSet(
+                        targetGpa = event.targetCumulativeGPA.toDoubleOrNull() ?: 0.0,
+                        currentGpa = 0.0 // Will be available from calculation result
+                    )
+
                     mode.value = Mode.Predict(
                         targetCumulativeGPA = event.targetCumulativeGPA,
                         reverseSubjects = event.reserveSubjects
@@ -131,6 +199,10 @@ class SemesterSubjectsViewModel(
                 }
 
                 is SemesterSubjectsEvent.FixGrade -> {
+                    analyticsLogger.logGradeFixed(
+                        isFixed = event.fixed
+                    )
+
                     if (event.fixed) {
                         fixedSubjectsIds.value = fixedSubjectsIds.value + event.subjectId
                     } else {

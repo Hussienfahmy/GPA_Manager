@@ -29,6 +29,7 @@ import com.hussienfahmy.sync_data.di.syncDataModule
 import com.hussienfahmy.sync_domain.di.syncDomainModule
 import com.hussienfahmy.sync_domain.worker.SyncWorkerUpload
 import com.hussienfahmy.user_data_data.di.userDataDataModule
+import com.hussienfahmy.core.domain.analytics.di.analyticsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.component.KoinComponent
@@ -66,7 +67,8 @@ class GPAManagerApplication : Application(), KoinComponent {
                 syncDomainModule,
                 onboardingPresentationModule,
                 appKoinModule,
-                firebaseModule
+                firebaseModule,
+                analyticsModule
             )
         }
     }

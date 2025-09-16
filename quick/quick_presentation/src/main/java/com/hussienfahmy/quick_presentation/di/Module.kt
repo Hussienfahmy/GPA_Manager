@@ -5,5 +5,5 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val quickPresentationModule = module {
-    viewModel { QuickViewModel(get(), get(), get()) }
+    viewModel { QuickViewModel(get(), get(), get(), get()) }
 }
