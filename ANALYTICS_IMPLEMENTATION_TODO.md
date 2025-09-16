@@ -48,7 +48,7 @@
 - [x] GPA system changed (GPASettingsViewModel)
 - [x] Grade system configured (GradeSettingsViewModel)
 - [x] Subject settings updated (SubjectSettingsViewModel)
-- [ ] Settings screens accessed - logSettingsAccessed method exists but not called
+- [x] Settings screens accessed - implemented in AppGPASettingsScreen:19, AppGradeSettingsScreen:24, AppSubjectSettingsScreen:24
 
 ### User Engagement Events
 - [ ] Screen time tracking - logScreenTime method exists but not called
