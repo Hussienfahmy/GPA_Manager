@@ -23,7 +23,7 @@
 ### Semester Calculation Events
 - [x] Mode switched Normal/Predictive (SemesterSubjectsViewModel:121-124)
 - [x] Grade assigned to subject (SemesterSubjectsViewModel:111-114)
-- [ ] Real-time calculation updates (continuous calculation flow) - logCalculationUpdated method exists but not called
+- [x] Real-time calculation updates (continuous calculation flow) - implemented in SemesterSubjectsViewModel:49-55
 - [ ] Semester completion tracking
 
 ### Predictive Mode Events

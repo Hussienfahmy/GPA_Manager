@@ -7,6 +7,7 @@ import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core.domain.grades.use_case.GetActiveGradeNames
 import com.hussienfahmy.core_ui.presentation.model.UiEvent
 import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
+import com.hussienfahmy.semester_subjctets_domain.use_case.Calculate
 import com.hussienfahmy.semester_subjctets_domain.use_case.CalculationUseCases
 import com.hussienfahmy.semester_subjctets_domain.use_case.ClearGrade
 import com.hussienfahmy.semester_subjctets_domain.use_case.PredictGrades
@@ -43,6 +44,16 @@ class SemesterSubjectsViewModel(
         ) { subjectsWithGrade, mode, fixedSubjectsIds, activeGradeNames ->
             val calculationResult =
                 calculationUseCases.calculate(subjectsWithGrade)
+
+            // Log calculation update
+            val subjectsWithGrades = subjectsWithGrade.count { it.selectedGradeName != null }
+            if (calculationResult is Calculate.Result.Success) {
+                analyticsLogger.logCalculationUpdated(
+                    currentGpa = calculationResult.cumulative.gpa,
+                    subjectsWithGrades = subjectsWithGrades,
+                    totalSubjects = subjectsWithGrade.size
+                )
+            }
 
             val subjects = subjectsWithGrade.map { subject ->
                 if (fixedSubjectsIds.contains(subject.id))
