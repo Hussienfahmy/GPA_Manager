@@ -53,7 +53,7 @@
 ### User Engagement Events
 - [ ] Screen time tracking - logScreenTime method exists but not called
 - [ ] App rating clicked - logAppRatingClicked method exists but not called
-- [ ] Bottom navigation tracking - logBottomNavClicked method exists but not called
+- [x] Bottom navigation tracking - implemented in AppBottomNav:31
 - [ ] Feature discovery tracking - logFeatureDiscovered method exists but not called
 
 ## Implementation Notes

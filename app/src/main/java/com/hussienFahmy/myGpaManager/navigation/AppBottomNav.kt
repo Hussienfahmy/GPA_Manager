@@ -8,14 +8,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
 import com.ramcosta.composedestinations.utils.startDestination
+import org.koin.compose.koinInject
 
 @Composable
 fun AppBottomNav(
     navController: NavHostController
 ) {
+    val analyticsLogger = koinInject<AnalyticsLogger>()
     val currentDestination = navController.currentDestinationAsState().value
         ?: NavGraphs.root.startDestination
 
@@ -24,6 +27,9 @@ fun AppBottomNav(
             NavigationBarItem(
                 selected = currentDestination == destination.direction,
                 onClick = {
+                    // Log bottom navigation click
+                    analyticsLogger.logBottomNavClicked(destination.name.lowercase())
+
                     navController.navigate(destination.direction.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
