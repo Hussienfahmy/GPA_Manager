@@ -18,7 +18,7 @@
 ### Quick Calculator Events
 - [x] Calculator opened (QuickScreen entry)
 - [x] Calculation performed (QuickViewModel calculation logic)
-- [ ] Result viewed (QuickResultCard interaction) - no method implemented yet
+- [x] Result viewed (QuickResultCard interaction) - removed as agreed
 
 ### Semester Calculation Events
 - [x] Mode switched Normal/Predictive (SemesterSubjectsViewModel:121-124)
