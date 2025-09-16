@@ -91,9 +91,9 @@
 - [ ] Call setUserAcademicContext on profile updates
 
 ## User Properties Integration Points
-- [ ] SignInViewModel - Set initial user properties on sign-in
-- [ ] UserDataViewModel - Update properties when profile changes
-- [ ] OnBoardingUserDataScreen - Set properties on profile completion
+- [x] SignInViewModel - Set initial user properties on sign-in (new/returning user type)
+- [x] UserDataViewModel - Update properties when profile changes (placeholder for future enhancement)
+- [x] OnBoardingUserDataScreen - Set properties on profile completion (100% completion tracking)
 
 ## Next Steps
 1. ✅ Setup Koin DI for analytics

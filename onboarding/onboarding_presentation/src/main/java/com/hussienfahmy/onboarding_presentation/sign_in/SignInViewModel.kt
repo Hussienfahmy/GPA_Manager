@@ -2,6 +2,7 @@ package com.hussienfahmy.onboarding_presentation.sign_in
 
 import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
+import com.hussienfahmy.core.domain.analytics.UserPropertyValues
 import com.hussienfahmy.core.domain.auth.service.AuthServiceResult
 import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienfahmy.core.model.UiText.DynamicString
@@ -38,6 +39,13 @@ class SignInViewModel(
                                 userId = event.signInResult.userData.id,
                                 isNewUser = !isUserExists
                             )
+
+                            // Set initial user properties
+                            if (!isUserExists) {
+                                analyticsLogger.setUserType(UserPropertyValues.USER_TYPE_NEW)
+                            } else {
+                                analyticsLogger.setUserType(UserPropertyValues.USER_TYPE_RETURNING)
+                            }
 
                             state.value = SignInState.Success
                         }

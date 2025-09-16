@@ -9,10 +9,14 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
+import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.user_data.UserDataScreen
+import org.koin.compose.koinInject
 
 @Composable
 fun OnBoardingUserDataScreen(
@@ -20,6 +24,7 @@ fun OnBoardingUserDataScreen(
     onNextClick: () -> Unit,
 ) {
     val spacing = LocalSpacing.current
+    val analyticsLogger: AnalyticsLogger = koinInject()
 
     Column(modifier = Modifier.fillMaxSize()) {
 
@@ -38,7 +43,11 @@ fun OnBoardingUserDataScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         OutlinedButton(
-            onClick = onNextClick,
+            onClick = {
+                // Log profile setup completion
+                analyticsLogger.logProfileSetupCompleted(completionPercentage = 100)
+                onNextClick()
+            },
             modifier = Modifier
                 .padding(bottom = spacing.medium)
                 .align(Alignment.CenterHorizontally)

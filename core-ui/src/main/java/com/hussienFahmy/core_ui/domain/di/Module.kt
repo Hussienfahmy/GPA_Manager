@@ -7,5 +7,5 @@ import org.koin.dsl.module
 
 val coreUiDomainModule = module {
     single { FilterToDigitsOnly() }
-    viewModel { UserDataViewModel(get()) }
+    viewModel { UserDataViewModel(get(), get()) }
 }
