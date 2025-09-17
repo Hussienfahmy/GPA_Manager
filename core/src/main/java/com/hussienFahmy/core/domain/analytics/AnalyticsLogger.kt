@@ -284,21 +284,19 @@ class AnalyticsLogger(
         academicLevel: Int,
         university: String,
         faculty: String,
-        department: String
+        department: String,
+        semester: String
     ) {
         analyticsService.setUserProperty(UserProperties.GPA_SYSTEM, gpaSystem)
         analyticsService.setUserProperty(UserProperties.ACADEMIC_LEVEL, academicLevel.toString())
         analyticsService.setUserProperty(UserProperties.UNIVERSITY, university)
         analyticsService.setUserProperty(UserProperties.FACULTY, faculty)
         analyticsService.setUserProperty(UserProperties.DEPARTMENT, department)
+        analyticsService.setUserProperty(UserProperties.SEMESTER, semester)
     }
 
     fun setUserType(userType: String) {
         analyticsService.setUserProperty(UserProperties.USER_TYPE, userType)
-    }
-
-    fun setGpaSystemPreference(gpaSystem: String) {
-        analyticsService.setUserProperty(UserProperties.GPA_SYSTEM, gpaSystem)
     }
 
     suspend fun updateUserAcademicProperties() {
@@ -317,7 +315,8 @@ class AnalyticsLogger(
                     academicLevel = data.academicInfo.level,
                     university = data.academicInfo.university,
                     faculty = data.academicInfo.faculty,
-                    department = data.academicInfo.department
+                    department = data.academicInfo.department,
+                    semester = data.academicInfo.semester.name
                 )
             }
         } catch (_: Exception) {

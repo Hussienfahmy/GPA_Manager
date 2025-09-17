@@ -34,9 +34,6 @@ object AnalyticsEvents {
         /** Real-time calculation update occurred as user modified grades */
         const val CALCULATION_UPDATED = "semester_calculation_updated"
 
-        /** User spent significant time in calculation session */
-        const val CALCULATION_SESSION_LENGTH = "calculation_session_length"
-
         /** User completed grading all subjects in a semester */
         const val SEMESTER_COMPLETED = "semester_completed"
     }
@@ -107,14 +104,8 @@ object AnalyticsParameters {
     /** Unique identifier for the current user */
     const val USER_ID = "user_id"
 
-    /** Current semester (First/Second) user is working on */
-    const val SEMESTER = "semester"
-
     /** Total number of subjects in current calculation */
     const val SUBJECTS_COUNT = "subjects_count"
-
-    /** Current calculation mode (normal/predictive) */
-    const val CALCULATION_MODE = "calculation_mode"
 
     /** Name of the feature being used */
     const val FEATURE_NAME = "feature_name"
@@ -136,14 +127,8 @@ object AnalyticsParameters {
     /** Target GPA user wants to achieve */
     const val TARGET_GPA = "target_gpa"
 
-    /** User's cumulative GPA across all semesters */
-    const val CUMULATIVE_GPA = "cumulative_gpa"
-
     /** GPA achieved after calculation */
     const val ACHIEVED_GPA = "achieved_gpa"
-
-    /** GPA system being used (4-point/5-point) */
-    const val GPA_SYSTEM = "gpa_system"
 
     // Subject Parameters
     /** Unique identifier for a specific subject */
@@ -158,10 +143,6 @@ object AnalyticsParameters {
     /** Type of mark being entered (midterm, final, oral, practical) */
     const val MARK_TYPE = "mark_type"
 
-    // Predictive Parameters
-    /** Result of prediction calculation (achievable/impossible) */
-    const val PREDICTION_RESULT = "prediction_result"
-
     /** Whether target GPA is achievable with current setup */
     const val IS_ACHIEVABLE = "is_achievable"
 
@@ -174,9 +155,6 @@ object AnalyticsParameters {
     // Workflow Parameters
     /** Whether an operation completed successfully */
     const val SUCCESS = "success"
-
-    /** Type of error encountered during operation */
-    const val ERROR_TYPE = "error_type"
 
     /** Status of task completion (partial/complete/failed) */
     const val COMPLETION_STATUS = "completion_status"
@@ -213,7 +191,6 @@ object AnalyticsValues {
 
     // Assessment types
     const val ASSESSMENT_MIDTERM = "midterm"
-    const val ASSESSMENT_FINAL = "final"
     const val ASSESSMENT_ORAL = "oral"
     const val ASSESSMENT_PRACTICAL = "practical"
     const val ASSESSMENT_PROJECT = "project"
@@ -221,11 +198,7 @@ object AnalyticsValues {
     // Completion status values
     const val STATUS_COMPLETE = "complete"
     const val STATUS_PARTIAL = "partial"
-    const val STATUS_FAILED = "failed"
 
-    // Prediction results
-    const val PREDICTION_ACHIEVABLE = "achievable"
-    const val PREDICTION_IMPOSSIBLE = "impossible"
 
     // GPA systems
     const val GPA_SYSTEM_4_POINT = "4_point"
@@ -235,7 +208,6 @@ object AnalyticsValues {
     const val SETTINGS_TYPE_GPA = "gpa_settings"
     const val SETTINGS_TYPE_GRADE = "grade_settings"
     const val SETTINGS_TYPE_SUBJECT = "subject_settings"
-    const val SETTINGS_TYPE_USER_DATA = "user_data"
 
     // Subject setting types
     const val SUBJECT_SETTING_CONSTANT_MARKS = "constant_marks"
@@ -244,12 +216,6 @@ object AnalyticsValues {
 
     // Bulk action types
     const val BULK_ACTION_CLEAR_ALL = "clear_all"
-    const val BULK_ACTION_DELETE_ALL = "delete_all"
-    const val BULK_ACTION_COPY_SUBJECTS = "copy_subjects"
-
-    // Navigation sources
-    const val NAV_SOURCE_MENU = "menu"
-    const val NAV_SOURCE_BUTTON = "button"
 
     // Screen names for time tracking
     const val SCREEN_SEMESTER = "semester"
@@ -257,14 +223,7 @@ object AnalyticsValues {
     const val SCREEN_MORE = "more"
     const val SCREEN_MARKS = "marks"
     const val SCREEN_GPA_SETTINGS = "gpa_settings_screen"
-    const val NAV_SOURCE_SEARCH = "search"
     const val NAV_SOURCE_BOTTOM_NAV = "bottom_nav"
-
-    // Bottom navigation destinations
-    const val BOTTOM_NAV_QUICK = "quick"
-    const val BOTTOM_NAV_SEMESTER = "semester"
-    const val BOTTOM_NAV_MARKS = "marks"
-    const val BOTTOM_NAV_MORE = "more"
 
     // Additional parameters
     const val FROM_MODE = "from_mode"
@@ -291,11 +250,11 @@ object UserProperties {
     const val FACULTY = "faculty"
     const val DEPARTMENT = "department"
     const val USER_TYPE = "user_type"
+    const val SEMESTER = "semester"
 }
 
 object UserPropertyValues {
     // User types
     const val USER_TYPE_NEW = "new_user"
     const val USER_TYPE_RETURNING = "returning_user"
-    const val USER_TYPE_POWER = "power_user"
 }
