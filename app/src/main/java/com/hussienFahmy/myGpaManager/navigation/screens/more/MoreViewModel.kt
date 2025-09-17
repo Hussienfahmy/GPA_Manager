@@ -44,4 +44,8 @@ class MoreViewModel(
             }
         }
     }
+
+    fun logAppRatingClicked() {
+        analyticsLogger.logAppRatingClicked()
+    }
 }

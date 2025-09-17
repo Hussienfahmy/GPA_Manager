@@ -52,7 +52,7 @@
 
 ### User Engagement Events
 - [x] Screen time tracking - implemented in AppSemesterScreen:26, AppQuickScreen:24, AppMoreScreen:50
-- [ ] App rating clicked - logAppRatingClicked method exists but not called
+- [x] App rating clicked - implemented in MoreViewModel:49 and MoreScreenContent:121
 - [x] Bottom navigation tracking - implemented in AppBottomNav:31
 - [ ] Feature discovery tracking - logFeatureDiscovered method exists but not called
 

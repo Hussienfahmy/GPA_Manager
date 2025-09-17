@@ -253,6 +253,7 @@ object AnalyticsValues {
     const val SCREEN_QUICK = "quick"
     const val SCREEN_MORE = "more"
     const val SCREEN_MARKS = "marks"
+    const val SCREEN_GPA_SETTINGS = "gpa_settings_screen"
     const val NAV_SOURCE_SEARCH = "search"
     const val NAV_SOURCE_BOTTOM_NAV = "bottom_nav"
 
