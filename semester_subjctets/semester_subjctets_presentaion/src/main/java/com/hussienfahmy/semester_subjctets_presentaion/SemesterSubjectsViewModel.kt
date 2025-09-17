@@ -53,6 +53,16 @@ class SemesterSubjectsViewModel(
                     subjectsWithGrades = subjectsWithGrades,
                     totalSubjects = subjectsWithGrade.size
                 )
+
+                // Log semester completion when all subjects have grades
+                if (subjectsWithGrades == subjectsWithGrade.size && subjectsWithGrade.isNotEmpty()) {
+                    val completionPercentage = (subjectsWithGrades.toDouble() / subjectsWithGrade.size) * 100
+                    analyticsLogger.logSemesterCompleted(
+                        finalGpa = calculationResult.cumulative.gpa,
+                        subjectsCount = subjectsWithGrade.size,
+                        completionPercentage = completionPercentage
+                    )
+                }
             }
 
             val subjects = subjectsWithGrade.map { subject ->

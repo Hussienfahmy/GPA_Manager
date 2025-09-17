@@ -36,6 +36,9 @@ object AnalyticsEvents {
 
         /** User spent significant time in calculation session */
         const val CALCULATION_SESSION_LENGTH = "calculation_session_length"
+
+        /** User completed grading all subjects in a semester */
+        const val SEMESTER_COMPLETED = "semester_completed"
     }
 
     // Predictive Mode Events

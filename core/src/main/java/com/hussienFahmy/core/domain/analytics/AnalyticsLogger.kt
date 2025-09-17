@@ -92,6 +92,20 @@ class AnalyticsLogger(
         )
     }
 
+    fun logSemesterCompleted(
+        finalGpa: Double,
+        subjectsCount: Int,
+        completionPercentage: Double
+    ) {
+        analyticsService.logEvent(
+            AnalyticsEvents.SemesterCalculation.SEMESTER_COMPLETED,
+            mapOf(
+                AnalyticsParameters.ACHIEVED_GPA to finalGpa,
+                AnalyticsParameters.SUBJECTS_COUNT to subjectsCount,
+                AnalyticsParameters.PROFILE_COMPLETION to completionPercentage
+            )
+        )
+    }
 
     // Predictive Mode Events
     fun logPredictiveModeEnabled(
