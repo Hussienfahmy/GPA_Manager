@@ -11,6 +11,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,13 +22,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
 import com.hussienfahmy.core.R
+import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
+import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.analytics.TrackScreenTime
 import com.hussienfahmy.core_ui.presentation.user_data.components.UserInfoCard
 import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
 import com.hussienfahmy.myGpaManager.navigation.graphs.MoreNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Destination<MoreNavGraph>(start = true, style = SlideTransitions::class)
 @Composable
@@ -39,6 +44,8 @@ fun AppMoreScreen(
     onGradeSettingsClick: () -> Unit,
     onSubjectSettingsClick: () -> Unit,
 ) {
+    TrackScreenTime(AnalyticsValues.SCREEN_MORE)
+
     val userData = moreViewModel.userData
 
     if (userData != null) {

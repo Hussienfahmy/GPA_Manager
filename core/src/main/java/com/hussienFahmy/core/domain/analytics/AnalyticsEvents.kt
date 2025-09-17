@@ -247,6 +247,12 @@ object AnalyticsValues {
     // Navigation sources
     const val NAV_SOURCE_MENU = "menu"
     const val NAV_SOURCE_BUTTON = "button"
+
+    // Screen names for time tracking
+    const val SCREEN_SEMESTER = "semester"
+    const val SCREEN_QUICK = "quick"
+    const val SCREEN_MORE = "more"
+    const val SCREEN_MARKS = "marks"
     const val NAV_SOURCE_SEARCH = "search"
     const val NAV_SOURCE_BOTTOM_NAV = "bottom_nav"
 

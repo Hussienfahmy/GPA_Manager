@@ -51,7 +51,7 @@
 - [x] Settings screens accessed - implemented in AppGPASettingsScreen:19, AppGradeSettingsScreen:24, AppSubjectSettingsScreen:24
 
 ### User Engagement Events
-- [ ] Screen time tracking - logScreenTime method exists but not called
+- [x] Screen time tracking - implemented in AppSemesterScreen:26, AppQuickScreen:24, AppMoreScreen:50
 - [ ] App rating clicked - logAppRatingClicked method exists but not called
 - [x] Bottom navigation tracking - implemented in AppBottomNav:31
 - [ ] Feature discovery tracking - logFeatureDiscovered method exists but not called

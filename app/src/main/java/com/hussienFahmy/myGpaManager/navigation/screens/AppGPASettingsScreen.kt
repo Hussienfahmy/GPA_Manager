@@ -1,9 +1,12 @@
 package com.hussienfahmy.myGpaManager.navigation.screens
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import com.hussienfahmy.core.domain.analytics.AnalyticsValues
+import com.hussienfahmy.core_ui.presentation.analytics.TrackScreenTime
 import com.hussienfahmy.gpa_system_sittings_presentaion.GPASettingsScreen
 import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
 import com.hussienfahmy.myGpaManager.navigation.graphs.MoreNavGraph
@@ -18,6 +21,8 @@ fun AppGPASettingsScreen() {
     LaunchedEffect(Unit) {
         analyticsLogger.logSettingsAccessed(AnalyticsValues.SETTINGS_TYPE_GPA)
     }
+
+    TrackScreenTime(AnalyticsValues.SCREEN_GPA_SETTINGS)
 
     GPASettingsScreen()
 }
