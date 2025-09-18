@@ -1,6 +1,7 @@
 package com.hussienfahmy.sync_domain.model
 
 import androidx.annotation.Keep
+import com.google.firebase.Timestamp
 import com.hussienfahmy.core.data.local.entity.Grade
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core.domain.gpa_settings.model.GPA
@@ -9,7 +10,8 @@ import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
 @Keep
 data class Settings(
     val networkGrades: List<NetworkGrade> = listOf(),
-    val calculationSettings: CalculationSettings = CalculationSettings()
+    val calculationSettings: CalculationSettings = CalculationSettings(),
+    val lastUpdate: Timestamp? = null
 )
 
 @Keep

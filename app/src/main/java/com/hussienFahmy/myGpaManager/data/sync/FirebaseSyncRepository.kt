@@ -1,5 +1,6 @@
 package com.hussienfahmy.myGpaManager.data.sync
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
@@ -25,7 +26,10 @@ class FirebaseSyncRepository(
     }
 
     override suspend fun uploadSubjects(subjects: List<Subject>) {
-        val networkSubjects = NetworkSubjects(subjects)
+        val networkSubjects = NetworkSubjects(
+            subjects = subjects,
+            lastUpdate = Timestamp.now()
+        )
         subjectsDoc.first()?.set(networkSubjects)?.await()
     }
 

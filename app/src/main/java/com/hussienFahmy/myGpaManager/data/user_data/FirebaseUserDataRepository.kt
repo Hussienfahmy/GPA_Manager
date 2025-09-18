@@ -1,6 +1,8 @@
 package com.hussienfahmy.myGpaManager.data.user_data
 
 import android.util.Log
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
@@ -43,12 +45,15 @@ class FirebaseUserDataRepository(
         photoUrl: String,
         email: String,
     ) {
+        val now = Timestamp.now()
         userDoc.first()?.set(
             FirebaseUserData(
                 id = id,
                 name = name,
                 photoUrl = photoUrl,
                 email = email,
+                createdAt = now,
+                updatedAt = now,
             )
         )?.await()
     }
@@ -91,72 +96,63 @@ class FirebaseUserDataRepository(
             initialValue = null
         )
 
+    private suspend fun updateField(field: String, value: Any) {
+        userDoc.first()?.update(
+            mapOf(
+                field to value,
+                FirebaseUserData.PROPERTY_UPDATED_AT to FieldValue.serverTimestamp()
+            )
+        )?.await()
+    }
+
     override suspend fun updateName(name: String) {
-        userDoc.first()?.update(FirebaseUserData.PROPERTY_NAME, name)?.await()
+        updateField(FirebaseUserData.PROPERTY_NAME, name)
     }
 
     override suspend fun updatePhotoUrl(photoUrl: String) {
-        userDoc.first()?.update(FirebaseUserData.PROPERTY_PHOTO_URL, photoUrl)?.await()
+        updateField(FirebaseUserData.PROPERTY_PHOTO_URL, photoUrl)
     }
 
     override suspend fun updateEmail(email: String) {
-        userDoc.first()?.update(FirebaseUserData.PROPERTY_EMAIL, email)?.await()
+        updateField(FirebaseUserData.PROPERTY_EMAIL, email)
     }
 
     override suspend fun updateUniversity(university: String) {
-        userDoc.first()?.update(
-            FirebaseUserData.PROPERTY_ACADEMIC_INFO_UNIVERSITY,
-            university
-        )?.await()
+        updateField(FirebaseUserData.PROPERTY_ACADEMIC_INFO_UNIVERSITY, university)
     }
 
     override suspend fun updateFaculty(faculty: String) {
-        userDoc.first()?.update(
-            FirebaseUserData.PROPERTY_ACADEMIC_INFO_FACULTY,
-            faculty
-        )?.await()
+        updateField(FirebaseUserData.PROPERTY_ACADEMIC_INFO_FACULTY, faculty)
     }
 
     override suspend fun updateDepartment(department: String) {
-        userDoc.first()?.update(
-            FirebaseUserData.PROPERTY_ACADEMIC_INFO_DEPARTMENT,
-            department
-        )?.await()
+        updateField(FirebaseUserData.PROPERTY_ACADEMIC_INFO_DEPARTMENT, department)
     }
 
     override suspend fun updateLevel(level: Int) {
-        userDoc.first()?.update(
-            FirebaseUserData.PROPERTY_ACADEMIC_INFO_LEVEL,
-            level
-        )?.await()
+        updateField(FirebaseUserData.PROPERTY_ACADEMIC_INFO_LEVEL, level)
     }
 
     override suspend fun updateSemester(semester: UserData.AcademicInfo.Semester) {
-        userDoc.first()?.update(
+        updateField(
             FirebaseUserData.PROPERTY_ACADEMIC_INFO_SEMESTER,
             when (semester) {
                 UserData.AcademicInfo.Semester.First -> FirebaseUserData.AcademicInfo.Semester.First
                 UserData.AcademicInfo.Semester.Second -> FirebaseUserData.AcademicInfo.Semester.Second
             }
-        )?.await()
+        )
     }
 
     override suspend fun updateCumulativeGPA(cumulativeGPA: Double) {
-        userDoc.first()?.update(
-            FirebaseUserData.PROPERTY_ACADEMIC_PROGRESS_CUMULATIVE_GPA,
-            cumulativeGPA
-        )?.await()
+        updateField(FirebaseUserData.PROPERTY_ACADEMIC_PROGRESS_CUMULATIVE_GPA, cumulativeGPA)
     }
 
     override suspend fun updateCreditHours(creditHours: Int) {
-        userDoc.first()?.update(
-            FirebaseUserData.PROPERTY_ACADEMIC_PROGRESS_CREDIT_HOURS,
-            creditHours
-        )?.await()
+        updateField(FirebaseUserData.PROPERTY_ACADEMIC_PROGRESS_CREDIT_HOURS, creditHours)
     }
 
     override suspend fun updateFCMToken(fcmToken: String) {
-        userDoc.first()?.update(FirebaseUserData.PROPERTY_FCM_TOKEN, fcmToken)?.await()
+        updateField(FirebaseUserData.PROPERTY_FCM_TOKEN, fcmToken)
     }
 
     companion object {

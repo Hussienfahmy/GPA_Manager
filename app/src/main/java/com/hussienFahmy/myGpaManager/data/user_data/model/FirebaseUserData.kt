@@ -1,6 +1,7 @@
 package com.hussienfahmy.myGpaManager.data.user_data.model
 
 import androidx.annotation.Keep
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.PropertyName
 
@@ -13,6 +14,8 @@ internal data class FirebaseUserData(
     @PropertyName(PROPERTY_ACADEMIC_INFO) val academicInfo: AcademicInfo = AcademicInfo(),
     @PropertyName(PROPERTY_FCM_TOKEN) val fcmToken: String = "",
     @PropertyName(PROPERTY_ACADEMIC_PROGRESS) val academicProgress: AcademicProgress = AcademicProgress(),
+    @PropertyName(PROPERTY_CREATED_AT) val createdAt: Timestamp? = null,
+    @PropertyName(PROPERTY_UPDATED_AT) val updatedAt: Timestamp? = null,
 ) {
     @Keep
     data class AcademicInfo(
@@ -56,5 +59,7 @@ internal data class FirebaseUserData(
             "academicProgress.$CUMULATIVE_GPA_FIELD"
         const val PROPERTY_ACADEMIC_PROGRESS_CREDIT_HOURS = "academicProgress.$CREDIT_HOURS_FIELD"
         const val PROPERTY_FCM_TOKEN = "fcm_token"
+        const val PROPERTY_CREATED_AT = "createdAt"
+        const val PROPERTY_UPDATED_AT = "updatedAt"
     }
 }
