@@ -66,7 +66,10 @@ fun OnBoardingScreen(
     LaunchedEffect(key1 = state) {
         when (state) {
             SignInState.Success -> onSignInSuccess()
-            SignInState.Initial -> {}
+            SignInState.Initial,
+            SignInState.Loading,
+            SignInState.Error -> {
+            }
         }
     }
 
@@ -78,11 +81,14 @@ fun OnBoardingScreen(
         currentStep = OnboardingConstants.Steps.WELCOME,
         onNextClick = {
             scope.launch {
+                viewModel.setLoadingState()
                 val signInResult = authService.signIn()
                 viewModel.onEvent(AuthEvent.OnSignInResult(signInResult))
             }
         },
-        nextButtonText = stringResource(R.string.onboarding_welcome_get_started)
+        nextButtonText = stringResource(R.string.onboarding_welcome_get_started),
+        nextButtonEnabled = state != SignInState.Loading,
+        nextButtonLoading = state == SignInState.Loading
     ) {
         Column(
             modifier = Modifier

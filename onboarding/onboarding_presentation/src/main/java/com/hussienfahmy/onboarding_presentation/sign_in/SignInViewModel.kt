@@ -17,6 +17,10 @@ class SignInViewModel(
     SignInState.Initial
 }) {
 
+    fun setLoadingState() {
+        state.value = SignInState.Loading
+    }
+
     override fun onEvent(event: AuthEvent) {
         when (event) {
             is AuthEvent.OnSignInResult -> {
@@ -52,6 +56,7 @@ class SignInViewModel(
                     }
 
                     else -> viewModelScope.launch {
+                        state.value = SignInState.Error
                         _uiEvent.send(
                             ShowSnackBar(
                                 DynamicString(
