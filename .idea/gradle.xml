@@ -50,8 +50,6 @@
             <option value="$PROJECT_DIR$/sync" />
             <option value="$PROJECT_DIR$/sync/sync_data" />
             <option value="$PROJECT_DIR$/sync/sync_domain" />
-            <option value="$PROJECT_DIR$/user_data" />
-            <option value="$PROJECT_DIR$/user_data/user_data_data" />
           </set>
         </option>
       </GradleProjectSettings>
