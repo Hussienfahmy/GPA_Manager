@@ -6,12 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core_ui.presentation.analytics.TrackScreenTime
-import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
+import com.hussienfahmy.myGpaManager.navigation.FadeTransitions
 import com.hussienfahmy.semester_subjctets_presentaion.SemesterScreen
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 
-@Destination<RootGraph>(start = true, style = SlideTransitions::class)
+@Destination<RootGraph>(start = true, style = FadeTransitions::class)
 @Composable
 fun AppSemesterScreen(
     snackBarHostState: SnackbarHostState,

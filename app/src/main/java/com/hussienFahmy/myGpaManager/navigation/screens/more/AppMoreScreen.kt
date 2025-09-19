@@ -26,12 +26,12 @@ import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.analytics.TrackScreenTime
 import com.hussienfahmy.core_ui.presentation.user_data.components.UserInfoCard
-import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
+import com.hussienfahmy.myGpaManager.navigation.FadeTransitions
 import com.hussienfahmy.myGpaManager.navigation.graphs.MoreNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
 import org.koin.androidx.compose.koinViewModel
 
-@Destination<MoreNavGraph>(start = true, style = SlideTransitions::class)
+@Destination<MoreNavGraph>(start = true, style = FadeTransitions::class)
 @Composable
 fun AppMoreScreen(
     modifier: Modifier = Modifier,
