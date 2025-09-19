@@ -24,7 +24,7 @@ class FirebaseAuthRepository(
 
     private val firebaseUserId get() = auth.currentUser?.uid
 
-    private val _userId = MutableStateFlow<String?>(firebaseUserId)
+    private val _userId = MutableStateFlow(firebaseUserId)
     override val userId: StateFlow<String?> = _userId
         .onStart {
             auth.addAuthStateListener(firebaseAuthStateListener)

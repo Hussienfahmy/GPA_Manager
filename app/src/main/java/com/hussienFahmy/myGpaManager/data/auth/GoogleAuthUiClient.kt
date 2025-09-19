@@ -24,7 +24,7 @@ class GoogleAuthUiClient(
     private val authRepository: AuthRepository
 ) : DefaultLifecycleObserver {
 
-    val isSignedInFlow: StateFlow<Boolean?> = authRepository.isSignedInFlow as StateFlow<Boolean?>
+    val isSignedInFlow: StateFlow<Boolean?> = authRepository.isSignedInFlow
 
     suspend fun signIn(): SignInResult? {
         return try {
