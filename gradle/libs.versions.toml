@@ -21,7 +21,7 @@ ksp = "2.2.0-2.0.2"
 androidxCoreKtx = "1.16.0"
 androidxLifecycle = "2.9.2"
 androidxActivityCompose = "1.10.1"
-room = "2.7.2" # last working version is 2.4.3
+room = "2.7.2"
 dataStore = "1.1.7"
 preferencesDataStore = "1.1.7"
 constraintLayoutCompose = "1.1.1"
@@ -54,7 +54,7 @@ firebaseMessaging = "24.1.2"
 
 # Google Services
 playServiceAuth = "21.4.0"
-googleServices = "4.3.15" #Don't upgrade unless it really needed, note that newer verions doesn't work in modules
+googleServices = "4.4.3"
 firebaseCrashlyticsGradle = "3.0.6"
 credentials = "1.6.0-alpha04"
 

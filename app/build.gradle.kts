@@ -69,8 +69,6 @@ dependencies {
     implementation(project(":quick:quick_domain"))
     implementation(project(":quick:quick_presentation"))
 
-    implementation(project(":user_data:user_data_data"))
-
     implementation(project(":semester_marks:semester_marks_domain"))
     implementation(project(":semester_marks:semester_marks_presentaion"))
 
@@ -83,8 +81,6 @@ dependencies {
 
     implementation(project(":sync:sync_data"))
     implementation(project(":sync:sync_domain"))
-
-    implementation(project(":user_data:user_data_data"))
 
     // Koin
     implementation(libs.koin.android)

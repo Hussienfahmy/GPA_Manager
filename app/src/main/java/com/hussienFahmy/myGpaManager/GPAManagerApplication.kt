@@ -5,6 +5,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
 import com.hussienfahmy.core.data.local.di.databaseModule
 import com.hussienfahmy.core.di.coreModule
+import com.hussienfahmy.core.domain.analytics.di.analyticsModule
 import com.hussienfahmy.core.domain.grades.di.coreGradesDomainModule
 import com.hussienfahmy.core.domain.subject_settings.di.coreSubjectSettingsDomainModule
 import com.hussienfahmy.core.domain.user_data.di.coreUserDataDomainModule
@@ -28,8 +29,6 @@ import com.hussienfahmy.subject_settings_presentation.di.subjectSettingsPresenta
 import com.hussienfahmy.sync_data.di.syncDataModule
 import com.hussienfahmy.sync_domain.di.syncDomainModule
 import com.hussienfahmy.sync_domain.worker.SyncWorkerUpload
-import com.hussienfahmy.user_data_data.di.userDataDataModule
-import com.hussienfahmy.core.domain.analytics.di.analyticsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.component.KoinComponent
@@ -50,7 +49,6 @@ class GPAManagerApplication : Application(), KoinComponent {
                 gradesSettingDomainModule,
                 gradesSettingPresentationModule,
                 coreUiDomainModule,
-                userDataDataModule,
                 coreUserDataDomainModule,
                 quickDomainModule,
                 quickPresentationModule,
