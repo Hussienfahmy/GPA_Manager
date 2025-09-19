@@ -8,6 +8,7 @@ import com.hussienfahmy.core.domain.user_data.use_cases.SignOut
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateCreditHours
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateCumulativeGPA
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateDepartment
+import com.hussienfahmy.core.domain.user_data.use_cases.UpdateFCMToken
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateFaculty
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateLevel
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateName
@@ -50,6 +51,12 @@ val coreUserDataDomainModule = module {
             subjectDao = get(),
             syncUpload = get(),
             setIsInitialSyncDone = get(),
+        )
+    }
+
+    single {
+        UpdateFCMToken(
+            repository = get()
         )
     }
 }
