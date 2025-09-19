@@ -22,7 +22,7 @@ import com.hussienfahmy.core_ui.R as CoreUiR
 @Composable
 fun UserPhoto(
     modifier: Modifier = Modifier,
-    photoUrl: String
+    photoUrl: String?
 ) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)

@@ -1,19 +1,17 @@
 package com.hussienfahmy.myGpaManager.navigation.screens.onboarding
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import com.hussienfahmy.core.R
 import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
+import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.gpa_system_sittings_presentaion.GPASettingsScreen
 import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
 import com.hussienfahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
@@ -24,38 +22,40 @@ import com.ramcosta.composedestinations.annotation.Destination
 @Composable
 fun AppOnBoardingGPASubjectsSettings(
     onStartClick: () -> Unit,
+    onBackClick: () -> Unit,
     snackBarHostState: SnackbarHostState
 ) {
     val spacing = LocalSpacing.current
 
-    Column {
-        Text(
-            text = "Please Review Your GPA & Subjects Settings according to your University",
-            modifier = Modifier
-                .padding(top = spacing.medium)
-                .align(Alignment.CenterHorizontally),
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        GPASettingsScreen(
-            modifier = Modifier.weight(1f)
-        )
-
-        SubjectsSettingsScreen(
-            modifier = Modifier.weight(1f),
-            snackBarHostState = snackBarHostState
-        )
-
-        OutlinedButton(
-            onClick = onStartClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = spacing.medium)
+    OnboardingLayout(
+        title = stringResource(R.string.onboarding_final_title),
+        subtitle = stringResource(R.string.onboarding_final_subtitle),
+        currentStep = OnboardingConstants.Steps.FINAL_SETUP,
+        onNextClick = onStartClick,
+        nextButtonText = stringResource(R.string.onboarding_start_using_app),
+        onSkipClick = onStartClick,
+        onBackClick = onBackClick
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(spacing.large)
         ) {
-            Text(text = "Start")
+            Text(
+                text = stringResource(R.string.onboarding_gpa_calculation_settings),
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center
+            )
+
+            GPASettingsScreen()
+
+            Text(
+                text = stringResource(R.string.onboarding_subject_configuration),
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center
+            )
+
+            SubjectsSettingsScreen(
+                snackBarHostState = snackBarHostState
+            )
         }
     }
 }

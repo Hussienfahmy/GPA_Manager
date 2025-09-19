@@ -1,10 +1,11 @@
 package com.hussienfahmy.onboarding_presentation
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,9 +13,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import com.hussienfahmy.core.R
 import com.hussienfahmy.core.domain.auth.service.AuthService
 import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
+import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.onboarding_presentation.sign_in.AuthEvent
 import com.hussienfahmy.onboarding_presentation.sign_in.SignInState
@@ -30,6 +36,7 @@ fun OnBoardingScreen(
 ) {
     val authService = koinInject<AuthService>()
     val scope = rememberCoroutineScope()
+    val spacing = LocalSpacing.current
 
     val state by viewModel.state
 
@@ -42,28 +49,45 @@ fun OnBoardingScreen(
 
     UiEventHandler(uiEvent = viewModel.uiEvent)
 
-    val spacing = LocalSpacing.current
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text(
-            text = "Let's make your GPA great again!",
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.align(Alignment.Center)
-        )
-
-        OutlinedButton(
-            onClick = {
-                scope.launch {
-                    val signInResult = authService.signIn()
-
-                    viewModel.onEvent(AuthEvent.OnSignInResult(signInResult))
-                }
-            },
+    OnboardingLayout(
+        title = stringResource(R.string.onboarding_welcome_title),
+        subtitle = stringResource(R.string.onboarding_welcome_subtitle),
+        currentStep = OnboardingConstants.Steps.WELCOME,
+        onNextClick = {
+            scope.launch {
+                val signInResult = authService.signIn()
+                viewModel.onEvent(AuthEvent.OnSignInResult(signInResult))
+            }
+        },
+        nextButtonText = stringResource(R.string.onboarding_welcome_get_started)
+    ) {
+        Column(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = spacing.medium)
+                .fillMaxWidth()
+                .padding(spacing.large),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Sign in")
+            Text(
+                text = "🎓",
+                style = MaterialTheme.typography.displayLarge,
+                modifier = Modifier.padding(bottom = spacing.medium)
+            )
+
+            Text(
+                text = stringResource(R.string.onboarding_welcome_tagline),
+                style = MaterialTheme.typography.headlineSmall,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = spacing.medium)
+            )
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            Text(
+                text = stringResource(R.string.onboarding_welcome_features),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Start,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }

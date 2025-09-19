@@ -154,4 +154,41 @@
     <string name="gpa_settings_details">نظام المعدل التراكمي (4 او 5)</string>
     <string name="subject_settings">اعدادات المواد</string>
     <string name="subject_settings_screen_summary">الدرجة الكلية للمادة و علاقتها بعدد الساعات</string>
+
+    <!-- Onboarding strings -->
+    <string name="onboarding_welcome_title">مرحباً بك في مدير المعدل التراكمي</string>
+    <string name="onboarding_welcome_subtitle">رفيقك الذكي لتتبع وتحسين أدائك الأكاديمي</string>
+    <string name="onboarding_welcome_get_started">ابدأ الآن</string>
+    <string name="onboarding_welcome_features">• تتبع تقدمك الأكاديمي\n• احسب المعدل الفصلي والتراكمي\n• ضع أهدافاً وراقب تحسنك\n• زامن بياناتك عبر جميع أجهزتك</string>
+    <string name="onboarding_welcome_tagline">دعنا نجعل معدلك التراكمي رائعاً مرة أخرى!</string>
+
+    <string name="onboarding_user_data_title">أكمل ملفك الشخصي</string>
+    <string name="onboarding_user_data_subtitle">ساعدنا في تخصيص تجربتك وتوفير حسابات دقيقة للمعدل التراكمي</string>
+
+    <string name="onboarding_grades_title">إعداد نظام التقديرات</string>
+    <string name="onboarding_grades_subtitle">قم بإعداد نظام التقديرات الخاص بمؤسستك للحصول على حسابات دقيقة للمعدل التراكمي. يمكنك دائماً تعديل هذه الإعدادات لاحقاً.</string>
+
+    <string name="onboarding_final_title">الإعداد النهائي</string>
+    <string name="onboarding_final_subtitle">راجع إعدادات حساب المعدل التراكمي والمواد. يمكنك دائماً تعديل هذه الإعدادات لاحقاً.</string>
+
+    <string name="onboarding_personal_info_title">المعلومات الشخصية</string>
+    <string name="onboarding_personal_info_subtitle">أضف صورتك الشخصية واسمك لتخصيص حسابك</string>
+
+    <string name="onboarding_institution_info_title">معلومات المؤسسة التعليمية</string>
+    <string name="onboarding_institution_info_subtitle">ساعدنا في فهم مؤسستك التعليمية للحصول على حسابات أفضل للمعدل التراكمي</string>
+
+    <string name="onboarding_academic_status_title">الحالة الأكاديمية</string>
+    <string name="onboarding_academic_status_subtitle">أخبرنا عن مستواك الأكاديمي الحالي والفصل الدراسي</string>
+
+    <string name="onboarding_gpa_tracking_title">تتبع المعدل التراكمي</string>
+    <string name="onboarding_gpa_tracking_subtitle">أدخل معدلك التراكمي الحالي والساعات المعتمدة لتتبع تقدمك الأكاديمي</string>
+
+    <string name="onboarding_gpa_calculation_settings">إعدادات حساب المعدل التراكمي</string>
+    <string name="onboarding_subject_configuration">إعداد المواد</string>
+
+    <string name="onboarding_back">السابق</string>
+    <string name="onboarding_next">التالي</string>
+    <string name="onboarding_skip_for_now">تخطي في الوقت الحالي</string>
+    <string name="onboarding_start_using_app">ابدأ استخدام التطبيق</string>
+    <string name="onboarding_progress_format">%1$d / %2$d</string>
 </resources>

@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -47,6 +47,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun GradeSettingsScreen(
     modifier: Modifier = Modifier,
+    displayFilterChips: Boolean = true,
     viewModel: GradeSettingsViewModel = koinViewModel(),
     snackBarHostState: SnackbarHostState,
 ) {
@@ -62,59 +63,12 @@ fun GradeSettingsScreen(
     Column(
         modifier = modifier.padding(horizontal = spacing.small)
     ) {
-        Spacer(modifier = Modifier.heightIn(spacing.small))
-        // Title
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val isOnlyActiveSelected = state.mode == Mode.ONLY_ACTIVE
-            FilterChip(
-                selected = isOnlyActiveSelected,
-                onClick = { viewModel.onModeChange(Mode.ONLY_ACTIVE) },
-                label = {
-                    Text(
-                        text = stringResource(R.string.active_grades_only),
-                        style = MaterialTheme.typography.titleMedium,
-                        textAlign = TextAlign.Center,
-                    )
-                },
-                leadingIcon = if (isOnlyActiveSelected) {
-                    {
-                        Icon(
-                            imageVector = Icons.Filled.Done,
-                            contentDescription = "Done icon",
-                            modifier = Modifier.size(FilterChipDefaults.IconSize)
-                        )
-                    }
-                } else {
-                    null
-                }
-            )
+        Spacer(modifier = Modifier.height(spacing.small))
 
-            val isAllSelected = state.mode == Mode.ALL
-            FilterChip(
-                selected = isAllSelected,
-                onClick = { viewModel.onModeChange(Mode.ALL) },
-                label = {
-                    Text(
-                        text = stringResource(R.string.all_grades),
-                        style = MaterialTheme.typography.titleMedium,
-                        textAlign = TextAlign.Center,
-                    )
-                },
-                leadingIcon = if (isAllSelected) {
-                    {
-                        Icon(
-                            imageVector = Icons.Filled.Done,
-                            contentDescription = "Done icon",
-                            modifier = Modifier.size(FilterChipDefaults.IconSize)
-                        )
-                    }
-                } else {
-                    null
-                }
+        if (displayFilterChips) {
+            FilterChipsRow(
+                state = state,
+                onModeChange = viewModel::onModeChange
             )
         }
 
@@ -139,6 +93,66 @@ fun GradeSettingsScreen(
                 }
             )
         }
+    }
+}
+
+@Composable
+private fun FilterChipsRow(
+    state: GradeSettingsState,
+    onModeChange: (Mode) -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val isOnlyActiveSelected = state.mode == Mode.ONLY_ACTIVE
+        FilterChip(
+            selected = isOnlyActiveSelected,
+            onClick = { onModeChange(Mode.ONLY_ACTIVE) },
+            label = {
+                Text(
+                    text = stringResource(R.string.active_grades_only),
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                )
+            },
+            leadingIcon = if (isOnlyActiveSelected) {
+                {
+                    Icon(
+                        imageVector = Icons.Filled.Done,
+                        contentDescription = "Done icon",
+                        modifier = Modifier.size(FilterChipDefaults.IconSize)
+                    )
+                }
+            } else {
+                null
+            }
+        )
+
+        val isAllSelected = state.mode == Mode.ALL
+        FilterChip(
+            selected = isAllSelected,
+            onClick = { onModeChange(Mode.ALL) },
+            label = {
+                Text(
+                    text = stringResource(R.string.all_grades),
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                )
+            },
+            leadingIcon = if (isAllSelected) {
+                {
+                    Icon(
+                        imageVector = Icons.Filled.Done,
+                        contentDescription = "Done icon",
+                        modifier = Modifier.size(FilterChipDefaults.IconSize)
+                    )
+                }
+            } else {
+                null
+            }
+        )
     }
 }
 

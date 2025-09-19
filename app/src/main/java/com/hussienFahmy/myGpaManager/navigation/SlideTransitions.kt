@@ -6,45 +6,44 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.navigation.NavBackStackEntry
 import com.ramcosta.composedestinations.spec.DestinationStyle
 
-/**
- * Friendly fade-through transitions (better for bottom navigation and most screens).
- * No extra dependency required (uses Compose animation APIs).
- */
 object SlideTransitions : DestinationStyle.Animated() {
 
-    private const val IN_DURATION = 220
-    private const val OUT_DURATION = 90
-    private const val IN_DELAY = 90
+    private const val ANIMATION_DURATION = 300
 
     override val enterTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition? =
         {
-            fadeIn(animationSpec = tween(durationMillis = IN_DURATION, delayMillis = IN_DELAY)) +
-                    scaleIn(
-                        initialScale = 0.92f,
-                        animationSpec = tween(durationMillis = IN_DURATION, delayMillis = IN_DELAY)
-                    )
+            slideInHorizontally(
+                initialOffsetX = { fullWidth -> fullWidth },
+                animationSpec = tween(ANIMATION_DURATION)
+            ) + fadeIn(animationSpec = tween(ANIMATION_DURATION))
         }
 
     override val exitTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition? =
         {
-            fadeOut(animationSpec = tween(durationMillis = OUT_DURATION))
+            slideOutHorizontally(
+                targetOffsetX = { fullWidth -> -fullWidth / 3 },
+                animationSpec = tween(ANIMATION_DURATION)
+            ) + fadeOut(animationSpec = tween(ANIMATION_DURATION))
         }
 
     override val popEnterTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition? =
         {
-            fadeIn(animationSpec = tween(durationMillis = IN_DURATION, delayMillis = IN_DELAY)) +
-                    scaleIn(
-                        initialScale = 0.92f,
-                        animationSpec = tween(durationMillis = IN_DURATION, delayMillis = IN_DELAY)
-                    )
+            slideInHorizontally(
+                initialOffsetX = { fullWidth -> -fullWidth / 3 },
+                animationSpec = tween(ANIMATION_DURATION)
+            ) + fadeIn(animationSpec = tween(ANIMATION_DURATION))
         }
 
     override val popExitTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition? =
         {
-            fadeOut(animationSpec = tween(durationMillis = OUT_DURATION))
+            slideOutHorizontally(
+                targetOffsetX = { fullWidth -> fullWidth },
+                animationSpec = tween(ANIMATION_DURATION)
+            ) + fadeOut(animationSpec = tween(ANIMATION_DURATION))
         }
 }

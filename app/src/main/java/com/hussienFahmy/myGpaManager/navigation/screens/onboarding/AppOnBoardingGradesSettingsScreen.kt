@@ -1,23 +1,11 @@
 package com.hussienfahmy.myGpaManager.navigation.screens.onboarding
 
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import com.hussienfahmy.core_ui.LocalSpacing
+import androidx.compose.ui.res.stringResource
+import com.hussienfahmy.core.R
+import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
+import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.grades_setting_presentation.GradeSettingsScreen
 import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
 import com.hussienfahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
@@ -27,39 +15,19 @@ import com.ramcosta.composedestinations.annotation.Destination
 @Composable
 fun AppOnBoardingGradesSettingsScreen(
     onNextClick: () -> Unit,
-    snackBarHostState: SnackbarHostState
+    snackBarHostState: SnackbarHostState,
+    onBackClick: (() -> Unit)?
 ) {
-    val spacing = LocalSpacing.current
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .scrollable(rememberScrollState(), orientation = Orientation.Vertical)
+    OnboardingLayout(
+        title = stringResource(R.string.onboarding_grades_title),
+        subtitle = stringResource(R.string.onboarding_grades_subtitle),
+        currentStep = OnboardingConstants.Steps.GRADES_SETTINGS,
+        onNextClick = onNextClick,
+        onBackClick = onBackClick,
+        onSkipClick = onNextClick,
+        showSkip = true,
+        enableScrolling = false
     ) {
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        OutlinedButton(
-            onClick = onNextClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = spacing.medium)
-        ) {
-            Text(text = "Next")
-        }
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        Text(
-            text = "Please review your grades settings carefully to get correct results\nyou may check your academic institution website for more details",
-            modifier = Modifier
-                .padding(top = spacing.medium)
-                .align(Alignment.CenterHorizontally),
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        GradeSettingsScreen(snackBarHostState = snackBarHostState)
+        GradeSettingsScreen(snackBarHostState = snackBarHostState, displayFilterChips = false)
     }
 }
