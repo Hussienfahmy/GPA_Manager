@@ -158,9 +158,20 @@
     <!-- Onboarding strings -->
     <string name="onboarding_welcome_title">مرحباً بك في مدير المعدل التراكمي</string>
     <string name="onboarding_welcome_subtitle">رفيقك الذكي لتتبع وتحسين أدائك الأكاديمي</string>
-    <string name="onboarding_welcome_get_started">ابدأ الآن</string>
+    <string name="onboarding_welcome_get_started">هيا نبدأ! 🚀</string>
     <string name="onboarding_welcome_features">• تتبع تقدمك الأكاديمي\n• احسب المعدل الفصلي والتراكمي\n• ضع أهدافاً وراقب تحسنك\n• زامن بياناتك عبر جميع أجهزتك</string>
-    <string name="onboarding_welcome_tagline">دعنا نجعل معدلك التراكمي رائعاً مرة أخرى!</string>
+    <string name="onboarding_welcome_tagline">حوّل أحلامك الأكاديمية إلى حقيقة! ✨</string>
+    <string name="onboarding_welcome_subtitle_motivational">مستعد لتحقيق التفوق الأكاديمي؟ 🚀</string>
+
+    <!-- Feature descriptions -->
+    <string name="onboarding_feature_semester_title">الفصل الحالي</string>
+    <string name="onboarding_feature_semester_desc">احسب بتعيين الدرجات أو الوضع التنبؤي</string>
+    <string name="onboarding_feature_marks_title">تتبع الدرجات</string>
+    <string name="onboarding_feature_marks_desc">سجل وراقب درجاتك في المواد</string>
+    <string name="onboarding_feature_quick_title">الحاسبة السريعة</string>
+    <string name="onboarding_feature_quick_desc">حسابات سريعة للمعدل التراكمي</string>
+    <string name="onboarding_feature_more_title">إعدادات المعدل</string>
+    <string name="onboarding_feature_more_desc">إعدادات معدل قابلة للتخصيص لجميع الجامعات</string>
 
     <string name="onboarding_user_data_title">أكمل ملفك الشخصي</string>
     <string name="onboarding_user_data_subtitle">ساعدنا في تخصيص تجربتك وتوفير حسابات دقيقة للمعدل التراكمي</string>

@@ -170,9 +170,20 @@
     <!-- Onboarding strings -->
     <string name="onboarding_welcome_title">Welcome to GPA Manager</string>
     <string name="onboarding_welcome_subtitle">Your smart companion for tracking and improving your academic performance</string>
-    <string name="onboarding_welcome_get_started">Get Started</string>
+    <string name="onboarding_welcome_get_started">Let\'s Get Started! 🚀</string>
     <string name="onboarding_welcome_features">• Track your academic progress\n• Calculate semester and cumulative GPA\n• Set goals and monitor improvement\n• Sync across all your devices</string>
-    <string name="onboarding_welcome_tagline">Let\'s make your GPA great again!</string>
+    <string name="onboarding_welcome_tagline">Turn your academic dreams into reality! ✨</string>
+    <string name="onboarding_welcome_subtitle_motivational">Ready to ace your academics? 🚀</string>
+
+    <!-- Feature descriptions -->
+    <string name="onboarding_feature_semester_title">Current Semester</string>
+    <string name="onboarding_feature_semester_desc">Calculate by setting grades or predictive mode</string>
+    <string name="onboarding_feature_marks_title">Grade Tracking</string>
+    <string name="onboarding_feature_marks_desc">Record and monitor your subject marks</string>
+    <string name="onboarding_feature_quick_title">Quick Calculator</string>
+    <string name="onboarding_feature_quick_desc">Fast cumulative GPA calculations</string>
+    <string name="onboarding_feature_more_title">GPA Settings</string>
+    <string name="onboarding_feature_more_desc">Customizable GPA settings for all universities</string>
 
     <string name="onboarding_user_data_title">Complete Your Profile</string>
     <string name="onboarding_user_data_subtitle">Help us personalize your experience and provide accurate GPA calculations</string>
