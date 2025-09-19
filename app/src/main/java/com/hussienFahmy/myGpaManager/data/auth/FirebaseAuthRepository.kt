@@ -7,9 +7,9 @@ import com.hussienfahmy.core.domain.auth.repository.AuthResult
 import com.hussienfahmy.core.domain.auth.repository.AuthUserData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -22,23 +22,25 @@ class FirebaseAuthRepository(
     scope: CoroutineScope
 ) : AuthRepository {
 
-    private val _userId = MutableStateFlow<String?>(null)
-    override val userId: Flow<String?> = _userId
+    private val firebaseUserId get() = auth.currentUser?.uid
+
+    private val _userId = MutableStateFlow<String?>(firebaseUserId)
+    override val userId: StateFlow<String?> = _userId
         .onStart {
             auth.addAuthStateListener(firebaseAuthStateListener)
         }.onCompletion {
             auth.removeAuthStateListener(firebaseAuthStateListener)
         }.stateIn(
             scope = scope,
-            started = SharingStarted.Eagerly,
-            initialValue = null
+            started = SharingStarted.Lazily,
+            initialValue = firebaseUserId
         )
 
     override val isSignedInFlow = userId.map { it != null }
         .stateIn(
             scope = scope,
-            started = SharingStarted.Eagerly,
-            initialValue = false
+            started = SharingStarted.Lazily,
+            initialValue = null
         )
 
 
