@@ -137,12 +137,10 @@ fun AppDestinationsNavHost(
         composable(AppOnBoardingGPASubjectsSettingsDestination) {
             AppOnBoardingGPASubjectsSettings(
                 onStartClick = {
-                    navController.navigate(NavGraphs.root.startDestination.route) {
-                        popUpTo(NavGraphs.onBoarding.startDestination.route) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
+                    do {
+                        navController.popBackStack()
+                    } while (navController.popBackStack())
+                    navController.navigate(NavGraphs.root.startDestination.route)
                 },
                 onBackClick = {
                     navController.popBackStack()
