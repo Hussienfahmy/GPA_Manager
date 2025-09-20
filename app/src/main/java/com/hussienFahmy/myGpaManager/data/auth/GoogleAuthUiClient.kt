@@ -1,5 +1,6 @@
 package com.hussienfahmy.myGpaManager.data.auth
 
+import android.app.Activity
 import android.content.Context
 import android.util.Log
 import androidx.credentials.ClearCredentialStateRequest
@@ -26,11 +27,11 @@ class GoogleAuthUiClient(
 
     val isSignedInFlow: StateFlow<Boolean?> = authRepository.isSignedInFlow
 
-    suspend fun signIn(): SignInResult? {
+    suspend fun signIn(activity: Activity): SignInResult? {
         return try {
             val result = credentialManager.getCredential(
                 request = request,
-                context = context,
+                context = activity,
             )
             handleSignIn(result.credential)
         } catch (e: Exception) {

@@ -1,5 +1,6 @@
 package com.hussienfahmy.onboarding_presentation
 
+import android.app.Activity
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -34,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -60,6 +62,7 @@ fun OnBoardingScreen(
     val authService = koinInject<AuthService>()
     val scope = rememberCoroutineScope()
     val spacing = LocalSpacing.current
+    val context = LocalContext.current
 
     val state by viewModel.state
 
@@ -82,7 +85,7 @@ fun OnBoardingScreen(
         onNextClick = {
             scope.launch {
                 viewModel.setLoadingState()
-                val signInResult = authService.signIn()
+                val signInResult = authService.signIn(context as Activity)
                 viewModel.onEvent(AuthEvent.OnSignInResult(signInResult))
             }
         },

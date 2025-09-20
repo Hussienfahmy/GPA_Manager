@@ -1,5 +1,6 @@
 package com.hussienfahmy.myGpaManager.data.auth
 
+import android.app.Activity
 import com.hussienfahmy.core.domain.auth.service.AuthService
 import com.hussienfahmy.core.domain.auth.service.AuthServiceResult
 import com.hussienfahmy.core.domain.auth.service.AuthServiceUserData
@@ -11,8 +12,8 @@ class GoogleAuthService(
 
     override val isSignedInFlow: StateFlow<Boolean?> = googleAuthUiClient.isSignedInFlow
 
-    override suspend fun signIn(): AuthServiceResult? {
-        return when (val result = googleAuthUiClient.signIn()) {
+    override suspend fun signIn(activity: Activity): AuthServiceResult? {
+        return when (val result = googleAuthUiClient.signIn(activity)) {
             is SignInResult.Success -> AuthServiceResult.Success(
                 AuthServiceUserData(
                     id = result.userData.id,
