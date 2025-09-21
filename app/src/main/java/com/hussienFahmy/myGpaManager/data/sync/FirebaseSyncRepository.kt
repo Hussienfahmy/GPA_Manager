@@ -4,6 +4,10 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
+import com.hussienfahmy.myGpaManager.data.common.mapper.toDomain
+import com.hussienfahmy.myGpaManager.data.common.mapper.toFirebase
+import com.hussienfahmy.myGpaManager.data.sync.model.FirebaseNetworkSubjects
+import com.hussienfahmy.myGpaManager.data.sync.model.FirebaseSettings
 import com.hussienfahmy.sync_domain.model.NetworkSubjects
 import com.hussienfahmy.sync_domain.model.Settings
 import com.hussienfahmy.sync_domain.model.Subject
@@ -26,23 +30,41 @@ class FirebaseSyncRepository(
     }
 
     override suspend fun uploadSubjects(subjects: List<Subject>) {
-        val networkSubjects = NetworkSubjects(
+        val firebaseNetworkSubjects = FirebaseNetworkSubjects(
             subjects = subjects,
             lastUpdate = Timestamp.now()
         )
-        subjectsDoc.first()?.set(networkSubjects)?.await()
+        subjectsDoc.first()?.set(firebaseNetworkSubjects)?.await()
     }
 
     override suspend fun downloadSubjects(): NetworkSubjects? {
-        return subjectsDoc.first()?.get()?.await()?.toObject<NetworkSubjects>()
+        val firebaseData = subjectsDoc.first()?.get()?.await()?.toObject<FirebaseNetworkSubjects>()
+        return firebaseData?.let {
+            NetworkSubjects(
+                subjects = it.subjects,
+                lastUpdate = it.lastUpdate?.toDomain()
+            )
+        }
     }
 
     override suspend fun uploadSettings(settings: Settings) {
-        settingsDoc.first()?.set(settings)?.await()
+        val firebaseSettings = FirebaseSettings(
+            networkGrades = settings.networkGrades,
+            calculationSettings = settings.calculationSettings,
+            lastUpdate = settings.lastUpdate?.toFirebase()
+        )
+        settingsDoc.first()?.set(firebaseSettings)?.await()
     }
 
     override suspend fun downloadSettings(): Settings? {
-        return settingsDoc.first()?.get()?.await()?.toObject<Settings>()
+        val firebaseData = settingsDoc.first()?.get()?.await()?.toObject<FirebaseSettings>()
+        return firebaseData?.let {
+            Settings(
+                networkGrades = it.networkGrades,
+                calculationSettings = it.calculationSettings,
+                lastUpdate = it.lastUpdate?.toDomain()
+            )
+        }
     }
 
     companion object {

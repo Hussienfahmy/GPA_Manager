@@ -1,7 +1,7 @@
 package com.hussienfahmy.sync_domain.use_case
 
-import com.google.firebase.Timestamp
 import com.hussienfahmy.core.data.local.GradeDao
+import com.hussienfahmy.core.domain.common.model.DomainTimestamp
 import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
 import com.hussienfahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
 import com.hussienfahmy.sync_domain.model.CalculationSettings
@@ -28,7 +28,7 @@ class PushSettings(
                 marksPerCreditHour = subjectSettings.marksPerCreditHour,
             ),
             networkGrades = gradeDao.grades.map { it.toNetworkGrades() }.first(),
-            lastUpdate = Timestamp.now()
+            lastUpdate = DomainTimestamp.now()
         )
 
         repository.uploadSettings(settings)
