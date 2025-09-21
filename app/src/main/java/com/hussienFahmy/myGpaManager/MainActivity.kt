@@ -57,12 +57,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Request notification permission
-        if (!PermissionHelper.hasNotificationPermission(this)) {
-            PermissionHelper.requestNotificationPermission(this) { granted ->
-                /* no-op */
-            }
-        }
+        PermissionHelper.init(this)
 
         setContent {
             GPAManagerTheme {
@@ -83,6 +78,15 @@ class MainActivity : ComponentActivity() {
                                 inclusive = true
                             }
                         }
+                    }
+                }
+
+                LaunchedEffect(currentDestination, isSingedIn) {
+                    if (isSingedIn != true) return@LaunchedEffect
+
+                    if (currentDestination == NavGraphs.root.startDestination.route) {
+                        // request notification permission if not granted after user complete sign in.
+                        PermissionHelper.requestNotificationPermission(this@MainActivity)
                     }
                 }
 
