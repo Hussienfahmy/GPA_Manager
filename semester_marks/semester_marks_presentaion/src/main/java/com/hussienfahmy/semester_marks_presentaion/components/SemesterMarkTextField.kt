@@ -23,7 +23,8 @@ fun SemesterMarkTextField(
         onValueChange = onValueChanged,
         label = { Text(text = title, style = MaterialTheme.typography.bodySmall) },
         isError = value.isNotBlank() && value.toDoubleOrNull() == null,
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        singleLine = true
     )
 }
 
