@@ -66,6 +66,9 @@ object AnalyticsEvents {
 
         /** User performed bulk operations like clear all or copy subjects */
         const val BULK_ACTION = "subjects_bulk_action"
+
+        /** System automatically synced grades based on semester marks */
+        const val GRADE_SYNCED = "grade_synced"
     }
 
     // Settings Events
@@ -176,6 +179,9 @@ object AnalyticsParameters {
 
     /** New value being set */
     const val NEW_VALUE = "new_value"
+
+    /** Number of grades that were synced */
+    const val SYNCED_COUNT = "synced_count"
 }
 
 object AnalyticsValues {

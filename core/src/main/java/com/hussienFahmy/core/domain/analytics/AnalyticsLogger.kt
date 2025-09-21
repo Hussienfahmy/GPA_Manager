@@ -186,6 +186,15 @@ class AnalyticsLogger(
         )
     }
 
+    fun logGradeSynced(syncedCount: Int) {
+        analyticsService.logEvent(
+            AnalyticsEvents.SubjectManagement.GRADE_SYNCED,
+            mapOf(
+                AnalyticsParameters.SYNCED_COUNT to syncedCount
+            )
+        )
+    }
+
     fun logBulkAction(actionType: String, affectedCount: Int) {
         analyticsService.logEvent(
             AnalyticsEvents.SubjectManagement.BULK_ACTION,

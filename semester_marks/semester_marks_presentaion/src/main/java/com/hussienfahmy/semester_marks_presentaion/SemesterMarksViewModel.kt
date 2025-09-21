@@ -18,8 +18,8 @@ class SemesterMarksViewModel(
 
     init {
         viewModelScope.launch {
-            useCases.continuesCalculation().collect {
-                state.value = SemesterMarksState.Calculated(it)
+            useCases.continuesCalculation().collect { subjects ->
+                state.value = SemesterMarksState.Calculated(subjects = subjects)
             }
         }
     }
@@ -106,6 +106,11 @@ class SemesterMarksViewModel(
                         event.isAvailable
                     )
                     useCases.changeProjectMarks(event.subjectId, "0")
+                }
+
+                is SemesterMarksEvent.OnScreenExit -> {
+                    useCases.syncGradeWithMarks()
+                    return@launch
                 }
             }
 

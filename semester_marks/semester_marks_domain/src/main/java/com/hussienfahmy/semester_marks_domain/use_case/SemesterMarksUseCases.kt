@@ -11,4 +11,5 @@ data class SemesterMarksUseCases(
     val changeOralMarks: ChangeOralMarks,
     val changePracticalMarks: ChangePracticalMarks,
     val changeProjectMarks: ChangeProjectMarks,
+    val syncGradeWithMarks: SyncGradeWithMarks,
 )

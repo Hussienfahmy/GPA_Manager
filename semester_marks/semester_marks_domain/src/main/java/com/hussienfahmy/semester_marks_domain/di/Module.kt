@@ -12,6 +12,7 @@ import com.hussienfahmy.semester_marks_domain.use_case.SetMidtermAvailable
 import com.hussienfahmy.semester_marks_domain.use_case.SetOralAvailable
 import com.hussienfahmy.semester_marks_domain.use_case.SetPracticalAvailable
 import com.hussienfahmy.semester_marks_domain.use_case.SetProjectAvailable
+import com.hussienfahmy.semester_marks_domain.use_case.SyncGradeWithMarks
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -33,6 +34,7 @@ val semesterMarksDomainModule = module {
             changeOralMarks = ChangeOralMarks(get()),
             changePracticalMarks = ChangePracticalMarks(get()),
             changeProjectMarks = ChangeProjectMarks(get()),
+            syncGradeWithMarks = SyncGradeWithMarks(get(), get()),
         )
     }
 }

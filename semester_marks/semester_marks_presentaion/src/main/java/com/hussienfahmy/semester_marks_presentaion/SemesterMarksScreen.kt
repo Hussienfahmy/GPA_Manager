@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,14 +31,21 @@ fun SemesterMarksScreen(
 
     val state by viewModel.state
 
-    when (state) {
+    // Handle screen disposal with sync
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.onEvent(SemesterMarksEvent.OnScreenExit)
+        }
+    }
+
+    when (val s = state) {
         is SemesterMarksState.Loading -> Box(modifier = Modifier.fillMaxSize()) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
 
         is SemesterMarksState.Calculated -> SemesterMarksScreenContent(
             modifier = modifier,
-            (state as SemesterMarksState.Calculated).subjects,
+            subjects = s.subjects,
             onMidTermMarksChange = { subjectId, marks ->
                 viewModel.onEvent(
                     SemesterMarksEvent.ChangeMidtermMark(subjectId, marks)
