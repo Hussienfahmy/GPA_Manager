@@ -163,6 +163,8 @@ class AnalyticsLogger(
                 AnalyticsValues.HAS_PRACTICAL to (hasAssessments[AnalyticsValues.ASSESSMENT_PRACTICAL]
                     ?: false),
                 AnalyticsValues.HAS_ORAL to (hasAssessments[AnalyticsValues.ASSESSMENT_ORAL]
+                    ?: false),
+                AnalyticsValues.HAS_PROJECT to (hasAssessments[AnalyticsValues.ASSESSMENT_PROJECT]
                     ?: false)
             )
         )
@@ -220,17 +222,6 @@ class AnalyticsLogger(
         analyticsService.logEvent(
             AnalyticsEvents.Settings.SETTINGS_ACCESSED,
             mapOf(AnalyticsValues.SETTINGS_TYPE to settingsType)
-        )
-    }
-
-    // Engagement Events
-    fun logFeatureDiscovered(featureName: String, navigationSource: String) {
-        analyticsService.logEvent(
-            AnalyticsEvents.Engagement.FEATURE_DISCOVERED,
-            mapOf(
-                AnalyticsParameters.FEATURE_NAME to featureName,
-                AnalyticsParameters.NAVIGATION_SOURCE to navigationSource
-            )
         )
     }
 

@@ -88,9 +88,6 @@ object AnalyticsEvents {
 
     // Navigation & Engagement Events
     object Engagement {
-        /** User discovered a new feature through navigation or exploration */
-        const val FEATURE_DISCOVERED = "feature_discovered"
-
         /** Tracking time spent on specific screens or features */
         const val SCREEN_TIME = "screen_time"
 
@@ -109,9 +106,6 @@ object AnalyticsParameters {
 
     /** Total number of subjects in current calculation */
     const val SUBJECTS_COUNT = "subjects_count"
-
-    /** Name of the feature being used */
-    const val FEATURE_NAME = "feature_name"
 
     /** Duration in seconds spent on a screen or feature */
     const val TIME_SPENT_SECONDS = "time_spent_seconds"
@@ -241,6 +235,7 @@ object AnalyticsValues {
     const val HAS_MIDTERM = "has_midterm"
     const val HAS_PRACTICAL = "has_practical"
     const val HAS_ORAL = "has_oral"
+    const val HAS_PROJECT = "has_project"
     const val ACTION_TYPE = "action_type"
     const val AFFECTED_COUNT = "affected_count"
     const val SCREEN_NAME = "screen_name"

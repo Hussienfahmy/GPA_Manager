@@ -123,7 +123,8 @@ class SemesterSubjectsViewModel(
                         hasAssessments = mapOf(
                             AnalyticsValues.ASSESSMENT_MIDTERM to event.midtermAvailable,
                             AnalyticsValues.ASSESSMENT_PRACTICAL to event.practicalAvailable,
-                            AnalyticsValues.ASSESSMENT_ORAL to event.oralAvailable
+                            AnalyticsValues.ASSESSMENT_ORAL to event.oralAvailable,
+                            AnalyticsValues.ASSESSMENT_PROJECT to event.projectAvailable
                         )
                     )
                     subjectUseCases.addSubject(
