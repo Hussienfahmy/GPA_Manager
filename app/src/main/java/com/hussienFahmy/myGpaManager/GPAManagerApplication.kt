@@ -4,10 +4,7 @@ import android.app.Application
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.hussienfahmy.core.data.local.di.databaseModule
 import com.hussienfahmy.core.di.coreModule
@@ -39,7 +36,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.startKoin
-import java.util.concurrent.TimeUnit
 
 class GPAManagerApplication : Application(), KoinComponent {
 
@@ -84,22 +80,11 @@ class GPAManagerApplication : Application(), KoinComponent {
         ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onStop(owner: LifecycleOwner) {
                 val workManager = getKoin().get<WorkManager>()
-                val delayedSyncRequest = OneTimeWorkRequestBuilder<SyncWorkerUpload>()
-                    .setConstraints(
-                        Constraints.Builder()
-                            .setRequiredNetworkType(NetworkType.CONNECTED)
-                            .setRequiresBatteryNotLow(false)
-                            .setRequiresCharging(false)
-                            .setRequiresDeviceIdle(false)
-                            .build()
-                    )
-                    .setInitialDelay(5, TimeUnit.MINUTES) // 5 minute delay
-                    .build()
 
                 workManager.enqueueUniqueWork(
                     "upload_worker",
                     ExistingWorkPolicy.REPLACE,
-                    delayedSyncRequest
+                    SyncWorkerUpload.request
                 )
             }
         })

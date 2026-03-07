@@ -1,5 +1,6 @@
 package com.hussienfahmy.myGpaManager.data.sync
 
+import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
@@ -39,6 +40,8 @@ class FirebaseSyncRepository(
 
     override suspend fun downloadSubjects(): NetworkSubjects? {
         val firebaseData = subjectsDoc.first()?.get()?.await()?.toObject<FirebaseNetworkSubjects>()
+        Log.d("DEBUG_TAG", "downloadSubjects: doc= ${subjectsDoc.first()}")
+        Log.d("DEBUG_TAG", "downloadSubjects: data $firebaseData")
         return firebaseData?.let {
             NetworkSubjects(
                 subjects = it.subjects,

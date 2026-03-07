@@ -1,5 +1,6 @@
 package com.hussienfahmy.myGpaManager
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.domain.auth.service.AuthService
@@ -19,7 +20,11 @@ class MainViewModel(
 
     init {
         authService.isSignedInFlow.filterNotNull().onEach { signedIn ->
+            Log.d("DEBUG_TAG", "isSignedIn = $signedIn")
+            Log.d("DEBUG_TAG", "getIsInitialSyncDone = ${getIsInitialSyncDone()}")
+
             if (signedIn && !getIsInitialSyncDone()) {
+                Log.d("DEBUG_TAG", "main view model will start download")
                 syncDownload()
             }
         }.launchIn(viewModelScope)

@@ -1,5 +1,6 @@
 package com.hussienfahmy.core.domain.user_data.use_cases
 
+import android.util.Log
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.domain.auth.service.AuthService
 import com.hussienfahmy.core.domain.sync.SetIsInitialSyncDone
@@ -12,9 +13,11 @@ class SignOut(
     private val setIsInitialSyncDone: SetIsInitialSyncDone,
 ) {
     suspend operator fun invoke() {
+        Log.d("DEBUG_TAG", "Signing out start")
         syncUpload()
         authService.signOut()
         subjectDao.deleteAll()
         setIsInitialSyncDone(false)
+        Log.d("DEBUG_TAG", "Signing out end")
     }
 }
