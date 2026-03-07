@@ -5,9 +5,9 @@ import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkerParameters
 import com.hussienfahmy.core.domain.sync.SyncUpload
+import java.util.concurrent.TimeUnit
 
 class SyncWorkerUpload(
     appContext: Context,
@@ -36,8 +36,8 @@ class SyncWorkerUpload(
                         .setRequiresCharging(false)
                         .setRequiresDeviceIdle(false)
                         .build()
-                ).setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-//                .setInitialDelay(5, TimeUnit.MINUTES) // 5 minute delay
+                )
+                .setInitialDelay(5, TimeUnit.MINUTES) // 5 minute delay
                 .build()
     }
 }
