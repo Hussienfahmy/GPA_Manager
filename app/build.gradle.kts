@@ -119,6 +119,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.inappmessaging)
     implementation(libs.firebase.messaging)
+    implementation(libs.firebase.perf)
 
 
     // Authentication

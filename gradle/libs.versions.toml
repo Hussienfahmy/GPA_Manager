@@ -50,6 +50,7 @@ firebaseCrashlytics = "19.4.4"
 firebaseAnalytics = "22.5.0"
 firebaseInAppMessaging = "21.0.2"
 firebaseMessaging = "24.1.2"
+firebasePerf = "22.0.4"
 
 
 # Google Services
@@ -148,6 +149,7 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "firebaseAnalytics" }
 firebase-inappmessaging = { group = "com.google.firebase", name = "firebase-inappmessaging-display-ktx", version.ref = "firebaseInAppMessaging" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessaging" }
+firebase-perf = { group = "com.google.firebase", name = "firebase-perf", version.ref = "firebasePerf" }
 
 
 # Credentials
