@@ -22,6 +22,10 @@ A feature-rich Android application for managing student GPA calculations, grades
 |------|---------------|---------------|
 | ![Home](screenshots/home.png) | ![Calculator](screenshots/calculator.png) | ![Semester](screenshots/semester.png) |
 -->
+<img width="305" height="678" alt="image" src="https://github.com/user-attachments/assets/a28aa0dd-837a-46c9-9270-409b506c6e1d" />
+<img width="305" height="678 alt="image" src="https://github.com/user-attachments/assets/d1320c42-95fc-4b59-a880-04d5463d6731" />
+<img width="305" height="678" alt="image" src="https://github.com/user-attachments/assets/011f9ff0-aa09-4b0c-8b60-73857dfecde4" />
+<img width="305" height="678" alt="image" src="https://github.com/user-attachments/assets/e1dc2e00-63ac-4294-ac57-e61323611372" />
 
 ---
 
