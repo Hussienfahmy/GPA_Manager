@@ -5,4 +5,5 @@ plugins {
 dependencies {
     implementation(project(":core"))
     implementation(project(":core-ui"))
+    implementation(project(":sync:sync_domain"))
 }

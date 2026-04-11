@@ -23,6 +23,8 @@ import com.hussienfahmy.myGpaManager.data.sync.FirebaseSyncRepository
 import com.hussienfahmy.myGpaManager.data.user_data.FirebaseUserDataRepository
 import com.hussienfahmy.sync_domain.repository.SyncRepository
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val firebaseModule = module {
@@ -57,9 +59,7 @@ val firebaseModule = module {
         FirebaseUserDataRepository(get(), get(), get())
     }
 
-    single<SyncRepository> {
-        FirebaseSyncRepository(get(), get())
-    }
+    singleOf(::FirebaseSyncRepository).bind<SyncRepository>()
 
     // Credential Manager and Auth UI Client
     single<CredentialManager> {

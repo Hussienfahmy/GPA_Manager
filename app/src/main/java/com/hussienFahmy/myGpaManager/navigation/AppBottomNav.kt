@@ -10,6 +10,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import com.ramcosta.composedestinations.generated.NavGraphs
+import com.ramcosta.composedestinations.generated.destinations.AppSemesterDetailScreenDestination
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
 import com.ramcosta.composedestinations.utils.startDestination
 import org.koin.compose.koinInject
@@ -22,13 +23,26 @@ fun AppBottomNav(
     val currentDestination = navController.currentDestinationAsState().value
         ?: NavGraphs.root.startDestination
 
+    // Treat SemesterDetail as a child of the History tab
+    val isOnSemesterDetail = currentDestination == AppSemesterDetailScreenDestination
+    val effectiveDestination =
+        if (isOnSemesterDetail) BottomNavDestination.History.direction else currentDestination
+
     NavigationBar {
         BottomNavDestination.entries.forEach { destination ->
             NavigationBarItem(
-                selected = currentDestination == destination.direction,
+                selected = effectiveDestination == destination.direction,
                 onClick = {
                     // Log bottom navigation click
                     analyticsLogger.logBottomNavClicked(destination.name.lowercase())
+
+                    if (isOnSemesterDetail) {
+                        // Pop the detail screen (returns to History)
+                        navController.popBackStack()
+                        // If History was tapped, we're done
+                        if (destination == BottomNavDestination.History) return@NavigationBarItem
+                        // For other tabs, continue to navigate after popping
+                    }
 
                     navController.navigate(destination.direction.route) {
                         popUpTo(navController.graph.findStartDestination().id) {

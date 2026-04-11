@@ -27,7 +27,8 @@ data class Subject(
     val gradeName: GradeName? = null,
     val totalMarks: Double = 0.0,
     @Embedded val semesterMarks: SemesterMarks? = null,
-    @Embedded val metadata: MetaData = MetaData()
+    @Embedded val metadata: MetaData = MetaData(),
+    val semesterId: Long? = null,
 ) {
     /**
      * Represents the semester mark related to the subject

@@ -4,12 +4,14 @@ import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.DateRange
+import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.hussienfahmy.core.R
 import com.ramcosta.composedestinations.generated.destinations.AppMoreScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.AppQuickScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.AppSemesterHistoryScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.AppSemesterMarksScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.AppSemesterScreenDestination
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
@@ -28,6 +30,11 @@ enum class BottomNavDestination(
         direction = AppSemesterMarksScreenDestination,
         icon = Icons.Outlined.Check,
         label = R.string.marks
+    ),
+    History(
+        direction = AppSemesterHistoryScreenDestination,
+        icon = Icons.Outlined.History,
+        label = R.string.history
     ),
     Quick(
         direction = AppQuickScreenDestination,

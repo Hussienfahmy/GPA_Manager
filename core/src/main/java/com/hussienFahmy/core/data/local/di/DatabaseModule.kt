@@ -7,6 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.hussienfahmy.core.data.local.AppDatabase
 import com.hussienfahmy.core.data.local.GradeDao
 import com.hussienfahmy.core.data.local.MIGRATION_10_11
+import com.hussienfahmy.core.data.local.SemesterDao
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.entity.Grade
 import kotlinx.coroutines.CoroutineScope
@@ -53,5 +54,10 @@ val databaseModule = module {
     // Grade DAO
     single<GradeDao> {
         get<AppDatabase>().gradeDao
+    }
+
+    // Semester DAO
+    single<SemesterDao> {
+        get<AppDatabase>().semesterDao
     }
 }

@@ -40,5 +40,7 @@ include ':onboarding'
 include ':onboarding:onboarding_presentation'
 include ':sync'
 include ':sync:sync_domain'
-include ':sync:sync_data'
+include ':semester_history'
+include ':semester_history:semester_history_domain'
+include ':semester_history:semester_history_presentation'
 includeBuild("build-logic")

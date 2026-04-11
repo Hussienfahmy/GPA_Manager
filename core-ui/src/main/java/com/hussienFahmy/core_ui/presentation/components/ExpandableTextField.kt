@@ -5,6 +5,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,6 +48,7 @@ fun ExpandableTextField(
     enabled: Boolean = true,
     singleLine: Boolean = true,
     imageVector: ImageVector? = null,
+    supportingText: String? = null,
 ) {
     val spacing = LocalSpacing.current
 
@@ -101,7 +103,16 @@ fun ExpandableTextField(
                 }
             }
 
-            Text(text = value, style = MaterialTheme.typography.bodyLarge)
+            Column {
+                Text(text = value, style = MaterialTheme.typography.bodyLarge)
+                if (!enabled && supportingText != null) {
+                    Text(
+                        text = supportingText,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
         }
 
         AnimatedVisibility(visible = editMode) {

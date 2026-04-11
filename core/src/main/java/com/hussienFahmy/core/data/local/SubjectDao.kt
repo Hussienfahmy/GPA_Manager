@@ -24,6 +24,9 @@ interface SubjectDao {
     @Query("DELETE FROM subject")
     suspend fun deleteAll()
 
+    @Query("DELETE FROM subject WHERE semesterId IS NOT NULL")
+    suspend fun deleteAllArchivedSubjects()
+
     @Query(
         "UPDATE subject SET gradeName = NULL WHERE id = :subjectId"
     )
@@ -108,16 +111,34 @@ interface SubjectDao {
     )
 
     /**
-     * Get all subjects ordered by credit hours
+     * Get all subjects in the current workspace (not yet archived to any semester)
      */
-    @Query("SELECT * FROM subject ORDER BY creditHours DESC")
-    fun getAllSubjects(): Flow<List<Subject>>
+    @Query("SELECT * FROM subject WHERE semesterId IS NULL ORDER BY creditHours DESC")
+    fun getAllCurrentSubjects(): Flow<List<Subject>>
+
+    /**
+     * Get all subjects belonging to a specific archived semester
+     */
+    @Query("SELECT * FROM subject WHERE semesterId = :semesterId ORDER BY creditHours DESC")
+    fun getSubjectsBySemesterId(semesterId: Long): Flow<List<Subject>>
+
+    /**
+     * Link all current workspace subjects (semesterId IS NULL) to the given semester
+     */
+    @Query("UPDATE subject SET semesterId = :semesterId WHERE semesterId IS NULL")
+    suspend fun linkWorkspaceSubjectsToSemester(semesterId: Long)
 
     /**
      * Get all active grades
      */
     @Query("SELECT * FROM grade WHERE active ORDER BY percentage DESC")
     fun getAllActiveGrades(): Flow<List<Grade>>
+
+    /**
+     * Count subjects in the current workspace
+     */
+    @Query("SELECT COUNT(*) FROM subject WHERE semesterId IS NULL")
+    fun getWorkspaceSubjectCount(): Flow<Int>
 
     /**
      * Get all subjects with their grades
@@ -134,7 +155,7 @@ interface SubjectDao {
     val subjectsWithAssignedGrade: Flow<List<SubjectWithGrades>>
         get() {
             return combine(
-                getAllSubjects(), getAllActiveGrades()
+                getAllCurrentSubjects(), getAllActiveGrades()
             ) { subjects, allGrades ->
                 val gradesForMax = allGrades.filter { grade ->
                     grade.name != GradeName.F

@@ -1,32 +1,26 @@
 package com.hussienfahmy.myGpaManager
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.hussienfahmy.core.domain.auth.service.AuthService
-import com.hussienfahmy.core.domain.sync.SyncDownload
-import com.hussienfahmy.sync_domain.use_case.GetIsInitialSyncDone
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import com.hussienfahmy.sync_domain.use_case.MigrateExistingUserDataIfNeeded
+import kotlinx.coroutines.launch
 
 class MainViewModel(
     authService: AuthService,
-    private val getIsInitialSyncDone: GetIsInitialSyncDone,
-    private val syncDownload: SyncDownload
+    private val migrateExistingUserDataIfNeeded: MigrateExistingUserDataIfNeeded,
 ) : ViewModel() {
 
     val isSignedIn = authService.isSignedInFlow
 
     init {
-        authService.isSignedInFlow.filterNotNull().onEach { signedIn ->
-            Log.d("DEBUG_TAG", "isSignedIn = $signedIn")
-            Log.d("DEBUG_TAG", "getIsInitialSyncDone = ${getIsInitialSyncDone()}")
-
-            if (signedIn && !getIsInitialSyncDone()) {
-                Log.d("DEBUG_TAG", "main view model will start download")
-                syncDownload()
+        viewModelScope.launch {
+            val userId = Firebase.auth.currentUser?.uid
+            if (userId != null) {
+                migrateExistingUserDataIfNeeded(userId)
             }
-        }.launchIn(viewModelScope)
+        }
     }
 }

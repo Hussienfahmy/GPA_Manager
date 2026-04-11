@@ -13,7 +13,7 @@
     <string name="credit_hours_value">Credit Hours: %d</string>
     <string name="cumulative">Cumulative</string>
     <string name="cumulative_gpa">Cumulative GPA</string>
-    <string name="cumulative_gpa_value">Cumulative GPA: %.2f</string>
+    <string name="cumulative_gpa_value">Cumulative GPA: %.4f</string>
     <string name="cumulative_gpa_will_be">The Cumulative GPA will be</string>
     <string name="cumulative_target_gpa">Target Cumulative GPA</string>
     <string name="current_cumulative_gpa">Current Cumulative GPA</string>
@@ -124,6 +124,7 @@
     <string name="enter">Enter</string>
     <string name="total_marks">Total Marks</string>
     <string name="marks">Marks</string>
+    <string name="history">History</string>
     <string name="semester_marks">Semester Marks</string>
     <string name="midterm">Midterm</string>
     <string name="practical">Practical</string>
@@ -156,6 +157,7 @@
     <string name="total_hours_is_zero">Total hours can\'t be zero</string>
     <string name="invalid_number">Invalid Number</string>
     <string name="credit_hours">Credit Hours</string>
+    <string name="credit_hours_value_in_history">%1$s credit hours</string>
     <string name="constant">Constant</string>
     <string name="gpa_system_four" translatable="false">Four</string>
     <string name="gpa_system_five" translatable="false">Five</string>
@@ -214,4 +216,51 @@
     <string name="onboarding_skip_for_now">Skip for now</string>
     <string name="onboarding_start_using_app">Start Using App</string>
     <string name="onboarding_progress_format">%1$d / %2$d</string>
+
+    <!-- Generic actions todo localize-->
+    <string name="undo">Undo</string>
+    <string name="back">Back</string>
+
+    <!-- Semester History feature -->
+    <string name="history_finish_semester">Finish Semester</string>
+    <string name="history_add_past_semester">Add Past Semester</string>
+    <string name="history_add_past_data">Add Past Data</string>
+    <string name="history_add_current_gpa">Add Current GPA</string>
+    <string name="history_you_are_in">You are in: Year %1$d – Semester %2$d</string>
+    <string name="history_empty_state">No semesters yet.\nTap + to add a past semester, or tap \"Finish Semester\" to archive the current one.</string>
+    <string name="history_type_summary">Summary</string>
+    <string name="history_type_detailed">Detailed</string>
+    <string name="history_summary_type_description">Quick entry — only the semester GPA and total credit hours. No need to add individual subjects.</string>
+    <string name="history_detailed_type_description">You will enter each subject individually on the next screen. Use this for an accurate per-subject record.</string>
+    <string name="history_semester_label">Semester Label</string>
+    <string name="history_label">Label</string>
+    <string name="history_level_optional">Level (optional)</string>
+    <string name="history_semester_label_hint_summary">e.g. Year 1 – Semester 1, Past Semesters…</string>
+    <string name="history_semester_label_hint_detailed">e.g. Year 1, Summer 2024…</string>
+    <string name="history_subjects_header">Subjects (%1$d)</string>
+    <string name="history_no_subjects_hint">No subjects yet. Tap + to add subjects.</string>
+    <string name="history_semester_gpa">Semester GPA</string>
+    <string name="history_delete_semester_message">Delete \"%1$s\"? This will permanently remove the semester and all its subjects. This cannot be undone.</string>
+    <string name="history_delete_subject_title">Delete Subject</string>
+    <string name="history_delete_subject_message">Delete \"%1$s\"? This will affect the current GPA calculation and cannot be undone — you would need to re-add it manually.</string>
+    <string name="history_no_grade_excluded">No grade — excluded from GPA</string>
+    <string name="history_finish_semester_title">Finish Current Semester?</string>
+    <string name="history_finish_semester_will_be_saved">Will be saved as: \"%1$s\"</string>
+    <string name="history_finish_semester_message">Your subjects and their assigned grades from the Semester tab will be archived as-is. Make sure you\'ve reviewed and set the correct grades before continuing — you can still edit them later from History.\n\nThis will move you to Year %1$d – Semester %2$d.</string>
+    <string name="history_gpa_value">GPA: %1$.2f</string>
+    <string name="history_hours_value">· %1$d hrs</string>
+    <string name="history_points_value">Points: %1$.2f</string>
+    <string name="history_move_up">Move up</string>
+    <string name="history_move_down">Move down</string>
+    <string name="history_add_subjects">Add subjects</string>
+    <string name="history_no_subjects_in_semester">No subjects in current semester</string>
+    <string name="history_semester_archived">Semester archived</string>
+    <string name="history_semester_deleted">Semester deleted</string>
+    <string name="history_delete_failed">Failed to delete semester</string>
+    <string name="history_error_try_again">An error occurred. Please try again.</string>
+    <string name="history_add_subjects_first">Add subjects to your current semester first</string>
+    <string name="history_add_current_gpa_description">Save your current cumulative GPA and total credit hours as a history record. This will appear as \"Current GPA\" in your semester history.</string>
+    <string name="history_grade_label">Grade</string>
+    <string name="history_edit_subject">Edit Subject</string>
+    <string name="history_edit_semester">Edit semester</string>
 </resources>

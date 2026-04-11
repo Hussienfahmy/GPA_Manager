@@ -20,6 +20,7 @@ data class Subject(
         val midterm: Double? = null,
         val practical: Double? = null,
         val oral: Double? = null,
+        val project: Double? = null,
     )
 
     @Keep
@@ -27,6 +28,7 @@ data class Subject(
         val midtermAvailable: Boolean = true,
         val practicalAvailable: Boolean = true,
         val oralAvailable: Boolean = true,
+        val projectAvailable: Boolean = false,
     )
 
     constructor(subject: SubjectEntity, maxGradeNameCanAchieve: GradeName) : this(
@@ -38,12 +40,14 @@ data class Subject(
         semesterMarks = SemesterMarks(
             midterm = subject.semesterMarks?.midterm,
             practical = subject.semesterMarks?.practical,
-            oral = subject.semesterMarks?.oral
+            oral = subject.semesterMarks?.oral,
+            project = subject.semesterMarks?.project,
         ),
         metadata = MetaData(
             midtermAvailable = subject.metadata.midtermAvailable,
             practicalAvailable = subject.metadata.practicalAvailable,
-            oralAvailable = subject.metadata.oralAvailable
+            oralAvailable = subject.metadata.oralAvailable,
+            projectAvailable = subject.metadata.projectAvailable,
         )
     )
 
@@ -56,12 +60,14 @@ data class Subject(
         semesterMarks = SubjectEntity.SemesterMarks(
             midterm = semesterMarks?.midterm,
             practical = semesterMarks?.practical,
-            oral = semesterMarks?.oral
+            oral = semesterMarks?.oral,
+            project = semesterMarks?.project,
         ),
         metadata = SubjectEntity.MetaData(
             midtermAvailable = metadata.midtermAvailable,
             practicalAvailable = metadata.practicalAvailable,
-            oralAvailable = metadata.oralAvailable
+            oralAvailable = metadata.oralAvailable,
+            projectAvailable = metadata.projectAvailable,
         )
     )
 }

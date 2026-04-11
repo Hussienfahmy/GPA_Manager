@@ -29,6 +29,7 @@ import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.ExpandableTextField
 import com.hussienfahmy.core_ui.presentation.user_data.UserDataState
+import kotlin.math.floor
 
 @Composable
 fun UserDataScreenContent(
@@ -140,16 +141,20 @@ fun UserDataScreenContent(
 
                 ExpandableTextField(
                     title = stringResource(R.string.cumulative_gpa),
-                    value = userData.academicProgress.cumulativeGPA.toString(),
+                    value = "%.4f".format(floor(userData.academicProgress.cumulativeGPA * 10000) / 10000.0),
                     onNewValueSubmitted = { onUpdateCumulativeGPA(it) },
-                    keyboardType = KeyboardType.Number
+                    keyboardType = KeyboardType.Number,
+                    enabled = false,
+                    supportingText = "Calculated from History tab",
                 )
 
                 ExpandableTextField(
                     title = stringResource(R.string.total_hours),
                     value = userData.academicProgress.creditHours.toString(),
                     onNewValueSubmitted = { onUpdateCreditHours(it) },
-                    keyboardType = KeyboardType.Number
+                    keyboardType = KeyboardType.Number,
+                    enabled = false,
+                    supportingText = "Calculated from History tab",
                 )
             }
         }

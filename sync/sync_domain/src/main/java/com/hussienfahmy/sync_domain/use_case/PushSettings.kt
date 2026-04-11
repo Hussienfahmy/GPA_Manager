@@ -17,7 +17,7 @@ class PushSettings(
     private val gradeDao: GradeDao,
     private val subjectSettingsRepository: SubjectSettingsRepository,
 ) {
-    suspend operator fun invoke() {
+    suspend operator fun invoke(userId: String) {
         val subjectSettings = subjectSettingsRepository.getSubjectSettings()
 
         val settings = Settings(
@@ -31,6 +31,6 @@ class PushSettings(
             lastUpdate = DomainTimestamp.now()
         )
 
-        repository.uploadSettings(settings)
+        repository.uploadSettings(userId = userId, settings = settings)
     }
 }

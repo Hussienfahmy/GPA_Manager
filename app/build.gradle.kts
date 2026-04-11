@@ -81,7 +81,9 @@ dependencies {
     implementation(project(":subject_settings:subject_settings_domain"))
     implementation(project(":subject_settings:subject_settings_presentation"))
 
-    implementation(project(":sync:sync_data"))
+    implementation(project(":semester_history:semester_history_domain"))
+    implementation(project(":semester_history:semester_history_presentation"))
+
     implementation(project(":sync:sync_domain"))
 
     // Koin

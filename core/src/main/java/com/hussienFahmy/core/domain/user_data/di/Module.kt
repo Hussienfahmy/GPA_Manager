@@ -22,7 +22,9 @@ import org.koin.dsl.module
 val coreUserDataDomainModule = module {
     single { ObserveUserData(get()) }
     single { GetUserData(get()) }
-    single { GetAcademicProgress(get()) }
+    single { GetAcademicProgress(semesterDao = get()) }
+    single { UpdateLevel(get()) }
+    single { UpdateSemester(get()) }
 
     single {
         UserDataUseCases(
@@ -39,8 +41,8 @@ val coreUserDataDomainModule = module {
             updateUniversity = UpdateUniversity(get()),
             updateFaculty = UpdateFaculty(get()),
             updateDepartment = UpdateDepartment(get()),
-            updateLevel = UpdateLevel(get()),
-            updateSemester = UpdateSemester(get()),
+            updateLevel = get(),
+            updateSemester = get(),
             updateCumulativeGPA = UpdateCumulativeGPA(get(), get()),
             updateCreditHours = UpdateCreditHours(get()),
         )
@@ -49,8 +51,8 @@ val coreUserDataDomainModule = module {
         SignOut(
             authService = get(),
             subjectDao = get(),
+            semesterDao = get(),
             syncUpload = get(),
-            setIsInitialSyncDone = get(),
         )
     }
 

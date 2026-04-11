@@ -10,13 +10,13 @@ class PushSubjects(
     private val repository: SyncRepository,
     private val subjectsDao: SubjectDao,
 ) {
-    suspend operator fun invoke() {
+    suspend operator fun invoke(userId: String) {
         val subjects: List<Subject> = subjectsDao.subjectsWithAssignedGrade.map {
             it.map { (subjectEntity, maxGrade, _) ->
                 Subject(subjectEntity, maxGrade.name)
             }
         }.first()
 
-        repository.uploadSubjects(subjects)
+        repository.uploadSubjects(userId = userId, subjects = subjects)
     }
 }

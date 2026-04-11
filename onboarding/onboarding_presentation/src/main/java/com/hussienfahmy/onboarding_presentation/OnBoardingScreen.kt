@@ -71,6 +71,7 @@ fun OnBoardingScreen(
             SignInState.Success -> onSignInSuccess()
             SignInState.Initial,
             SignInState.Loading,
+            SignInState.Syncing,
             SignInState.Error -> {
             }
         }
@@ -90,8 +91,8 @@ fun OnBoardingScreen(
             }
         },
         nextButtonText = stringResource(R.string.onboarding_welcome_get_started),
-        nextButtonEnabled = state != SignInState.Loading,
-        nextButtonLoading = state == SignInState.Loading
+        nextButtonEnabled = state != SignInState.Loading && state != SignInState.Syncing,
+        nextButtonLoading = state == SignInState.Loading || state == SignInState.Syncing
     ) {
         Column(
             modifier = Modifier

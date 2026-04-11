@@ -12,8 +12,8 @@ class PullSettings(
     private val gradeDao: GradeDao,
     private val subjectSettingsRepository: SubjectSettingsRepository,
 ) {
-    suspend operator fun invoke() {
-        val settings = repository.downloadSettings() ?: return
+    suspend operator fun invoke(userId: String) {
+        val settings = repository.downloadSettings(userId) ?: return
 
         updateGPASystem(settings.calculationSettings.gpaSystem)
         settings.networkGrades.toGrades().onEach {
