@@ -37,6 +37,11 @@ class Calculate(
         var semesterHours = 0.0
         var semesterPointsBigDecimal = BigDecimal("0.0")
         if (list.isEmpty()) return@withContext Result.Failed(UiText.StringResource(R.string.err_waiting_to_add_subjects))
+        if (list.all { it.assignedGrade == null }) {
+            return@withContext Result.Failed(
+                UiText.StringResource(R.string.err_calculation_failed_please_select_grade)
+            )
+        }
 
         list.forEach { subject ->
             semesterHours += subject.creditHours
