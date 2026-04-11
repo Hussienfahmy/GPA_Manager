@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core.domain.user_data.model.UserData
@@ -43,12 +44,12 @@ fun AppMoreScreen(
 ) {
     TrackScreenTime(AnalyticsValues.SCREEN_MORE)
 
-    val userData = moreViewModel.userData
+    val userData by moreViewModel.userData.collectAsStateWithLifecycle(null)
 
     if (userData != null) {
         MoreScreenContent(
             modifier = modifier,
-            userData = userData,
+            userData = userData!!,
             onUserDataCardClick = onUserDataCardClick,
             onGPASettingsClick = onGPASettingsClick,
             onGradeSettingsClick = onGradeSettingsClick,

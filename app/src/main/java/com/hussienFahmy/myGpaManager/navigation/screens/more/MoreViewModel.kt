@@ -4,14 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
-import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
 import com.hussienfahmy.core.domain.user_data.use_cases.SignOut
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class MoreViewModel(
@@ -21,26 +17,19 @@ class MoreViewModel(
     private val applicationScope: CoroutineScope
 ) : ViewModel() {
 
-    var userData by mutableStateOf<UserData?>(null)
-        private set
+    val userData = getUserData()
 
     var isSigningOut by mutableStateOf(false)
         private set
 
-    init {
-        viewModelScope.launch {
-            userData = getUserData().filterNotNull().first()
-        }
-    }
-
     fun signOut() {
+        // todo loading indicator on sign out
         if (isSigningOut) return
         applicationScope.launch {
             try {
                 isSigningOut = true
                 signOutUseCase()
                 analyticsLogger.logSignOut()
-                userData = null
             } finally {
                 isSigningOut = false
             }
