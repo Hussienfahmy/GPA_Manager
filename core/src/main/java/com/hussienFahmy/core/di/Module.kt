@@ -1,5 +1,6 @@
 package com.hussienfahmy.core.di
 
+import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,4 +15,5 @@ object CoreQualifiers {
 val coreModule = module {
     single<CoroutineDispatcher>(named(CoreQualifiers.DEFAULT_DISPATCHER)) { Dispatchers.Default }
     single<CoroutineScope> { CoroutineScope(Dispatchers.Main + SupervisorJob()) }
+    single { SemesterDirtyTracker() }
 }

@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
@@ -60,6 +61,12 @@ fun SemesterHistoryScreen(
     LaunchedEffect(Unit) {
         viewModel.navigateToDetail.collect { semesterId ->
             onSemesterClick(semesterId)
+        }
+    }
+
+    LifecycleResumeEffect(Unit) {
+        onPauseOrDispose {
+            viewModel.onEvent(SemesterHistoryEvent.OnScreenExit)
         }
     }
 

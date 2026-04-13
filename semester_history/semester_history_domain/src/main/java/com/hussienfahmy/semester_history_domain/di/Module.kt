@@ -20,18 +20,19 @@ val semesterHistoryDomainModule = module {
     single { CalculateCumulativeFromHistory() }
     single { GetSemesterHistory(semesterDao = get()) }
     single { GetSemesterDetail(semesterDao = get(), subjectDao = get()) }
-    single { AddPastSemester(semesterDao = get()) }
+    single { AddPastSemester(semesterDao = get(), dirtyTracker = get()) }
     single { AddSubjectToSemester(subjectDao = get()) }
     single { EditSubjectInSemester(subjectDao = get()) }
     single { DeleteSubjectFromSemester(subjectDao = get()) }
     single { GetWorkspaceSubjectCount(subjectDao = get()) }
-    single { ReorderSemester(semesterDao = get()) }
-    single { DeleteSemester(semesterDao = get(), subjectDao = get()) }
+    single { ReorderSemester(semesterDao = get(), dirtyTracker = get()) }
+    single { DeleteSemester(semesterDao = get(), subjectDao = get(), dirtyTracker = get()) }
     single {
         EditSemester(
             semesterDao = get(),
             subjectDao = get(),
             calculateSemesterGPA = get(),
+            dirtyTracker = get(),
         )
     }
     single {
@@ -42,6 +43,7 @@ val semesterHistoryDomainModule = module {
             updateLevel = get(),
             updateSemester = get(),
             calculateSemesterGPA = get(),
+            dirtyTracker = get(),
         )
     }
 }

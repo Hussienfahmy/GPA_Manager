@@ -4,16 +4,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.data.local.entity.Grade
 import com.hussienfahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
+import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
 import com.hussienfahmy.semester_history_domain.use_case.AddSubjectToSemester
 import com.hussienfahmy.semester_history_domain.use_case.DeleteSubjectFromSemester
 import com.hussienfahmy.semester_history_domain.use_case.EditSemester
 import com.hussienfahmy.semester_history_domain.use_case.EditSubjectInSemester
 import com.hussienfahmy.semester_history_domain.use_case.GetSemesterDetail
+import com.hussienfahmy.sync_domain.use_case.PushSemesters
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -26,6 +32,10 @@ class SemesterDetailViewModel(
     private val editSubjectInSemester: EditSubjectInSemester,
     private val deleteSubjectFromSemester: DeleteSubjectFromSemester,
     private val editSemester: EditSemester,
+    private val dirtyTracker: SemesterDirtyTracker,
+    private val pushSemesters: PushSemesters,
+    private val authRepository: AuthRepository,
+    private val applicationScope: CoroutineScope,
 ) : ViewModel() {
 
     val detail = getSemesterDetail(semesterId)
@@ -104,6 +114,21 @@ class SemesterDetailViewModel(
                 _errorMessage.send("Failed to save changes. Please try again.")
             } finally {
                 _isSubmitting.value = false
+            }
+        }
+    }
+
+    fun onScreenExit() {
+        if (dirtyTracker.consumeChanges()) {
+            applicationScope.launch {
+                try {
+                    val userId = authRepository.userId.filterNotNull().firstOrNull()
+                    if (userId != null) {
+                        pushSemesters(userId)
+                    }
+                } catch (_: Exception) {
+                    // Silent fail — sync will retry on next app lifecycle event
+                }
             }
         }
     }

@@ -2,9 +2,11 @@ package com.hussienfahmy.semester_history_domain.use_case
 
 import com.hussienfahmy.core.data.local.SemesterDao
 import com.hussienfahmy.core.data.local.entity.Semester
+import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
 
 class AddPastSemester(
     private val semesterDao: SemesterDao,
+    private val dirtyTracker: SemesterDirtyTracker,
 ) {
     sealed class Request {
         data class Summary(
@@ -54,6 +56,8 @@ class AddPastSemester(
                 )
                 semesterDao.insert(semester)
             }
+        }.also {
+            dirtyTracker.markChanged()
         }
     }
 }

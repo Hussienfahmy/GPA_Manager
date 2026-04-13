@@ -17,6 +17,10 @@ val semesterHistoryPresentationModule = module {
             reorderSemester = get(),
             getUserData = get(),
             getWorkspaceSubjectCount = get(),
+            pushSemesters = get(),
+            applicationScope = get(),
+            dirtyTracker = get(),
+            authRepository = get(),
         )
     }
     viewModel { (semesterId: Long) ->
@@ -28,6 +32,10 @@ val semesterHistoryPresentationModule = module {
             deleteSubjectFromSemester = get(),
             editSemester = get(),
             getActiveGrades = get(),
+            pushSemesters = get(),
+            applicationScope = get(),
+            dirtyTracker = get(),
+            authRepository = get(),
         )
     }
 }

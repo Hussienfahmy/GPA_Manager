@@ -2,12 +2,14 @@ package com.hussienfahmy.semester_history_domain.use_case
 
 import com.hussienfahmy.core.data.local.SemesterDao
 import com.hussienfahmy.core.data.local.SubjectDao
+import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
 import kotlinx.coroutines.flow.first
 
 class EditSemester(
     private val semesterDao: SemesterDao,
     private val subjectDao: SubjectDao,
     private val calculateSemesterGPA: CalculateSemesterGPA,
+    private val dirtyTracker: SemesterDirtyTracker,
 ) {
     sealed class Request {
         data class SummaryFields(
@@ -40,11 +42,13 @@ class EditSemester(
                         totalCreditHours = request.totalCreditHours,
                     )
                 )
+                dirtyTracker.markChanged()
             }
 
             is Request.Label -> {
                 val existing = semesterDao.getById(request.semesterId) ?: return
                 semesterDao.update(existing.copy(label = request.label))
+                dirtyTracker.markChanged()
             }
 
             is Request.RecalculateDetailed -> {
@@ -58,6 +62,7 @@ class EditSemester(
                         totalCreditHours = totalCreditHours,
                     )
                 )
+                dirtyTracker.markChanged()
             }
         }
     }

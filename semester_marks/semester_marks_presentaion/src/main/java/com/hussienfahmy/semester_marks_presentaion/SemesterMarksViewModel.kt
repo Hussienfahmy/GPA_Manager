@@ -7,11 +7,13 @@ import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core_ui.presentation.model.UiEvent
 import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
 import com.hussienfahmy.semester_marks_domain.use_case.SemesterMarksUseCases
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class SemesterMarksViewModel(
     private val useCases: SemesterMarksUseCases,
     private val analyticsLogger: AnalyticsLogger,
+    private val applicationScope: CoroutineScope,
 ) : UiViewModel<SemesterMarksEvent, SemesterMarksState>(initialState = {
     SemesterMarksState.Loading
 }) {
@@ -25,6 +27,13 @@ class SemesterMarksViewModel(
     }
 
     override fun onEvent(event: SemesterMarksEvent) {
+        if (event is SemesterMarksEvent.OnScreenExit) {
+            applicationScope.launch {
+                useCases.syncGradeWithMarks()
+            }
+            return
+        }
+
         viewModelScope.launch {
             val result: Any = when (event) {
                 is SemesterMarksEvent.ChangeMidtermMark -> {
@@ -106,11 +115,6 @@ class SemesterMarksViewModel(
                         event.isAvailable
                     )
                     useCases.changeProjectMarks(event.subjectId, "0")
-                }
-
-                is SemesterMarksEvent.OnScreenExit -> {
-                    useCases.syncGradeWithMarks()
-                    return@launch
                 }
             }
 

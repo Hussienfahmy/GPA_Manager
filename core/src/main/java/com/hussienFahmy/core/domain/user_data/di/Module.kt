@@ -22,7 +22,7 @@ import org.koin.dsl.module
 val coreUserDataDomainModule = module {
     single { ObserveUserData(get()) }
     single { GetUserData(get()) }
-    single { GetAcademicProgress(semesterDao = get()) }
+    single { GetAcademicProgress(getUserData = get()) }
     single { UpdateLevel(get()) }
     single { UpdateSemester(get()) }
 
