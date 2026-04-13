@@ -154,6 +154,8 @@
     <string name="gpa_settings_details">نظام المعدل التراكمي (4 او 5)</string>
     <string name="subject_settings">اعدادات المواد</string>
     <string name="subject_settings_screen_summary">الدرجة الكلية للمادة و علاقتها بعدد الساعات</string>
+    <string name="contribute_to_app">ساهم في تطوير التطبيق</string>
+    <string name="contribute_to_app_summary">وجدت خطأً أو تريد المساهمة؟ تفقد مستودعنا على GitHub</string>
 
     <!-- Onboarding strings -->
     <string name="onboarding_welcome_title">مرحباً بك في مدير المعدل التراكمي</string>

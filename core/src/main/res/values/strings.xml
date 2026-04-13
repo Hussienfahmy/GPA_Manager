@@ -168,6 +168,9 @@
     <string name="gpa_settings_details">GPA System (4, 5)</string>
     <string name="subject_settings">Subject Settings</string>
     <string name="subject_settings_screen_summary">Subject total marks, how it depend on credit hours</string>
+    <string name="contribute_to_app">Contribute to the App</string>
+    <string name="contribute_to_app_summary">Found a bug or want to contribute? Check out our GitHub repository</string>
+    <string name="github_repo_url" translatable="false">https://github.com/Hussienfahmy/GPA_Manager</string>
 
     <!-- Onboarding strings -->
     <string name="onboarding_welcome_title">Welcome to GPA Manager</string>

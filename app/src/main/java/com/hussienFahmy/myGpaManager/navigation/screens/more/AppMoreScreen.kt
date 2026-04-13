@@ -109,6 +109,19 @@ fun MoreScreenContent(
         )
 
         MoreItem(
+            onClick = {
+                context.startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        context.getString(R.string.github_repo_url).toUri()
+                    )
+                )
+            },
+            title = stringResource(R.string.contribute_to_app),
+            summary = stringResource(R.string.contribute_to_app_summary)
+        )
+
+        MoreItem(
             onClick = { if (!isSigningOut) showSignOutDialog = true },
             title = stringResource(R.string.sign_out),
             summary = stringResource(R.string.sign_out_details)
