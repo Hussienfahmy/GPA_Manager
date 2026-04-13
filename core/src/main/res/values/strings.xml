@@ -124,7 +124,6 @@
     <string name="enter">Enter</string>
     <string name="total_marks">Total Marks</string>
     <string name="marks">Marks</string>
-    <string name="history">History</string>
     <string name="semester_marks">Semester Marks</string>
     <string name="midterm">Midterm</string>
     <string name="practical">Practical</string>
@@ -220,11 +219,9 @@
     <string name="onboarding_start_using_app">Start Using App</string>
     <string name="onboarding_progress_format">%1$d / %2$d</string>
 
-    <!-- Generic actions todo localize-->
+    <string name="history">History</string>
     <string name="undo">Undo</string>
     <string name="back">Back</string>
-
-    <!-- Semester History feature -->
     <string name="history_finish_semester">Finish Semester</string>
     <string name="history_add_past_semester">Add Past Semester</string>
     <string name="history_add_past_data">Add Past Data</string>

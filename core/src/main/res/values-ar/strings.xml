@@ -204,4 +204,52 @@
     <string name="onboarding_skip_for_now">تخطي في الوقت الحالي</string>
     <string name="onboarding_start_using_app">ابدأ استخدام التطبيق</string>
     <string name="onboarding_progress_format">%1$d / %2$d</string>
+
+
+    <!-- History strings -->
+    <string name="credit_hours_value_in_history">%1$s ساعة معتمدة</string>
+    <string name="history">السجل</string>
+    <string name="undo">تراجع</string>
+    <string name="back">رجوع</string>
+    <string name="history_finish_semester">إنهاء الفصل الدراسي</string>
+    <string name="history_add_past_semester">إضافة فصل سابق</string>
+    <string name="history_add_past_data">إضافة بيانات سابقة</string>
+    <string name="history_add_current_gpa">إضافة المعدل التراكمي الحالي</string>
+    <string name="history_you_are_in">أنت في: السنة %1$d – الفصل %2$d</string>
+    <string name="history_empty_state">لا توجد فصول بعد.\nاضغط + لإضافة فصل سابق، أو اضغط \"إنهاء الفصل الدراسي\" لأرشفة الفصل الحالي.</string>
+    <string name="history_type_summary">ملخص</string>
+    <string name="history_type_detailed">مفصل</string>
+    <string name="history_summary_type_description">إدخال سريع - فقط معدل الفصل الدراسي وإجمالي الساعات المعتمدة. لا حاجة لإضافة المواد بشكل فردي.</string>
+    <string name="history_detailed_type_description">ستقوم بإدخال كل مادة على حدة في الشاشة التالية. استخدم هذا للحصول على سجل دقيق لكل مادة.</string>
+    <string name="history_semester_label">تسمية الفصل</string>
+    <string name="history_label">التسمية</string>
+    <string name="history_level_optional">المستوى (اختياري)</string>
+    <string name="history_semester_label_hint_summary">مثال: السنة 1 – الفصل 1، الفصول السابقة…</string>
+    <string name="history_semester_label_hint_detailed">مثال: السنة 1، الصيف 2024…</string>
+    <string name="history_subjects_header">المواد (%1$d)</string>
+    <string name="history_no_subjects_hint">لا توجد مواد بعد. اضغط + لإضافة المواد.</string>
+    <string name="history_semester_gpa">معدل الفصل</string>
+    <string name="history_delete_semester_message">حذف \"%1$s\"؟ سيتم حذف الفصل وجميع مواده نهائياً. لا يمكن التراجع عن هذا.</string>
+    <string name="history_delete_subject_title">حذف المادة</string>
+    <string name="history_delete_subject_message">حذف \"%1$s\"؟ سيؤثر هذا على حساب المعدل التراكمي الحالي ولا يمكن التراجع عنه — ستحتاج إلى إضافته يدوياً مرة أخرى.</string>
+    <string name="history_no_grade_excluded">بدون تقدير — مستبعد من المعدل التراكمي</string>
+    <string name="history_finish_semester_title">إنهاء الفصل الدراسي الحالي؟</string>
+    <string name="history_finish_semester_will_be_saved">سيتم الحفظ كـ: \"%1$s\"</string>
+    <string name="history_finish_semester_message">سيتم أرشفة موادك وتقديراتها من الفصل الحالي كما هي. تأكد من مراجعة وتقديد التقديرات الصحيحة قبل المتابعة - لا يزال يمكنك تعديلها لاحقاً من السجل.\n\nسينقلك هذا إلى السنة %1$d – الفصل %2$d.</string>
+    <string name="history_gpa_value">المعدل: %1$.2f</string>
+    <string name="history_hours_value">· %1$d ساعة</string>
+    <string name="history_points_value">النقاط: %1$.2f</string>
+    <string name="history_move_up">تحريك لأعلى</string>
+    <string name="history_move_down">تحريك لأسفل</string>
+    <string name="history_add_subjects">إضافة مواد</string>
+    <string name="history_no_subjects_in_semester">لا توجد مواد في الفصل الحالي</string>
+    <string name="history_semester_archived">تم أرشفة الفصل</string>
+    <string name="history_semester_deleted">تم حذف الفصل</string>
+    <string name="history_delete_failed">فشل في حذف الفصل</string>
+    <string name="history_error_try_again">حدث خطأ. يرجى المحاولة مرة أخرى.</string>
+    <string name="history_add_subjects_first">أضف مواد إلى فصلك الدراسي الحالي أولاً</string>
+    <string name="history_add_current_gpa_description">احفظ معدلك التراكمي الحالي وإجمالي الساعات المعتمدة كسجل في التاريخ. سيظهر كـ \"المعدل التراكمي الحالي\" في سجل الفصول الدراسية.</string>
+    <string name="history_grade_label">التقدير</string>
+    <string name="history_edit_subject">تعديل المادة</string>
+    <string name="history_edit_semester">تعديل الفصل</string>
 </resources>
