@@ -16,15 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.R
+import com.hussienfahmy.core.util.truncate
 import com.hussienfahmy.core_ui.LocalSpacing
-import kotlin.math.floor
-import kotlin.math.pow
-
-private fun Double.truncate(digits: Int): String {
-    val factor = 10.0.pow(digits.toDouble())
-    val truncated = floor(this * factor) / factor
-    return "%.${digits}f".format(truncated)
-}
 
 @Composable
 fun CumulativeGpaCard(
@@ -55,7 +48,7 @@ fun CumulativeGpaCard(
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
                 Text(
-                    text = cumulativeGPA.truncate(4),
+                    text = cumulativeGPA.truncate(),
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )

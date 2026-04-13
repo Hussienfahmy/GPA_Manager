@@ -13,7 +13,7 @@
     <string name="credit_hours_value">Credit Hours: %d</string>
     <string name="cumulative">Cumulative</string>
     <string name="cumulative_gpa">Cumulative GPA</string>
-    <string name="cumulative_gpa_value">Cumulative GPA: %.4f</string>
+    <string name="cumulative_gpa_value">Cumulative GPA: %s</string>
     <string name="cumulative_gpa_will_be">The Cumulative GPA will be</string>
     <string name="cumulative_target_gpa">Target Cumulative GPA</string>
     <string name="current_cumulative_gpa">Current Cumulative GPA</string>

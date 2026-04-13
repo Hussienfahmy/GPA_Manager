@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.domain.user_data.model.UserData
+import com.hussienfahmy.core.util.truncate
 import com.hussienfahmy.core_ui.LocalSpacing
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -101,7 +102,7 @@ fun AcademicProgressColumn(
         Text(
             text = stringResource(
                 id = R.string.cumulative_gpa_value,
-                userData.academicProgress.cumulativeGPA
+                userData.academicProgress.cumulativeGPA.truncate()
             )
         )
         // Credit hour

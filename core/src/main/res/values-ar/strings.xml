@@ -12,7 +12,7 @@
     <string name="credit_hours_value">الساعات المعتمدة: %d</string>
     <string name="cumulative">التراكمي</string>
     <string name="cumulative_gpa">المعدل التراكمي</string>
-    <string name="cumulative_gpa_value">المعدل التراكمي: %.2f</string>
+    <string name="cumulative_gpa_value">المعدل التراكمي: %s</string>
     <string name="cumulative_gpa_will_be">المعدل التراكمي سيصبح</string>
     <string name="cumulative_target_gpa">المعدل التراكمي المستهدف</string>
     <string name="current_cumulative_gpa">المعدل التراكمي الحالي</string>
