@@ -1,0 +1,75 @@
+wing: gpamanager
+rooms:
+- name: app
+  description: Files from app/
+  keywords:
+  - app
+  - app
+- name: build_logic
+  description: Files from build-logic/
+  keywords:
+  - build_logic
+  - build-logic
+- name: core
+  description: Files from core/
+  keywords:
+  - core
+  - core
+- name: core_ui
+  description: Files from core-ui/
+  keywords:
+  - core_ui
+  - core-ui
+- name: gpa_system_settings
+  description: Files from gpa_system_settings/
+  keywords:
+  - gpa_system_settings
+  - gpa_system_settings
+- name: grades_setting
+  description: Files from grades_setting/
+  keywords:
+  - grades_setting
+  - grades_setting
+- name: gradle
+  description: Files from gradle/
+  keywords:
+  - gradle
+  - gradle
+- name: onboarding
+  description: Files from onboarding/
+  keywords:
+  - onboarding
+  - onboarding
+- name: quick
+  description: Files from quick/
+  keywords:
+  - quick
+  - quick
+- name: semester_history
+  description: Files from semester_history/
+  keywords:
+  - semester_history
+  - semester_history
+- name: semester_marks
+  description: Files from semester_marks/
+  keywords:
+  - semester_marks
+  - semester_marks
+- name: semester_subjctets
+  description: Files from semester_subjctets/
+  keywords:
+  - semester_subjctets
+  - semester_subjctets
+- name: subject_settings
+  description: Files from subject_settings/
+  keywords:
+  - subject_settings
+  - subject_settings
+- name: sync
+  description: Files from sync/
+  keywords:
+  - sync
+  - sync
+- name: general
+  description: Files that don't fit other rooms
+  keywords: []
