@@ -78,6 +78,8 @@ fun MoreScreenContent(
     val spacing = LocalSpacing.current
     val context = LocalContext.current
     var showSignOutDialog by remember { mutableStateOf(false) }
+    val githubRepoUrl = stringResource(R.string.github_repo_url)
+    val playStoreLink = stringResource(R.string.play_store_link)
 
     Column(
         modifier = modifier
@@ -111,7 +113,7 @@ fun MoreScreenContent(
                 context.startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
-                        context.getString(R.string.github_repo_url).toUri()
+                        githubRepoUrl.toUri()
                     )
                 )
             },
@@ -131,7 +133,7 @@ fun MoreScreenContent(
                 context.startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
-                        context.getString(R.string.play_store_link).toUri()
+                        playStoreLink.toUri()
                     )
                 )
             },
