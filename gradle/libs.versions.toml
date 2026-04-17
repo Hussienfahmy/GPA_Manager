@@ -6,8 +6,8 @@ compileSdk = "36"
 googleid = "1.2.0"
 minSdk = "26"
 targetSdk = "36"
-versionCode = "83"
-versionName = "7.0.2"
+versionCode = "84"
+versionName = "8.0.0"
 gradle = "8.12.0"
 
 # Build Tools
