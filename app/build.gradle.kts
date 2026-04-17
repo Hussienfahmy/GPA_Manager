@@ -102,6 +102,8 @@ dependencies {
     // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
+    implementation(libs.bundles.compose.debug)
+    implementation(libs.bundles.compose.presentation)
 
     // Compose Destinations
     implementation(libs.compose.destinations.core)

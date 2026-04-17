@@ -74,8 +74,8 @@ fun AddSubjectDialog(
         )
     }
 
-    val subjectNameFocusRequester = FocusRequester()
-    val creditHoursFocusRequester = FocusRequester()
+    val subjectNameFocusRequester = remember { FocusRequester() }
+    val creditHoursFocusRequester = remember { FocusRequester() }
 
     val resetInputs = {
         subjectName = ""
