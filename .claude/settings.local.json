@@ -5,7 +5,13 @@
       "Bash(grep:*)",
       "Bash(find:*)",
       "Bash(cat:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Skill(mempalace)",
+      "Bash(mempalace init *)",
+      "Bash(PYTHONIOENCODING=utf-8 mempalace init *)",
+      "Bash(claude mcp *)",
+      "Bash(PYTHONIOENCODING=utf-8 mempalace status *)",
+      "Bash(PYTHONIOENCODING=utf-8 mempalace *)"
     ],
     "deny": [],
     "ask": []
