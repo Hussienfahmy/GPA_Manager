@@ -1,6 +1,6 @@
 package com.h_fahmy.base
 
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -19,7 +19,6 @@ class BaseModulePlugin : Plugin<Project> {
                     libs = libs,
                     plugins = arrayOf(
                         "android.library",
-                        "kotlin.android",
                         "kotlin.parcelize",
                         "kotlin.serialization",
                         "ksp"
@@ -76,9 +75,8 @@ class BaseModulePlugin : Plugin<Project> {
             }
 
             tasks.withType<KotlinCompile>().configureEach {
-                kotlinOptions {
-                    jvmTarget = "17"
-                    freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+                compilerOptions {
+                    freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
                 }
             }
         }
