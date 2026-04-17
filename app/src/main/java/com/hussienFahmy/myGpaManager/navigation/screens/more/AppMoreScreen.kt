@@ -46,7 +46,7 @@ fun AppMoreScreen(
 
     val userData by moreViewModel.userData.collectAsStateWithLifecycle(null)
 
-    if (userData != null) {
+    if (userData != null && !moreViewModel.isSigningOut) {
         MoreScreenContent(
             modifier = modifier,
             userData = userData!!,
@@ -56,7 +56,6 @@ fun AppMoreScreen(
             onSubjectSettingsClick = onSubjectSettingsClick,
             onSignOutClick = { moreViewModel.signOut() },
             onAppRatingClick = { moreViewModel.logAppRatingClicked() },
-            isSigningOut = moreViewModel.isSigningOut,
         )
     } else {
         Box(modifier = modifier.fillMaxSize()) {
@@ -75,7 +74,6 @@ fun MoreScreenContent(
     onSubjectSettingsClick: () -> Unit,
     onSignOutClick: () -> Unit,
     onAppRatingClick: () -> Unit,
-    isSigningOut: Boolean,
 ) {
     val spacing = LocalSpacing.current
     val context = LocalContext.current
@@ -122,7 +120,7 @@ fun MoreScreenContent(
         )
 
         MoreItem(
-            onClick = { if (!isSigningOut) showSignOutDialog = true },
+            onClick = { showSignOutDialog = true },
             title = stringResource(R.string.sign_out),
             summary = stringResource(R.string.sign_out_details)
         )
@@ -144,7 +142,7 @@ fun MoreScreenContent(
 
     if (showSignOutDialog) {
         AlertDialog(
-            onDismissRequest = { if (!isSigningOut) showSignOutDialog = false },
+            onDismissRequest = { showSignOutDialog = false },
             title = { Text(text = stringResource(id = R.string.are_you_sure)) },
             text = { Text(text = stringResource(id = R.string.sign_out_confirmation_message)) },
             confirmButton = {
@@ -157,8 +155,7 @@ fun MoreScreenContent(
             },
             dismissButton = {
                 TextButton(
-                    onClick = { showSignOutDialog = false },
-                    enabled = !isSigningOut
+                    onClick = { showSignOutDialog = false }
                 ) { Text(text = stringResource(id = R.string.cancel)) }
             }
         )

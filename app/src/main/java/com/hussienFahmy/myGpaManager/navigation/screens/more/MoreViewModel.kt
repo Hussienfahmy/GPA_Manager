@@ -23,7 +23,6 @@ class MoreViewModel(
         private set
 
     fun signOut() {
-        // todo loading indicator on sign out
         if (isSigningOut) return
         applicationScope.launch {
             try {
