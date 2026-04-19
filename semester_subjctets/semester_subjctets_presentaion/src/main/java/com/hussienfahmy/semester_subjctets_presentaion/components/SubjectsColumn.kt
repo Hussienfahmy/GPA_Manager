@@ -31,10 +31,15 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +55,7 @@ import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.R
@@ -139,18 +145,22 @@ fun Subject(
                         }
                     }
             ) {
-                Text(
-                    text = subject.name,
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.titleLarge,
-                )
+                Row(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    val lockIconVisible = mode is Mode.Predict && !isExpanded && subject.fixedGrade
 
-                AnimatedVisibility(visible = mode is Mode.Predict && !isExpanded && subject.fixedGrade) {
+                    AnimatedVisibility(visible = lockIconVisible) {
+                        Icon(imageVector = Icons.Default.Lock, contentDescription = "")
+                    }
+
                     Spacer(modifier = Modifier.width(spacing.small))
-                    Icon(imageVector = Icons.Default.Lock, contentDescription = "")
-                }
 
-                Spacer(modifier = Modifier.weight(1f))
+                    SubjectName(
+                        subjectName = subject.name,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
 
                 Text(
                     text = "C.H: ${subject.creditHours}",
@@ -292,6 +302,35 @@ fun GradeButton(
                 .align(Alignment.Center)
                 .size(buttonSize)
                 .alpha(disabledAlpha)
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SubjectName(
+    subjectName: String,
+    modifier: Modifier = Modifier
+) {
+    val tooltipState = rememberTooltipState()
+
+    TooltipBox(
+        modifier = modifier,
+        positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+        tooltip = {
+            PlainTooltip {
+                Text(subjectName)
+            }
+        },
+        state = tooltipState
+    ) {
+        Text(
+            modifier = modifier,
+            text = subjectName,
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.titleLarge,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
