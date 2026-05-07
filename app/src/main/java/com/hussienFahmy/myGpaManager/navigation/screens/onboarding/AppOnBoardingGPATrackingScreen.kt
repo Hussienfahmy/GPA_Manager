@@ -137,14 +137,18 @@ internal fun AppOnBoardingGPATrackingContent(
     uiState.addingSubjectsToSemesterId?.let { semesterId ->
         AddSubjectSheet(
             availableGrades = grades,
+            subjectSettings = uiState.subjectSettings,
             onDismiss = { onEvent(AppOnBoardingGPATrackingEvent.SetAddingSubjectsSemester(null)) },
-            onAdd = { name, creditHours, gradeName ->
+            onAdd = { name, creditHours, gradeName, totalMarks, semesterMarks, metadata ->
                 onEvent(
                     AppOnBoardingGPATrackingEvent.AddSubject(
                         semesterId,
                         name,
                         creditHours,
-                        gradeName
+                        gradeName,
+                        totalMarks,
+                        semesterMarks,
+                        metadata,
                     )
                 )
             },

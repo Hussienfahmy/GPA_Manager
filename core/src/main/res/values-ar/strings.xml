@@ -252,4 +252,11 @@
     <string name="history_grade_label">التقدير</string>
     <string name="history_edit_subject">تعديل المادة</string>
     <string name="history_edit_semester">تعديل الفصل</string>
+    <string name="history_marks_section_title">الدرجات (اختياري، للسجل فقط - لا تؤثر على التقدير المحدد)</string>
+    <string name="history_score_with_total">%1$s / %2$s</string>
+    <string name="history_score_no_total">الدرجة: %1$s</string>
+    <string name="history_total_marks_info">المجموع: %1$s</string>
+    <string name="history_error_add_subject_failed">فشل إضافة المادة. يرجى المحاولة مرة أخرى.</string>
+    <string name="history_error_update_subject_failed">فشل تحديث المادة. يرجى المحاولة مرة أخرى.</string>
+    <string name="history_error_delete_subject_failed">فشل حذف المادة. يرجى المحاولة مرة أخرى.</string>
 </resources>

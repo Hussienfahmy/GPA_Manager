@@ -9,7 +9,10 @@ class AddSubjectToSemester(private val subjectDao: SubjectDao) {
         semesterId: Long,
         name: String,
         creditHours: Double,
-        gradeName: GradeName?
+        gradeName: GradeName?,
+        totalMarks: Double = 0.0,
+        semesterMarks: Subject.SemesterMarks? = null,
+        metadata: Subject.MetaData = Subject.MetaData(),
     ) {
         subjectDao.upsert(
             Subject(
@@ -17,6 +20,9 @@ class AddSubjectToSemester(private val subjectDao: SubjectDao) {
                 creditHours = creditHours,
                 gradeName = gradeName,
                 semesterId = semesterId,
+                totalMarks = totalMarks,
+                semesterMarks = semesterMarks,
+                metadata = metadata,
             )
         )
     }

@@ -1,5 +1,6 @@
 package com.hussienfahmy.myGpaManager.navigation.screens.onboarding.models
 
+import com.hussienfahmy.core.data.local.entity.Subject
 import com.hussienfahmy.core.data.local.model.GradeName
 
 sealed class AppOnBoardingGPATrackingEvent {
@@ -21,6 +22,9 @@ sealed class AppOnBoardingGPATrackingEvent {
         val semesterId: Long,
         val name: String,
         val creditHours: Double,
-        val gradeName: GradeName
+        val gradeName: GradeName,
+        val totalMarks: Double,
+        val semesterMarks: Subject.SemesterMarks?,
+        val metadata: Subject.MetaData,
     ) : AppOnBoardingGPATrackingEvent()
 }

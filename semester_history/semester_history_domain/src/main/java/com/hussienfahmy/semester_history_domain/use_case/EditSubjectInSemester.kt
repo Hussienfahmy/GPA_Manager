@@ -9,13 +9,19 @@ class EditSubjectInSemester(private val subjectDao: SubjectDao) {
         subject: Subject,
         name: String,
         creditHours: Double,
-        gradeName: GradeName
+        gradeName: GradeName,
+        totalMarks: Double = 0.0,
+        semesterMarks: Subject.SemesterMarks? = null,
+        metadata: Subject.MetaData = Subject.MetaData(),
     ) {
         subjectDao.upsert(
             subject.copy(
                 name = name,
                 creditHours = creditHours,
-                gradeName = gradeName
+                gradeName = gradeName,
+                totalMarks = totalMarks,
+                semesterMarks = semesterMarks,
+                metadata = metadata,
             )
         )
     }

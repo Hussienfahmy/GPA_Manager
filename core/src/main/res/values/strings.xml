@@ -263,4 +263,11 @@
     <string name="history_grade_label">Grade</string>
     <string name="history_edit_subject">Edit Subject</string>
     <string name="history_edit_semester">Edit semester</string>
+    <string name="history_marks_section_title">Marks (optional, historical only - does not affect assigned grade)</string>
+    <string name="history_score_with_total">%1$s / %2$s</string>
+    <string name="history_score_no_total">Score: %1$s</string>
+    <string name="history_total_marks_info">Total: %1$s</string>
+    <string name="history_error_add_subject_failed">Failed to add subject. Please try again.</string>
+    <string name="history_error_update_subject_failed">Failed to update subject. Please try again.</string>
+    <string name="history_error_delete_subject_failed">Failed to delete subject. Please try again.</string>
 </resources>

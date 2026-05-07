@@ -3,6 +3,7 @@ package com.hussienfahmy.myGpaManager.navigation.screens.onboarding
 import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.data.local.entity.Grade
 import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
+import com.hussienfahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.models.AppOnBoardingGPATrackingEvent
@@ -25,6 +26,7 @@ class AppOnBoardingGPATrackingViewModel(
     getSemesterHistory: GetSemesterHistory,
     calculateCumulativeFromHistory: CalculateCumulativeFromHistory,
     getActiveGrades: GetActiveGrades,
+    getSubjectsSettings: GetSubjectsSettings,
     private val addPastSemester: AddPastSemester,
     private val deleteSemester: DeleteSemester,
     private val addSubjectToSemester: AddSubjectToSemester,
@@ -32,6 +34,12 @@ class AppOnBoardingGPATrackingViewModel(
 ) : UiViewModel<AppOnBoardingGPATrackingEvent, AppOnBoardingGPATrackingState>(
     initialState = { AppOnBoardingGPATrackingState() }
 ) {
+
+    init {
+        viewModelScope.launch {
+            state.value = state.value.copy(subjectSettings = getSubjectsSettings())
+        }
+    }
 
     val semesters: StateFlow<List<Semester>> = getSemesterHistory()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
@@ -92,7 +100,10 @@ class AppOnBoardingGPATrackingViewModel(
                         event.semesterId,
                         event.name,
                         event.creditHours,
-                        event.gradeName
+                        event.gradeName,
+                        event.totalMarks,
+                        event.semesterMarks,
+                        event.metadata,
                     )
                     editSemester(EditSemester.Request.RecalculateDetailed(event.semesterId))
                 }

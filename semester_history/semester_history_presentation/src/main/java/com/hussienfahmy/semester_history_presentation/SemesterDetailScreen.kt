@@ -31,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -42,6 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -50,45 +52,67 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.data.local.entity.Subject
 import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.util.toStringWithOptionalDecimals
 import com.hussienfahmy.semester_history_domain.model.Semester
 import com.hussienfahmy.semester_history_domain.model.SemesterDetail
 import com.hussienfahmy.semester_history_presentation.components.AddSubjectSheet
-import com.hussienfahmy.semester_history_presentation.components.EditSemesterSheet
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SemesterDetailScreen(
+fun SemesterDetailRoot(
     semesterId: Long,
     viewModel: SemesterDetailViewModel = koinViewModel { parametersOf(semesterId) },
 ) {
-    val detail by viewModel.detail.collectAsStateWithLifecycle()
-    val availableGrades by viewModel.availableGrades.collectAsStateWithLifecycle()
-    val isSubmitting by viewModel.isSubmitting.collectAsStateWithLifecycle()
-
-    var showAddSubjectSheet by remember { mutableStateOf(false) }
-    var showEditSummarySheet by remember { mutableStateOf(false) }
-    var editingSubject by remember { mutableStateOf<Subject?>(null) }
-
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
-        viewModel.errorMessage.collect { message ->
-            snackbarHostState.showSnackbar(message)
+        viewModel.events.collect { event ->
+            when (event) {
+                is SemesterDetailEvent.ShowError -> snackbarHostState.showSnackbar(
+                    event.message.asString(
+                        context
+                    )
+                )
+            }
         }
     }
 
     LifecycleResumeEffect(Unit) {
         onPauseOrDispose {
-            viewModel.onScreenExit()
+            viewModel.onAction(SemesterDetailAction.OnScreenExit)
         }
     }
 
+    SemesterDetailScreen(
+        state = state,
+        onAction = viewModel::onAction,
+        snackbarHostState = snackbarHostState,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SemesterDetailScreen(
+    state: SemesterDetailState,
+    onAction: (SemesterDetailAction) -> Unit,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+) {
+    var showAddSubjectSheet by remember { mutableStateOf(false) }
+    var editingSubject by remember { mutableStateOf<Subject?>(null) }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         floatingActionButton = {
-            FloatingActionButton(onClick = { if (!isSubmitting) showAddSubjectSheet = true }) {
-                AnimatedContent(targetState = isSubmitting, label = "fab_content") { submitting ->
+            FloatingActionButton(onClick = {
+                if (!state.isSubmitting) showAddSubjectSheet = true
+            }) {
+                AnimatedContent(
+                    targetState = state.isSubmitting,
+                    label = "fab_content"
+                ) { submitting ->
                     if (submitting) {
                         CircularProgressIndicator(
                             modifier = Modifier.padding(8.dp),
@@ -97,7 +121,7 @@ fun SemesterDetailScreen(
                     } else {
                         Icon(
                             Icons.Outlined.Add,
-                            contentDescription = stringResource(R.string.add_subject)
+                            contentDescription = stringResource(R.string.add_subject),
                         )
                     }
                 }
@@ -105,7 +129,7 @@ fun SemesterDetailScreen(
         }
     ) { padding ->
         when {
-            detail == null -> Box(
+            state.detail == null -> Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding),
@@ -115,9 +139,9 @@ fun SemesterDetailScreen(
             }
 
             else -> SemesterDetailContent(
-                detail = detail!!,
+                detail = state.detail,
                 onEditSubject = { editingSubject = it },
-                onDeleteSubject = { viewModel.deleteSubject(it) },
+                onDeleteSubject = { onAction(SemesterDetailAction.OnDeleteSubject(it)) },
                 modifier = Modifier.padding(padding),
             )
         }
@@ -125,32 +149,42 @@ fun SemesterDetailScreen(
 
     if (showAddSubjectSheet) {
         AddSubjectSheet(
-            availableGrades = availableGrades,
+            availableGrades = state.availableGrades,
+            subjectSettings = state.subjectSettings,
             onDismiss = { showAddSubjectSheet = false },
-            onAdd = { name, creditHours, gradeName ->
-                viewModel.addSubject(name, creditHours, gradeName)
+            onAdd = { name, creditHours, gradeName, totalMarks, semesterMarks, metadata ->
+                onAction(
+                    SemesterDetailAction.OnAddSubject(
+                        name,
+                        creditHours,
+                        gradeName,
+                        totalMarks,
+                        semesterMarks,
+                        metadata
+                    )
+                )
             },
         )
     }
 
     editingSubject?.let { subject ->
         AddSubjectSheet(
-            availableGrades = availableGrades,
+            availableGrades = state.availableGrades,
+            subjectSettings = state.subjectSettings,
             initialSubject = subject,
             onDismiss = { editingSubject = null },
-            onAdd = { name, creditHours, gradeName ->
-                viewModel.editSubject(subject, name, creditHours, gradeName)
-            },
-        )
-    }
-
-    if (showEditSummarySheet && detail != null) {
-        EditSemesterSheet(
-            semester = detail!!.semester,
-            onDismiss = { showEditSummarySheet = false },
-            onSaveLabel = { _, _ -> /* SUMMARY sheet handles both via onSaveSummary */ },
-            onSaveSummary = { _, label, gpa, hours ->
-                viewModel.editSummary(label, gpa, hours)
+            onAdd = { name, creditHours, gradeName, totalMarks, semesterMarks, metadata ->
+                onAction(
+                    SemesterDetailAction.OnEditSubject(
+                        subject,
+                        name,
+                        creditHours,
+                        gradeName,
+                        totalMarks,
+                        semesterMarks,
+                        metadata
+                    )
+                )
             },
         )
     }
@@ -164,7 +198,6 @@ private fun SemesterDetailContent(
     modifier: Modifier = Modifier,
 ) {
     val spacing = LocalSpacing.current
-    val semester = detail.semester
 
     LazyColumn(
         modifier = modifier.padding(horizontal = spacing.small),
@@ -172,7 +205,7 @@ private fun SemesterDetailContent(
         contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 80.dp),
     ) {
         item {
-            SemesterHeaderCard(semester = semester)
+            SemesterHeaderCard(semester = detail.semester)
         }
 
         if (detail.subjects.isEmpty()) {
@@ -187,10 +220,7 @@ private fun SemesterDetailContent(
         } else {
             item {
                 Text(
-                    text = stringResource(
-                        R.string.history_subjects_header,
-                        detail.subjectCount
-                    ),
+                    text = stringResource(R.string.history_subjects_header, detail.subjectCount),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = spacing.small),
@@ -326,11 +356,30 @@ private fun SubjectCard(
                 Text(
                     text = stringResource(
                         R.string.credit_hours_value_in_history,
-                        if (subject.creditHours % 1.0 == 0.0) subject.creditHours.toInt() else subject.creditHours
+                        if (subject.creditHours % 1.0 == 0.0) subject.creditHours.toInt() else subject.creditHours,
                     ),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
+                subject.semesterMarks?.let { marks ->
+                    val scoreText = if (subject.totalMarks > 0) {
+                        stringResource(
+                            R.string.history_score_with_total,
+                            marks.value.toStringWithOptionalDecimals(),
+                            subject.totalMarks.toStringWithOptionalDecimals(),
+                        )
+                    } else {
+                        stringResource(
+                            R.string.history_score_no_total,
+                            marks.value.toStringWithOptionalDecimals()
+                        )
+                    }
+                    Text(
+                        text = scoreText,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
                 if (subject.gradeName == null) {
                     Text(
                         text = stringResource(R.string.history_no_grade_excluded),

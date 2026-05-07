@@ -2,11 +2,13 @@ package com.hussienfahmy.semester_history_presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hussienfahmy.core.data.local.entity.Grade
-import com.hussienfahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core.R
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
+import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
+import com.hussienfahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
 import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
+import com.hussienfahmy.core.model.UiText
 import com.hussienfahmy.semester_history_domain.use_case.AddSubjectToSemester
 import com.hussienfahmy.semester_history_domain.use_case.DeleteSubjectFromSemester
 import com.hussienfahmy.semester_history_domain.use_case.EditSemester
@@ -17,7 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -27,6 +29,7 @@ import kotlinx.coroutines.launch
 class SemesterDetailViewModel(
     getSemesterDetail: GetSemesterDetail,
     getActiveGrades: GetActiveGrades,
+    getSubjectsSettings: GetSubjectsSettings,
     private val semesterId: Long,
     private val addSubjectToSemester: AddSubjectToSemester,
     private val editSubjectInSemester: EditSubjectInSemester,
@@ -38,94 +41,99 @@ class SemesterDetailViewModel(
     private val applicationScope: CoroutineScope,
 ) : ViewModel() {
 
-    val detail = getSemesterDetail(semesterId)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = null,
-        )
-
-    val availableGrades = getActiveGrades()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = emptyList<Grade>(),
-        )
-
     private val _isSubmitting = MutableStateFlow(false)
-    val isSubmitting = _isSubmitting.asStateFlow()
+    private val _subjectSettings = MutableStateFlow<SubjectSettings?>(null)
 
-    private val _errorMessage = Channel<String>()
-    val errorMessage = _errorMessage.receiveAsFlow()
+    init {
+        viewModelScope.launch {
+            _subjectSettings.value = getSubjectsSettings()
+        }
+    }
 
-    fun addSubject(name: String, creditHours: Double, gradeName: GradeName) {
+    val state = combine(
+        getSemesterDetail(semesterId),
+        getActiveGrades(),
+        _isSubmitting,
+        _subjectSettings,
+    ) { detail, grades, isSubmitting, settings ->
+        SemesterDetailState(
+            detail = detail,
+            availableGrades = grades,
+            isSubmitting = isSubmitting,
+            subjectSettings = settings
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = SemesterDetailState(),
+    )
+
+    private val _events = Channel<SemesterDetailEvent>()
+    val events = _events.receiveAsFlow()
+
+    fun onAction(action: SemesterDetailAction) {
+        when (action) {
+            is SemesterDetailAction.OnAddSubject -> addSubject(action)
+            is SemesterDetailAction.OnEditSubject -> editSubject(action)
+            is SemesterDetailAction.OnDeleteSubject -> deleteSubject(action.subjectId)
+            is SemesterDetailAction.OnScreenExit -> onScreenExit()
+        }
+    }
+
+    private fun addSubject(action: SemesterDetailAction.OnAddSubject) {
         viewModelScope.launch {
             _isSubmitting.value = true
             try {
-                addSubjectToSemester(semesterId, name, creditHours, gradeName)
+                addSubjectToSemester(
+                    semesterId, action.name, action.creditHours, action.gradeName,
+                    action.totalMarks, action.semesterMarks, action.metadata,
+                )
                 editSemester(EditSemester.Request.RecalculateDetailed(semesterId))
             } catch (_: Exception) {
-                _errorMessage.send("Failed to add subject. Please try again.")
+                _events.send(SemesterDetailEvent.ShowError(UiText.StringResource(R.string.history_error_add_subject_failed)))
             } finally {
                 _isSubmitting.value = false
             }
         }
     }
 
-    fun editSubject(
-        subject: com.hussienfahmy.core.data.local.entity.Subject,
-        name: String,
-        creditHours: Double,
-        gradeName: GradeName
-    ) {
+    private fun editSubject(action: SemesterDetailAction.OnEditSubject) {
         viewModelScope.launch {
             _isSubmitting.value = true
             try {
-                editSubjectInSemester(subject, name, creditHours, gradeName)
+                editSubjectInSemester(
+                    action.subject, action.name, action.creditHours, action.gradeName,
+                    action.totalMarks, action.semesterMarks, action.metadata,
+                )
                 editSemester(EditSemester.Request.RecalculateDetailed(semesterId))
             } catch (_: Exception) {
-                _errorMessage.send("Failed to update subject. Please try again.")
+                _events.send(SemesterDetailEvent.ShowError(UiText.StringResource(R.string.history_error_update_subject_failed)))
             } finally {
                 _isSubmitting.value = false
             }
         }
     }
 
-    fun deleteSubject(subjectId: Long) {
+    private fun deleteSubject(subjectId: Long) {
         viewModelScope.launch {
             _isSubmitting.value = true
             try {
                 deleteSubjectFromSemester(subjectId)
                 editSemester(EditSemester.Request.RecalculateDetailed(semesterId))
             } catch (_: Exception) {
-                _errorMessage.send("Failed to delete subject. Please try again.")
+                _events.send(SemesterDetailEvent.ShowError(UiText.StringResource(R.string.history_error_delete_subject_failed)))
             } finally {
                 _isSubmitting.value = false
             }
         }
     }
 
-    fun editSummary(label: String, gpa: Double, hours: Int) {
-        viewModelScope.launch {
-            _isSubmitting.value = true
-            try {
-                editSemester(EditSemester.Request.SummaryFields(semesterId, label, gpa, hours))
-            } catch (_: Exception) {
-                _errorMessage.send("Failed to save changes. Please try again.")
-            } finally {
-                _isSubmitting.value = false
-            }
-        }
-    }
-
-    fun onScreenExit() {
+    private fun onScreenExit() {
         if (dirtyTracker.consumeChanges()) {
             applicationScope.launch {
                 try {
                     val userId = authRepository.userId.filterNotNull().firstOrNull()
-                    if (userId != null) {
-                        pushSemesters(userId)
-                    }
+                    if (userId != null) pushSemesters(userId)
                 } catch (_: Exception) {
                     // Silent fail — sync will retry on next app lifecycle event
                 }

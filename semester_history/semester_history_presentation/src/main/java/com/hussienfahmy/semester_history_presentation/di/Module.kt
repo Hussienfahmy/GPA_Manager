@@ -32,6 +32,7 @@ val semesterHistoryPresentationModule = module {
             deleteSubjectFromSemester = get(),
             editSemester = get(),
             getActiveGrades = get(),
+            getSubjectsSettings = get(),
             pushSemesters = get(),
             applicationScope = get(),
             dirtyTracker = get(),
