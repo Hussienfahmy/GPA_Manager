@@ -39,6 +39,7 @@
     <string name="semester_work">Semester Work</string>
     <string name="final_exam_description">Enter the total marks your final exam is worth (e.g. 60) - not what you scored in it. We use this to show the highest grade you can still achieve.</string>
     <string name="final_exam_label">Final exam out of</string>
+    <string name="final_exam_score">Final Exam Score</string>
     <string name="err_subject_total_must_more_than_zero">Total Marks must be more than zero</string>
     <string name="err_waiting_to_add_subjects">Waiting to add subjects</string>
     <string name="error_happened">Error happened</string>

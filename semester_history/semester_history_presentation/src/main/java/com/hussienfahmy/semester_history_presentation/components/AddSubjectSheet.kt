@@ -90,6 +90,12 @@ fun AddSubjectSheet(
         )
     }
 
+    var finalExamScoreInput by remember {
+        mutableStateOf(
+            initialSubject?.semesterMarks?.finalExamScore?.toString() ?: ""
+        )
+    }
+
     val anyMarkEnabled = midtermEnabled || practicalEnabled || oralEnabled || projectEnabled
 
     val totalMarks by remember {
@@ -108,6 +114,7 @@ fun AddSubjectSheet(
                 && (!practicalEnabled || practicalInput.isEmpty() || practicalInput.toDoubleOrNull() != null)
                 && (!oralEnabled || oralInput.isEmpty() || oralInput.toDoubleOrNull() != null)
                 && (!projectEnabled || projectInput.isEmpty() || projectInput.toDoubleOrNull() != null)
+                && (finalExamScoreInput.isEmpty() || finalExamScoreInput.toDoubleOrNull() != null)
 
     val isValid = name.isNotBlank()
             && creditHours.toDoubleOrNull() != null
@@ -244,19 +251,34 @@ fun AddSubjectSheet(
                 }
             }
 
+            HorizontalDivider(modifier = Modifier.padding(vertical = spacing.small))
+
+            Text(
+                text = stringResource(R.string.final_exam),
+                style = MaterialTheme.typography.labelMedium,
+            )
+
+            MarkField(
+                label = stringResource(R.string.final_exam_score),
+                value = finalExamScoreInput,
+                onValueChange = { finalExamScoreInput = it },
+            )
+
             Button(
                 onClick = {
                     val midterm = if (midtermEnabled) midtermInput.toDoubleOrNull() else null
                     val practical = if (practicalEnabled) practicalInput.toDoubleOrNull() else null
                     val oral = if (oralEnabled) oralInput.toDoubleOrNull() else null
                     val project = if (projectEnabled) projectInput.toDoubleOrNull() else null
+                    val finalExamScore = finalExamScoreInput.toDoubleOrNull()
                     val semesterMarks =
-                        if (midterm != null || practical != null || oral != null || project != null) {
+                        if (midterm != null || practical != null || oral != null || project != null || finalExamScore != null) {
                             Subject.SemesterMarks(
                                 midterm = midterm,
                                 practical = practical,
                                 oral = oral,
                                 project = project,
+                                finalExamScore = finalExamScore,
                             )
                         } else null
                     val metadata = Subject.MetaData(

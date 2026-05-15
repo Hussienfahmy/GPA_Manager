@@ -54,6 +54,7 @@ data class Subject(
                 practical?.let { output += it }
                 oral?.let { output += it }
                 project?.let { output += it }
+                finalExamScore?.let { output += it }
 
                 return output
             }

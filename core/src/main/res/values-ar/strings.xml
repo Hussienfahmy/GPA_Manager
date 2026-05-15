@@ -163,6 +163,7 @@
     <string name="final_exam_description">أدخل الدرجة الكلية للامتحان النهائي (مثال: ٦٠) وليس ما حصلت عليه فيه. نستخدمها لنُظهر أعلى تقدير لا يزال بإمكانك تحقيقه.</string>
     <string name="final_exam_label">الامتحان النهائي من أصل</string>
     <string name="err_subject_final_exam_invalid">يجب أن تكون درجة الامتحان النهائي أكبر من الصفر</string>
+    <string name="final_exam_score">درجة الامتحان النهائي</string>
     <string name="semester_work">الأعمال الفصلية</string>
 
     <!-- Onboarding strings -->
