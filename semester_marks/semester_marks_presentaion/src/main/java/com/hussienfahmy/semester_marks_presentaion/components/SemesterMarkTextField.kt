@@ -15,7 +15,7 @@ fun SemesterMarkTextField(
     title: String,
     value: String,
     onValueChanged: (String) -> Unit,
-    keyboardType: KeyboardType = KeyboardType.Number
+    keyboardType: KeyboardType = KeyboardType.Number,
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -24,7 +24,7 @@ fun SemesterMarkTextField(
         label = { Text(text = title, style = MaterialTheme.typography.bodySmall) },
         isError = value.isNotBlank() && value.toDoubleOrNull() == null,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-        singleLine = true
+        singleLine = true,
     )
 }
 

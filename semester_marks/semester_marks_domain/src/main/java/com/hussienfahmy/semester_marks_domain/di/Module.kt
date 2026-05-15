@@ -1,6 +1,7 @@
 package com.hussienfahmy.semester_marks_domain.di
 
 import com.hussienfahmy.core.di.CoreQualifiers
+import com.hussienfahmy.semester_marks_domain.use_case.ChangeFinalExamMaxMarks
 import com.hussienfahmy.semester_marks_domain.use_case.ChangeMidtermMarks
 import com.hussienfahmy.semester_marks_domain.use_case.ChangeOralMarks
 import com.hussienfahmy.semester_marks_domain.use_case.ChangePracticalMarks
@@ -35,6 +36,7 @@ val semesterMarksDomainModule = module {
             changePracticalMarks = ChangePracticalMarks(get()),
             changeProjectMarks = ChangeProjectMarks(get()),
             syncGradeWithMarks = SyncGradeWithMarks(get(), get()),
+            changeFinalExamMaxMarks = ChangeFinalExamMaxMarks(get()),
         )
     }
 }

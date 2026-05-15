@@ -66,6 +66,11 @@ fun SemesterMarksScreen(
                     SemesterMarksEvent.ChangeProjectMark(subjectId, marks)
                 )
             },
+            onFinalExamMaxMarksChange = { subjectId, marks ->
+                viewModel.onEvent(
+                    SemesterMarksEvent.ChangeFinalExamMaxMarks(subjectId, marks)
+                )
+            },
             onResetClick = { subjectId ->
                 viewModel.onEvent(
                     SemesterMarksEvent.ResetMarks(subjectId)
@@ -103,6 +108,7 @@ fun SemesterMarksScreenContent(
     onOralMarksChange: (subjectId: Long, newMarks: String) -> Unit,
     onPracticalMarksChange: (subjectId: Long, newMarks: String) -> Unit,
     onProjectMarksChange: (subjectId: Long, newMarks: String) -> Unit,
+    onFinalExamMaxMarksChange: (subjectId: Long, newMarks: String) -> Unit,
     onResetClick: (subjectId: Long) -> Unit,
     onMidtermAvailabilityCheckChanges: (subjectId: Long, newAvailability: Boolean) -> Unit,
     onPracticalAvailabilityCheckChanges: (subjectId: Long, newAvailability: Boolean) -> Unit,
@@ -126,6 +132,7 @@ fun SemesterMarksScreenContent(
                     onOralMarksChange = { onOralMarksChange(subject.id, it) },
                     onPracticalMarksChange = { onPracticalMarksChange(subject.id, it) },
                     onProjectMarksChange = { onProjectMarksChange(subject.id, it) },
+                    onFinalExamMaxMarksChange = { onFinalExamMaxMarksChange(subject.id, it) },
                     onResetClick = { onResetClick(subject.id) },
                     showHint = index == 0,
                     onMidtermAvailabilityCheckChanges = {
@@ -177,6 +184,7 @@ fun SemesterMarksScreenContentPreview() {
                 midtermMarks = 10.0,
                 oralMarks = 15.0,
                 courseTotalMarks = 25.0,
+                finalExamMaxMarks = 60.0,
                 grades = listOf(
                     Grade(
                         symbol = "A",
@@ -207,6 +215,7 @@ fun SemesterMarksScreenContentPreview() {
         onOralMarksChange = { _, _ -> },
         onPracticalMarksChange = { _, _ -> },
         onProjectMarksChange = { _, _ -> },
+        onFinalExamMaxMarksChange = { _, _ -> },
         onResetClick = { },
         onMidtermAvailabilityCheckChanges = { _, _ -> },
         onPracticalAvailabilityCheckChanges = { _, _ -> },

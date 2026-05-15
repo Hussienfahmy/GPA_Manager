@@ -87,6 +87,9 @@ interface SubjectDao {
     @Query("UPDATE subject SET project = :project WHERE id = :subjectId")
     suspend fun updateProject(subjectId: Long, project: Double?)
 
+    @Query("UPDATE subject SET finalExamMaxMarks = :marks WHERE id = :subjectId")
+    suspend fun updateFinalExamMaxMarks(subjectId: Long, marks: Double?)
+
     // ---------------- MetaData Update -----------//
 
     @Query("UPDATE subject SET midtermAvailable = :available WHERE id = :subjectId")
@@ -173,7 +176,10 @@ interface SubjectDao {
                         } else {
                             val semesterPercentage =
                                 (100.0 * semesterMarks.value / subject.totalMarks)
-                            val threshold = semesterPercentage + lowestPercentage
+                            val finalPercentage: Double = subject.metadata.finalExamMaxMarks
+                                ?.let { it / subject.totalMarks * 100.0 }
+                                ?: lowestPercentage
+                            val threshold = semesterPercentage + finalPercentage
 
                             gradesForMax.filter { it.percentage!! <= threshold }
                                 .maxByOrNull { it.percentage!! }

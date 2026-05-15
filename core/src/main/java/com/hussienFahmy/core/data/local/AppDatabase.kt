@@ -11,13 +11,14 @@ import com.hussienfahmy.core.data.local.type_converter.GradeNameTypeConverter
 
 @Database(
     entities = [Subject::class, Grade::class, Semester::class],
-    version = 12,
+    version = 13,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 7, to = 8),
         AutoMigration(from = 8, to = 9),
         AutoMigration(from = 9, to = 10),
         AutoMigration(from = 11, to = 12),
+        AutoMigration(from = 12, to = 13),
     ]
 )
 @TypeConverters(GradeNameTypeConverter::class)

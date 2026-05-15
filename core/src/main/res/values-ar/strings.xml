@@ -157,6 +157,14 @@
     <string name="contribute_to_app">ساهم في تطوير التطبيق</string>
     <string name="contribute_to_app_summary">وجدت خطأً أو تريد المساهمة؟ تفقد مستودعنا على GitHub</string>
 
+    <!-- Final exam strings -->
+    <string name="final_exam">الامتحان النهائي</string>
+    <string name="final_exam_total_hint">الدرجة الكلية للامتحان النهائي</string>
+    <string name="final_exam_description">أدخل الدرجة الكلية للامتحان النهائي (مثال: ٦٠) وليس ما حصلت عليه فيه. نستخدمها لنُظهر أعلى تقدير لا يزال بإمكانك تحقيقه.</string>
+    <string name="final_exam_label">الامتحان النهائي من أصل</string>
+    <string name="err_subject_final_exam_invalid">يجب أن تكون درجة الامتحان النهائي أكبر من الصفر</string>
+    <string name="semester_work">الأعمال الفصلية</string>
+
     <!-- Onboarding strings -->
     <string name="onboarding_welcome_title">مرحباً بك في مدير المعدل التراكمي</string>
     <string name="onboarding_welcome_subtitle">رفيقك الذكي لتتبع وتحسين أدائك الأكاديمي</string>

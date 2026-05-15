@@ -12,6 +12,7 @@ data class Subject(
     val oralMarks: Double?,
     val projectMarks: Double?,
     val courseTotalMarks: Double,
+    val finalExamMaxMarks: Double,
     val grades: List<Grade>
 ) {
     val courseMarks: Double

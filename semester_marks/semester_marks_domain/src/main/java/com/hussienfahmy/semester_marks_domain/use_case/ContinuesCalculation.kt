@@ -36,6 +36,8 @@ class ContinuesCalculation(
     ) { grades, subjects ->
         if (grades.isEmpty()) return@combine listOf()
 
+        val lowestPct = grades.minByOrNull { it.percentage!! }?.percentage ?: 0.0
+
         subjects.map { (subjectEntity, maxGrade, _) ->
             Subject(
                 id = subjectEntity.id,
@@ -49,6 +51,8 @@ class ContinuesCalculation(
                 oralMarks = subjectEntity.semesterMarks?.oral,
                 projectMarks = subjectEntity.semesterMarks?.project,
                 courseTotalMarks = subjectEntity.totalMarks,
+                finalExamMaxMarks = subjectEntity.metadata.finalExamMaxMarks
+                    ?: (lowestPct * subjectEntity.totalMarks / 100.0),
                 grades = activeGrades.value.map { gradeEntity ->
                     val requiredMarksToAchieveThisGrade =
                         (subjectEntity.totalMarks * gradeEntity.percentage!!) / 100.0

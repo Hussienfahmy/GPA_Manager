@@ -116,6 +116,11 @@ class SemesterMarksViewModel(
                     )
                     useCases.changeProjectMarks(event.subjectId, "0")
                 }
+
+                is SemesterMarksEvent.ChangeFinalExamMaxMarks -> {
+                    useCases.changeFinalExamMaxMarks(event.subjectId, event.marks)
+                }
+
             }
 
             if (result is UpdateResult.Failed) {

@@ -22,11 +22,17 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipAnchorPosition
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.VerticalDivider
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,6 +64,7 @@ fun SemesterMarksItem(
     onOralMarksChange: (String) -> Unit,
     onPracticalMarksChange: (String) -> Unit,
     onProjectMarksChange: (String) -> Unit,
+    onFinalExamMaxMarksChange: (String) -> Unit,
     onResetClick: () -> Unit,
     showHint: Boolean,
     onMidtermAvailabilityCheckChanges: (Boolean) -> Unit,
@@ -76,7 +84,7 @@ fun SemesterMarksItem(
 
     var showResetConfirmationDialog by remember { mutableStateOf(false) }
 
-    var showSemesterWorkAvailabilityDialog by remember { mutableStateOf(false) }
+    var showSubjectSettingsSheet by remember { mutableStateOf(false) }
 
     if (showResetConfirmationDialog) ConfirmationDialog(onDismiss = {
         showResetConfirmationDialog = false
@@ -85,14 +93,16 @@ fun SemesterMarksItem(
         midtermInput = ""
         practicalInput = ""
         oralInput = ""
+        projectInput = ""
     })
 
-    if (showSemesterWorkAvailabilityDialog) SemesterWorkAvailabilityDialog(
-        onDismiss = { showSemesterWorkAvailabilityDialog = false },
+    if (showSubjectSettingsSheet) SubjectSettingsBottomSheet(
+        onDismiss = { showSubjectSettingsSheet = false },
         midtermAvailable = subject.midtermAvailable,
         practicalAvailable = subject.practicalAvailable,
         oralAvailable = subject.oralAvailable,
         projectAvailable = subject.projectAvailable,
+        finalExamMaxMarks = subject.finalExamMaxMarks,
         onMidtermCheckChanges = { enabled ->
             if (!enabled) midtermInput = ""
             onMidtermAvailabilityCheckChanges(enabled)
@@ -108,9 +118,9 @@ fun SemesterMarksItem(
         onProjectCheckChanges = { enabled ->
             if (!enabled) projectInput = ""
             onProjectAvailabilityCheckChanges(enabled)
-        }
+        },
+        onFinalExamMaxMarksSave = onFinalExamMaxMarksChange,
     )
-
 
     Card(shape = RoundedCornerShape(spacing.medium)) {
         Column(
@@ -119,7 +129,7 @@ fun SemesterMarksItem(
         ) {
             SubjectTitle(
                 subject = subject,
-                onEditCLick = { showSemesterWorkAvailabilityDialog = true },
+                onEditCLick = { showSubjectSettingsSheet = true },
                 onResetClick = { showResetConfirmationDialog = true },
             )
 
@@ -149,7 +159,7 @@ fun SemesterMarksItem(
                 onProjectMarksChange = {
                     projectInput = it
                     onProjectMarksChange(it)
-                }
+                },
             )
 
             if (showHint) {
@@ -195,7 +205,7 @@ private fun SemesterWork(
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceAround
+        horizontalArrangement = Arrangement.SpaceAround,
     ) {
         if (midtermAvailable) SemesterMarkTextField(
             modifier = Modifier.weight(1f),
@@ -203,21 +213,18 @@ private fun SemesterWork(
             value = midtermInput,
             onValueChanged = onMidTermMarksChange,
         )
-
         if (practicalAvailable) SemesterMarkTextField(
             modifier = Modifier.weight(1f),
             title = stringResource(R.string.practical),
             value = practicalInput,
             onValueChanged = onPracticalMarksChange,
         )
-
         if (oralAvailable) SemesterMarkTextField(
             modifier = Modifier.weight(1f),
             title = stringResource(R.string.oral),
             value = oralInput,
             onValueChanged = onOralMarksChange,
         )
-
         if (projectAvailable) SemesterMarkTextField(
             modifier = Modifier.weight(1f),
             title = stringResource(R.string.project),
@@ -227,6 +234,7 @@ private fun SemesterWork(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SubjectTitle(
     subject: Subject,
@@ -237,33 +245,50 @@ private fun SubjectTitle(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
-        Text(text = subject.name, style = MaterialTheme.typography.titleLarge)
+        Box(
+            modifier = Modifier.weight(1f)
+        ) {
+            TooltipBox(
+                positionProvider = TooltipDefaults.rememberTooltipPositionProvider(
+                    TooltipAnchorPosition.Above,
+                ),
+                tooltip = { PlainTooltip { Text(subject.name) } },
+                state = rememberTooltipState(),
+            ) {
+                Text(
+                    modifier = Modifier,
+                    text = subject.name,
+                    style = MaterialTheme.typography.titleLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
 
-        Spacer(modifier = Modifier.width(spacing.medium))
+        Spacer(modifier = Modifier.width(spacing.small))
 
         Text(
             text = "${subject.courseMarks.toStringWithOptionalDecimals()}/${subject.courseTotalMarks.toStringWithOptionalDecimals()}",
             style = MaterialTheme.typography.bodyLarge
         )
 
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.width(spacing.small))
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(spacing.small)
+            horizontalArrangement = Arrangement.spacedBy(spacing.small),
         ) {
             Icon(
                 imageVector = Icons.Default.Refresh,
                 contentDescription = stringResource(id = R.string.reset),
-                modifier = Modifier.clickable(onClick = onResetClick)
+                modifier = Modifier.clickable(onClick = onResetClick),
             )
-
             Icon(
                 imageVector = Icons.Default.Edit,
                 contentDescription = stringResource(id = R.string.edit),
-                modifier = Modifier.clickable(onClick = onEditCLick)
+                modifier = Modifier.clickable(onClick = onEditCLick),
             )
         }
     }
@@ -353,12 +378,13 @@ fun SemesterMarksItemPreview() {
     SemesterMarksItem(
         subject = Subject(
             id = 1,
-            name = "Math",
+            name = "Very Long subject name tooo way long",
             practicalMarks = 10.0,
             midtermMarks = 10.0,
             oralMarks = 10.0,
             projectMarks = 10.0,
             courseTotalMarks = 100.0,
+            finalExamMaxMarks = 60.0,
             midtermAvailable = true,
             practicalAvailable = true,
             oralAvailable = true,
@@ -390,6 +416,7 @@ fun SemesterMarksItemPreview() {
         onPracticalMarksChange = {},
         onOralMarksChange = {},
         onProjectMarksChange = {},
+        onFinalExamMaxMarksChange = {},
         onMidtermAvailabilityCheckChanges = {},
         onPracticalAvailabilityCheckChanges = {},
         onOralAvailabilityCheckChanges = {},

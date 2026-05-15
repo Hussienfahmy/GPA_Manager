@@ -19,6 +19,9 @@ sealed class SemesterMarksEvent {
 
     data class ChangeProjectMark(val subjectId: Long, val mark: String) : SemesterMarksEvent()
 
+    data class ChangeFinalExamMaxMarks(val subjectId: Long, val marks: String) :
+        SemesterMarksEvent()
+
     data class ResetMarks(val subjectId: Long) : SemesterMarksEvent()
 
     object OnScreenExit : SemesterMarksEvent()

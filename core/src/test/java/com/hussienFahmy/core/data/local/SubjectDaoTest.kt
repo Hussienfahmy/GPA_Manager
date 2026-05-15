@@ -194,6 +194,20 @@ class SubjectDaoTest {
     }
 
     @Test
+    fun semesterWorkWithCustomFinalExam_maxGrade() = runTest {
+        // Elective subject: final exam = 70 out of 100 (not default 60)
+        // semester: midterm=17 + oral=4 = 21% of 100
+        // threshold = 21% + 70% = 91% → A (90%) qualifies
+        subjectDao.updateMidterm(templateSubject.id, 17.0)
+        subjectDao.updateOral(templateSubject.id, 4.0)
+        subjectDao.updateFinalExamMaxMarks(templateSubject.id, 70.0)
+
+        val loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first()
+
+        assertEquals(GradeName.A, loaded.maxGradeCanBeAssigned.name)
+    }
+
+    @Test
     fun semesterWorkAndMaxGrade() = runTest {
         subjectDao.updateMidterm(templateSubject.id, 5.0)
         subjectDao.updatePractical(templateSubject.id, 10.0)
