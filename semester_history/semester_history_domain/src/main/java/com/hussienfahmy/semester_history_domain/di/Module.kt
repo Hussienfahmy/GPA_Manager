@@ -9,10 +9,12 @@ import com.hussienfahmy.semester_history_domain.use_case.DeleteSemester
 import com.hussienfahmy.semester_history_domain.use_case.DeleteSubjectFromSemester
 import com.hussienfahmy.semester_history_domain.use_case.EditSemester
 import com.hussienfahmy.semester_history_domain.use_case.EditSubjectInSemester
+import com.hussienfahmy.semester_history_domain.use_case.GenerateAcademicReport
 import com.hussienfahmy.semester_history_domain.use_case.GetSemesterDetail
 import com.hussienfahmy.semester_history_domain.use_case.GetSemesterHistory
 import com.hussienfahmy.semester_history_domain.use_case.GetWorkspaceSubjectCount
 import com.hussienfahmy.semester_history_domain.use_case.ReorderSemester
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val semesterHistoryDomainModule = module {
@@ -33,6 +35,17 @@ val semesterHistoryDomainModule = module {
             subjectDao = get(),
             calculateSemesterGPA = get(),
             dirtyTracker = get(),
+        )
+    }
+    single {
+        GenerateAcademicReport(
+            subjectDao = get(),
+            semesterDao = get(),
+            gradeDao = get(),
+            userDataRepository = get(),
+            gpaSettingsRepository = get(),
+            registry = get(),
+            context = androidContext(),
         )
     }
     single {

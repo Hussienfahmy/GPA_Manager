@@ -5,25 +5,33 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Done
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core_ui.LocalSpacing
@@ -43,15 +52,20 @@ import com.hussienfahmy.semester_history_presentation.components.CumulativeGpaCa
 import com.hussienfahmy.semester_history_presentation.components.EditSemesterSheet
 import com.hussienfahmy.semester_history_presentation.components.FinishSemesterDialog
 import com.hussienfahmy.semester_history_presentation.components.SemesterCard
+import com.hussienfahmy.semester_history_presentation.export.ExportReportSheetContent
+import com.hussienfahmy.semester_history_presentation.export.ExportReportViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SemesterHistoryScreen(
     modifier: Modifier = Modifier,
     snackBarHostState: SnackbarHostState,
     onSemesterClick: (semesterId: Long) -> Unit,
+    onExportHtml: (String) -> Unit,
     viewModel: SemesterHistoryViewModel = koinViewModel(),
+    exportViewModel: ExportReportViewModel = koinViewModel()
 ) {
     UiEventHandler(uiEvent = viewModel.uiEvent, snackBarHostState = snackBarHostState)
 
@@ -74,7 +88,36 @@ fun SemesterHistoryScreen(
 
     var showFinishDialog by remember { mutableStateOf(false) }
     var showAddSheet by remember { mutableStateOf(false) }
+    var showExportSheet by remember { mutableStateOf(false) }
     var editingSemester by remember { mutableStateOf<Semester?>(null) }
+
+    val exportSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val exportState by exportViewModel.state.collectAsState()
+
+    LaunchedEffect(Unit) {
+        exportViewModel.exportHtml.collect { html ->
+            scope.launch { exportSheetState.hide() }.invokeOnCompletion {
+                showExportSheet = false
+            }
+            onExportHtml(html)
+        }
+    }
+
+    LaunchedEffect(exportState.error) {
+        exportState.error?.let { snackBarHostState.showSnackbar(it) }
+    }
+
+    if (showExportSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showExportSheet = false },
+            sheetState = exportSheetState,
+        ) {
+            ExportReportSheetContent(
+                state = exportState,
+                onEvent = exportViewModel::onEvent,
+            )
+        }
+    }
 
     if (showFinishDialog && state is SemesterHistoryState.Loaded) {
         val loadedState = state as SemesterHistoryState.Loaded
@@ -149,6 +192,8 @@ fun SemesterHistoryScreen(
                 onDeleteClick = { viewModel.onEvent(SemesterHistoryEvent.DeleteSemester(it)) },
                 onMoveUp = { viewModel.onEvent(SemesterHistoryEvent.MoveSemesterUp(it)) },
                 onMoveDown = { viewModel.onEvent(SemesterHistoryEvent.MoveSemesterDown(it)) },
+                isExporting = exportState.isExporting,
+                onExportClick = { showExportSheet = true },
             )
         }
     }
@@ -158,6 +203,7 @@ fun SemesterHistoryScreen(
 fun SemesterHistoryContent(
     modifier: Modifier = Modifier,
     state: SemesterHistoryState.Loaded,
+    isExporting: Boolean,
     onFinishSemesterClick: () -> Unit,
     onAddPastSemesterClick: () -> Unit,
     onSemesterClick: (Long) -> Unit,
@@ -165,11 +211,13 @@ fun SemesterHistoryContent(
     onDeleteClick: (Long) -> Unit,
     onMoveUp: (Long) -> Unit,
     onMoveDown: (Long) -> Unit,
+    onExportClick: () -> Unit,
 ) {
     val spacing = LocalSpacing.current
 
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
+        contentWindowInsets = WindowInsets(0),
         floatingActionButton = {
             Column(horizontalAlignment = Alignment.End) {
                 ExtendedFloatingActionButton(
@@ -204,6 +252,29 @@ fun SemesterHistoryContent(
                     cumulativeGPA = state.cumulativeGPA,
                     totalCreditHours = state.totalCreditHours,
                 )
+            }
+
+            item {
+                OutlinedButton(
+                    onClick = onExportClick,
+                    enabled = !isExporting,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    if (isExporting) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(16.dp),
+                            strokeWidth = 2.dp,
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Outlined.Share,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
+                    }
+                    Spacer(modifier = Modifier.size(spacing.small))
+                    Text(stringResource(R.string.export_pdf))
+                }
             }
 
             item {
@@ -243,9 +314,7 @@ fun SemesterHistoryContent(
                     SemesterCard(
                         semester = semester,
                         onClick = {
-                            if (semester.type == Semester.Type.DETAILED) onSemesterClick(
-                                semester.id
-                            )
+                            if (semester.type == Semester.Type.DETAILED) onSemesterClick(semester.id)
                         },
                         onEditClick = { onEditClick(semester) },
                         onDeleteClick = { onDeleteClick(semester.id) },

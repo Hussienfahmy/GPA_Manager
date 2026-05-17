@@ -2,6 +2,7 @@ package com.hussienfahmy.semester_history_presentation.di
 
 import com.hussienfahmy.semester_history_presentation.SemesterDetailViewModel
 import com.hussienfahmy.semester_history_presentation.SemesterHistoryViewModel
+import com.hussienfahmy.semester_history_presentation.export.ExportReportViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -37,6 +38,11 @@ val semesterHistoryPresentationModule = module {
             applicationScope = get(),
             dirtyTracker = get(),
             authRepository = get(),
+        )
+    }
+    viewModel {
+        ExportReportViewModel(
+            generateAcademicReport = get(),
         )
     }
 }

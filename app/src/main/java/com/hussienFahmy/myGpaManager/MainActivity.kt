@@ -105,7 +105,9 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) { paddingValues ->
-                    Column(modifier = Modifier.padding(paddingValues)) {
+                    Column(modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)) {
                         val isOnboardingScreen = currentDestination in onboardingRoutes
                         val currentStep = getOnboardingStep(currentDestination)
 

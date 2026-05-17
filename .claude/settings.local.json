@@ -11,7 +11,8 @@
       "Bash(PYTHONIOENCODING=utf-8 mempalace init *)",
       "Bash(claude mcp *)",
       "Bash(PYTHONIOENCODING=utf-8 mempalace status *)",
-      "Bash(PYTHONIOENCODING=utf-8 mempalace *)"
+      "Bash(PYTHONIOENCODING=utf-8 mempalace *)",
+      "mcp__ide__getDiagnostics"
     ],
     "deny": [],
     "ask": []

@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+    <string name="export_pdf">تصدير PDF</string>
+    <string name="export_select_template">اختر النموذج</string>
+    <string name="export_archived_only_note">يتضمن التقرير الفصول المؤرشفة فقط. الفصل الحالي (قيد التقدم) غير مدرج.</string>
+    <string name="export_failed">فشل إنشاء PDF. حاول مرة أخرى.</string>
+    <string name="tpl_ledger_name">دفتر الأستاذ</string>
+    <string name="tpl_ledger_tagline">سجل أكاديمي كلاسيكي</string>
+    <string name="tpl_ledger_desc">صفحة بإطار وعناوين بخط مزخرف. الأكثر رسمية، الأقرب إلى سجل أكاديمي حقيقي.</string>
+    <string name="tpl_modern_name">عصري</string>
+    <string name="tpl_modern_tagline">بطاقة أنيقة</string>
+    <string name="tpl_modern_desc">بطاقة داكنة مع عرض كبير للمعدل التراكمي وشارات ملونة للدرجات.</string>
+    <string name="tpl_gazette_name">صحيفة</string>
+    <string name="tpl_gazette_tagline">عنوان صحفي</string>
+    <string name="tpl_gazette_desc">عنوان مركزي، خطوط فاصلة، وعناوين أقسام مائلة مستوحاة من الصحافة المطبوعة.</string>
+    <string name="tpl_dashboard_name">لوحة معلومات</string>
+    <string name="tpl_dashboard_tagline">مؤشرات ورسوم</string>
+    <string name="tpl_dashboard_desc">بطاقات مؤشرات ورسم اتجاه. عرض تحليلي سريع.</string>
+    <string name="tpl_timeline_name">المسار الزمني</string>
+    <string name="tpl_timeline_tagline">رحلة الفصول</string>
+    <string name="tpl_timeline_desc">خط زمني عمودي بنقاط لكل فصل ومسار بياني في الأعلى.</string>
+    <string name="tpl_minimal_name">بسيط</string>
+    <string name="tpl_minimal_tagline">مساحة بيضاء واسعة</string>
+    <string name="tpl_minimal_desc">تصميم يركز على الطباعة بمساحة بيضاء واسعة ومعدل كبير الحجم وخطوط هادئة بين الفصول.</string>
     <string name="add">إضافة</string>
     <string name="add_and_close">اضف ثم اغلق</string>
     <string name="add_another_subject">+ اضف مادة اخرى</string>
