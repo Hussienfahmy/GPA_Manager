@@ -124,7 +124,7 @@ class SemesterMarksViewModel(
             }
 
             if (result is UpdateResult.Failed) {
-                _uiEvent.send(UiEvent.ShowToast(result.message))
+                _uiEvent.send(UiEvent.ShowSnackBar(result.message))
             }
         }
     }

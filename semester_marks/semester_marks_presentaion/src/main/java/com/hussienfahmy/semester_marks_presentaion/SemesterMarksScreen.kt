@@ -8,9 +8,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,7 +30,8 @@ fun SemesterMarksScreen(
     modifier: Modifier = Modifier,
     viewModel: SemesterMarksViewModel = koinViewModel(),
 ) {
-    UiEventHandler(uiEvent = viewModel.uiEvent)
+    val snackBarHostState = remember { SnackbarHostState() }
+    UiEventHandler(uiEvent = viewModel.uiEvent, snackBarHostState = snackBarHostState)
 
     val state by viewModel.state
 
@@ -38,13 +42,13 @@ fun SemesterMarksScreen(
         }
     }
 
-    when (val s = state) {
-        is SemesterMarksState.Loading -> Box(modifier = Modifier.fillMaxSize()) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        }
+    Box(modifier = Modifier.fillMaxSize()) {
+        when (val s = state) {
+            is SemesterMarksState.Loading ->
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
 
-        is SemesterMarksState.Calculated -> SemesterMarksScreenContent(
-            modifier = modifier,
+            is SemesterMarksState.Calculated -> SemesterMarksScreenContent(
+                modifier = modifier,
             subjects = s.subjects,
             onMidTermMarksChange = { subjectId, marks ->
                 viewModel.onEvent(
@@ -96,6 +100,12 @@ fun SemesterMarksScreen(
                     SemesterMarksEvent.SetProjectAvailability(subjectId, newAvailability)
                 )
             },
+            )
+        }
+
+        SnackbarHost(
+            hostState = snackBarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter),
         )
     }
 }

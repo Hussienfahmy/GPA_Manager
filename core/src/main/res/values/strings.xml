@@ -34,10 +34,14 @@
     <string name="err_subject_practical_negative">Practical marks can not be less than zero</string>
     <string name="err_subject_project_negative">Project marks can not be less than zero</string>
     <string name="err_subject_final_exam_invalid">Final exam marks must be more than zero</string>
+    <string name="err_subject_final_exam_exceeds_total">Final exam total can\'t be more than the subject total marks</string>
+    <string name="err_subject_final_exam_below_semester">Final exam total must be larger than the semester marks you entered — enter what the exam is out of, not your score</string>
     <string name="final_exam">Final Exam</string>
     <string name="final_exam_total_hint">Max marks for final exam</string>
     <string name="semester_work">Semester Work</string>
-    <string name="final_exam_description">Enter the total marks your final exam is worth (e.g. 60) - not what you scored in it. We use this to show the highest grade you can still achieve.</string>
+    <string name="final_exam_description_prefix">Enter what the final exam is out of (e.g. 60) —</string>
+    <string name="final_exam_description_emphasis">not the score you got.</string>
+    <string name="final_exam_description_suffix">Used to show the highest grade you can still reach.</string>
     <string name="final_exam_label">Final exam out of</string>
     <string name="final_exam_score">Final Exam Score</string>
     <string name="err_subject_total_must_more_than_zero">Total Marks must be more than zero</string>

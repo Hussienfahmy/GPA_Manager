@@ -10,11 +10,35 @@ class ChangeFinalExamMaxMarks(
 ) {
     suspend operator fun invoke(subjectId: Long, marks: String): UpdateResult {
         val value = marks.toDoubleOrNull()
-        return if (value == null || value <= 0) {
-            UpdateResult.Failed(UiText.StringResource(R.string.err_subject_final_exam_invalid))
-        } else {
-            subjectDao.updateFinalExamMaxMarks(subjectId, value)
-            UpdateResult.Success
+        if (value == null || value <= 0) {
+            return UpdateResult.Failed(UiText.StringResource(R.string.err_subject_final_exam_invalid))
         }
+
+        val subject = subjectDao.getSubjectById(subjectId)
+        if (subject != null) {
+            // final exam total is a portion of the subject total marks
+            if (value > subject.totalMarks) {
+                return UpdateResult.Failed(
+                    UiText.StringResource(R.string.err_subject_final_exam_exceeds_total)
+                )
+            }
+
+            // semester work marks the student has already entered (their scores).
+            // a final-exam total smaller than the coursework scores means the
+            // student typed what they scored in the exam, not what it is out of.
+            val semesterMarks = subject.semesterMarks
+            val semesterWork = (semesterMarks?.midterm ?: 0.0) +
+                    (semesterMarks?.practical ?: 0.0) +
+                    (semesterMarks?.oral ?: 0.0) +
+                    (semesterMarks?.project ?: 0.0)
+            if (semesterWork > 0 && value <= semesterWork) {
+                return UpdateResult.Failed(
+                    UiText.StringResource(R.string.err_subject_final_exam_below_semester)
+                )
+            }
+        }
+
+        subjectDao.updateFinalExamMaxMarks(subjectId, value)
+        return UpdateResult.Success
     }
 }

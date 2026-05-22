@@ -120,6 +120,12 @@ interface SubjectDao {
     fun getAllCurrentSubjects(): Flow<List<Subject>>
 
     /**
+     * Get a single subject by id (null if not found)
+     */
+    @Query("SELECT * FROM subject WHERE id = :id")
+    suspend fun getSubjectById(id: Long): Subject?
+
+    /**
      * Get all subjects belonging to a specific archived semester
      */
     @Query("SELECT * FROM subject WHERE semesterId = :semesterId ORDER BY creditHours DESC")
@@ -183,6 +189,11 @@ interface SubjectDao {
 
                             gradesForMax.filter { it.percentage!! <= threshold }
                                 .maxByOrNull { it.percentage!! }
+                            // threshold can fall below the lowest grade (e.g. a
+                            // tiny final-exam weight). Fall back to the lowest
+                            // available grade instead of crashing on maxGrade!!.
+                                ?: gradesForMax.minByOrNull { it.percentage!! }
+                                ?: highestGrade
                         }
 
                     val assignedGrade = subject.gradeName?.let { gradeName ->
