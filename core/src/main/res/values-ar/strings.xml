@@ -182,9 +182,13 @@
     <!-- Final exam strings -->
     <string name="final_exam">الامتحان النهائي</string>
     <string name="final_exam_total_hint">الدرجة الكلية للامتحان النهائي</string>
-    <string name="final_exam_description">أدخل الدرجة الكلية للامتحان النهائي (مثال: ٦٠) وليس ما حصلت عليه فيه. نستخدمها لنُظهر أعلى تقدير لا يزال بإمكانك تحقيقه.</string>
+    <string name="final_exam_description_prefix">أدخل الدرجة الكلية للامتحان النهائي (مثال: ٦٠) —</string>
+    <string name="final_exam_description_emphasis">وليست درجتك التي حصلت عليها.</string>
+    <string name="final_exam_description_suffix">تُستخدم لإظهار أعلى تقدير لا يزال بإمكانك تحقيقه.</string>
     <string name="final_exam_label">الامتحان النهائي من أصل</string>
     <string name="err_subject_final_exam_invalid">يجب أن تكون درجة الامتحان النهائي أكبر من الصفر</string>
+    <string name="err_subject_final_exam_exceeds_total">لا يمكن أن يكون إجمالي الامتحان النهائي أكبر من إجمالي درجات المادة</string>
+    <string name="err_subject_final_exam_below_semester">يجب أن يكون إجمالي الامتحان النهائي أكبر من درجات أعمال السنة التي أدخلتها — أدخل الدرجة الكلية للامتحان، وليس درجتك</string>
     <string name="final_exam_score">درجة الامتحان النهائي</string>
     <string name="semester_work">الأعمال الفصلية</string>
 

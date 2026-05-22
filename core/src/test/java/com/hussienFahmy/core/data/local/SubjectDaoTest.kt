@@ -208,6 +208,22 @@ class SubjectDaoTest {
     }
 
     @Test
+    fun semesterWorkWithLowFinalExamMarks_doesNotCrash() = runTest {
+        // Reproduces crash: student misunderstood the field and entered the
+        // marks they GOT in the final exam (7) instead of what it is OUT OF.
+        // semester: midterm=5 = 5% of 100
+        // finalPercentage = 7/100*100 = 7%
+        // threshold = 5% + 7% = 12% → no non-F grade qualifies (lowest is D=60%)
+        // -> gradesForMax.filter{}.maxByOrNull{} == null -> maxGrade!! crashes
+        subjectDao.updateMidterm(templateSubject.id, 5.0)
+        subjectDao.updateFinalExamMaxMarks(templateSubject.id, 7.0)
+
+        val loaded = subjectDao.subjectsWithAssignedGrade.map { it.toList().first() }.first()
+
+        assertNotNull(loaded.maxGradeCanBeAssigned)
+    }
+
+    @Test
     fun semesterWorkAndMaxGrade() = runTest {
         subjectDao.updateMidterm(templateSubject.id, 5.0)
         subjectDao.updatePractical(templateSubject.id, 10.0)
