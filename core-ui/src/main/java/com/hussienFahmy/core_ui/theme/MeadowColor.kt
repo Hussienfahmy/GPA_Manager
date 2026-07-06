@@ -22,6 +22,8 @@ data class MeadowAccent(
     val container: Color,
     /** Soft companion — inner ring, dashed borders, decorative. */
     val soft: Color,
+    /** Tab-tinted primary text — titles on this tab's screens. */
+    val ink: Color,
 )
 
 @Immutable
@@ -62,6 +64,14 @@ data class MeadowColors(
     val ringTrack: Color,
     val ringTrackInner: Color,
 
+    // Controls
+    /** Off-state switch track; also the bottom-sheet drag handle. */
+    val switchTrackOff: Color,
+    /** Error text-field background. */
+    val fieldErrorBg: Color,
+    /** Error text-field border. */
+    val fieldErrorBorder: Color,
+
     // Bottom nav
     val navBg: Color,
     val navBorder: Color,
@@ -99,6 +109,9 @@ val MeadowLightColors = MeadowColors(
     segmentedText = Color(0xFF7A857C),
     ringTrack = Color(0xFFEFEAE0),
     ringTrackInner = Color(0xFFF3EEE3),
+    switchTrackOff = Color(0xFFD8D2C2),
+    fieldErrorBg = Color(0xFFFDF4F1),
+    fieldErrorBorder = Color(0xFFE2A69A),
     navBg = Color(0xFFFFFFFF),
     navBorder = Color(0xFFEFEAE0),
     navItemText = Color(0xFFA8A392),
@@ -113,6 +126,7 @@ val MeadowLightColors = MeadowColors(
         deep = Color(0xFF2E6B4E),
         container = Color(0xFFE3F0E7),
         soft = Color(0xFF8FC7A8),
+        ink = Color(0xFF22382C),
     ),
     marks = MeadowAccent(
         accent = Color(0xFFC98A2D),
@@ -120,6 +134,7 @@ val MeadowLightColors = MeadowColors(
         deep = Color(0xFF8A5F1D),
         container = Color(0xFFF7EDDA),
         soft = Color(0xFFB98A3E),
+        ink = Color(0xFF332E22),
     ),
     history = MeadowAccent(
         accent = Color(0xFF7D6BC2),
@@ -127,6 +142,7 @@ val MeadowLightColors = MeadowColors(
         deep = Color(0xFF5A4AA0),
         container = Color(0xFFECE8F8),
         soft = Color(0xFFA99AE0),
+        ink = Color(0xFF2E2A40),
     ),
     quick = MeadowAccent(
         accent = Color(0xFFD96F5B),
@@ -134,6 +150,7 @@ val MeadowLightColors = MeadowColors(
         deep = Color(0xFFB25441),
         container = Color(0xFFFAE7E1),
         soft = Color(0xFFE8907B),
+        ink = Color(0xFF3C2A25),
     ),
     more = MeadowAccent(
         accent = Color(0xFF46586A),
@@ -141,6 +158,7 @@ val MeadowLightColors = MeadowColors(
         deep = Color(0xFF46586A),
         container = Color(0xFFE7ECF0),
         soft = Color(0xFFAFC0CD),
+        ink = Color(0xFF2B3138),
     ),
 )
 
@@ -161,6 +179,9 @@ val MeadowDarkColors = MeadowColors(
     segmentedText = Color(0xFF7E8F82),
     ringTrack = Color(0xFF26302A),
     ringTrackInner = Color(0xFF222B25),
+    switchTrackOff = Color(0xFF3A463D),
+    fieldErrorBg = Color(0xFF3A2523),
+    fieldErrorBorder = Color(0xFFF0A092),
     navBg = Color(0xFF10150F),
     navBorder = Color(0xFF20291F),
     navItemText = Color(0xFF5A695E),
@@ -175,6 +196,7 @@ val MeadowDarkColors = MeadowColors(
         deep = Color(0xFF8FD1AC),
         container = Color(0xFF233729),
         soft = Color(0xFF3E8464),
+        ink = Color(0xFFEDF4EE),
     ),
     marks = MeadowAccent(
         accent = Color(0xFFE0B25C),
@@ -182,6 +204,7 @@ val MeadowDarkColors = MeadowColors(
         deep = Color(0xFFE9C67F),
         container = Color(0xFF3A3122),
         soft = Color(0xFFC9A253),
+        ink = Color(0xFFEDF4EE),
     ),
     history = MeadowAccent(
         accent = Color(0xFFA99AE0),
@@ -189,6 +212,7 @@ val MeadowDarkColors = MeadowColors(
         deep = Color(0xFFBBACEE),
         container = Color(0xFF322D45),
         soft = Color(0xFF7D6BC2),
+        ink = Color(0xFFEDF4EE),
     ),
     quick = MeadowAccent(
         accent = Color(0xFFE8907B),
@@ -196,6 +220,7 @@ val MeadowDarkColors = MeadowColors(
         deep = Color(0xFFF0A98F),
         container = Color(0xFF3A2A26),
         soft = Color(0xFFD96F5B),
+        ink = Color(0xFFEDF4EE),
     ),
     more = MeadowAccent(
         accent = Color(0xFFAFC0CD),
@@ -203,6 +228,7 @@ val MeadowDarkColors = MeadowColors(
         deep = Color(0xFFAFC0CD),
         container = Color(0xFF2A343B),
         soft = Color(0xFF46586A),
+        ink = Color(0xFFEDF4EE),
     ),
 )
 

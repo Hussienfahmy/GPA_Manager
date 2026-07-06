@@ -25,15 +25,15 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core_ui.LocalSpacing
-import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationDialog
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
 import com.hussienfahmy.core_ui.presentation.components.AddSubjectsHint
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.semester_subjctets_domain.model.Grade
 import com.hussienfahmy.semester_subjctets_domain.model.Subject
 import com.hussienfahmy.semester_subjctets_domain.use_case.Calculate
-import com.hussienfahmy.semester_subjctets_presentaion.components.AddSubjectDialog
+import com.hussienfahmy.semester_subjctets_presentaion.components.AddSubjectSheet
 import com.hussienfahmy.semester_subjctets_presentaion.components.Controllers
-import com.hussienfahmy.semester_subjctets_presentaion.components.RenameDialog
+import com.hussienfahmy.semester_subjctets_presentaion.components.RenameSheet
 import com.hussienfahmy.semester_subjctets_presentaion.components.ResultCard
 import com.hussienfahmy.semester_subjctets_presentaion.components.SubjectsColumn
 import com.hussienfahmy.semester_subjctets_presentaion.model.Mode
@@ -52,8 +52,8 @@ fun SemesterScreen(
     var showAddDialog by remember { mutableStateOf(false) }
 
     if (showAddDialog) {
-        AddSubjectDialog(
-            onDismissClick = { showAddDialog = false },
+        AddSubjectSheet(
+            onDismiss = { showAddDialog = false },
             onAddSubject = { name, creditHours, midtermAvailable, practicalAvailable, oralAvailable, projectAvailable ->
                 viewModel.onEvent(
                     SemesterSubjectsEvent.AddSubject(
@@ -72,7 +72,7 @@ fun SemesterScreen(
     var showRenameDialog: Subject? by remember { mutableStateOf(null) }
 
     if (showRenameDialog != null) {
-        RenameDialog(
+        RenameSheet(
             onDismiss = { showRenameDialog = null },
             onSaveClick = { newName ->
                 viewModel.onEvent(
@@ -86,7 +86,7 @@ fun SemesterScreen(
     var showResetAllDialog by remember { mutableStateOf(false) }
 
     if (showResetAllDialog) {
-        MeadowConfirmationDialog(
+        MeadowConfirmationSheet(
             title = stringResource(R.string.reset_all_title),
             body = stringResource(R.string.reset_all_message),
             confirmText = stringResource(R.string.reset_all),

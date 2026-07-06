@@ -2,11 +2,11 @@ package com.hussienfahmy.myGpaManager.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.hussienfahmy.core.R
 import com.ramcosta.composedestinations.generated.destinations.AppMoreScreenDestination
@@ -23,7 +23,7 @@ enum class BottomNavDestination(
 ) {
     Semester(
         direction = AppSemesterScreenDestination,
-        icon = Icons.Outlined.DateRange,
+        icon = Icons.Outlined.CalendarMonth,
         label = R.string.semester
     ),
     Marks(
@@ -38,12 +38,12 @@ enum class BottomNavDestination(
     ),
     Quick(
         direction = AppQuickScreenDestination,
-        icon = Icons.Outlined.Star,
+        icon = Icons.Outlined.AutoAwesome,
         label = R.string.quick
     ),
     More(
         direction = AppMoreScreenDestination,
-        icon = Icons.Outlined.MoreVert,
+        icon = Icons.Outlined.MoreHoriz,
         label = R.string.more
     )
 }

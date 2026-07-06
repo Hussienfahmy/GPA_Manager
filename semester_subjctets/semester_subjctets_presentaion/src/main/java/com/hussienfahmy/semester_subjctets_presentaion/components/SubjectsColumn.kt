@@ -40,7 +40,7 @@ import com.hussienfahmy.core_ui.presentation.components.meadow.GradePillState
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChip
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChipStyle
-import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationDialog
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
 import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.semester_subjctets_domain.model.Grade
 import com.hussienfahmy.semester_subjctets_domain.model.Subject
@@ -96,7 +96,7 @@ fun SubjectCard(
 
     var showConfirmDeleteDialog by remember { mutableStateOf(false) }
 
-    if (showConfirmDeleteDialog) MeadowConfirmationDialog(
+    if (showConfirmDeleteDialog) MeadowConfirmationSheet(
         title = stringResource(R.string.delete_subject_title, subject.name),
         body = stringResource(R.string.delete_subject_message),
         confirmText = stringResource(R.string.delete),

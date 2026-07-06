@@ -326,4 +326,9 @@
     <string name="capped_max">max %1$s</string>
     <string name="out_of_reach_max">out of reach · max %1$s</string>
     <string name="gpa_needed">GPA needed</string>
+    <string name="sheet_components_question">Which components does this course grade?</string>
+    <string name="sheet_setup_title">%1$s — setup</string>
+    <string name="reset_marks_title">Reset marks for %1$s?</string>
+    <string name="reset_marks_message">All entered marks for this subject are cleared. The subject itself stays in place.</string>
+    <string name="final_exam_marks_needed">Final-exam marks needed for each grade</string>
 </resources>
