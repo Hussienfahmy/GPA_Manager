@@ -1,59 +1,55 @@
 package com.hussienfahmy.semester_marks_presentaion.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
-import androidx.compose.material3.TooltipAnchorPosition
-import androidx.compose.material3.TooltipBox
-import androidx.compose.material3.TooltipDefaults
-import androidx.compose.material3.VerticalDivider
-import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.ParagraphStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.hussienfahmy.core.R
-import com.hussienfahmy.core_ui.LocalSpacing
-import com.hussienfahmy.core_ui.presentation.components.ConfirmationDialog
-import com.hussienfahmy.core_ui.presentation.components.TipDialogContainer
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
 import com.hussienfahmy.core_ui.presentation.util.toStringWithOptionalDecimals
+import com.hussienfahmy.core_ui.theme.LocalMeadowAccent
+import com.hussienfahmy.core_ui.theme.MeadowRadius
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.semester_marks_domain.model.Grade
 import com.hussienfahmy.semester_marks_domain.model.Subject
 
@@ -72,32 +68,35 @@ fun SemesterMarksItem(
     onOralAvailabilityCheckChanges: (Boolean) -> Unit,
     onProjectAvailabilityCheckChanges: (Boolean) -> Unit,
 ) {
-    val spacing = LocalSpacing.current
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
 
-    var midtermInput by remember { mutableStateOf(subject.midtermMarks?.toString() ?: "") }
+    var midtermInput by remember { mutableStateOf(subject.midtermMarks?.toStringWithOptionalDecimals() ?: "") }
+    var practicalInput by remember { mutableStateOf(subject.practicalMarks?.toStringWithOptionalDecimals() ?: "") }
+    var oralInput by remember { mutableStateOf(subject.oralMarks?.toStringWithOptionalDecimals() ?: "") }
+    var projectInput by remember { mutableStateOf(subject.projectMarks?.toStringWithOptionalDecimals() ?: "") }
 
-    var practicalInput by remember { mutableStateOf(subject.practicalMarks?.toString() ?: "") }
+    var showResetConfirmation by remember { mutableStateOf(false) }
+    var showSettingsSheet by remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(showHint) }
 
-    var oralInput by remember { mutableStateOf(subject.oralMarks?.toString() ?: "") }
+    if (showResetConfirmation) MeadowConfirmationSheet(
+        title = stringResource(R.string.reset_marks_title, subject.name),
+        body = stringResource(R.string.reset_marks_message),
+        confirmText = stringResource(R.string.reset),
+        onConfirm = {
+            onResetClick()
+            midtermInput = ""
+            practicalInput = ""
+            oralInput = ""
+            projectInput = ""
+        },
+        onDismiss = { showResetConfirmation = false },
+    )
 
-    var projectInput by remember { mutableStateOf(subject.projectMarks?.toString() ?: "") }
-
-    var showResetConfirmationDialog by remember { mutableStateOf(false) }
-
-    var showSubjectSettingsSheet by remember { mutableStateOf(false) }
-
-    if (showResetConfirmationDialog) ConfirmationDialog(onDismiss = {
-        showResetConfirmationDialog = false
-    }, onConfirm = {
-        onResetClick()
-        midtermInput = ""
-        practicalInput = ""
-        oralInput = ""
-        projectInput = ""
-    })
-
-    if (showSubjectSettingsSheet) SubjectSettingsBottomSheet(
-        onDismiss = { showSubjectSettingsSheet = false },
+    if (showSettingsSheet) SubjectSettingsSheet(
+        subjectName = subject.name,
+        onDismiss = { showSettingsSheet = false },
         midtermAvailable = subject.midtermAvailable,
         practicalAvailable = subject.practicalAvailable,
         oralAvailable = subject.oralAvailable,
@@ -122,306 +121,284 @@ fun SemesterMarksItem(
         onFinalExamMaxMarksSave = onFinalExamMaxMarksChange,
     )
 
-    Card(shape = RoundedCornerShape(spacing.medium)) {
-        Column(
-            modifier = Modifier.padding(spacing.small),
-            verticalArrangement = Arrangement.spacedBy(spacing.small)
+    MeadowCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioNoBouncy,
+                    stiffness = Spring.StiffnessMedium,
+                )
+            ),
+        radius = if (isExpanded) MeadowRadius.hero else MeadowRadius.card,
+        contentPadding = PaddingValues(
+            horizontal = 18.dp, vertical = if (isExpanded) 16.dp else 14.dp
+        ),
+        elevated = isExpanded,
+    ) {
+        // Header: name · (compact: total) · reset · setup — tap to expand
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                ) { isExpanded = !isExpanded },
         ) {
-            SubjectTitle(
-                subject = subject,
-                onEditCLick = { showSubjectSettingsSheet = true },
-                onResetClick = { showResetConfirmationDialog = true },
+            Text(
+                text = subject.name,
+                style = MaterialTheme.typography.titleLarge,
+                color = accent.ink,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f),
             )
 
-            HorizontalDivider()
+            if (!isExpanded) {
+                TotalMarks(subject = subject, empty = subject.courseMarks == 0.0)
+            }
 
-            SemesterWork(
-                midtermAvailable = subject.midtermAvailable,
-                practicalAvailable = subject.practicalAvailable,
-                oralAvailable = subject.oralAvailable,
-                projectAvailable = subject.projectAvailable,
-                midtermInput = midtermInput,
-                onMidTermMarksChange = {
-                    midtermInput = it
-                    onMidTermMarksChange(it)
-                },
-                practicalInput = practicalInput,
-                onPracticalMarksChange = {
-                    practicalInput = it
-                    onPracticalMarksChange(it)
-                },
-                oralInput = oralInput,
-                onOralMarksChange = {
-                    oralInput = it
-                    onOralMarksChange(it)
-                },
-                projectInput = projectInput,
-                onProjectMarksChange = {
-                    projectInput = it
-                    onProjectMarksChange(it)
-                },
+            if (isExpanded) {
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = stringResource(R.string.reset),
+                    tint = colors.navItemIcon,
+                    modifier = Modifier
+                        .size(18.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                        ) { showResetConfirmation = true },
+                )
+            }
+            Icon(
+                imageVector = Icons.Default.Edit,
+                contentDescription = stringResource(R.string.edit),
+                tint = colors.navItemIcon,
+                modifier = Modifier
+                    .size(18.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                    ) { showSettingsSheet = true },
             )
+        }
 
-            if (showHint) {
-                TipDialogContainer(tipText = stringResource(R.string.tip_required_marks)) {
-                    Text(
-                        text = "The required marks you need to get to achieve the grade",
-                        maxLines = 1,
-                        style = MaterialTheme.typography.bodySmall
+        if (isExpanded) {
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Progress bar + total
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                val progress by animateFloatAsState(
+                    targetValue = subject.courseMarksPercentage.coerceIn(0f, 1f),
+                    label = "marksProgress",
+                )
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(8.dp)
+                        .clip(CircleShape)
+                        .background(colors.chipBg),
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(progress)
+                            .fillMaxHeight()
+                            .clip(CircleShape)
+                            .background(accent.accent),
                     )
                 }
-            }
-
-            val achievableGrades = subject.grades.filter { it.achievable is Grade.Achievable.Yes }
-
-            AnimatedVisibility(achievableGrades.isNotEmpty()) {
-                Column {
-                    HorizontalDivider()
-
-                    Spacer(modifier = Modifier.height(spacing.small))
-
-                    AvailableGrades(achievableGrades)
-                }
+                TotalMarks(subject = subject, empty = false)
             }
         }
-    }
-}
 
-@Composable
-private fun SemesterWork(
-    midtermAvailable: Boolean,
-    practicalAvailable: Boolean,
-    oralAvailable: Boolean,
-    projectAvailable: Boolean,
-    midtermInput: String,
-    onMidTermMarksChange: (String) -> Unit,
-    practicalInput: String,
-    onPracticalMarksChange: (String) -> Unit,
-    oralInput: String,
-    onOralMarksChange: (String) -> Unit,
-    projectInput: String,
-    onProjectMarksChange: (String) -> Unit,
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceAround,
-    ) {
-        if (midtermAvailable) SemesterMarkTextField(
-            modifier = Modifier.weight(1f),
-            title = stringResource(R.string.midterm),
-            value = midtermInput,
-            onValueChanged = onMidTermMarksChange,
-        )
-        if (practicalAvailable) SemesterMarkTextField(
-            modifier = Modifier.weight(1f),
-            title = stringResource(R.string.practical),
-            value = practicalInput,
-            onValueChanged = onPracticalMarksChange,
-        )
-        if (oralAvailable) SemesterMarkTextField(
-            modifier = Modifier.weight(1f),
-            title = stringResource(R.string.oral),
-            value = oralInput,
-            onValueChanged = onOralMarksChange,
-        )
-        if (projectAvailable) SemesterMarkTextField(
-            modifier = Modifier.weight(1f),
-            title = stringResource(R.string.project),
-            value = projectInput,
-            onValueChanged = onProjectMarksChange,
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SubjectTitle(
-    subject: Subject,
-    onResetClick: () -> Unit,
-    onEditCLick: () -> Unit,
-) {
-    val spacing = LocalSpacing.current
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Box(
-            modifier = Modifier.weight(1f)
-        ) {
-            TooltipBox(
-                positionProvider = TooltipDefaults.rememberTooltipPositionProvider(
-                    TooltipAnchorPosition.Above,
-                ),
-                tooltip = { PlainTooltip { Text(subject.name) } },
-                state = rememberTooltipState(),
-            ) {
-                Text(
-                    modifier = Modifier,
-                    text = subject.name,
-                    style = MaterialTheme.typography.titleLarge,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+        // Component tiles
+        val hasComponents = subject.midtermAvailable || subject.practicalAvailable ||
+                subject.oralAvailable || subject.projectAvailable
+        if (hasComponents) {
+            Spacer(modifier = Modifier.height(if (isExpanded) 14.dp else 12.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                if (subject.midtermAvailable) MarkTile(
+                    title = stringResource(R.string.midterm),
+                    value = midtermInput,
+                    onValueChange = {
+                        midtermInput = it
+                        onMidTermMarksChange(it)
+                    },
+                    editable = isExpanded,
+                    modifier = Modifier.weight(1f),
+                )
+                if (subject.practicalAvailable) MarkTile(
+                    title = stringResource(R.string.practical),
+                    value = practicalInput,
+                    onValueChange = {
+                        practicalInput = it
+                        onPracticalMarksChange(it)
+                    },
+                    editable = isExpanded,
+                    modifier = Modifier.weight(1f),
+                )
+                if (subject.oralAvailable) MarkTile(
+                    title = stringResource(R.string.oral),
+                    value = oralInput,
+                    onValueChange = {
+                        oralInput = it
+                        onOralMarksChange(it)
+                    },
+                    editable = isExpanded,
+                    modifier = Modifier.weight(1f),
+                )
+                if (subject.projectAvailable) MarkTile(
+                    title = stringResource(R.string.project),
+                    value = projectInput,
+                    onValueChange = {
+                        projectInput = it
+                        onProjectMarksChange(it)
+                    },
+                    editable = isExpanded,
+                    modifier = Modifier.weight(1f),
                 )
             }
         }
 
-        Spacer(modifier = Modifier.width(spacing.small))
-
-        Text(
-            text = "${subject.courseMarks.toStringWithOptionalDecimals()}/${subject.courseTotalMarks.toStringWithOptionalDecimals()}",
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        Spacer(modifier = Modifier.width(spacing.small))
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(spacing.small),
-        ) {
-            Icon(
-                imageVector = Icons.Default.Refresh,
-                contentDescription = stringResource(id = R.string.reset),
-                modifier = Modifier.clickable(onClick = onResetClick),
-            )
-            Icon(
-                imageVector = Icons.Default.Edit,
-                contentDescription = stringResource(id = R.string.edit),
-                modifier = Modifier.clickable(onClick = onEditCLick),
-            )
-        }
-    }
-}
-
-@Composable
-private fun AvailableGrades(grades: List<Grade>) {
-    val spacing = LocalSpacing.current
-
-    Card(
-        shape = RoundedCornerShape(spacing.small),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primary
-        )
-    ) {
-        BoxWithConstraints {
-            val itemWidth = this.maxWidth / grades.size
-
-            LazyRow(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                itemsIndexed(grades, key = { _, grade -> grade.symbol }) { index, grade ->
-                    GradeWithNeededMarksItem(
-                        modifier = Modifier
-                            .width(itemWidth)
-                            .animateItem(),
-                        grade = grade
-                    )
-
-                    // add divider between the grades
-                    if (index != grades.lastIndex) VerticalDivider(
-                        modifier = Modifier
-                            .height(50.dp)
-                    )
-                }
+        // Grade ladder — expanded only
+        AnimatedVisibility(visible = isExpanded) {
+            Column {
+                Spacer(modifier = Modifier.height(14.dp))
+                Text(
+                    text = stringResource(R.string.final_exam_marks_needed),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = colors.navItemText,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                GradeLadder(grades = subject.grades)
             }
         }
     }
 }
 
 @Composable
-private fun GradeWithNeededMarksItem(
-    modifier: Modifier = Modifier,
-    grade: Grade,
-) {
-    val animatedAlpha by animateFloatAsState(
-        targetValue = if (grade.achievable is Grade.Achievable.Yes) 1f else 0.5f
-    )
+private fun TotalMarks(subject: Subject, empty: Boolean) {
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
 
-    Box(
-        modifier = modifier
-            .heightIn(min = 50.dp)
-            .padding(horizontal = 3.dp, vertical = 3.dp)
-            .graphicsLayer {
-                alpha = animatedAlpha
-            },
+    Row(verticalAlignment = Alignment.Bottom) {
+        Text(
+            text = subject.courseMarks.toStringWithOptionalDecimals(),
+            style = MaterialTheme.typography.titleSmall.copy(fontSize = 13.sp),
+            color = if (empty) colors.inkDisabled else accent.accent,
+        )
+        Text(
+            text = "/${subject.courseTotalMarks.toStringWithOptionalDecimals()}",
+            style = MaterialTheme.typography.bodySmall.copy(fontSize = 13.sp),
+            color = colors.inkDisabled,
+        )
+    }
+}
+
+/** The "final-exam marks needed" ladder: amber = reachable, faded = out of reach. */
+@Composable
+private fun GradeLadder(grades: List<Grade>) {
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
+
+    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        grades.forEach { grade ->
+            val achievable = grade.achievable as? Grade.Achievable.Yes
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(MeadowRadius.tile))
+                    .background(if (achievable != null) accent.container else colors.chipBg)
+                    .alpha(if (achievable != null) 1f else 0.55f)
+                    .padding(top = 7.dp, bottom = 6.dp),
+            ) {
+                Text(
+                    text = grade.symbol,
+                    style = MaterialTheme.typography.titleSmall.copy(textDirection = TextDirection.Ltr),
+                    color = if (achievable != null) accent.deep else colors.inkDisabled,
+                    maxLines = 1,
+                )
+                Text(
+                    text = achievable?.neededMarks?.toStringWithOptionalDecimals() ?: "—",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = if (achievable != null) accent.soft else colors.inkDisabled,
+                    maxLines = 1,
+                )
+            }
+        }
+    }
+}
+
+@Preview(name = "MarksItem · light", showBackground = true)
+@Composable
+private fun SemesterMarksItemLightPreview() {
+    MeadowTheme(darkTheme = false) {
+        PreviewItem()
+    }
+}
+
+@Preview(name = "MarksItem · dark", showBackground = true)
+@Composable
+private fun SemesterMarksItemDarkPreview() {
+    MeadowTheme(darkTheme = true) {
+        PreviewItem()
+    }
+}
+
+@Composable
+private fun PreviewItem() {
+    CompositionLocalProvider(
+        LocalMeadowAccent provides MeadowTheme.colors.marks
     ) {
         Column(
+            verticalArrangement = Arrangement.spacedBy(11.dp),
             modifier = Modifier
-                .align(Alignment.Center),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .background(MeadowTheme.colors.paper)
+                .padding(16.dp),
         ) {
-            Text(text = buildAnnotatedString {
-                withStyle(ParagraphStyle(textDirection = TextDirection.Ltr)) {
-                    append(grade.symbol)
-                }
-            })
-
-            val achievable = grade.achievable
-
-            if (achievable is Grade.Achievable.Yes) {
-                val neededMarks = achievable.neededMarks
-
-                Text(text = neededMarks.toString())
-            }
+            SemesterMarksItem(
+                subject = Subject(
+                    id = 1,
+                    name = "Computer Graphics",
+                    practicalMarks = null,
+                    midtermMarks = 15.0,
+                    oralMarks = 8.0,
+                    projectMarks = null,
+                    courseTotalMarks = 100.0,
+                    finalExamMaxMarks = 60.0,
+                    midtermAvailable = true,
+                    practicalAvailable = false,
+                    oralAvailable = true,
+                    projectAvailable = false,
+                    grades = listOf(
+                        Grade(symbol = "A", achievable = Grade.Achievable.No),
+                        Grade(symbol = "A-", achievable = Grade.Achievable.No),
+                        Grade(symbol = "B+", achievable = Grade.Achievable.Yes(neededMarks = 57.0)),
+                        Grade(symbol = "B", achievable = Grade.Achievable.Yes(neededMarks = 52.0)),
+                        Grade(symbol = "C+", achievable = Grade.Achievable.Yes(neededMarks = 47.0)),
+                        Grade(symbol = "C", achievable = Grade.Achievable.Yes(neededMarks = 42.0)),
+                    )
+                ),
+                onMidTermMarksChange = {},
+                onPracticalMarksChange = {},
+                onOralMarksChange = {},
+                onProjectMarksChange = {},
+                onFinalExamMaxMarksChange = {},
+                onMidtermAvailabilityCheckChanges = {},
+                onPracticalAvailabilityCheckChanges = {},
+                onOralAvailabilityCheckChanges = {},
+                onProjectAvailabilityCheckChanges = {},
+                onResetClick = {},
+                showHint = true,
+            )
         }
     }
-}
-
-@Preview
-@Composable
-fun SemesterMarksItemPreview() {
-    SemesterMarksItem(
-        subject = Subject(
-            id = 1,
-            name = "Very Long subject name tooo way long",
-            practicalMarks = 10.0,
-            midtermMarks = 10.0,
-            oralMarks = 10.0,
-            projectMarks = 10.0,
-            courseTotalMarks = 100.0,
-            finalExamMaxMarks = 60.0,
-            midtermAvailable = true,
-            practicalAvailable = true,
-            oralAvailable = true,
-            projectAvailable = true,
-            grades = listOf(
-                Grade(
-                    symbol = "A",
-                    achievable = Grade.Achievable.No
-                ),
-                Grade(
-                    symbol = "B",
-                    achievable = Grade.Achievable.No
-                ),
-                Grade(
-                    symbol = "C",
-                    achievable = Grade.Achievable.Yes(neededMarks = 80.0)
-                ),
-                Grade(
-                    symbol = "D",
-                    achievable = Grade.Achievable.Yes(neededMarks = 60.0)
-                ),
-                Grade(
-                    symbol = "E",
-                    achievable = Grade.Achievable.Yes(neededMarks = 40.0)
-                ),
-            )
-        ),
-        onMidTermMarksChange = {},
-        onPracticalMarksChange = {},
-        onOralMarksChange = {},
-        onProjectMarksChange = {},
-        onFinalExamMaxMarksChange = {},
-        onMidtermAvailabilityCheckChanges = {},
-        onPracticalAvailabilityCheckChanges = {},
-        onOralAvailabilityCheckChanges = {},
-        onProjectAvailabilityCheckChanges = {},
-        onResetClick = {},
-        showHint = true
-    )
 }

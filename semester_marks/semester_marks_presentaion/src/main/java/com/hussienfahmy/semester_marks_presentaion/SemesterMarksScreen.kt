@@ -20,6 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.AddSubjectsHint
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
+import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.semester_marks_domain.model.Grade
 import com.hussienfahmy.semester_marks_domain.model.Subject
 import com.hussienfahmy.semester_marks_presentaion.components.SemesterMarksItem
@@ -42,7 +44,8 @@ fun SemesterMarksScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    MeadowAccentProvider(MeadowTheme.colors.marks) {
+        Box(modifier = Modifier.fillMaxSize()) {
         when (val s = state) {
             is SemesterMarksState.Loading ->
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -107,6 +110,7 @@ fun SemesterMarksScreen(
             hostState = snackBarHostState,
             modifier = Modifier.align(Alignment.BottomCenter),
         )
+        }
     }
 }
 

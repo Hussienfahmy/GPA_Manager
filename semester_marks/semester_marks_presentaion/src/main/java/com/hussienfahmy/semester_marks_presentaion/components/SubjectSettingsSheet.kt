@@ -1,38 +1,52 @@
 package com.hussienfahmy.semester_marks_presentaion.components
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import com.hussienfahmy.core.R
-import com.hussienfahmy.core_ui.LocalSpacing
-import com.hussienfahmy.core_ui.presentation.components.SemesterMarkChooser
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSwitch
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
 import com.hussienfahmy.core_ui.presentation.util.toStringWithOptionalDecimals
+import com.hussienfahmy.core_ui.theme.CapsLabelStyle
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * Subject setup sheet (design 4b): component toggles + final-exam max marks.
+ * Toggles apply immediately; the final-exam value commits on Save.
+ */
 @Composable
-fun SubjectSettingsBottomSheet(
+fun SubjectSettingsSheet(
+    subjectName: String,
     midtermAvailable: Boolean,
     oralAvailable: Boolean,
     practicalAvailable: Boolean,
@@ -45,8 +59,8 @@ fun SubjectSettingsBottomSheet(
     onProjectCheckChanges: (Boolean) -> Unit,
     onFinalExamMaxMarksSave: (String) -> Unit,
 ) {
-    val spacing = LocalSpacing.current
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
 
     var finalExamInput by remember {
         mutableStateOf(finalExamMaxMarks.toStringWithOptionalDecimals())
@@ -54,88 +68,145 @@ fun SubjectSettingsBottomSheet(
     val parsedFinalExam = finalExamInput.toDoubleOrNull()
     val isFinalExamValid = parsedFinalExam != null && parsedFinalExam > 0
 
-    ModalBottomSheet(
-        onDismissRequest = onDismiss,
-        sheetState = sheetState,
-    ) {
+    MeadowBottomSheet(onDismiss = onDismiss) {
+        Text(
+            text = stringResource(R.string.sheet_setup_title, subjectName),
+            style = MaterialTheme.typography.headlineMedium,
+            color = colors.ink,
+        )
+        Text(
+            text = stringResource(R.string.sheet_components_question),
+            style = MaterialTheme.typography.bodySmall,
+            color = colors.inkFaint,
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        ToggleRow(
+            title = stringResource(R.string.midterm),
+            checked = midtermAvailable,
+            onCheckedChange = onMidtermCheckChanges,
+        )
+        RowDivider()
+        ToggleRow(
+            title = stringResource(R.string.oral),
+            checked = oralAvailable,
+            onCheckedChange = onOralCheckChanges,
+        )
+        RowDivider()
+        ToggleRow(
+            title = stringResource(R.string.practical),
+            checked = practicalAvailable,
+            onCheckedChange = onPracticalCheckChanges,
+        )
+        RowDivider()
+        ToggleRow(
+            title = stringResource(R.string.project),
+            checked = projectAvailable,
+            onCheckedChange = onProjectCheckChanges,
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Final-exam max marks — always carries the tab-hue border (design 4b)
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = spacing.medium)
-                .padding(bottom = spacing.large),
-            verticalArrangement = Arrangement.spacedBy(spacing.small),
+                .background(colors.surfaceSunken, RoundedCornerShape(16.dp))
+                .border(
+                    width = 2.dp,
+                    color = if (isFinalExamValid || finalExamInput.isBlank()) accent.container
+                    else colors.fieldErrorBorder,
+                    shape = RoundedCornerShape(16.dp),
+                )
+                .padding(horizontal = 16.dp, vertical = 12.dp),
         ) {
             Text(
-                text = stringResource(R.string.semester_work),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                text = stringResource(R.string.final_exam_label).uppercase(),
+                style = CapsLabelStyle.copy(fontSize = 10.5.sp, letterSpacing = 0.06.em),
+                color = accent.soft,
+                maxLines = 1,
             )
-
-            SemesterMarkChooser(
-                title = stringResource(R.string.midterm),
-                available = midtermAvailable,
-                onCheckChanges = onMidtermCheckChanges,
-            )
-            SemesterMarkChooser(
-                title = stringResource(R.string.oral),
-                available = oralAvailable,
-                onCheckChanges = onOralCheckChanges,
-            )
-            SemesterMarkChooser(
-                title = stringResource(R.string.practical),
-                available = practicalAvailable,
-                onCheckChanges = onPracticalCheckChanges,
-            )
-            SemesterMarkChooser(
-                title = stringResource(R.string.project),
-                available = projectAvailable,
-                onCheckChanges = onProjectCheckChanges,
-            )
-
-            HorizontalDivider(modifier = Modifier.padding(vertical = spacing.extraSmall))
-
-            Text(
-                text = stringResource(R.string.final_exam),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Text(
-                text = buildAnnotatedString {
-                    append(stringResource(R.string.final_exam_description_prefix))
-                    append(" ")
-                    withStyle(
-                        SpanStyle(
-                            color = MaterialTheme.colorScheme.error,
-                            fontWeight = FontWeight.Bold,
-                        )
-                    ) {
-                        append(stringResource(R.string.final_exam_description_emphasis))
-                    }
-                    append(" ")
-                    append(stringResource(R.string.final_exam_description_suffix))
-                },
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
+            BasicTextField(
                 value = finalExamInput,
                 onValueChange = { finalExamInput = it },
-                label = { Text(stringResource(R.string.final_exam_label)) },
-                isError = finalExamInput.isNotBlank() && !isFinalExamValid,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                textStyle = MaterialTheme.typography.headlineLarge.copy(
+                    fontSize = 18.sp,
+                    color = colors.ink,
+                ),
+                cursorBrush = SolidColor(accent.accent),
                 singleLine = true,
-            )
-            Button(
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    onFinalExamMaxMarksSave(finalExamInput)
-                    onDismiss()
-                },
-                enabled = isFinalExamValid,
-            ) {
-                Text(stringResource(R.string.save))
-            }
+            )
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = buildAnnotatedString {
+                append(stringResource(R.string.final_exam_description_prefix))
+                append(" ")
+                withStyle(
+                    SpanStyle(
+                        color = accent.deep,
+                        fontWeight = FontWeight.ExtraBold,
+                    )
+                ) {
+                    append(stringResource(R.string.final_exam_description_emphasis))
+                }
+                append(" ")
+                append(stringResource(R.string.final_exam_description_suffix))
+            },
+            style = MaterialTheme.typography.bodySmall,
+            color = colors.inkFaint,
+        )
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        PillButton(
+            text = stringResource(R.string.save),
+            onClick = {
+                onFinalExamMaxMarksSave(finalExamInput)
+                onDismiss()
+            },
+            style = PillButtonStyle.Primary,
+            enabled = isFinalExamValid,
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
+}
+
+@Composable
+private fun ToggleRow(
+    title: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    val colors = MeadowTheme.colors
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 11.dp),
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            color = if (checked) colors.ink else colors.chipText,
+            modifier = Modifier.weight(1f),
+        )
+        MeadowSwitch(checked = checked, onCheckedChange = onCheckedChange)
+    }
+}
+
+@Composable
+private fun RowDivider() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(MeadowTheme.colors.divider),
+    )
 }
