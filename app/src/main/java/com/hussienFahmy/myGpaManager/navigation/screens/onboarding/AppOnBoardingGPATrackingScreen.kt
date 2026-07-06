@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChip
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChipStyle
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
@@ -39,7 +41,6 @@ import com.hussienfahmy.semester_history_domain.model.Semester
 import com.hussienfahmy.semester_history_presentation.components.AddPastSemesterSheet
 import com.hussienfahmy.semester_history_presentation.components.AddSubjectSheet
 import com.hussienfahmy.semester_history_presentation.components.CumulativeGpaCard
-import com.hussienfahmy.semester_history_presentation.components.SemesterTypeBadge
 import com.ramcosta.composedestinations.annotation.Destination
 import org.koin.androidx.compose.koinViewModel
 
@@ -99,6 +100,7 @@ internal fun AppOnBoardingGPATrackingContent(
             CumulativeGpaCard(
                 cumulativeGPA = cumulativeGPA,
                 totalCreditHours = totalCreditHours,
+                semestersCount = semesters.size,
             )
 
             OutlinedButton(
@@ -185,7 +187,14 @@ private fun OnboardingSemesterItem(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(spacing.small),
                 ) {
-                    SemesterTypeBadge(type = semester.type)
+                    if (semester.type == Semester.Type.DETAILED) {
+                        MeadowChip(
+                            text = stringResource(R.string.history_type_detailed),
+                            style = MeadowChipStyle.Accent,
+                        )
+                    } else {
+                        MeadowChip(text = stringResource(R.string.history_type_summary))
+                    }
                     Text(
                         text = stringResource(R.string.history_gpa_value, semester.semesterGPA),
                         style = MaterialTheme.typography.bodyMedium,

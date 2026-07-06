@@ -1,5 +1,10 @@
 package com.hussienfahmy.semester_history_presentation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,20 +20,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Done
-import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -39,25 +36,33 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChip
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChipStyle
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
+import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
+import com.hussienfahmy.core_ui.theme.MeadowRadius
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.semester_history_domain.model.Semester
 import com.hussienfahmy.semester_history_presentation.components.AddPastSemesterSheet
 import com.hussienfahmy.semester_history_presentation.components.CumulativeGpaCard
 import com.hussienfahmy.semester_history_presentation.components.EditSemesterSheet
-import com.hussienfahmy.semester_history_presentation.components.FinishSemesterDialog
+import com.hussienfahmy.semester_history_presentation.components.FinishSemesterSheet
 import com.hussienfahmy.semester_history_presentation.components.SemesterCard
 import com.hussienfahmy.semester_history_presentation.export.ExportReportSheetContent
 import com.hussienfahmy.semester_history_presentation.export.ExportReportViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SemesterHistoryScreen(
     modifier: Modifier = Modifier,
@@ -91,14 +96,11 @@ fun SemesterHistoryScreen(
     var showExportSheet by remember { mutableStateOf(false) }
     var editingSemester by remember { mutableStateOf<Semester?>(null) }
 
-    val exportSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val exportState by exportViewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
         exportViewModel.exportHtml.collect { html ->
-            scope.launch { exportSheetState.hide() }.invokeOnCompletion {
-                showExportSheet = false
-            }
+            showExportSheet = false
             onExportHtml(html)
         }
     }
@@ -107,11 +109,9 @@ fun SemesterHistoryScreen(
         exportState.error?.let { snackBarHostState.showSnackbar(it) }
     }
 
+    MeadowAccentProvider(MeadowTheme.colors.history) {
     if (showExportSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { showExportSheet = false },
-            sheetState = exportSheetState,
-        ) {
+        MeadowBottomSheet(onDismiss = { showExportSheet = false }) {
             ExportReportSheetContent(
                 state = exportState,
                 onEvent = exportViewModel::onEvent,
@@ -121,7 +121,7 @@ fun SemesterHistoryScreen(
 
     if (showFinishDialog && state is SemesterHistoryState.Loaded) {
         val loadedState = state as SemesterHistoryState.Loaded
-        FinishSemesterDialog(
+        FinishSemesterSheet(
             currentLevel = loadedState.currentLevel,
             currentSemesterNum = loadedState.currentSemesterNum,
             onConfirm = {
@@ -197,6 +197,7 @@ fun SemesterHistoryScreen(
             )
         }
     }
+    }
 }
 
 @Composable
@@ -215,27 +216,41 @@ fun SemesterHistoryContent(
 ) {
     val spacing = LocalSpacing.current
 
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
+        containerColor = colors.paper,
         contentWindowInsets = WindowInsets(0),
         floatingActionButton = {
+            // Design 2b FABs: primary "✓ Finish semester" pill + square "+"
             Column(horizontalAlignment = Alignment.End) {
-                ExtendedFloatingActionButton(
+                PillButton(
+                    text = "✓ ${stringResource(R.string.history_finish_semester)}",
                     onClick = onFinishSemesterClick,
-                    icon = { Icon(Icons.Outlined.Done, contentDescription = null) },
-                    text = { Text(stringResource(R.string.history_finish_semester)) },
-                    containerColor = if (state.hasWorkspaceSubjects)
-                        MaterialTheme.colorScheme.secondaryContainer
-                    else
-                        MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = if (state.hasWorkspaceSubjects)
-                        MaterialTheme.colorScheme.onSecondaryContainer
-                    else
-                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                    style = PillButtonStyle.Primary,
+                    enabled = state.hasWorkspaceSubjects,
                 )
-                Spacer(modifier = Modifier.height(spacing.small))
-                FloatingActionButton(onClick = onAddPastSemesterClick) {
-                    Icon(Icons.Outlined.Add, contentDescription = stringResource(R.string.add))
+                Spacer(modifier = Modifier.height(10.dp))
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(RoundedCornerShape(18.dp))
+                        .background(colors.card)
+                        .border(2.dp, accent.container, RoundedCornerShape(18.dp))
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = onAddPastSemesterClick,
+                        ),
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Add,
+                        contentDescription = stringResource(R.string.add),
+                        tint = accent.deep,
+                    )
                 }
             }
         }
@@ -244,49 +259,27 @@ fun SemesterHistoryContent(
             modifier = Modifier
                 .padding(paddingValues)
                 .padding(horizontal = spacing.small),
-            verticalArrangement = Arrangement.spacedBy(spacing.small),
+            verticalArrangement = Arrangement.spacedBy(11.dp),
             contentPadding = PaddingValues(vertical = spacing.small),
         ) {
             item {
                 CumulativeGpaCard(
                     cumulativeGPA = state.cumulativeGPA,
                     totalCreditHours = state.totalCreditHours,
+                    semestersCount = state.semesters.size,
+                    onExportClick = onExportClick,
+                    isExporting = isExporting,
                 )
             }
 
             item {
-                OutlinedButton(
-                    onClick = onExportClick,
-                    enabled = !isExporting,
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    if (isExporting) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(16.dp),
-                            strokeWidth = 2.dp,
-                        )
-                    } else {
-                        Icon(
-                            imageVector = Icons.Outlined.Share,
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp),
-                        )
-                    }
-                    Spacer(modifier = Modifier.size(spacing.small))
-                    Text(stringResource(R.string.export_pdf))
-                }
-            }
-
-            item {
-                Text(
+                MeadowChip(
                     text = stringResource(
                         R.string.history_you_are_in,
                         state.currentLevel,
                         state.currentSemesterNum
                     ),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(top = spacing.small),
+                    style = MeadowChipStyle.Accent,
                 )
             }
 
@@ -301,7 +294,7 @@ fun SemesterHistoryContent(
                         Text(
                             text = stringResource(R.string.history_empty_state),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = colors.inkMuted,
                             textAlign = TextAlign.Center,
                         )
                     }

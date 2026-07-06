@@ -1,29 +1,25 @@
 package com.hussienfahmy.semester_history_presentation.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,14 +28,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.hussienfahmy.core.R
-import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChip
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChipStyle
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
+import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.semester_history_domain.model.Semester
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * Journey-list semester card (design 2b): reorder arrows · label · type badge ·
+ * GPA · hrs/pts · edit · delete. Detailed cards open the Semester Detail screen.
+ */
 @Composable
 fun SemesterCard(
     semester: Semester,
@@ -52,190 +60,205 @@ fun SemesterCard(
     canMoveDown: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    var showDeleteSheet by remember { mutableStateOf(false) }
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
 
-    if (showDeleteSheet) {
-        ModalBottomSheet(onDismissRequest = { showDeleteSheet = false }) {
-            val spacing = LocalSpacing.current
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(spacing.medium),
-                verticalArrangement = Arrangement.spacedBy(spacing.small),
-            ) {
-                Text(
-                    text = stringResource(R.string.delete),
-                    style = MaterialTheme.typography.titleLarge,
-                )
-                Text(
-                    text = stringResource(R.string.history_delete_semester_message, semester.label),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Spacer(modifier = Modifier.height(spacing.small))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(spacing.small),
-                ) {
-                    OutlinedButton(
-                        onClick = { showDeleteSheet = false },
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        Text(stringResource(R.string.cancel))
-                    }
-                    Button(
-                        onClick = { showDeleteSheet = false; onDeleteClick() },
-                        modifier = Modifier.weight(1f),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.error,
-                        ),
-                    ) {
-                        Text(stringResource(R.string.delete))
-                    }
-                }
-                Spacer(modifier = Modifier.height(spacing.medium))
-            }
-        }
-    }
+    var showDeleteConfirmation by remember { mutableStateOf(false) }
 
-    val spacing = LocalSpacing.current
+    if (showDeleteConfirmation) MeadowConfirmationSheet(
+        title = stringResource(R.string.delete),
+        body = stringResource(R.string.history_delete_semester_message, semester.label),
+        confirmText = stringResource(R.string.delete),
+        onConfirm = onDeleteClick,
+        onDismiss = { showDeleteConfirmation = false },
+    )
+
     val isDetailed = semester.type == Semester.Type.DETAILED
 
-    val cardContent: @Composable () -> Unit = {
+    MeadowCard(
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 13.dp),
+    ) {
         Row(
-            modifier = Modifier.padding(spacing.medium),
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .then(
+                    if (isDetailed) Modifier.clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = onClick,
+                    ) else Modifier
+                ),
         ) {
+            // Reorder arrows
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                IconButton(onClick = onMoveUp, enabled = canMoveUp) {
-                    Icon(
-                        Icons.Outlined.KeyboardArrowUp,
-                        contentDescription = stringResource(R.string.history_move_up),
-                        tint = if (canMoveUp) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
-                    )
-                }
-                IconButton(onClick = onMoveDown, enabled = canMoveDown) {
-                    Icon(
-                        Icons.Outlined.KeyboardArrowDown,
-                        contentDescription = stringResource(R.string.history_move_down),
-                        tint = if (canMoveDown) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Outlined.KeyboardArrowUp,
+                    contentDescription = stringResource(R.string.history_move_up),
+                    tint = colors.inkGhost,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .alpha(if (canMoveUp) 1f else 0.35f)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            enabled = canMoveUp,
+                            onClick = onMoveUp,
+                        ),
+                )
+                Icon(
+                    imageVector = Icons.Outlined.KeyboardArrowDown,
+                    contentDescription = stringResource(R.string.history_move_down),
+                    tint = colors.inkGhost,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .alpha(if (canMoveDown) 1f else 0.35f)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            enabled = canMoveDown,
+                            onClick = onMoveDown,
+                        ),
+                )
             }
-
-            Spacer(modifier = Modifier.width(spacing.small))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = semester.label,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 15.sp),
+                    color = accent.ink,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
+
                 Spacer(modifier = Modifier.height(4.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    SemesterTypeBadge(type = semester.type)
-                    Spacer(modifier = Modifier.width(spacing.small))
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    if (isDetailed) {
+                        MeadowChip(
+                            text = "${stringResource(R.string.history_type_detailed)} ›",
+                            style = MeadowChipStyle.Accent,
+                        )
+                    } else {
+                        MeadowChip(text = stringResource(R.string.history_type_summary))
+                    }
                     Text(
                         text = stringResource(R.string.history_gpa_value, semester.semesterGPA),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.labelMedium.copy(fontSize = 12.sp),
+                        color = accent.accent,
                     )
-                    Spacer(modifier = Modifier.width(spacing.small))
                     Text(
-                        text = stringResource(
-                            R.string.history_hours_value,
-                            semester.totalCreditHours
-                        ),
+                        text = "${
+                            stringResource(R.string.history_hours_value, semester.totalCreditHours)
+                        } · ${
+                            stringResource(
+                                R.string.history_points_value,
+                                semester.semesterGPA * semester.totalCreditHours,
+                            )
+                        }",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = colors.inkFaint,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
-                Text(
-                    text = stringResource(
-                        R.string.history_points_value,
-                        semester.semesterGPA * semester.totalCreditHours
+            }
+
+            Icon(
+                imageVector = Icons.Outlined.Edit,
+                contentDescription = stringResource(R.string.edit),
+                tint = colors.navItemIcon,
+                modifier = Modifier
+                    .size(18.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = onEditClick,
                     ),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                )
-            }
-            IconButton(onClick = onEditClick) {
-                Icon(Icons.Outlined.Edit, contentDescription = stringResource(R.string.edit))
-            }
-            IconButton(onClick = { showDeleteSheet = true }) {
+            )
+
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(26.dp)
+                    .clip(CircleShape)
+                    .background(colors.dangerContainer)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                    ) { showDeleteConfirmation = true },
+            ) {
                 Icon(
-                    Icons.Outlined.Delete,
+                    imageVector = Icons.Outlined.Close,
                     contentDescription = stringResource(R.string.delete),
-                    tint = MaterialTheme.colorScheme.error,
+                    tint = colors.onDangerContainer,
+                    modifier = Modifier.size(14.dp),
                 )
             }
         }
     }
+}
 
-    if (isDetailed) {
-        Card(
-            shape = RoundedCornerShape(12.dp),
-            modifier = modifier.fillMaxWidth(),
-            onClick = onClick,
-        ) { cardContent() }
-    } else {
-        Card(
-            shape = RoundedCornerShape(12.dp),
-            modifier = modifier.fillMaxWidth(),
-        ) { cardContent() }
-    }
+@Preview(name = "SemesterCard · light")
+@Composable
+private fun SemesterCardLightPreview() {
+    MeadowTheme(darkTheme = false) { SemesterCardShowcase() }
+}
+
+@Preview(name = "SemesterCard · dark")
+@Composable
+private fun SemesterCardDarkPreview() {
+    MeadowTheme(darkTheme = true) { SemesterCardShowcase() }
 }
 
 @Composable
-fun SemesterTypeBadge(type: Semester.Type) {
-    val label = when (type) {
-        Semester.Type.SUMMARY -> stringResource(R.string.history_type_summary)
-        Semester.Type.DETAILED -> stringResource(R.string.history_type_detailed)
+private fun SemesterCardShowcase() {
+    MeadowAccentProvider(MeadowTheme.colors.history) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(11.dp),
+            modifier = Modifier
+                .background(MeadowTheme.colors.paper)
+                .then(Modifier),
+        ) {
+            SemesterCard(
+                semester = Semester(
+                    id = 0,
+                    label = "Year 1 · Semester 1",
+                    level = 1,
+                    type = Semester.Type.SUMMARY,
+                    semesterGPA = 3.20,
+                    totalCreditHours = 17,
+                    status = Semester.Status.ARCHIVED,
+                    order = 1,
+                    createdAt = 1,
+                    archivedAt = 1,
+                ),
+                onClick = {}, onEditClick = {}, onDeleteClick = {},
+                onMoveUp = {}, onMoveDown = {},
+                canMoveUp = false, canMoveDown = true,
+            )
+            SemesterCard(
+                semester = Semester(
+                    id = 1,
+                    label = "Year 2 · Semester 1",
+                    level = 2,
+                    type = Semester.Type.DETAILED,
+                    semesterGPA = 3.40,
+                    totalCreditHours = 15,
+                    status = Semester.Status.ARCHIVED,
+                    order = 2,
+                    createdAt = 1,
+                    archivedAt = 1,
+                ),
+                onClick = {}, onEditClick = {}, onDeleteClick = {},
+                onMoveUp = {}, onMoveDown = {},
+                canMoveUp = true, canMoveDown = false,
+            )
+        }
     }
-    val containerColor = when (type) {
-        Semester.Type.SUMMARY -> MaterialTheme.colorScheme.secondaryContainer
-        Semester.Type.DETAILED -> MaterialTheme.colorScheme.tertiaryContainer
-    }
-    val contentColor = when (type) {
-        Semester.Type.SUMMARY -> MaterialTheme.colorScheme.onSecondaryContainer
-        Semester.Type.DETAILED -> MaterialTheme.colorScheme.onTertiaryContainer
-    }
-    Surface(
-        color = containerColor,
-        contentColor = contentColor,
-        shape = RoundedCornerShape(4.dp),
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            modifier = Modifier.padding(top = 2.dp, bottom = 2.dp, end = 6.dp),
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun SemesterCardPreview() {
-    SemesterCard(
-        semester = Semester(
-            id = 0,
-            label = "Label",
-            level = 1,
-            type = Semester.Type.SUMMARY,
-            semesterGPA = 3.18,
-            totalCreditHours = 19,
-            status = Semester.Status.ARCHIVED,
-            order = 1,
-            createdAt = 1,
-            archivedAt = 1
-        ),
-        onClick = {},
-        onEditClick = {},
-        onDeleteClick = {},
-        onMoveUp = {},
-        onMoveDown = {},
-        canMoveUp = true,
-        canMoveDown = true
-    )
 }

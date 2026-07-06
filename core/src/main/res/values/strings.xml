@@ -331,4 +331,5 @@
     <string name="reset_marks_title">Reset marks for %1$s?</string>
     <string name="reset_marks_message">All entered marks for this subject are cleared. The subject itself stays in place.</string>
     <string name="final_exam_marks_needed">Final-exam marks needed for each grade</string>
+    <string name="history_hero_subtitle">%1$d credit hours · %2$d semesters</string>
 </resources>
