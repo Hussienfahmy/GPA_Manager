@@ -61,7 +61,7 @@
     <string name="feedback_success">your feedback was submitted, Thank you very much.\nnow will try to do our best to make GPA calculation easy for you :)</string>
     <string name="field_can_not_be_empty">This field must not be empty</string>
     <string name="first">First</string>
-    <string name="fix_grade">Fix Grade</string>
+    <string name="fix_grade">Lock grade</string>
     <string name="gpa_quick_calculator">GPA Quick Calculator</string>
     <string name="gpa_system">GPA System</string>
     <string name="grades_settings">Grades Settings</string>
@@ -303,4 +303,27 @@
     <string name="history_error_add_subject_failed">Failed to add subject. Please try again.</string>
     <string name="history_error_update_subject_failed">Failed to update subject. Please try again.</string>
     <string name="history_error_delete_subject_failed">Failed to delete subject. Please try again.</string>
+
+    <!-- Meadow redesign -->
+    <string name="target">Target</string>
+    <string name="semester_gpa_needed">Semester GPA needed</string>
+    <string name="needed_this_semester">needed this semester</string>
+    <string name="reachable">reachable</string>
+    <string name="out_of_reach">out of reach</string>
+    <string name="fixed">Fixed</string>
+    <string name="predicted">Predicted</string>
+    <string name="locked_prediction_hint">Locked — the prediction works around this grade</string>
+    <string name="prefer_high_grades_low_hours">Prefer high grades on low credit-hour subjects</string>
+    <string name="delete_subject_title">Delete %1$s?</string>
+    <string name="delete_subject_message">The subject and its marks are permanently removed from this semester.</string>
+    <string name="reset_all_title">Reset all grades?</string>
+    <string name="reset_all_message">This permanently clears every assigned grade in the current semester. Your subjects stay in place.</string>
+    <string name="reset_all">Reset all</string>
+    <string name="hrs_value">%1$s hrs</string>
+    <string name="lock_grade_hint">Can already guess your result for this subject? Lock it, then tap the grade you expect — the plan works around it and redistributes across the remaining subjects.</string>
+    <string name="let_app_predict">Let app predict</string>
+    <string name="prefer_high_grades_low_hours_hint">When on, subjects with the fewest credit hours get the highest grades.</string>
+    <string name="capped_max">max %1$s</string>
+    <string name="out_of_reach_max">out of reach · max %1$s</string>
+    <string name="gpa_needed">GPA needed</string>
 </resources>

@@ -294,4 +294,27 @@
     <string name="history_error_add_subject_failed">فشل إضافة المادة. يرجى المحاولة مرة أخرى.</string>
     <string name="history_error_update_subject_failed">فشل تحديث المادة. يرجى المحاولة مرة أخرى.</string>
     <string name="history_error_delete_subject_failed">فشل حذف المادة. يرجى المحاولة مرة أخرى.</string>
+
+    <!-- Meadow redesign -->
+    <string name="target">الهدف</string>
+    <string name="semester_gpa_needed">المعدل المطلوب للفصل</string>
+    <string name="needed_this_semester">مطلوب هذا الفصل</string>
+    <string name="reachable">قابل للتحقيق</string>
+    <string name="out_of_reach">بعيد المنال</string>
+    <string name="fixed">مثبّت</string>
+    <string name="predicted">متوقع</string>
+    <string name="locked_prediction_hint">مثبّت — التوقع يعمل حول هذا التقدير</string>
+    <string name="prefer_high_grades_low_hours">تفضيل التقديرات العالية للمواد ذات الساعات الأقل</string>
+    <string name="delete_subject_title">حذف %1$s؟</string>
+    <string name="delete_subject_message">سيتم حذف المادة ودرجاتها نهائيًا من هذا الفصل.</string>
+    <string name="reset_all_title">إعادة تعيين كل التقديرات؟</string>
+    <string name="reset_all_message">سيؤدي هذا إلى مسح كل التقديرات المحددة في الفصل الحالي نهائيًا. ستبقى موادك كما هي.</string>
+    <string name="reset_all">إعادة تعيين الكل</string>
+    <string name="hrs_value">%1$s ساعة</string>
+    <string name="lock_grade_hint">تستطيع تخمين نتيجتك في هذه المادة؟ ثبّتها ثم اختر التقدير المتوقع — وسيعيد التوقع التوزيع على باقي المواد.</string>
+    <string name="let_app_predict">دع التطبيق يتوقع</string>
+    <string name="prefer_high_grades_low_hours_hint">عند التفعيل، تحصل المواد ذات الساعات المعتمدة الأقل على أعلى التقديرات.</string>
+    <string name="capped_max">الأقصى %1$s</string>
+    <string name="out_of_reach_max">بعيد المنال · الأقصى %1$s</string>
+    <string name="gpa_needed">المعدل المطلوب</string>
 </resources>

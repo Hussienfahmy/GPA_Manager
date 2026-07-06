@@ -70,8 +70,13 @@ class PredictGrades(
                     activeGrades.value
                 )
 
-            val list = if (reverseSubjects) subjectsWithAssignedGrades.asReversed()
-            else subjectsWithAssignedGrades
+            // The assignment loop raises subjects one grade step per pass, in list
+            // order — subjects earlier in the list end up one step higher when the
+            // target is hit mid-pass. "Prefer high grades on low credit-hour
+            // subjects" therefore means: low credit hours first.
+            val list = if (reverseSubjects) {
+                subjectsWithAssignedGrades.sortedBy { it.creditHours }.toMutableList()
+            } else subjectsWithAssignedGrades
 
             // reversed to have a list containing (d, c, c+, b-, b, b+, a-, a, a+)
             //  as we want to assign the grade from the lower to higher to get the minimum grades needed
@@ -110,12 +115,14 @@ class PredictGrades(
                     }
                 }
             }
-            // the loop ends and the target GPA is not achieved, will save the grades
-            // as the highest cumulative gpa he can get (but less than the target)
-            // NOTE: at this points all the grade will be the max active grade (A for example)
-
+            // the loop ends without an in-loop hit — every subject was fixed or capped,
+            // so no assignment triggered a check. The grades on hand may still meet the
+            // target (e.g. all subjects fixed at high grades), so check once more.
             list.saveGrades()
-            Result.TargetNotAchieved
+            when (list.isTargetCumulativeGPAAchieved(target)) {
+                Result.TargetAchieved -> Result.TargetAchieved
+                else -> Result.TargetNotAchieved
+            }
         }
     }
 

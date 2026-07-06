@@ -19,10 +19,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import com.hussienfahmy.core.R
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationDialog
 import com.hussienfahmy.core_ui.presentation.components.AddSubjectsHint
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.semester_subjctets_domain.model.Grade
@@ -80,6 +83,18 @@ fun SemesterScreen(
         )
     }
 
+    var showResetAllDialog by remember { mutableStateOf(false) }
+
+    if (showResetAllDialog) {
+        MeadowConfirmationDialog(
+            title = stringResource(R.string.reset_all_title),
+            body = stringResource(R.string.reset_all_message),
+            confirmText = stringResource(R.string.reset_all),
+            onConfirm = { viewModel.onEvent(SemesterSubjectsEvent.CLearAll) },
+            onDismiss = { showResetAllDialog = false },
+        )
+    }
+
     val state by viewModel.state
 
     val spacing = LocalSpacing.current
@@ -96,7 +111,7 @@ fun SemesterScreen(
                 state = loadedState,
                 onAddClick = { showAddDialog = true },
                 onChangeModeClick = { viewModel.onEvent(SemesterSubjectsEvent.ChangeMode) },
-                onResetClick = { viewModel.onEvent(SemesterSubjectsEvent.CLearAll) },
+                onResetClick = { showResetAllDialog = true },
                 onPredictDataChange = { (targetCumulativeGpa, reverseSubjects) ->
                     viewModel.onEvent(
                         SemesterSubjectsEvent.SubmitPredictiveData(
@@ -204,7 +219,7 @@ fun SemesterContentPortrait(
         Spacer(modifier = Modifier.height(spacing.small))
 
         ResultCard(
-            calculationResult = state.modeResult.calculationResult,
+            modeResult = state.modeResult,
             onTargetGPAChange = { targetGPA, reverseOrder ->
                 onPredictDataChange(targetGPA to reverseOrder)
             },
@@ -262,7 +277,7 @@ fun SemesterContentLandscape(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(0.5f),
-                calculationResult = state.modeResult.calculationResult,
+                modeResult = state.modeResult,
                 onTargetGPAChange = { targetGPA, reverseOrder ->
                     onPredictDataChange(targetGPA to reverseOrder)
                 },

@@ -1,15 +1,9 @@
 package com.hussienfahmy.semester_subjctets_presentaion.components
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.SwitchLeft
-import androidx.compose.material.icons.filled.SwitchRight
-import androidx.compose.material3.Card
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,61 +13,59 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.R
-import com.hussienfahmy.core_ui.LocalSpacing
-import com.hussienfahmy.core_ui.presentation.components.TipDialogContainer
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
+import com.hussienfahmy.core_ui.presentation.components.meadow.SegmentedToggle
 import com.hussienfahmy.semester_subjctets_presentaion.model.Mode
 
+/**
+ * Screen toolbar: Normal/Predict segmented toggle · "+ Add" tonal pill · "Reset" text pill.
+ */
 @Composable
 fun Controllers(
     onChangeModeClick: () -> Unit,
     onAddClick: () -> Unit,
     onResetClick: () -> Unit,
     mode: Mode,
+    modifier: Modifier = Modifier,
 ) {
-    val spacing = LocalSpacing.current
-
-    Card(shape = RoundedCornerShape(spacing.small)) {
-        Column {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(spacing.small)
-            ) {
-                TipDialogContainer(
-                    modifier = Modifier.weight(2f),
-                    tipText = stringResource(R.string.tip_modes)
-                ) {
-                    Option(
-                        text = when (mode) {
-                            Mode.Normal -> stringResource(R.string.mode_normal)
-                            is Mode.Predict -> stringResource(R.string.mode_predictive)
-                        },
-                        onClick = { onChangeModeClick() },
-                        icon = when (mode) {
-                            Mode.Normal -> Icons.Default.SwitchRight
-                            is Mode.Predict -> Icons.Default.SwitchLeft
-                        },
-                        type = OptionType.Horizontal,
-                    )
-                }
-
-                Option(
-                    text = stringResource(R.string.add),
-                    onClick = onAddClick,
-                    icon = Icons.Default.Add,
-                    type = OptionType.Horizontal,
-                    modifier = Modifier.weight(1f)
-                )
-
-                Option(
-                    text = stringResource(R.string.reset),
-                    onClick = onResetClick,
-                    icon = Icons.Default.Refresh,
-                    type = OptionType.Horizontal,
-                    modifier = Modifier.weight(1f)
-                )
-            }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        val selectedIndex = when (mode) {
+            Mode.Normal -> 0
+            is Mode.Predict -> 1
         }
+
+        SegmentedToggle(
+            options = listOf(
+                stringResource(R.string.mode_normal),
+                stringResource(R.string.mode_predictive),
+            ),
+            selectedIndex = selectedIndex,
+            onSelect = { index -> if (index != selectedIndex) onChangeModeClick() },
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        PillButton(
+            text = "+ ${stringResource(R.string.add)}",
+            onClick = onAddClick,
+            style = PillButtonStyle.Tonal,
+            compact = true,
+        )
+
+        Spacer(modifier = Modifier.width(4.dp))
+
+        PillButton(
+            text = stringResource(R.string.reset),
+            onClick = onResetClick,
+            style = PillButtonStyle.Text,
+            compact = true,
+        )
     }
 }
 
