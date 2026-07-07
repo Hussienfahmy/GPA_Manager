@@ -1,85 +1,130 @@
 package com.hussienfahmy.quick_presentation.components
 
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.R
-import com.hussienfahmy.core_ui.LocalSpacing
-import com.hussienfahmy.core_ui.presentation.components.CircularProgressIndicatorWithBackground
+import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
+import com.hussienfahmy.core_ui.presentation.components.meadow.ScoreRing
+import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
+import com.hussienfahmy.core_ui.theme.MeadowRadius
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 import java.util.Locale
 
+/**
+ * Result-first hero (design 2c): "YOUR CUMULATIVE WOULD BE" + big coral ring.
+ * Dims while the inputs are invalid.
+ */
 @Composable
 fun QuickResultCard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     cumulativeGPA: Float,
     cumulativeGPAPercentage: Float,
+    inputsValid: Boolean = true,
 ) {
-    val spacing = LocalSpacing.current
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
 
-    Card(shape = RoundedCornerShape(spacing.medium), modifier = modifier) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(spacing.medium)
-        ) {
-            Text(
-                text = stringResource(R.string.cumulative_gpa_will_be),
-                style = MaterialTheme.typography.titleLarge
-            )
-
-            val spec = tween<Float>(durationMillis = 900)
-            val progress by animateFloatAsState(
-                targetValue = cumulativeGPAPercentage / 100,
-                animationSpec = spec
-            )
-            val cumulativeGPAProgress by animateFloatAsState(
-                targetValue = cumulativeGPA,
-                animationSpec = spec
-            )
-
+    MeadowCard(
+        modifier = modifier.fillMaxWidth(),
+        radius = MeadowRadius.hero,
+        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 22.dp),
+    ) {
+        Box(modifier = Modifier.fillMaxWidth()) {
+            // Decorative sparks
             Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .offset(x = 14.dp, y = 2.dp)
+                    .size(5.dp)
+                    .alpha(0.6f)
+                    .clip(CircleShape)
+                    .background(accent.accent)
+            )
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .offset(x = (-20).dp, y = 20.dp)
+                    .size(4.dp)
+                    .alpha(0.55f)
+                    .clip(CircleShape)
+                    .background(colors.marks.accent)
+            )
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .alpha(if (inputsValid) 1f else 0.3f),
             ) {
-                Text(
-                    text = String.format(Locale.getDefault(), "%.2f", cumulativeGPAProgress),
-                    style = MaterialTheme.typography.titleLarge,
+                CapsLabel(text = stringResource(R.string.cumulative_gpa_will_be))
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                val animatedGpa by animateFloatAsState(
+                    targetValue = cumulativeGPA,
+                    animationSpec = spring(stiffness = Spring.StiffnessLow),
+                    label = "quickGpa",
                 )
 
-                CircularProgressIndicatorWithBackground(
-                    modifier = Modifier.size(150.dp),
-                    color = MaterialTheme.colorScheme.primary,
-                    strokeWidth = 7.dp,
-                    totalProgress = 0.75f,
-                    progress = progress
-                )
+                ScoreRing(progress = cumulativeGPAPercentage / 100f) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = String.format(Locale.getDefault(), "%.2f", animatedGpa),
+                            style = MaterialTheme.typography.displayMedium,
+                            color = accent.ink,
+                        )
+                        Text(
+                            text = String.format(
+                                Locale.getDefault(), "%.1f%%", cumulativeGPAPercentage
+                            ),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = colors.inkFaint,
+                        )
+                    }
+                }
             }
         }
     }
 }
 
-@Preview
+@Preview(name = "QuickResult · light")
 @Composable
-fun QuickResultCardPreview() {
-    QuickResultCard(
-        modifier = Modifier.size(300.dp),
-        cumulativeGPA = 3.5f,
-        cumulativeGPAPercentage = 0.5f
-    )
+private fun QuickResultCardLightPreview() {
+    MeadowTheme(darkTheme = false) {
+        MeadowAccentProvider(MeadowTheme.colors.quick) {
+            QuickResultCard(cumulativeGPA = 3.67f, cumulativeGPAPercentage = 91.7f)
+        }
+    }
+}
+
+@Preview(name = "QuickResult · dark")
+@Composable
+private fun QuickResultCardDarkPreview() {
+    MeadowTheme(darkTheme = true) {
+        MeadowAccentProvider(MeadowTheme.colors.quick) {
+            QuickResultCard(cumulativeGPA = 3.67f, cumulativeGPAPercentage = 91.7f)
+        }
+    }
 }

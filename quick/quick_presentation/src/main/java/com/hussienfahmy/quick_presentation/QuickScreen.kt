@@ -21,6 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
+import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.quick_domain.model.QuickCalculationRequest
 import com.hussienfahmy.quick_presentation.components.InputCard
 import com.hussienfahmy.quick_presentation.components.QuickResultCard
@@ -42,7 +44,7 @@ fun QuickScreen(
                 modifier = Modifier.align(Alignment.Center)
             )
         }
-    } else {
+    } else MeadowAccentProvider(MeadowTheme.colors.quick) {
         val configuration = LocalConfiguration.current
 
         when (configuration.orientation) {
@@ -92,12 +94,23 @@ private fun QuickScreenPortrait(
 ) {
     val spacing = LocalSpacing.current
 
-    Column {
+    val inputsValid = !invalidCumulativeGPAInput && !invalidSemesterGPAInput &&
+            !invalidCumulativeGPAAboveMax && !invalidSemesterGPAAboveMax &&
+            !invalidTotalHoursInput && !invalidSemesterHoursInput
+
+    // Result first — the screen reads like an instrument (design 2c)
+    Column(modifier = modifier.padding(spacing.small)) {
+        QuickResultCard(
+            modifier = Modifier.fillMaxWidth(),
+            cumulativeGPA = cumulativeGPA,
+            cumulativeGPAPercentage = cumulativeGPAPercentage,
+            inputsValid = inputsValid,
+        )
+
+        Spacer(modifier = Modifier.height(spacing.small))
+
         InputCard(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(spacing.small)
-                .weight(1f),
+            modifier = Modifier.fillMaxWidth(),
             academicProgress = academicProgress,
             invalidCumulativeGPAInput = invalidCumulativeGPAInput,
             invalidSemesterGPAInput = invalidSemesterGPAInput,
@@ -106,17 +119,6 @@ private fun QuickScreenPortrait(
             invalidCumulativeGPAAboveMax = invalidCumulativeGPAAboveMax,
             invalidSemesterGPAAboveMax = invalidSemesterGPAAboveMax,
             onCalculate = onCalculate
-        )
-
-        Spacer(modifier = Modifier.height(spacing.small))
-
-        QuickResultCard(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(spacing.small)
-                .weight(1f),
-            cumulativeGPA = cumulativeGPA,
-            cumulativeGPAPercentage = cumulativeGPAPercentage,
         )
     }
 }
@@ -137,21 +139,22 @@ private fun QuickScreenLandscape(
 ) {
     val spacing = LocalSpacing.current
 
-    Row {
+    val inputsValid = !invalidCumulativeGPAInput && !invalidSemesterGPAInput &&
+            !invalidCumulativeGPAAboveMax && !invalidSemesterGPAAboveMax &&
+            !invalidTotalHoursInput && !invalidSemesterHoursInput
+
+    Row(modifier = modifier.padding(spacing.small)) {
         QuickResultCard(
-            modifier = modifier
-                .fillMaxSize()
-                .weight(1f),
+            modifier = Modifier.weight(1f),
             cumulativeGPA = cumulativeGPA,
             cumulativeGPAPercentage = cumulativeGPAPercentage,
+            inputsValid = inputsValid,
         )
 
         Spacer(modifier = Modifier.width(spacing.small))
 
         InputCard(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1f),
+            modifier = Modifier.weight(1f),
             academicProgress = academicProgress,
             invalidCumulativeGPAInput = invalidCumulativeGPAInput,
             invalidSemesterGPAInput = invalidSemesterGPAInput,

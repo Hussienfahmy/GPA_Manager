@@ -40,6 +40,8 @@ fun MeadowTextField(
     label: String,
     modifier: Modifier = Modifier,
     isError: Boolean = false,
+    enabled: Boolean = true,
+    outlined: Boolean = false,
     singleLine: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -52,21 +54,30 @@ fun MeadowTextField(
     val focused by interactionSource.collectIsFocusedAsState()
 
     val background = when {
+        !enabled -> colors.chipBg
         isError -> colors.fieldErrorBg
-        focused -> colors.card
+        focused || outlined -> colors.card
         else -> colors.surfaceSunken
     }
     val borderColor = when {
+        !enabled -> null
         isError -> colors.fieldErrorBorder
         focused -> accent.accent
+        outlined -> accent.container
         else -> null
     }
     val labelColor = when {
+        !enabled -> colors.navItemIcon
         isError -> colors.onDangerContainer
         focused -> accent.deep
+        outlined -> accent.soft
         else -> colors.navItemIcon
     }
-    val valueColor = if (isError) colors.onDangerContainer else colors.ink
+    val valueColor = when {
+        !enabled -> colors.navItemText
+        isError -> colors.onDangerContainer
+        else -> colors.ink
+    }
 
     Column(
         modifier = modifier
@@ -97,6 +108,7 @@ fun MeadowTextField(
             ),
             cursorBrush = SolidColor(accent.accent),
             singleLine = singleLine,
+            enabled = enabled,
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
             interactionSource = interactionSource,

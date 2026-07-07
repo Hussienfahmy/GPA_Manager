@@ -317,6 +317,8 @@
     <string name="capped_max">الأقصى %1$s</string>
     <string name="out_of_reach_max">بعيد المنال · الأقصى %1$s</string>
     <string name="gpa_needed">المعدل المطلوب</string>
+    <string name="auto">تلقائي</string>
+    <string name="use_my_information_hint">يملأ المعدل والساعات من سجلّك</string>
     <string name="sheet_components_question">ما المكونات التي تُقيَّم في هذه المادة؟</string>
     <string name="sheet_setup_title">%1$s — الإعداد</string>
     <string name="reset_marks_title">إعادة تعيين درجات %1$s؟</string>

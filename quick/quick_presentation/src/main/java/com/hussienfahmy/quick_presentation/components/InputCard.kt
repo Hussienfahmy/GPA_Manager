@@ -1,19 +1,14 @@
 package com.hussienfahmy.quick_presentation.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,17 +22,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.domain.user_data.model.UserData
-import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSwitch
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowTextField
+import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.quick_domain.model.QuickCalculationRequest
 
+/**
+ * Quick calculator inputs (design 2c): "Use my information" toggle card, then
+ * a 2×2 tile grid — auto-filled tiles go muted, manual tiles keep a coral
+ * outline. Result recomputes on each keystroke.
+ */
 @Composable
 fun InputCard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     academicProgress: UserData.AcademicProgress,
     invalidCumulativeGPAInput: Boolean,
     invalidCumulativeGPAAboveMax: Boolean,
@@ -47,6 +48,8 @@ fun InputCard(
     invalidSemesterHoursInput: Boolean,
     onCalculate: (QuickCalculationRequest) -> Unit,
 ) {
+    val colors = MeadowTheme.colors
+
     var useMyAcademicProgress by remember { mutableStateOf(false) }
 
     var cumulativeGPA by remember { mutableStateOf("") }
@@ -82,234 +85,156 @@ fun InputCard(
         )
     }
 
-    val spacing = LocalSpacing.current
-
-    Card(
-        shape = RoundedCornerShape(spacing.medium),
-        modifier = modifier
-    ) {
-        ConstraintLayout(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(all = spacing.small)
+    Column(modifier = modifier) {
+        // "Use my information" card
+        MeadowCard(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 18.dp, vertical = 14.dp),
         ) {
-            val (
-                title,
-                spinnerContent,
-                cumulativeGPARef,
-                totalHoursRef,
-                semesterGPARef,
-                semesterHoursRef
-            ) = createRefs()
-
-            val verticalCenterGuideLine = createGuidelineFromStart(0.5f)
-
-            Text(
-                text = stringResource(R.string.gpa_quick_calculator),
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.constrainAs(title) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                }
-            )
-
             Row(
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier.constrainAs(spinnerContent) {
-                    end.linkTo(parent.end)
-                    top.linkTo(title.bottom, margin = spacing.small)
-                },
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                Text(
-                    text = stringResource(R.string.use_my_information),
-                    modifier = Modifier.clickable {
-                        useMyAcademicProgress = !useMyAcademicProgress
-                    })
-                Spacer(modifier = Modifier.width(5.dp))
-                Switch(
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.use_my_information),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MeadowTheme.accent.ink,
+                    )
+                    Text(
+                        text = stringResource(R.string.use_my_information_hint),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = colors.inkFaint,
+                    )
+                }
+                MeadowSwitch(
                     checked = useMyAcademicProgress,
-                    onCheckedChange = { useMyAcademicProgress = !useMyAcademicProgress }
+                    onCheckedChange = { useMyAcademicProgress = it },
                 )
             }
+        }
 
-            OutlinedTextField(
+        Spacer(modifier = Modifier.height(11.dp))
+
+        // Current cumulative + total hours (auto when the toggle is on)
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            MeadowTextField(
                 value = cumulativeGPA,
                 onValueChange = { cumulativeGPA = it },
-                isError = invalidCumulativeGPAInput or invalidCumulativeGPAAboveMax,
-                label = {
-                    Text(
-                        text = stringResource(R.string.current_cumulative_gpa),
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                },
-                supportingText = {
-                    val supportingText = when {
-                        invalidCumulativeGPAInput -> stringResource(R.string.invalid_input)
-                        invalidCumulativeGPAAboveMax -> stringResource(R.string.above_max)
-                        else -> null
-                    }
-                    if (supportingText != null) {
-                        Text(
-                            text = supportingText,
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                fontSize = 10.sp
-                            ),
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
-                },
-                enabled = !useMyAcademicProgress,
-                modifier = Modifier.constrainAs(cumulativeGPARef) {
-                    top.linkTo(spinnerContent.bottom)
-                    bottom.linkTo(semesterGPARef.top)
-                    linkTo(
-                        start = parent.start,
-                        end = verticalCenterGuideLine,
-                        endMargin = spacing.small
-                    )
-                    this.width = Dimension.fillToConstraints
-                },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-            )
+                label = if (useMyAcademicProgress) {
+                    "${stringResource(R.string.current_cumulative_gpa)} · ${stringResource(R.string.auto)}"
+                } else when {
+                    invalidCumulativeGPAAboveMax ->
+                        "${stringResource(R.string.current_cumulative_gpa)} — ${stringResource(R.string.above_max)}"
 
-            OutlinedTextField(
+                    invalidCumulativeGPAInput ->
+                        "${stringResource(R.string.current_cumulative_gpa)} — ${stringResource(R.string.invalid_input)}"
+
+                    else -> stringResource(R.string.current_cumulative_gpa)
+                },
+                isError = !useMyAcademicProgress &&
+                        (invalidCumulativeGPAInput || invalidCumulativeGPAAboveMax),
+                enabled = !useMyAcademicProgress,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.weight(1f),
+            )
+            MeadowTextField(
                 value = totalHours,
                 onValueChange = { totalHours = it },
-                isError = invalidTotalHoursInput,
-                label = {
-                    Text(
-                        text = stringResource(R.string.current_total_hours),
-                        style = MaterialTheme.typography.bodySmall
-                    )
+                label = if (useMyAcademicProgress) {
+                    "${stringResource(R.string.current_total_hours)} · ${stringResource(R.string.auto)}"
+                } else if (invalidTotalHoursInput) {
+                    "${stringResource(R.string.current_total_hours)} — ${stringResource(R.string.invalid_input)}"
+                } else {
+                    stringResource(R.string.current_total_hours)
                 },
-                supportingText = {
-                    val supportingText = when {
-                        invalidTotalHoursInput -> stringResource(R.string.invalid_input)
-                        else -> null
-                    }
-                    if (supportingText != null) {
-                        Text(
-                            text = supportingText,
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                fontSize = 10.sp
-                            ),
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
-                },
+                isError = !useMyAcademicProgress && invalidTotalHoursInput,
                 enabled = !useMyAcademicProgress,
-                modifier = Modifier.constrainAs(totalHoursRef) {
-                    centerVerticallyTo(cumulativeGPARef)
-                    linkTo(
-                        start = verticalCenterGuideLine,
-                        end = parent.end,
-                        startMargin = spacing.small
-                    )
-                    this.width = Dimension.fillToConstraints
-                },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.weight(1f),
             )
+        }
 
-            OutlinedTextField(
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // Expected semester GPA + hours — always manual, coral outline
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            MeadowTextField(
                 value = semesterGPA,
                 onValueChange = { semesterGPA = it },
-                isError = invalidSemesterGPAInput or invalidSemesterGPAAboveMax,
-                label = {
-                    Text(
-                        text = stringResource(R.string.expected_semester_gpa),
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                },
-                supportingText = {
-                    val supportingText = when {
-                        invalidSemesterGPAInput -> stringResource(R.string.invalid_input)
-                        invalidSemesterGPAAboveMax -> stringResource(R.string.above_max)
-                        else -> null
-                    }
-                    if (supportingText != null) {
-                        Text(
-                            text = supportingText,
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                fontSize = 10.sp
-                            ),
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
-                },
-                modifier = Modifier.constrainAs(semesterGPARef) {
-                    top.linkTo(cumulativeGPARef.bottom)
-                    bottom.linkTo(parent.bottom)
-                    linkTo(
-                        start = parent.start,
-                        end = verticalCenterGuideLine,
-                        endMargin = spacing.small
-                    )
-                    this.width = Dimension.fillToConstraints
-                },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-            )
+                label = when {
+                    invalidSemesterGPAAboveMax ->
+                        "${stringResource(R.string.expected_semester_gpa)} — ${stringResource(R.string.above_max)}"
 
-            OutlinedTextField(
+                    invalidSemesterGPAInput ->
+                        "${stringResource(R.string.expected_semester_gpa)} — ${stringResource(R.string.invalid_input)}"
+
+                    else -> stringResource(R.string.expected_semester_gpa)
+                },
+                isError = invalidSemesterGPAInput || invalidSemesterGPAAboveMax,
+                outlined = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.weight(1f),
+            )
+            MeadowTextField(
                 value = semesterHours,
                 onValueChange = { semesterHours = it },
+                label = if (invalidSemesterHoursInput) {
+                    "${stringResource(R.string.semester_credit_hours)} — ${stringResource(R.string.invalid_input)}"
+                } else {
+                    stringResource(R.string.semester_credit_hours)
+                },
                 isError = invalidSemesterHoursInput,
-                label = {
-                    Text(
-                        text = stringResource(R.string.semester_credit_hours),
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                },
-                supportingText = {
-                    val supportingText = when {
-                        invalidSemesterHoursInput -> stringResource(R.string.invalid_input)
-                        else -> null
-                    }
-                    if (supportingText != null) {
-                        Text(
-                            text = supportingText,
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                fontSize = 10.sp
-                            ),
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
-                },
-                modifier = Modifier.constrainAs(semesterHoursRef) {
-                    centerVerticallyTo(semesterGPARef)
-                    linkTo(
-                        start = verticalCenterGuideLine,
-                        end = parent.end,
-                        startMargin = spacing.small
-                    )
-                    this.width = Dimension.fillToConstraints
-                },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                outlined = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.weight(1f),
             )
         }
     }
 }
 
-@Preview
+@Preview(name = "QuickInputs · light", showBackground = true)
 @Composable
-fun InputCardPreview() {
-    InputCard(
-        modifier = Modifier.fillMaxWidth(),
-        academicProgress = UserData.AcademicProgress(
-            cumulativeGPA = 3.5,
-            creditHours = 120,
-        ),
-        invalidCumulativeGPAInput = false,
-        invalidSemesterGPAInput = true,
-        invalidTotalHoursInput = false,
-        invalidSemesterHoursInput = false,
-        invalidCumulativeGPAAboveMax = true,
-        invalidSemesterGPAAboveMax = false,
-        onCalculate = {}
-    )
+private fun InputCardLightPreview() {
+    MeadowTheme(darkTheme = false) {
+        MeadowAccentProvider(MeadowTheme.colors.quick) {
+            InputCard(
+                modifier = Modifier.fillMaxWidth(),
+                academicProgress = UserData.AcademicProgress(
+                    cumulativeGPA = 3.5,
+                    creditHours = 101,
+                ),
+                invalidCumulativeGPAInput = false,
+                invalidSemesterGPAInput = false,
+                invalidTotalHoursInput = false,
+                invalidSemesterHoursInput = false,
+                invalidCumulativeGPAAboveMax = false,
+                invalidSemesterGPAAboveMax = true,
+                onCalculate = {},
+            )
+        }
+    }
+}
+
+@Preview(name = "QuickInputs · dark", showBackground = true)
+@Composable
+private fun InputCardDarkPreview() {
+    MeadowTheme(darkTheme = true) {
+        MeadowAccentProvider(MeadowTheme.colors.quick) {
+            InputCard(
+                modifier = Modifier.fillMaxWidth(),
+                academicProgress = UserData.AcademicProgress(
+                    cumulativeGPA = 3.5,
+                    creditHours = 101,
+                ),
+                invalidCumulativeGPAInput = false,
+                invalidSemesterGPAInput = false,
+                invalidTotalHoursInput = false,
+                invalidSemesterHoursInput = false,
+                invalidCumulativeGPAAboveMax = false,
+                invalidSemesterGPAAboveMax = false,
+                onCalculate = {},
+            )
+        }
+    }
 }
