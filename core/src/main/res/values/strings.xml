@@ -334,4 +334,8 @@
     <string name="reset_marks_message">All entered marks for this subject are cleared. The subject itself stays in place.</string>
     <string name="final_exam_marks_needed">Final-exam marks needed for each grade</string>
     <string name="history_hero_subtitle">%1$d credit hours · %2$d semesters</string>
+    <string name="more_group_settings">Settings</string>
+    <string name="more_group_app">App</string>
+    <string name="more_gpa_chip">GPA %1$s</string>
+    <string name="more_institution_line">%1$s · %2$s</string>
 </resources>

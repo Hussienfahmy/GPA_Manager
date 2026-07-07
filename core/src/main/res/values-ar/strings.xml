@@ -325,4 +325,8 @@
     <string name="reset_marks_message">سيتم مسح كل الدرجات المدخلة لهذه المادة. تبقى المادة نفسها كما هي.</string>
     <string name="final_exam_marks_needed">درجات الامتحان النهائي المطلوبة لكل تقدير</string>
     <string name="history_hero_subtitle">%1$d ساعة معتمدة · %2$d فصول</string>
+    <string name="more_group_settings">الإعدادات</string>
+    <string name="more_group_app">التطبيق</string>
+    <string name="more_gpa_chip">معدل %1$s</string>
+    <string name="more_institution_line">%1$s · %2$s</string>
 </resources>

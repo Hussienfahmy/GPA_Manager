@@ -6,10 +6,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialog
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Logout
+import androidx.compose.material.icons.outlined.Code
+import androidx.compose.material.icons.outlined.DonutLarge
+import androidx.compose.material.icons.outlined.GridView
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.WorkspacePremium
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,14 +25,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core.domain.user_data.model.UserData
-import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core.util.truncate
 import com.hussienfahmy.core_ui.presentation.analytics.TrackScreenTime
-import com.hussienfahmy.core_ui.presentation.user_data.components.UserInfoCard
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowRowDivider
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSettingsGroup
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSettingsRow
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowUserCard
+import com.hussienfahmy.core_ui.presentation.components.meadow.SettingsGroupLabel
+import com.hussienfahmy.core_ui.presentation.components.meadow.SettingsRowTrailing
+import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.myGpaManager.navigation.FadeTransitions
 import com.hussienfahmy.myGpaManager.navigation.graphs.MoreNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
@@ -75,91 +90,114 @@ fun MoreScreenContent(
     onSignOutClick: () -> Unit,
     onAppRatingClick: () -> Unit,
 ) {
-    val spacing = LocalSpacing.current
+    val colors = MeadowTheme.colors
     val context = LocalContext.current
-    var showSignOutDialog by remember { mutableStateOf(false) }
+    var showSignOutSheet by remember { mutableStateOf(false) }
     val githubRepoUrl = stringResource(R.string.github_repo_url)
     val playStoreLink = stringResource(R.string.play_store_link)
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(spacing.small),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(spacing.small)
-    ) {
-        UserInfoCard(onCardClick = onUserDataCardClick, userData = userData)
+    MeadowAccentProvider(colors.more) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            MeadowUserCard(
+                name = userData.name,
+                institutionLine = stringResource(
+                    R.string.more_institution_line,
+                    userData.academicInfo.university,
+                    userData.academicInfo.department,
+                ),
+                gpaChip = stringResource(
+                    R.string.more_gpa_chip,
+                    userData.academicProgress.cumulativeGPA.truncate(),
+                ),
+                yearChip = stringResource(
+                    R.string.level_semester,
+                    userData.academicInfo.level,
+                    when (userData.academicInfo.semester) {
+                        UserData.AcademicInfo.Semester.First -> stringResource(R.string.first)
+                        UserData.AcademicInfo.Semester.Second -> stringResource(R.string.second)
+                    },
+                ),
+                photoUrl = userData.photoUrl,
+                onClick = onUserDataCardClick,
+            )
 
-        MoreItem(
-            onClick = onGPASettingsClick,
-            title = stringResource(id = R.string.gpa_settings),
-            summary = stringResource(id = R.string.gpa_settings_details)
-        )
-
-        MoreItem(
-            onClick = onGradeSettingsClick,
-            title = stringResource(R.string.grades_settings),
-            summary = stringResource(R.string.grades_settings_screen_summary)
-        )
-
-        MoreItem(
-            onClick = onSubjectSettingsClick,
-            title = stringResource(R.string.subject_settings),
-            summary = stringResource(R.string.subject_settings_screen_summary)
-        )
-
-        MoreItem(
-            onClick = {
-                context.startActivity(
-                    Intent(
-                        Intent.ACTION_VIEW,
-                        githubRepoUrl.toUri()
-                    )
+            SettingsGroupLabel(text = stringResource(R.string.more_group_settings))
+            MeadowSettingsGroup {
+                MeadowSettingsRow(
+                    icon = Icons.Outlined.DonutLarge,
+                    title = stringResource(R.string.gpa_settings),
+                    summary = stringResource(R.string.gpa_settings_details),
+                    tileAccent = colors.semester,
+                    onClick = onGPASettingsClick,
                 )
-            },
-            title = stringResource(R.string.contribute_to_app),
-            summary = stringResource(R.string.contribute_to_app_summary)
-        )
-
-        MoreItem(
-            onClick = { showSignOutDialog = true },
-            title = stringResource(R.string.sign_out),
-            summary = stringResource(R.string.sign_out_details)
-        )
-
-        MoreItem(
-            onClick = {
-                onAppRatingClick()
-                context.startActivity(
-                    Intent(
-                        Intent.ACTION_VIEW,
-                        playStoreLink.toUri()
-                    )
+                MeadowRowDivider()
+                MeadowSettingsRow(
+                    icon = Icons.Outlined.Star,
+                    title = stringResource(R.string.grades_settings),
+                    summary = stringResource(R.string.grades_settings_screen_summary),
+                    tileAccent = colors.marks,
+                    onClick = onGradeSettingsClick,
                 )
-            },
-            title = stringResource(R.string.is_app_useful),
-            summary = stringResource(R.string.is_app_useful_details)
-        )
+                MeadowRowDivider()
+                MeadowSettingsRow(
+                    icon = Icons.Outlined.GridView,
+                    title = stringResource(R.string.subject_settings),
+                    summary = stringResource(R.string.subject_settings_screen_summary),
+                    tileAccent = colors.history,
+                    onClick = onSubjectSettingsClick,
+                )
+            }
+
+            SettingsGroupLabel(text = stringResource(R.string.more_group_app))
+            MeadowSettingsGroup {
+                MeadowSettingsRow(
+                    icon = Icons.Outlined.Code,
+                    title = stringResource(R.string.contribute_to_app),
+                    summary = stringResource(R.string.contribute_to_app_summary),
+                    trailing = SettingsRowTrailing.External,
+                    onClick = {
+                        context.startActivity(Intent(Intent.ACTION_VIEW, githubRepoUrl.toUri()))
+                    },
+                )
+                MeadowRowDivider()
+                MeadowSettingsRow(
+                    icon = Icons.Outlined.WorkspacePremium,
+                    title = stringResource(R.string.is_app_useful),
+                    summary = stringResource(R.string.is_app_useful_details),
+                    tileAccent = colors.marks,
+                    trailing = SettingsRowTrailing.External,
+                    onClick = {
+                        onAppRatingClick()
+                        context.startActivity(Intent(Intent.ACTION_VIEW, playStoreLink.toUri()))
+                    },
+                )
+            }
+
+            MeadowSettingsGroup {
+                MeadowSettingsRow(
+                    icon = Icons.AutoMirrored.Outlined.Logout,
+                    title = stringResource(R.string.sign_out),
+                    trailing = SettingsRowTrailing.None,
+                    danger = true,
+                    onClick = { showSignOutSheet = true },
+                )
+            }
+        }
     }
 
-    if (showSignOutDialog) {
-        AlertDialog(
-            onDismissRequest = { showSignOutDialog = false },
-            title = { Text(text = stringResource(id = R.string.are_you_sure)) },
-            text = { Text(text = stringResource(id = R.string.sign_out_confirmation_message)) },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        onSignOutClick()
-                        showSignOutDialog = false
-                    }
-                ) { Text(text = stringResource(id = R.string.ok)) }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = { showSignOutDialog = false }
-                ) { Text(text = stringResource(id = R.string.cancel)) }
-            }
+    if (showSignOutSheet) {
+        MeadowConfirmationSheet(
+            title = stringResource(R.string.sign_out),
+            body = stringResource(R.string.sign_out_confirmation_message),
+            confirmText = stringResource(R.string.sign_out),
+            onConfirm = onSignOutClick,
+            onDismiss = { showSignOutSheet = false },
         )
     }
 }
