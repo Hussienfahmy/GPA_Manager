@@ -1,17 +1,18 @@
 package com.hussienfahmy.grades_setting_presentation.components
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,13 +24,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.data.local.model.GradeName
-import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core.util.toTwoDecimals
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSwitch
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.grades_setting_domain.model.GradeSetting
 
+/**
+ * A grade row (design 3d): symbol tile · pts pill · ≥% pill · active switch.
+ * F wears the danger tile. Tapping a value pill opens the numeric edit sheet;
+ * the pill takes the focused (accent-border) state while its sheet is open.
+ */
 @Composable
 fun GradeItem(
     modifier: Modifier = Modifier,
@@ -38,115 +48,135 @@ fun GradeItem(
     onSavePoint: (newPoints: String) -> Unit,
     onSavePercentage: (newPercentage: String) -> Unit,
 ) {
-    val spacing = LocalSpacing.current
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
 
-    var showEditPointsDialog by remember {
-        mutableStateOf(false)
-    }
+    var showEditPointsSheet by remember { mutableStateOf(false) }
+    var showEditPercentageSheet by remember { mutableStateOf(false) }
 
-    if (showEditPointsDialog) EditTextDialog(
-        onDismiss = { showEditPointsDialog = false },
+    if (showEditPointsSheet) EditGradeValueSheet(
+        symbol = gradeSetting.symbol,
+        title = stringResource(R.string.grade_edit_points_title, gradeSetting.symbol),
+        subtitle = stringResource(R.string.grade_edit_points_subtitle),
+        fieldLabel = stringResource(R.string.grade_edit_points_field),
+        value = gradeSetting.points?.toString() ?: "",
+        onDismiss = { showEditPointsSheet = false },
         onSaveClick = onSavePoint,
-        title = stringResource(R.string.points),
-        value = gradeSetting.points?.toString() ?: ""
     )
 
-    var showEditPercentageDialog by remember {
-        mutableStateOf(false)
-    }
-
-    if (showEditPercentageDialog) EditTextDialog(
-        onDismiss = { showEditPercentageDialog = false },
+    if (showEditPercentageSheet) EditGradeValueSheet(
+        symbol = gradeSetting.symbol,
+        title = stringResource(R.string.grade_edit_percentage_title, gradeSetting.symbol),
+        subtitle = stringResource(R.string.grade_edit_percentage_subtitle),
+        fieldLabel = stringResource(R.string.grade_edit_percentage_field),
+        value = gradeSetting.percentage?.toString() ?: "",
+        onDismiss = { showEditPercentageSheet = false },
         onSaveClick = onSavePercentage,
-        title = stringResource(R.string.Percentage),
-        value = gradeSetting.percentage?.toString() ?: ""
     )
 
-    val alpha by animateFloatAsState(targetValue = if (gradeSetting.active) 1f else 0.5f)
+    val alpha by animateFloatAsState(
+        targetValue = if (gradeSetting.active) 1f else 0.45f,
+        label = "gradeRowAlpha",
+    )
 
-    Card(
-        shape = RoundedCornerShape(spacing.small),
+    val isFail = gradeSetting.name == GradeName.F
+    val tileBg = if (isFail) colors.dangerContainer else accent.container
+    val tileFg = if (isFail) colors.onDangerContainer else accent.deep
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier
+            .fillMaxWidth()
             .alpha(alpha)
+            .padding(horizontal = 16.dp, vertical = 12.dp),
     ) {
-        Column(
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
-                .padding(spacing.small)
-                .animateContentSize()
+                .size(40.dp)
+                .clip(RoundedCornerShape(14.dp))
+                .background(tileBg),
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = gradeSetting.symbol,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Switch(
-                    checked = gradeSetting.active,
-                    onCheckedChange = { onGradeActiveChange(!gradeSetting.active) })
-            }
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = gradeSetting.points?.let {
-                        stringResource(
-                            id = R.string.points_value,
-                            it
-                        )
-                    }
-                        ?: stringResource(
-                            id = R.string.not_set
-                        ),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(spacing.medium))
-                        .clickable {
-                            showEditPointsDialog = true
-                        }
-                )
-                Text(
-                    text = gradeSetting.percentage?.let {
-                        stringResource(
-                            id = R.string.percentage_value,
-                            it
-                        )
-                    }
-                        ?: stringResource(
-                            id = R.string.not_set
-                        ),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(spacing.medium))
-                        .clickable {
-                            showEditPercentageDialog = true
-                        }
-                )
-            }
+            Text(
+                text = gradeSetting.symbol,
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    textDirection = TextDirection.Ltr
+                ),
+                color = tileFg,
+            )
         }
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.weight(1f),
+        ) {
+            ValuePill(
+                text = gradeSetting.points?.let {
+                    stringResource(R.string.grade_pts_pill, it.toFloat().toTwoDecimals().toString())
+                } ?: stringResource(R.string.not_set),
+                focused = showEditPointsSheet,
+                onClick = { showEditPointsSheet = true },
+            )
+            ValuePill(
+                text = gradeSetting.percentage?.let {
+                    stringResource(R.string.grade_pct_pill, it.toFloat().toTwoDecimals().toString())
+                } ?: stringResource(R.string.not_set),
+                focused = showEditPercentageSheet,
+                onClick = { showEditPercentageSheet = true },
+            )
+        }
+
+        MeadowSwitch(
+            checked = gradeSetting.active,
+            onCheckedChange = { onGradeActiveChange(it) },
+        )
     }
+}
+
+@Composable
+private fun ValuePill(
+    text: String,
+    focused: Boolean,
+    onClick: () -> Unit,
+) {
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
+    val shape = RoundedCornerShape(999.dp)
+
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleSmall.copy(fontSize = 12.sp),
+        color = if (focused) accent.deep else colors.inkMuted,
+        modifier = Modifier
+            .clip(shape)
+            .background(if (focused) colors.card else colors.surfaceSunken)
+            .then(
+                if (focused) Modifier.border(2.dp, accent.accent, shape) else Modifier
+            )
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onClick,
+            )
+            .padding(horizontal = 12.dp, vertical = 5.dp),
+    )
 }
 
 @Preview
 @Composable
-fun GradeItemPreview() {
-    var grade by remember {
-        mutableStateOf(
-            GradeSetting(GradeName.APlus, null, 90.0, true),
-        )
+private fun GradeItemPreview() {
+    MeadowTheme(darkTheme = false) {
+        com.hussienfahmy.core_ui.theme.MeadowAccentProvider(MeadowTheme.colors.marks) {
+            var grade by remember {
+                mutableStateOf(GradeSetting(GradeName.BPlus, 84.0, 3.30, true))
+            }
+            GradeItem(
+                gradeSetting = grade,
+                onGradeActiveChange = { grade = grade.copy(active = it) },
+                onSavePoint = {},
+                onSavePercentage = {},
+            )
+        }
     }
-
-    GradeItem(
-        gradeSetting = grade,
-        onGradeActiveChange = { grade = grade.copy(active = !grade.active) },
-        onSavePoint = {},
-        onSavePercentage = {}
-    )
 }

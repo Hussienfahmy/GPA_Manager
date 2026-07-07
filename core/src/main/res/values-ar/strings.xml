@@ -329,4 +329,12 @@
     <string name="more_group_app">التطبيق</string>
     <string name="more_gpa_chip">معدل %1$s</string>
     <string name="more_institution_line">%1$s · %2$s</string>
+    <string name="grade_pts_pill">%1$s نقطة</string>
+    <string name="grade_pct_pill">≥ %1$s%%</string>
+    <string name="grade_edit_points_title">نقاط %1$s</string>
+    <string name="grade_edit_percentage_title">نسبة %1$s</string>
+    <string name="grade_edit_points_subtitle">نقاط التقدير</string>
+    <string name="grade_edit_percentage_subtitle">أقل نسبة مئوية</string>
+    <string name="grade_edit_points_field">النقاط</string>
+    <string name="grade_edit_percentage_field">النسبة</string>
 </resources>

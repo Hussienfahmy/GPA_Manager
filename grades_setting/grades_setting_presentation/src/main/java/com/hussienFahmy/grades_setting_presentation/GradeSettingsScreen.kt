@@ -8,36 +8,29 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.data.local.model.GradeName
-import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowRowDivider
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSettingsGroup
+import com.hussienfahmy.core_ui.presentation.components.meadow.SegmentedToggle
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
+import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.grades_setting_domain.model.GradeSetting
 import com.hussienfahmy.grades_setting_presentation.components.GradeItem
 import com.hussienfahmy.grades_setting_presentation.model.Mode
@@ -51,8 +44,6 @@ fun GradeSettingsScreen(
     viewModel: GradeSettingsViewModel = koinViewModel(),
     snackBarHostState: SnackbarHostState,
 ) {
-    val spacing = LocalSpacing.current
-
     UiEventHandler(
         uiEvent = viewModel.uiEvent,
         snackBarHostState = snackBarHostState,
@@ -60,99 +51,47 @@ fun GradeSettingsScreen(
 
     val state by viewModel.state
 
-    Column(
-        modifier = modifier.padding(horizontal = spacing.small)
-    ) {
-        Spacer(modifier = Modifier.height(spacing.small))
+    MeadowAccentProvider(MeadowTheme.colors.marks) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+        ) {
+            Spacer(modifier = Modifier.height(12.dp))
 
-        if (displayFilterChips) {
-            FilterChipsRow(
-                state = state,
-                onModeChange = viewModel::onModeChange
-            )
-        }
-
-        Spacer(modifier = Modifier.padding(spacing.small))
-
-        if (state.isLoading) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
-        } else {
-            GradeSettingsScreenContent(
-                modifier = modifier,
-                state = state,
-                onGradeActiveChange = { grade, newActive ->
-                    viewModel.onEvent(GradeEvent.ActivateGrade(grade, newActive))
-                },
-                onSavePoint = { grade, newPoints ->
-                    viewModel.onEvent(GradeEvent.UpdatePoints(grade, newPoints))
-                },
-                onSavePercentage = { grade, newPercentage ->
-                    viewModel.onEvent(GradeEvent.UpdatePercentage(grade, newPercentage))
-                }
-            )
-        }
-    }
-}
-
-@Composable
-private fun FilterChipsRow(
-    state: GradeSettingsState,
-    onModeChange: (Mode) -> Unit
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceAround,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        val isOnlyActiveSelected = state.mode == Mode.ONLY_ACTIVE
-        FilterChip(
-            selected = isOnlyActiveSelected,
-            onClick = { onModeChange(Mode.ONLY_ACTIVE) },
-            label = {
-                Text(
-                    text = stringResource(R.string.active_grades_only),
-                    style = MaterialTheme.typography.titleMedium,
-                    textAlign = TextAlign.Center,
+            if (displayFilterChips) {
+                SegmentedToggle(
+                    options = listOf(
+                        stringResource(R.string.active_grades_only),
+                        stringResource(R.string.all_grades),
+                    ),
+                    selectedIndex = if (state.mode == Mode.ONLY_ACTIVE) 0 else 1,
+                    onSelect = { index ->
+                        viewModel.onModeChange(if (index == 0) Mode.ONLY_ACTIVE else Mode.ALL)
+                    },
                 )
-            },
-            leadingIcon = if (isOnlyActiveSelected) {
-                {
-                    Icon(
-                        imageVector = Icons.Filled.Done,
-                        contentDescription = "Done icon",
-                        modifier = Modifier.size(FilterChipDefaults.IconSize)
-                    )
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+
+            if (state.isLoading) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             } else {
-                null
-            }
-        )
-
-        val isAllSelected = state.mode == Mode.ALL
-        FilterChip(
-            selected = isAllSelected,
-            onClick = { onModeChange(Mode.ALL) },
-            label = {
-                Text(
-                    text = stringResource(R.string.all_grades),
-                    style = MaterialTheme.typography.titleMedium,
-                    textAlign = TextAlign.Center,
+                GradeSettingsScreenContent(
+                    state = state,
+                    onGradeActiveChange = { grade, newActive ->
+                        viewModel.onEvent(GradeEvent.ActivateGrade(grade, newActive))
+                    },
+                    onSavePoint = { grade, newPoints ->
+                        viewModel.onEvent(GradeEvent.UpdatePoints(grade, newPoints))
+                    },
+                    onSavePercentage = { grade, newPercentage ->
+                        viewModel.onEvent(GradeEvent.UpdatePercentage(grade, newPercentage))
+                    }
                 )
-            },
-            leadingIcon = if (isAllSelected) {
-                {
-                    Icon(
-                        imageVector = Icons.Filled.Done,
-                        contentDescription = "Done icon",
-                        modifier = Modifier.size(FilterChipDefaults.IconSize)
-                    )
-                }
-            } else {
-                null
             }
-        )
+        }
     }
 }
 
@@ -164,25 +103,28 @@ private fun GradeSettingsScreenContent(
     onSavePoint: (grade: GradeSetting, newPoints: String) -> Unit,
     onSavePercentage: (grade: GradeSetting, newPercentage: String) -> Unit,
 ) {
-    val spacing = LocalSpacing.current
+    val visibleGrades = state.gradesSetting.filter { it.active || state.mode == Mode.ALL }
 
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(bottom = spacing.small),
-        verticalArrangement = Arrangement.spacedBy(spacing.small),
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(bottom = 12.dp),
     ) {
-        items(state.gradesSetting, key = { it.id }) { grade ->
-            AnimatedVisibility(
-                visible = grade.active || state.mode == Mode.ALL,
-                enter = fadeIn() + expandVertically(),
-                exit = shrinkVertically() + fadeOut()
-            ) {
-                GradeItem(
-                    gradeSetting = grade,
-                    onGradeActiveChange = { onGradeActiveChange(grade, it) },
-                    onSavePoint = { onSavePoint(grade, it) },
-                    onSavePercentage = { onSavePercentage(grade, it) }
-                )
+        MeadowSettingsGroup {
+            state.gradesSetting.forEachIndexed { index, grade ->
+                if (index > 0 && grade in visibleGrades) MeadowRowDivider()
+                AnimatedVisibility(
+                    visible = grade.active || state.mode == Mode.ALL,
+                    enter = fadeIn() + expandVertically(),
+                    exit = shrinkVertically() + fadeOut(),
+                ) {
+                    GradeItem(
+                        gradeSetting = grade,
+                        onGradeActiveChange = { onGradeActiveChange(grade, it) },
+                        onSavePoint = { onSavePoint(grade, it) },
+                        onSavePercentage = { onSavePercentage(grade, it) },
+                    )
+                }
             }
         }
     }
@@ -190,28 +132,25 @@ private fun GradeSettingsScreenContent(
 
 @Preview(showBackground = true)
 @Composable
-fun GradeSettingsScreenContentPreview() {
-    GradeSettingsScreenContent(
-        modifier = Modifier.fillMaxSize(),
-        state = GradeSettingsState(
-            listOf(
-                GradeSetting(
-                    name = GradeName.A,
-                    points = 3.67,
-                    percentage = 85.0,
-                    active = true
+private fun GradeSettingsScreenContentPreview() {
+    MeadowTheme(darkTheme = false) {
+        MeadowAccentProvider(MeadowTheme.colors.marks) {
+            GradeSettingsScreenContent(
+                modifier = Modifier.padding(16.dp),
+                state = GradeSettingsState(
+                    listOf(
+                        GradeSetting(name = GradeName.APlus, points = 4.0, percentage = 97.0, active = true),
+                        GradeSetting(name = GradeName.A, points = 4.0, percentage = 93.0, active = true),
+                        GradeSetting(name = GradeName.BPlus, points = 3.3, percentage = 84.0, active = true),
+                        GradeSetting(name = GradeName.DMinus, points = 1.3, percentage = 62.0, active = false),
+                        GradeSetting(name = GradeName.F, points = 0.0, percentage = 0.0, active = true),
+                    ),
+                    isLoading = false,
                 ),
-                GradeSetting(
-                    name = GradeName.B,
-                    points = 3.0,
-                    percentage = 75.0,
-                    active = false
-                ),
-            ),
-            isLoading = false
-        ),
-        onGradeActiveChange = { _, _ -> },
-        onSavePoint = { _, _ -> },
-        onSavePercentage = { _, _ -> }
-    )
+                onGradeActiveChange = { _, _ -> },
+                onSavePoint = { _, _ -> },
+                onSavePercentage = { _, _ -> },
+            )
+        }
+    }
 }
