@@ -7,22 +7,26 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material.icons.outlined.DateRange
-import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material.icons.outlined.History
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,8 +36,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -41,12 +48,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.domain.auth.service.AuthService
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.onboarding_presentation.sign_in.AuthEvent
 import com.hussienfahmy.onboarding_presentation.sign_in.SignInState
 import com.hussienfahmy.onboarding_presentation.sign_in.SignInViewModel
@@ -131,142 +141,157 @@ fun OnBoardingScreen(
     }
 }
 
+/** Brand ring mark (design 2d): a 3/4-swept green ring with "4.0" centered,
+ *  a filled inner disc, and three slowly-orbiting spark dots in the tab hues. */
 @Composable
 private fun AnimatedHeroSection() {
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
+
     val infiniteTransition = rememberInfiniteTransition(label = "hero_animation")
-
-    val scale by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = 1.1f,
+    val orbit by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
         animationSpec = infiniteRepeatable(
-            animation = tween(2000, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
+            animation = tween(60_000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart,
         ),
-        label = "scale_animation"
+        label = "orbit",
     )
 
-    val alpha by infiniteTransition.animateFloat(
-        initialValue = 0.7f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1500, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "alpha_animation"
-    )
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.size(120.dp)) {
+        Canvas(modifier = Modifier.size(120.dp)) {
+            val stroke = 10.dp.toPx()
+            val radius = (size.minDimension - stroke) / 2f
+            drawCircle(color = colors.ringTrack, radius = radius, style = Stroke(width = stroke))
+            drawArc(
+                color = accent.accent,
+                startAngle = -90f,
+                sweepAngle = 360f * 0.75f,
+                useCenter = false,
+                topLeft = Offset(center.x - radius, center.y - radius),
+                size = Size(radius * 2, radius * 2),
+                style = Stroke(width = stroke, cap = StrokeCap.Round),
+            )
+            drawCircle(color = accent.container, radius = size.minDimension * (32f / 120f))
+        }
 
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.size(120.dp)
-    ) {
-        // Background circle with gradient effect
-        Box(
-            modifier = Modifier
-                .size(100.dp)
-                .scale(scale)
-                .alpha(alpha * 0.3f)
-                .background(
-                    MaterialTheme.colorScheme.primary,
-                    CircleShape
-                )
-        )
-
-        // Main graduation cap emoji
         Text(
-            text = "🎓",
-            style = MaterialTheme.typography.displayLarge.copy(
-                fontSize = MaterialTheme.typography.displayLarge.fontSize * 1.2f
-            ),
-            modifier = Modifier.scale(scale)
+            text = "4.0",
+            style = MaterialTheme.typography.displaySmall.copy(fontSize = 26.sp),
+            color = accent.deep,
         )
+
+        SparkDot(colors.marks.accent, angle = orbit, distance = 58.dp, size = 6.dp)
+        SparkDot(colors.history.accent, angle = orbit + 140f, distance = 60.dp, size = 5.dp)
+        SparkDot(colors.quick.accent, angle = orbit + 250f, distance = 62.dp, size = 4.dp)
     }
 }
+
+@Composable
+private fun SparkDot(
+    color: androidx.compose.ui.graphics.Color,
+    angle: Float,
+    distance: androidx.compose.ui.unit.Dp,
+    size: androidx.compose.ui.unit.Dp,
+) {
+    val rad = Math.toRadians(angle.toDouble())
+    Box(
+        modifier = Modifier
+            .offset(
+                x = (distance.value * kotlin.math.cos(rad)).dp,
+                y = (distance.value * kotlin.math.sin(rad)).dp,
+            )
+            .size(size)
+            .clip(CircleShape)
+            .background(color)
+    )
+}
+
+private data class Feature(
+    val icon: ImageVector,
+    val title: String,
+    val description: String,
+    val accent: com.hussienfahmy.core_ui.theme.MeadowAccent,
+)
 
 @Composable
 private fun FeatureHighlights() {
+    val colors = MeadowTheme.colors
+    val features = listOf(
+        Feature(
+            Icons.Outlined.CalendarMonth,
+            stringResource(R.string.onboarding_feature_semester_title),
+            stringResource(R.string.onboarding_feature_semester_desc),
+            colors.semester,
+        ),
+        Feature(
+            Icons.Outlined.Check,
+            stringResource(R.string.onboarding_feature_marks_title),
+            stringResource(R.string.onboarding_feature_marks_desc),
+            colors.marks,
+        ),
+        Feature(
+            Icons.Outlined.History,
+            stringResource(R.string.onboarding_feature_more_title),
+            stringResource(R.string.onboarding_feature_more_desc),
+            colors.history,
+        ),
+        Feature(
+            Icons.Outlined.AutoAwesome,
+            stringResource(R.string.onboarding_feature_quick_title),
+            stringResource(R.string.onboarding_feature_quick_desc),
+            colors.quick,
+        ),
+    )
+
     Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.fillMaxWidth()
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.fillMaxWidth(),
     ) {
-        FeatureCard(
-            icon = Icons.Outlined.DateRange,
-            title = stringResource(R.string.onboarding_feature_semester_title),
-            description = stringResource(R.string.onboarding_feature_semester_desc)
-        )
-
-        FeatureCard(
-            icon = Icons.Outlined.Check,
-            title = stringResource(R.string.onboarding_feature_marks_title),
-            description = stringResource(R.string.onboarding_feature_marks_desc)
-        )
-
-        FeatureCard(
-            icon = Icons.Outlined.Star,
-            title = stringResource(R.string.onboarding_feature_quick_title),
-            description = stringResource(R.string.onboarding_feature_quick_desc)
-        )
-
-        FeatureCard(
-            icon = Icons.Outlined.MoreVert,
-            title = stringResource(R.string.onboarding_feature_more_title),
-            description = stringResource(R.string.onboarding_feature_more_desc)
-        )
+        features.chunked(2).forEach { rowFeatures ->
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                rowFeatures.forEach { feature ->
+                    FeatureCard(feature = feature, modifier = Modifier.weight(1f))
+                }
+            }
+        }
     }
 }
 
 @Composable
-private fun FeatureCard(
-    icon: ImageVector,
-    title: String,
-    description: String
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(40.dp)
-                    .background(
-                        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                        CircleShape
-                    )
-            ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = title,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
+private fun FeatureCard(feature: Feature, modifier: Modifier = Modifier) {
+    val colors = MeadowTheme.colors
 
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.SemiBold
-                    ),
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+    MeadowCard(
+        modifier = modifier,
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 14.dp),
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(34.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(feature.accent.container),
+        ) {
+            Icon(
+                imageVector = feature.icon,
+                contentDescription = null,
+                tint = feature.accent.deep,
+                modifier = Modifier.size(18.dp),
+            )
         }
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = feature.title,
+            style = MaterialTheme.typography.titleSmall.copy(fontSize = 13.5.sp),
+            color = colors.ink,
+        )
+        Text(
+            text = feature.description,
+            style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.5.sp, lineHeight = 15.sp),
+            color = colors.inkFaint,
+        )
     }
 }
 
