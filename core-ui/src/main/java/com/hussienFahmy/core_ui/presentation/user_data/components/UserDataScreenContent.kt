@@ -1,34 +1,31 @@
 package com.hussienfahmy.core_ui.presentation.user_data.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PhotoCamera
-import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.domain.user_data.model.UserData
-import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.ExpandableTextField
+import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowRowDivider
 import com.hussienfahmy.core_ui.presentation.user_data.UserDataState
+import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 import kotlin.math.floor
 
 @Composable
@@ -47,114 +44,65 @@ fun UserDataScreenContent(
     onUpdateSemester: (UserData.AcademicInfo.Semester) -> Unit,
     enablePhotoEditing: Boolean = true,
 ) {
-    val spacing = LocalSpacing.current
+    val colors = MeadowTheme.colors
     val userData = state.userData
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(spacing.small),
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-            .padding(spacing.small)
-    ) {
-        Spacer(modifier = Modifier.height(spacing.extraSmall))
+    // Profile is reached from the More hub — wear its slate accent.
+    MeadowAccentProvider(colors.more) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = modifier
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp, vertical = 14.dp)
+        ) {
+            PersonalInfoSection(
+                name = userData.name,
+                photoUrl = userData.photoUrl,
+                uploadingPhoto = uploadingPhoto,
+                onNameChange = onUpdateName,
+                onChangePhotoClick = onChangePhotoClick,
+                enablePhotoEditing = enablePhotoEditing,
+            )
 
-        Card {
-            Column {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = spacing.small),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(120.dp)
-                    ) {
-                        if (uploadingPhoto) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.align(Alignment.Center)
-                            )
-                        } else {
-                            UserPhoto(
-                                photoUrl = userData.photoUrl,
-                                modifier = Modifier.matchParentSize()
-                            )
-                        }
-                        if (enablePhotoEditing) {
-                            Icon(
-                                imageVector = Icons.Filled.PhotoCamera,
-                                contentDescription = stringResource(R.string.change_photo),
-                                modifier = Modifier
-                                    .align(Alignment.BottomEnd)
-                                    .scale(1.5f)
-                                    .clickable { onChangePhotoClick() }
-                            )
-                        }
-                    }
-                }
+            InstitutionInfoSection(
+                university = userData.academicInfo.university,
+                faculty = userData.academicInfo.faculty,
+                department = userData.academicInfo.department,
+                onUniversityChange = onUpdateUniversity,
+                onFacultyChange = onUpdateFaculty,
+                onDepartmentChange = onUpdateDepartment,
+            )
 
-                Spacer(modifier = Modifier.height(spacing.medium))
+            AcademicStatusSection(
+                level = userData.academicInfo.level,
+                semester = userData.academicInfo.semester,
+                onLevelChange = onUpdateLevel,
+                onSemesterChange = onUpdateSemester,
+            )
 
-                ExpandableTextField(
-                    title = stringResource(R.string.name),
-                    value = userData.name,
-                    onNewValueSubmitted = { onUpdateName(it) }
-                )
-            }
-        }
-
-        Card {
-            Column {
-                ExpandableTextField(
-                    title = stringResource(R.string.university),
-                    value = userData.academicInfo.university,
-                    onNewValueSubmitted = { onUpdateUniversity(it) }
-                )
-
-                ExpandableTextField(
-                    title = stringResource(R.string.faculty),
-                    value = userData.academicInfo.faculty,
-                    onNewValueSubmitted = { onUpdateFaculty(it) }
-                )
-
-                ExpandableTextField(
-                    title = stringResource(R.string.department),
-                    value = userData.academicInfo.department,
-                    onNewValueSubmitted = { onUpdateDepartment(it) }
-                )
-            }
-        }
-
-        Card {
-            Column {
-                ExpandableTextField(
-                    title = stringResource(R.string.level),
-                    value = userData.academicInfo.level.toString(),
-                    onNewValueSubmitted = { onUpdateLevel(it) },
-                    keyboardType = KeyboardType.Number
-                )
-
-                SemesterSelection(
-                    semester = userData.academicInfo.semester,
-                    onSemesterClick = onUpdateSemester
-                )
-
+            // Academic progress — derived, read-only
+            MeadowCard(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(vertical = 6.dp),
+            ) {
                 ExpandableTextField(
                     title = stringResource(R.string.cumulative_gpa),
-                    value = "%.4f".format(floor(userData.academicProgress.cumulativeGPA * 10000) / 10000.0),
-                    onNewValueSubmitted = { onUpdateCumulativeGPA(it) },
+                    value = "%.4f".format(
+                        floor(userData.academicProgress.cumulativeGPA * 10000) / 10000.0
+                    ),
+                    onNewValueSubmitted = onUpdateCumulativeGPA,
                     keyboardType = KeyboardType.Number,
                     enabled = false,
-                    supportingText = "Calculated from History tab",
+                    supportingText = stringResource(R.string.calculated_from_history),
                 )
-
+                MeadowRowDivider()
                 ExpandableTextField(
                     title = stringResource(R.string.total_hours),
                     value = userData.academicProgress.creditHours.toString(),
-                    onNewValueSubmitted = { onUpdateCreditHours(it) },
+                    onNewValueSubmitted = onUpdateCreditHours,
                     keyboardType = KeyboardType.Number,
                     enabled = false,
-                    supportingText = "Calculated from History tab",
+                    supportingText = stringResource(R.string.calculated_from_history),
                 )
             }
         }

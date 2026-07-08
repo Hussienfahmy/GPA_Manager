@@ -1,20 +1,24 @@
 package com.hussienfahmy.core_ui.presentation.user_data.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.domain.user_data.model.UserData
-import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.ExpandableTextField
+import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowRowDivider
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 
 @Composable
 fun AcademicStatusSection(
@@ -24,37 +28,32 @@ fun AcademicStatusSection(
     onSemesterChange: (UserData.AcademicInfo.Semester) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val spacing = LocalSpacing.current
-
-    Card(modifier = modifier) {
-        Column(
-            modifier = Modifier.padding(spacing.medium),
-            verticalArrangement = Arrangement.spacedBy(spacing.medium)
-        ) {
-            Text(
-                text = stringResource(R.string.onboarding_academic_status_title),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxWidth()
-            )
-
+    MeadowCard(
+        modifier = modifier,
+        contentPadding = PaddingValues(vertical = 16.dp),
+    ) {
+        Column(modifier = Modifier.padding(horizontal = 18.dp)) {
+            CapsLabel(text = stringResource(R.string.onboarding_academic_status_title))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = stringResource(R.string.onboarding_academic_status_subtitle),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            ExpandableTextField(
-                title = stringResource(R.string.level),
-                value = level.toString(),
-                onNewValueSubmitted = onLevelChange,
-                keyboardType = KeyboardType.Number
-            )
-
-            SemesterSelection(
-                semester = semester,
-                onSemesterClick = onSemesterChange
+                style = MaterialTheme.typography.bodySmall,
+                color = MeadowTheme.colors.inkFaint,
             )
         }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        ExpandableTextField(
+            title = stringResource(R.string.level),
+            value = level.toString(),
+            onNewValueSubmitted = onLevelChange,
+            keyboardType = KeyboardType.Number,
+        )
+        MeadowRowDivider()
+        SemesterSelection(
+            semester = semester,
+            onSemesterClick = onSemesterChange,
+        )
     }
 }

@@ -1,5 +1,6 @@
 package com.hussienfahmy.core_ui.presentation.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,20 +14,19 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.dropUnlessResumed
 import com.hussienfahmy.core.R
-import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 
 @Composable
 fun OnboardingLayout(
@@ -44,38 +44,36 @@ fun OnboardingLayout(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    val spacing = LocalSpacing.current
+    val colors = MeadowTheme.colors
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(spacing.medium)
+            .background(colors.paper)
+            .padding(16.dp)
     ) {
-
-        // Title and subtitle
         Text(
             text = title,
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.displaySmall.copy(fontSize = 24.sp),
+            color = colors.ink,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = if (subtitle != null) spacing.small else spacing.medium)
+                .padding(bottom = if (subtitle != null) 6.dp else 14.dp)
         )
 
         subtitle?.let {
             Text(
                 text = it,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = colors.inkMuted,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = spacing.medium)
+                    .padding(bottom = 14.dp)
             )
         }
 
-        // Content
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -87,75 +85,53 @@ fun OnboardingLayout(
             content()
         }
 
-        // Navigation buttons
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = spacing.medium),
+                .padding(top = 14.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Back button or spacer (show back button for all steps except the first)
             if (currentStep > 1 && onBackClick != null) {
-                TextButton(onClick = dropUnlessResumed {
-                    onBackClick()
-                }) {
-                    Text(stringResource(R.string.onboarding_back))
-                }
+                PillButton(
+                    text = stringResource(R.string.onboarding_back),
+                    onClick = dropUnlessResumed { onBackClick() },
+                    style = PillButtonStyle.Text,
+                    compact = true,
+                )
             } else {
                 Spacer(modifier = Modifier.weight(0.3f))
             }
 
-            // Skip button (centered when available)
             if (showSkip && onSkipClick != null) {
-                TextButton(onClick = dropUnlessResumed {
-                    onSkipClick()
-                }) {
-                    Text(stringResource(R.string.onboarding_skip_for_now))
-                }
+                PillButton(
+                    text = stringResource(R.string.onboarding_skip_for_now),
+                    onClick = dropUnlessResumed { onSkipClick() },
+                    style = PillButtonStyle.Text,
+                    compact = true,
+                )
             } else {
                 Spacer(modifier = Modifier.weight(0.4f))
             }
 
-            // Next button
             if (onNextClick != null) {
-                OutlinedButton(
-                    onClick = dropUnlessResumed {
-                        onNextClick()
-                    },
-                    enabled = nextButtonEnabled && !nextButtonLoading
-                ) {
-                    if (nextButtonLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(16.dp),
-                            strokeWidth = 2.dp
-                        )
-                    } else {
-                        Text(nextButtonText ?: stringResource(R.string.onboarding_next))
-                    }
+                if (nextButtonLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(28.dp),
+                        strokeWidth = 3.dp,
+                        color = MeadowTheme.accent.accent,
+                    )
+                } else {
+                    PillButton(
+                        text = nextButtonText ?: stringResource(R.string.onboarding_next),
+                        onClick = dropUnlessResumed { onNextClick() },
+                        style = PillButtonStyle.Primary,
+                        enabled = nextButtonEnabled,
+                    )
                 }
             } else {
                 Spacer(modifier = Modifier.weight(0.3f))
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun OnboardingLayoutPreview() {
-    OnboardingLayout(
-        title = "Complete Your Profile",
-        subtitle = "Help us personalize your experience by sharing some basic information",
-        currentStep = 2,
-        onBackClick = {},
-        onNextClick = {},
-        onSkipClick = {},
-        showSkip = true
-    ) {
-        Text(
-            text = "Content goes here...",
-            modifier = Modifier.padding(16.dp)
-        )
     }
 }

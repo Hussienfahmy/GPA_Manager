@@ -1,25 +1,23 @@
 package com.hussienfahmy.semester_history_presentation.components
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -28,19 +26,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.data.local.entity.Grade
 import com.hussienfahmy.core.data.local.entity.Subject
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
-import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowTextField
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
 import com.hussienfahmy.core_ui.presentation.util.toStringWithOptionalDecimals
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AddSubjectSheet(
     availableGrades: List<Grade>,
@@ -50,7 +54,6 @@ fun AddSubjectSheet(
     initialSubject: Subject? = null,
 ) {
     val isEditMode = initialSubject != null
-    val spacing = LocalSpacing.current
     var name by remember { mutableStateOf(initialSubject?.name ?: "") }
     var creditHours by remember {
         mutableStateOf(
@@ -69,32 +72,11 @@ fun AddSubjectSheet(
     var oralEnabled by remember { mutableStateOf(hasExistingMarks && initialSubject.metadata.oralAvailable) }
     var projectEnabled by remember { mutableStateOf(hasExistingMarks && initialSubject.metadata.projectAvailable) }
 
-    var midtermInput by remember {
-        mutableStateOf(
-            initialSubject?.semesterMarks?.midterm?.toString() ?: ""
-        )
-    }
-    var practicalInput by remember {
-        mutableStateOf(
-            initialSubject?.semesterMarks?.practical?.toString() ?: ""
-        )
-    }
-    var oralInput by remember {
-        mutableStateOf(
-            initialSubject?.semesterMarks?.oral?.toString() ?: ""
-        )
-    }
-    var projectInput by remember {
-        mutableStateOf(
-            initialSubject?.semesterMarks?.project?.toString() ?: ""
-        )
-    }
-
-    var finalExamScoreInput by remember {
-        mutableStateOf(
-            initialSubject?.semesterMarks?.finalExamScore?.toString() ?: ""
-        )
-    }
+    var midtermInput by remember { mutableStateOf(initialSubject?.semesterMarks?.midterm?.toString() ?: "") }
+    var practicalInput by remember { mutableStateOf(initialSubject?.semesterMarks?.practical?.toString() ?: "") }
+    var oralInput by remember { mutableStateOf(initialSubject?.semesterMarks?.oral?.toString() ?: "") }
+    var projectInput by remember { mutableStateOf(initialSubject?.semesterMarks?.project?.toString() ?: "") }
+    var finalExamScoreInput by remember { mutableStateOf(initialSubject?.semesterMarks?.finalExamScore?.toString() ?: "") }
 
     val anyMarkEnabled = midtermEnabled || practicalEnabled || oralEnabled || projectEnabled
 
@@ -121,121 +103,95 @@ fun AddSubjectSheet(
             && selectedGrade != null
             && marksValid
 
-    ModalBottomSheet(onDismissRequest = onDismiss) {
-        val focusManager = LocalFocusManager.current
+    MeadowBottomSheet(onDismiss = onDismiss) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .pointerInput(Unit) {
-                    detectTapGestures {
-                        focusManager.clearFocus()
-                    }
-                }
-                .padding(spacing.medium)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(spacing.small),
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             Text(
-                text = if (isEditMode) stringResource(R.string.history_edit_subject) else stringResource(
-                    R.string.add_subject
-                ),
-                style = MaterialTheme.typography.titleLarge,
+                text = if (isEditMode) stringResource(R.string.history_edit_subject)
+                else stringResource(R.string.add_subject),
+                style = MaterialTheme.typography.headlineMedium,
+                color = MeadowTheme.colors.ink,
             )
 
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text(stringResource(R.string.subject_name)) },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-            )
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                MeadowTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = stringResource(R.string.subject_name),
+                    modifier = Modifier.weight(2.2f),
+                )
+                MeadowTextField(
+                    value = creditHours,
+                    onValueChange = { creditHours = it },
+                    label = stringResource(R.string.credit_hours),
+                    isError = creditHours.isNotBlank() && creditHours.toDoubleOrNull() == null,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    modifier = Modifier.weight(1f),
+                )
+            }
 
-            OutlinedTextField(
-                value = creditHours,
-                onValueChange = { creditHours = it },
-                label = { Text(stringResource(R.string.credit_hours)) },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                modifier = Modifier.fillMaxWidth(),
-                isError = creditHours.isNotBlank() && creditHours.toDoubleOrNull() == null,
-            )
-
-            Text(
-                stringResource(R.string.history_grade_label),
-                style = MaterialTheme.typography.labelMedium,
-            )
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
+            CapsLabel(text = stringResource(R.string.history_grade_label))
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 availableGrades.sortedByDescending { it.percentage ?: 0.0 }.forEach { grade ->
-                    FilterChip(
+                    SelectablePill(
+                        text = grade.name.symbol,
                         selected = selectedGrade == grade,
                         onClick = { selectedGrade = grade },
-                        label = { Text(grade.name.symbol) },
+                        ltr = true,
                     )
                 }
             }
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = spacing.small))
+            SheetDivider()
 
-            Text(
-                text = stringResource(R.string.history_marks_section_title),
-                style = MaterialTheme.typography.labelMedium,
-            )
-
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
-                FilterChip(
-                    selected = midtermEnabled,
-                    onClick = {
-                        midtermEnabled = !midtermEnabled
-                    },
-                    label = { Text(stringResource(R.string.midterm)) },
-                )
-                FilterChip(
-                    selected = practicalEnabled,
-                    onClick = {
-                        practicalEnabled = !practicalEnabled
-                    },
-                    label = { Text(stringResource(R.string.practical)) },
-                )
-                FilterChip(
-                    selected = oralEnabled,
-                    onClick = { oralEnabled = !oralEnabled },
-                    label = { Text(stringResource(R.string.oral)) },
-                )
-                FilterChip(
-                    selected = projectEnabled,
-                    onClick = {
-                        projectEnabled = !projectEnabled
-                    },
-                    label = { Text(stringResource(R.string.project)) },
-                )
+            CapsLabel(text = stringResource(R.string.history_marks_section_title))
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                SelectablePill(stringResource(R.string.midterm), midtermEnabled) { midtermEnabled = !midtermEnabled }
+                SelectablePill(stringResource(R.string.practical), practicalEnabled) { practicalEnabled = !practicalEnabled }
+                SelectablePill(stringResource(R.string.oral), oralEnabled) { oralEnabled = !oralEnabled }
+                SelectablePill(stringResource(R.string.project), projectEnabled) { projectEnabled = !projectEnabled }
             }
 
             if (anyMarkEnabled) {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(spacing.small),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .animateContentSize(),
                 ) {
-                    if (midtermEnabled) MarkField(
-                        label = stringResource(R.string.midterm),
+                    if (midtermEnabled) MeadowTextField(
                         value = midtermInput,
                         onValueChange = { midtermInput = it },
+                        label = stringResource(R.string.midterm),
+                        isError = midtermInput.isNotBlank() && midtermInput.toDoubleOrNull() == null,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        modifier = Modifier.fillMaxWidth(),
                     )
-                    if (practicalEnabled) MarkField(
-                        label = stringResource(R.string.practical),
+                    if (practicalEnabled) MeadowTextField(
                         value = practicalInput,
                         onValueChange = { practicalInput = it },
+                        label = stringResource(R.string.practical),
+                        isError = practicalInput.isNotBlank() && practicalInput.toDoubleOrNull() == null,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        modifier = Modifier.fillMaxWidth(),
                     )
-                    if (oralEnabled) MarkField(
-                        label = stringResource(R.string.oral),
+                    if (oralEnabled) MeadowTextField(
                         value = oralInput,
                         onValueChange = { oralInput = it },
+                        label = stringResource(R.string.oral),
+                        isError = oralInput.isNotBlank() && oralInput.toDoubleOrNull() == null,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        modifier = Modifier.fillMaxWidth(),
                     )
-                    if (projectEnabled) MarkField(
-                        label = stringResource(R.string.project),
+                    if (projectEnabled) MeadowTextField(
                         value = projectInput,
                         onValueChange = { projectInput = it },
+                        label = stringResource(R.string.project),
+                        isError = projectInput.isNotBlank() && projectInput.toDoubleOrNull() == null,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
 
@@ -246,25 +202,27 @@ fun AddSubjectSheet(
                             totalMarks.toStringWithOptionalDecimals()
                         ),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = MeadowTheme.colors.inkFaint,
                     )
                 }
             }
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = spacing.small))
+            SheetDivider()
 
-            Text(
-                text = stringResource(R.string.final_exam),
-                style = MaterialTheme.typography.labelMedium,
-            )
-
-            MarkField(
-                label = stringResource(R.string.final_exam_score),
+            CapsLabel(text = stringResource(R.string.final_exam))
+            MeadowTextField(
                 value = finalExamScoreInput,
                 onValueChange = { finalExamScoreInput = it },
+                label = stringResource(R.string.final_exam_score),
+                isError = finalExamScoreInput.isNotBlank() && finalExamScoreInput.toDoubleOrNull() == null,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                modifier = Modifier.fillMaxWidth(),
             )
 
-            Button(
+            Spacer(modifier = Modifier.height(4.dp))
+
+            PillButton(
+                text = if (isEditMode) stringResource(R.string.save) else stringResource(R.string.add),
                 onClick = {
                     val midterm = if (midtermEnabled) midtermInput.toDoubleOrNull() else null
                     val practical = if (practicalEnabled) practicalInput.toDoubleOrNull() else null
@@ -287,41 +245,58 @@ fun AddSubjectSheet(
                         oralAvailable = oralEnabled,
                         projectAvailable = projectEnabled,
                     )
-                    onAdd(
-                        name,
-                        creditHours.toDouble(),
-                        selectedGrade!!.name,
-                        totalMarks,
-                        semesterMarks,
-                        metadata
-                    )
+                    onAdd(name, creditHours.toDouble(), selectedGrade!!.name, totalMarks, semesterMarks, metadata)
                     onDismiss()
                 },
+                style = PillButtonStyle.Primary,
                 enabled = isValid,
                 modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(if (isEditMode) stringResource(R.string.save) else stringResource(R.string.add))
-            }
-
-            Spacer(modifier = Modifier.height(spacing.medium))
+            )
         }
     }
 }
 
 @Composable
-private fun MarkField(
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
+private fun SelectablePill(
+    text: String,
+    selected: Boolean,
+    ltr: Boolean = false,
+    onClick: () -> Unit,
 ) {
-    OutlinedTextField(
-        modifier = modifier.fillMaxWidth(),
-        value = value,
-        onValueChange = onValueChange,
-        label = { Text(text = label, style = MaterialTheme.typography.bodySmall) },
-        isError = value.isNotBlank() && value.toDoubleOrNull() == null,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-        singleLine = true,
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
+    val shape = CircleShape
+
+    Text(
+        text = text,
+        style = if (ltr) {
+            MaterialTheme.typography.titleSmall.copy(textDirection = TextDirection.Ltr)
+        } else {
+            MaterialTheme.typography.titleSmall
+        },
+        color = if (selected) accent.onAccent else colors.inkMuted,
+        modifier = Modifier
+            .clip(shape)
+            .background(if (selected) accent.accent else colors.surfaceSunken)
+            .then(
+                if (!selected) Modifier.border(1.dp, colors.divider, shape) else Modifier
+            )
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onClick,
+            )
+            .padding(horizontal = 14.dp, vertical = 7.dp),
+    )
+}
+
+@Composable
+private fun SheetDivider() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .height(1.dp)
+            .background(MeadowTheme.colors.divider),
     )
 }

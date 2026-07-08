@@ -12,10 +12,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 
 @Composable
 fun OnboardingProgressIndicator(
@@ -23,6 +25,9 @@ fun OnboardingProgressIndicator(
     totalSteps: Int,
     modifier: Modifier = Modifier
 ) {
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
+
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -32,28 +37,21 @@ fun OnboardingProgressIndicator(
             val stepNumber = index + 1
             val isCompleted = stepNumber < currentStep
             val isCurrent = stepNumber == currentStep
+            val done = isCompleted || isCurrent
 
             Box(
                 modifier = Modifier
                     .size(32.dp)
                     .clip(CircleShape)
-                    .background(
-                        when {
-                            isCompleted -> MaterialTheme.colorScheme.primary
-                            isCurrent -> MaterialTheme.colorScheme.primary
-                            else -> MaterialTheme.colorScheme.surfaceVariant
-                        }
-                    ),
+                    .background(if (done) accent.accent else colors.segmentedBg)
+                    .alpha(if (isCompleted) 0.6f else 1f),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = stepNumber.toString(),
                     style = MaterialTheme.typography.labelMedium,
-                    fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
-                    color = when {
-                        isCompleted || isCurrent -> MaterialTheme.colorScheme.onPrimary
-                        else -> MaterialTheme.colorScheme.onSurfaceVariant
-                    }
+                    fontWeight = if (isCurrent) FontWeight.Black else FontWeight.Bold,
+                    color = if (done) accent.onAccent else colors.inkFaint,
                 )
             }
         }
@@ -63,8 +61,10 @@ fun OnboardingProgressIndicator(
 @Preview(showBackground = true)
 @Composable
 fun OnboardingProgressIndicatorPreview() {
-    OnboardingProgressIndicator(
-        currentStep = 2,
-        totalSteps = OnboardingConstants.TOTAL_STEPS
-    )
+    MeadowTheme(darkTheme = false) {
+        OnboardingProgressIndicator(
+            currentStep = 2,
+            totalSteps = OnboardingConstants.TOTAL_STEPS
+        )
+    }
 }
