@@ -346,4 +346,14 @@
     <string name="grade_edit_percentage_subtitle">Minimum percentage</string>
     <string name="grade_edit_points_field">Points</string>
     <string name="grade_edit_percentage_field">Percentage</string>
+    <string name="gpa_scale">scale</string>
+    <string name="gpa_scale_four_detail">A = 4.00 points\nMost common system</string>
+    <string name="gpa_scale_five_detail">A = 5.00 points\nUsed by some faculties</string>
+    <string name="gpa_scale_warning">Changing the scale recalculates every GPA in the app — current semester and history.</string>
+    <string name="subject_marks_depend_on">New-subject total marks depend on</string>
+    <string name="subject_depends_credit_hours">Credit hours</string>
+    <string name="subject_depends_constant">Constant</string>
+    <string name="marks_per_credit_hour">Marks per credit hour</string>
+    <string name="constant_subject_marks_label">Constant subject marks</string>
+    <string name="subject_marks_example">A 3-hour subject = %1$s total marks</string>
 </resources>

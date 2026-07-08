@@ -337,4 +337,14 @@
     <string name="grade_edit_percentage_subtitle">أقل نسبة مئوية</string>
     <string name="grade_edit_points_field">النقاط</string>
     <string name="grade_edit_percentage_field">النسبة</string>
+    <string name="gpa_scale">مقياس</string>
+    <string name="gpa_scale_four_detail">A = 4.00 نقطة\nالنظام الأكثر شيوعًا</string>
+    <string name="gpa_scale_five_detail">A = 5.00 نقطة\nتستخدمه بعض الكليات</string>
+    <string name="gpa_scale_warning">تغيير المقياس يعيد حساب كل المعدلات في التطبيق — الفصل الحالي والسجل.</string>
+    <string name="subject_marks_depend_on">إجمالي درجات المادة الجديدة يعتمد على</string>
+    <string name="subject_depends_credit_hours">الساعات المعتمدة</string>
+    <string name="subject_depends_constant">ثابت</string>
+    <string name="marks_per_credit_hour">الدرجات لكل ساعة معتمدة</string>
+    <string name="constant_subject_marks_label">درجات المادة الثابتة</string>
+    <string name="subject_marks_example">مادة بـ 3 ساعات = %1$s درجة إجمالية</string>
 </resources>
