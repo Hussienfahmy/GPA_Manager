@@ -347,4 +347,8 @@
     <string name="marks_per_credit_hour">الدرجات لكل ساعة معتمدة</string>
     <string name="constant_subject_marks_label">درجات المادة الثابتة</string>
     <string name="subject_marks_example">مادة بـ 3 ساعات = %1$s درجة إجمالية</string>
+    <string name="detail_hrs_marks">%1$s ساعة · %2$s/%3$s درجة</string>
+    <string name="detail_hrs_only">%1$s ساعة</string>
+    <string name="detail_subjects_count">%1$d مواد</string>
+    <string name="detail_add_subject">+ إضافة مادة</string>
 </resources>

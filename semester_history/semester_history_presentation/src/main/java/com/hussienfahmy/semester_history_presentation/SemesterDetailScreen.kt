@@ -1,39 +1,34 @@
 package com.hussienfahmy.semester_history_presentation
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,21 +38,32 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.data.local.entity.Subject
-import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
 import com.hussienfahmy.core_ui.presentation.util.toStringWithOptionalDecimals
+import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
+import com.hussienfahmy.core_ui.theme.MeadowRadius
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.semester_history_domain.model.Semester
 import com.hussienfahmy.semester_history_domain.model.SemesterDetail
 import com.hussienfahmy.semester_history_presentation.components.AddSubjectSheet
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import java.util.Locale
 
 @Composable
 fun SemesterDetailRoot(
@@ -72,9 +78,7 @@ fun SemesterDetailRoot(
         viewModel.events.collect { event ->
             when (event) {
                 is SemesterDetailEvent.ShowError -> snackbarHostState.showSnackbar(
-                    event.message.asString(
-                        context
-                    )
+                    event.message.asString(context)
                 )
             }
         }
@@ -93,7 +97,6 @@ fun SemesterDetailRoot(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SemesterDetailScreen(
     state: SemesterDetailState,
@@ -103,47 +106,47 @@ fun SemesterDetailScreen(
     var showAddSubjectSheet by remember { mutableStateOf(false) }
     var editingSubject by remember { mutableStateOf<Subject?>(null) }
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {
-                if (!state.isSubmitting) showAddSubjectSheet = true
-            }) {
-                AnimatedContent(
-                    targetState = state.isSubmitting,
-                    label = "fab_content"
-                ) { submitting ->
+    MeadowAccentProvider(MeadowTheme.colors.history) {
+        Scaffold(
+            containerColor = MeadowTheme.colors.paper,
+            snackbarHost = { SnackbarHost(snackbarHostState) },
+            floatingActionButton = {
+                AnimatedContent(targetState = state.isSubmitting, label = "fab_content") { submitting ->
                     if (submitting) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.padding(8.dp),
-                            strokeWidth = 2.dp,
-                        )
+                        MeadowCard(contentPadding = PaddingValues(14.dp)) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(20.dp),
+                                strokeWidth = 2.dp,
+                                color = MeadowTheme.accent.accent,
+                            )
+                        }
                     } else {
-                        Icon(
-                            Icons.Outlined.Add,
-                            contentDescription = stringResource(R.string.add_subject),
+                        PillButton(
+                            text = stringResource(R.string.detail_add_subject),
+                            onClick = { showAddSubjectSheet = true },
+                            style = PillButtonStyle.Primary,
                         )
                     }
                 }
             }
-        }
-    ) { padding ->
-        when {
-            state.detail == null -> Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
+        ) { padding ->
+            when {
+                state.detail == null -> Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator(color = MeadowTheme.accent.accent)
+                }
 
-            else -> SemesterDetailContent(
-                detail = state.detail,
-                onEditSubject = { editingSubject = it },
-                onDeleteSubject = { onAction(SemesterDetailAction.OnDeleteSubject(it)) },
-                modifier = Modifier.padding(padding),
-            )
+                else -> SemesterDetailContent(
+                    detail = state.detail,
+                    onEditSubject = { editingSubject = it },
+                    onDeleteSubject = { onAction(SemesterDetailAction.OnDeleteSubject(it)) },
+                    modifier = Modifier.padding(padding),
+                )
+            }
         }
     }
 
@@ -155,12 +158,7 @@ fun SemesterDetailScreen(
             onAdd = { name, creditHours, gradeName, totalMarks, semesterMarks, metadata ->
                 onAction(
                     SemesterDetailAction.OnAddSubject(
-                        name,
-                        creditHours,
-                        gradeName,
-                        totalMarks,
-                        semesterMarks,
-                        metadata
+                        name, creditHours, gradeName, totalMarks, semesterMarks, metadata
                     )
                 )
             },
@@ -176,13 +174,7 @@ fun SemesterDetailScreen(
             onAdd = { name, creditHours, gradeName, totalMarks, semesterMarks, metadata ->
                 onAction(
                     SemesterDetailAction.OnEditSubject(
-                        subject,
-                        name,
-                        creditHours,
-                        gradeName,
-                        totalMarks,
-                        semesterMarks,
-                        metadata
+                        subject, name, creditHours, gradeName, totalMarks, semesterMarks, metadata
                     )
                 )
             },
@@ -197,15 +189,13 @@ private fun SemesterDetailContent(
     onDeleteSubject: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val spacing = LocalSpacing.current
-
     LazyColumn(
-        modifier = modifier.padding(horizontal = spacing.small),
-        verticalArrangement = Arrangement.spacedBy(spacing.small),
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 80.dp),
+        modifier = modifier.padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(11.dp),
+        contentPadding = PaddingValues(top = 12.dp, bottom = 88.dp),
     ) {
         item {
-            SemesterHeaderCard(semester = detail.semester)
+            SemesterHeaderCard(semester = detail.semester, subjectCount = detail.subjectCount)
         }
 
         if (detail.subjects.isEmpty()) {
@@ -213,21 +203,13 @@ private fun SemesterDetailContent(
                 Text(
                     text = stringResource(R.string.history_no_subjects_hint),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(spacing.medium),
+                    color = MeadowTheme.colors.inkMuted,
+                    modifier = Modifier.padding(16.dp),
                 )
             }
         } else {
-            item {
-                Text(
-                    text = stringResource(R.string.history_subjects_header, detail.subjectCount),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = spacing.small),
-                )
-            }
             items(detail.subjects, key = { it.id }) { subject ->
-                SubjectCard(
+                SubjectRow(
                     subject = subject,
                     onEdit = { onEditSubject(subject) },
                     onDelete = { onDeleteSubject(subject.id) },
@@ -239,191 +221,160 @@ private fun SemesterDetailContent(
 }
 
 @Composable
-private fun SemesterHeaderCard(semester: Semester, modifier: Modifier = Modifier) {
-    val spacing = LocalSpacing.current
+private fun SemesterHeaderCard(
+    semester: Semester,
+    subjectCount: Int,
+    modifier: Modifier = Modifier,
+) {
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
 
-    Card(
+    MeadowCard(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-        ),
+        radius = MeadowRadius.hero,
+        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 15.dp),
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(spacing.medium),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier.weight(1f)) {
+                CapsLabel(text = stringResource(R.string.history_semester_gpa))
                 Text(
-                    text = stringResource(R.string.history_semester_gpa),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
-                Text(
-                    text = "%.2f".format(semester.semesterGPA),
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    text = String.format(Locale.getDefault(), "%.2f", semester.semesterGPA),
+                    style = MaterialTheme.typography.displayMedium.copy(fontSize = 34.sp),
+                    color = accent.ink,
                 )
             }
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = stringResource(R.string.credit_hours),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
+            Column(horizontalAlignment = Alignment.End) {
+                CapsLabel(text = stringResource(R.string.credit_hours))
                 Text(
                     text = semester.totalCreditHours.toString(),
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    style = MaterialTheme.typography.displaySmall.copy(fontSize = 22.sp),
+                    color = accent.ink,
+                )
+                Text(
+                    text = stringResource(R.string.detail_subjects_count, subjectCount),
+                    style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
+                    color = colors.inkFaint,
                 )
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SubjectCard(
+private fun SubjectRow(
     subject: Subject,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val spacing = LocalSpacing.current
-    var showDeleteSheet by remember { mutableStateOf(false) }
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
 
-    if (showDeleteSheet) {
-        ModalBottomSheet(onDismissRequest = { showDeleteSheet = false }) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(spacing.medium),
-                verticalArrangement = Arrangement.spacedBy(spacing.small),
-            ) {
-                Text(
-                    text = stringResource(R.string.history_delete_subject_title),
-                    style = MaterialTheme.typography.titleLarge,
-                )
-                Text(
-                    text = stringResource(R.string.history_delete_subject_message, subject.name),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Spacer(Modifier.height(spacing.small))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(spacing.small),
-                ) {
-                    OutlinedButton(
-                        onClick = { showDeleteSheet = false },
-                        modifier = Modifier.weight(1f),
-                    ) { Text(stringResource(R.string.cancel)) }
-                    Button(
-                        onClick = { showDeleteSheet = false; onDelete() },
-                        modifier = Modifier.weight(1f),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.error,
-                        ),
-                    ) { Text(stringResource(R.string.delete)) }
-                }
-                Spacer(Modifier.height(spacing.medium))
-            }
-        }
-    }
+    var showDeleteConfirmation by remember { mutableStateOf(false) }
 
-    Card(
+    if (showDeleteConfirmation) MeadowConfirmationSheet(
+        title = stringResource(R.string.history_delete_subject_title),
+        body = stringResource(R.string.history_delete_subject_message, subject.name),
+        confirmText = stringResource(R.string.delete),
+        onConfirm = onDelete,
+        onDismiss = { showDeleteConfirmation = false },
+    )
+
+    val noGrade = subject.gradeName == null
+
+    MeadowCard(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(10.dp),
+        radius = 18.dp,
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+        border = if (noGrade) androidx.compose.foundation.BorderStroke(2.dp, colors.marks.soft)
+        else null,
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = spacing.medium, vertical = spacing.small),
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            GradeBadge(symbol = subject.gradeName?.symbol)
-            Spacer(Modifier.width(spacing.small))
+            // Grade tile — violet when graded, amber "!" warning when not
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(if (noGrade) colors.marks.container else accent.container),
+            ) {
+                Text(
+                    text = subject.gradeName?.symbol ?: "!",
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        textDirection = TextDirection.Ltr
+                    ),
+                    color = if (noGrade) colors.marks.deep else accent.deep,
+                )
+            }
+
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = subject.name,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium,
+                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 15.sp),
+                    color = accent.ink,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
-                Text(
-                    text = stringResource(
-                        R.string.credit_hours_value_in_history,
-                        if (subject.creditHours % 1.0 == 0.0) subject.creditHours.toInt() else subject.creditHours,
-                    ),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                subject.semesterMarks?.let { marks ->
-                    val scoreText = if (subject.totalMarks > 0) {
-                        stringResource(
-                            R.string.history_score_with_total,
-                            marks.value.toStringWithOptionalDecimals(),
-                            subject.totalMarks.toStringWithOptionalDecimals(),
-                        )
-                    } else {
-                        stringResource(
-                            R.string.history_score_no_total,
-                            marks.value.toStringWithOptionalDecimals()
-                        )
-                    }
-                    Text(
-                        text = scoreText,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                if (subject.gradeName == null) {
+                if (noGrade) {
                     Text(
                         text = stringResource(R.string.history_no_grade_excluded),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.error.copy(alpha = 0.8f),
+                        style = MaterialTheme.typography.titleSmall.copy(fontSize = 11.5.sp),
+                        color = colors.marks.deep,
+                    )
+                } else {
+                    val hrs = subject.creditHours.toStringWithOptionalDecimals()
+                    val marks = subject.semesterMarks
+                    Text(
+                        text = if (marks != null && subject.totalMarks > 0) {
+                            stringResource(
+                                R.string.detail_hrs_marks,
+                                hrs,
+                                marks.value.toStringWithOptionalDecimals(),
+                                subject.totalMarks.toStringWithOptionalDecimals(),
+                            )
+                        } else {
+                            stringResource(R.string.detail_hrs_only, hrs)
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = colors.inkFaint,
                     )
                 }
             }
-            IconButton(onClick = onEdit) {
-                Icon(Icons.Outlined.Edit, contentDescription = stringResource(R.string.edit))
-            }
-            IconButton(onClick = { showDeleteSheet = true }) {
+
+            Icon(
+                imageVector = Icons.Outlined.Edit,
+                contentDescription = stringResource(R.string.edit),
+                tint = colors.navItemIcon,
+                modifier = Modifier
+                    .size(18.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = onEdit,
+                    ),
+            )
+
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(26.dp)
+                    .clip(CircleShape)
+                    .background(colors.dangerContainer)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                    ) { showDeleteConfirmation = true },
+            ) {
                 Icon(
-                    Icons.Outlined.Delete,
+                    imageVector = Icons.Outlined.Close,
                     contentDescription = stringResource(R.string.delete),
-                    tint = MaterialTheme.colorScheme.error,
+                    tint = colors.onDangerContainer,
+                    modifier = Modifier.size(14.dp),
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun GradeBadge(symbol: String?) {
-    val containerColor = if (symbol != null)
-        MaterialTheme.colorScheme.tertiaryContainer
-    else
-        MaterialTheme.colorScheme.surfaceVariant
-
-    val contentColor = if (symbol != null)
-        MaterialTheme.colorScheme.onTertiaryContainer
-    else
-        MaterialTheme.colorScheme.onSurfaceVariant
-
-    Surface(
-        color = containerColor,
-        contentColor = contentColor,
-        shape = RoundedCornerShape(8.dp),
-    ) {
-        Text(
-            text = symbol ?: "–",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-        )
     }
 }
