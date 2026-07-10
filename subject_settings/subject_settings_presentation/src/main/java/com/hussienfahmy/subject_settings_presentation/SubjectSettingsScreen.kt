@@ -140,27 +140,28 @@ fun SubjectsSettingsScreenContent(
 
             Spacer(modifier = Modifier.height(14.dp))
 
-            ValueField(
-                label = stringResource(R.string.marks_per_credit_hour),
-                value = marksPerCredit,
-                enabled = dependsOnCredit,
-                onValueChange = {
-                    marksPerCredit = it
-                    onMarksPerCreditHourChanged(it)
-                },
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            ValueField(
-                label = stringResource(R.string.constant_subject_marks_label),
-                value = constantMarks,
-                enabled = !dependsOnCredit,
-                onValueChange = {
-                    constantMarks = it
-                    onConstantMarksChanged(it)
-                },
-            )
+            // Only the field for the selected mode is shown.
+            if (dependsOnCredit) {
+                ValueField(
+                    label = stringResource(R.string.marks_per_credit_hour),
+                    value = marksPerCredit,
+                    enabled = true,
+                    onValueChange = {
+                        marksPerCredit = it
+                        onMarksPerCreditHourChanged(it)
+                    },
+                )
+            } else {
+                ValueField(
+                    label = stringResource(R.string.constant_subject_marks_label),
+                    value = constantMarks,
+                    enabled = true,
+                    onValueChange = {
+                        constantMarks = it
+                        onConstantMarksChanged(it)
+                    },
+                )
+            }
 
             Spacer(modifier = Modifier.height(12.dp))
 
