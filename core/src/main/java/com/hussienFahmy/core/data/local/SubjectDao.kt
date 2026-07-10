@@ -138,6 +138,13 @@ interface SubjectDao {
     suspend fun linkWorkspaceSubjectsToSemester(semesterId: Long)
 
     /**
+     * Ids of archived semesters that have at least one subject with no grade
+     * assigned — drives the "missing grade" signal on the History list.
+     */
+    @Query("SELECT DISTINCT semesterId FROM subject WHERE semesterId IS NOT NULL AND gradeName IS NULL")
+    fun getSemesterIdsWithMissingGrade(): Flow<List<Long>>
+
+    /**
      * Get all active grades
      */
     @Query("SELECT * FROM grade WHERE active ORDER BY percentage DESC")

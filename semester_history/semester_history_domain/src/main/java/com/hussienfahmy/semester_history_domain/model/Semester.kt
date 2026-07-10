@@ -13,12 +13,14 @@ data class Semester(
     val order: Int,
     val createdAt: Long,
     val archivedAt: Long?,
+    /** True when a DETAILED semester has a subject with no grade assigned. */
+    val hasMissingGrade: Boolean = false,
 ) {
     enum class Type { SUMMARY, DETAILED }
     enum class Status { CURRENT, ARCHIVED }
 }
 
-fun SemesterEntity.toDomain() = Semester(
+fun SemesterEntity.toDomain(hasMissingGrade: Boolean = false) = Semester(
     id = id,
     label = label,
     level = level,
@@ -35,4 +37,5 @@ fun SemesterEntity.toDomain() = Semester(
     order = order,
     createdAt = createdAt,
     archivedAt = archivedAt,
+    hasMissingGrade = hasMissingGrade,
 )

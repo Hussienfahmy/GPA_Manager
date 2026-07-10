@@ -18,6 +18,7 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
+import androidx.compose.material.icons.rounded.PriorityHigh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -125,13 +126,36 @@ fun SemesterCard(
             }
 
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = semester.label,
-                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 15.sp),
-                    color = accent.ink,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    Text(
+                        text = semester.label,
+                        style = MaterialTheme.typography.titleLarge.copy(fontSize = 15.sp),
+                        color = accent.ink,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false),
+                    )
+                    // Amber flag — a subject in this semester has no grade yet.
+                    if (semester.hasMissingGrade) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(16.dp)
+                                .clip(CircleShape)
+                                .background(colors.marks.container),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.PriorityHigh,
+                                contentDescription = stringResource(R.string.history_missing_grade),
+                                tint = colors.marks.deep,
+                                modifier = Modifier.size(11.dp),
+                            )
+                        }
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(4.dp))
 
@@ -254,6 +278,7 @@ private fun SemesterCardShowcase() {
                     order = 2,
                     createdAt = 1,
                     archivedAt = 1,
+                    hasMissingGrade = true,
                 ),
                 onClick = {}, onEditClick = {}, onDeleteClick = {},
                 onMoveUp = {}, onMoveDown = {},

@@ -19,7 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -247,9 +247,12 @@ fun SemesterHistoryContent(
                         ),
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.Add,
+                        imageVector = Icons.Rounded.Add,
                         contentDescription = stringResource(R.string.add),
                         tint = accent.deep,
+                        modifier = Modifier
+                            .size(22.dp)
+                            .align(Alignment.Center),
                     )
                 }
             }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -109,6 +110,10 @@ fun SemesterDetailScreen(
     MeadowAccentProvider(MeadowTheme.colors.history) {
         Scaffold(
             containerColor = MeadowTheme.colors.paper,
+            // The app's root Scaffold already accounts for the status bar —
+            // without this, this nested Scaffold reserves it a second time,
+            // showing up as a big blank gap above the header card.
+            contentWindowInsets = WindowInsets(0, 0, 0, 0),
             snackbarHost = { SnackbarHost(snackbarHostState) },
             floatingActionButton = {
                 AnimatedContent(targetState = state.isSubmitting, label = "fab_content") { submitting ->
