@@ -16,7 +16,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -142,9 +141,12 @@ fun SemesterMarksScreenContent(
 ) {
     val spacing = LocalSpacing.current
 
-    // Expand-all / collapse-all: bump the command counter, all cards obey.
-    var expandCommand by remember { mutableIntStateOf(0) }
-    var expandTarget by remember { mutableStateOf(false) }
+    // Expansion owned here so the toolbar always reflects real state.
+    // Seed with the first subject expanded (the ladder hint).
+    var expandedIds by remember(subjects.firstOrNull()?.id) {
+        mutableStateOf(subjects.firstOrNull()?.let { setOf(it.id) } ?: emptySet())
+    }
+    val anyExpanded = expandedIds.isNotEmpty()
 
     if (subjects.isNotEmpty()) {
         Column(modifier = modifier.fillMaxSize()) {
@@ -155,11 +157,11 @@ fun SemesterMarksScreenContent(
                 horizontalArrangement = Arrangement.End,
             ) {
                 PillButton(
-                    text = if (expandTarget) stringResource(R.string.collapse_all)
+                    text = if (anyExpanded) stringResource(R.string.collapse_all)
                     else stringResource(R.string.expand_all),
                     onClick = {
-                        expandTarget = !expandTarget
-                        expandCommand++
+                        expandedIds = if (anyExpanded) emptySet()
+                        else subjects.map { it.id }.toSet()
                     },
                     style = PillButtonStyle.Tonal,
                     compact = true,
@@ -176,15 +178,20 @@ fun SemesterMarksScreenContent(
                 itemsIndexed(subjects, key = { _, subject -> subject.id }) { index, subject ->
                     SemesterMarksItem(
                         subject = subject,
-                        expandCommand = expandCommand,
-                        expandTarget = expandTarget,
+                        expanded = subject.id in expandedIds,
+                        onToggleExpand = {
+                            expandedIds = if (subject.id in expandedIds) {
+                                expandedIds - subject.id
+                            } else {
+                                expandedIds + subject.id
+                            }
+                        },
                     onMidTermMarksChange = { onMidTermMarksChange(subject.id, it) },
                     onOralMarksChange = { onOralMarksChange(subject.id, it) },
                     onPracticalMarksChange = { onPracticalMarksChange(subject.id, it) },
                     onProjectMarksChange = { onProjectMarksChange(subject.id, it) },
                     onFinalExamMaxMarksChange = { onFinalExamMaxMarksChange(subject.id, it) },
                     onResetClick = { onResetClick(subject.id) },
-                    showHint = index == 0,
                     onMidtermAvailabilityCheckChanges = {
                         onMidtermAvailabilityCheckChanges(
                             subject.id,

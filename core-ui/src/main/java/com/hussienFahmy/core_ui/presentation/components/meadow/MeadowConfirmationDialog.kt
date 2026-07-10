@@ -13,6 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.PriorityHigh
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -86,12 +90,11 @@ fun MeadowConfirmationDialogContent(
                 .clip(RoundedCornerShape(MeadowRadius.tile))
                 .background(if (destructive) colors.dangerContainer else accent.container),
         ) {
-            Text(
-                text = icon,
-                style = MaterialTheme.typography.headlineLarge,
-                color = if (destructive) colors.onDangerContainer else accent.deep,
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
+            Icon(
+                imageVector = if (destructive) Icons.Rounded.PriorityHigh else Icons.Rounded.Check,
+                contentDescription = null,
+                tint = if (destructive) colors.onDangerContainer else accent.deep,
+                modifier = Modifier.size(22.dp),
             )
         }
 

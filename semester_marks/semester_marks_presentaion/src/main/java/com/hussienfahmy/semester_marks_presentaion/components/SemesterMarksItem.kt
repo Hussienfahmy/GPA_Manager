@@ -70,13 +70,12 @@ fun SemesterMarksItem(
     onProjectMarksChange: (String) -> Unit,
     onFinalExamMaxMarksChange: (String) -> Unit,
     onResetClick: () -> Unit,
-    showHint: Boolean,
     onMidtermAvailabilityCheckChanges: (Boolean) -> Unit,
     onPracticalAvailabilityCheckChanges: (Boolean) -> Unit,
     onOralAvailabilityCheckChanges: (Boolean) -> Unit,
     onProjectAvailabilityCheckChanges: (Boolean) -> Unit,
-    expandCommand: Int = 0,
-    expandTarget: Boolean = false,
+    expanded: Boolean = false,
+    onToggleExpand: () -> Unit = {},
 ) {
     val colors = MeadowTheme.colors
     val accent = MeadowTheme.accent
@@ -88,12 +87,14 @@ fun SemesterMarksItem(
 
     var showResetConfirmation by remember { mutableStateOf(false) }
     var showSettingsSheet by remember { mutableStateOf(false) }
-    var isExpanded by remember { mutableStateOf(showHint) }
 
-    // Expand-all / collapse-all from the toolbar drives every card.
-    LaunchedEffect(expandCommand) {
-        if (expandCommand > 0) isExpanded = expandTarget
-    }
+    // Expansion is owned by the screen (so Expand/Collapse-all tracks real state).
+    val isExpanded = expanded
+
+    // Don't replay the expand animation when a row is recycled back into view;
+    // only animate size once the row has settled after its first frame.
+    var settled by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { settled = true }
 
     if (showResetConfirmation) MeadowConfirmationSheet(
         title = stringResource(R.string.reset_marks_title, subject.name),
@@ -139,11 +140,13 @@ fun SemesterMarksItem(
     MeadowCard(
         modifier = Modifier
             .fillMaxWidth()
-            .animateContentSize(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioNoBouncy,
-                    stiffness = Spring.StiffnessMedium,
-                )
+            .then(
+                if (settled) Modifier.animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioNoBouncy,
+                        stiffness = Spring.StiffnessMedium,
+                    )
+                ) else Modifier
             ),
         radius = if (isExpanded) MeadowRadius.hero else MeadowRadius.card,
         contentPadding = PaddingValues(
@@ -160,7 +163,7 @@ fun SemesterMarksItem(
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
-                ) { isExpanded = !isExpanded },
+                ) { onToggleExpand() },
         ) {
             Text(
                 text = subject.name,
@@ -476,7 +479,7 @@ private fun PreviewItem() {
                 onOralAvailabilityCheckChanges = {},
                 onProjectAvailabilityCheckChanges = {},
                 onResetClick = {},
-                showHint = true,
+                expanded = true,
             )
         }
     }
