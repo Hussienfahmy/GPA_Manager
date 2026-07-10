@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,8 @@ fun MeadowBottomSheet(
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
+        // Always full — no half-expanded stop.
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         containerColor = colors.card,
         scrimColor = Color.Black.copy(alpha = 0.55f),
         shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),

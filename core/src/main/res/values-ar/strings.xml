@@ -352,4 +352,6 @@
     <string name="detail_subjects_count">%1$d مواد</string>
     <string name="detail_add_subject">+ إضافة مادة</string>
     <string name="calculated_from_history">محسوب من السجل</string>
+    <string name="expand_all">توسيع الكل</string>
+    <string name="collapse_all">طيّ الكل</string>
 </resources>

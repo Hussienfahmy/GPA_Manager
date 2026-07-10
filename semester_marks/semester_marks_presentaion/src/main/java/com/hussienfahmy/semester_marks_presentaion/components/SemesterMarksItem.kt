@@ -1,10 +1,17 @@
 package com.hussienfahmy.semester_marks_presentaion.components
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -29,6 +36,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -67,6 +75,8 @@ fun SemesterMarksItem(
     onPracticalAvailabilityCheckChanges: (Boolean) -> Unit,
     onOralAvailabilityCheckChanges: (Boolean) -> Unit,
     onProjectAvailabilityCheckChanges: (Boolean) -> Unit,
+    expandCommand: Int = 0,
+    expandTarget: Boolean = false,
 ) {
     val colors = MeadowTheme.colors
     val accent = MeadowTheme.accent
@@ -79,6 +89,11 @@ fun SemesterMarksItem(
     var showResetConfirmation by remember { mutableStateOf(false) }
     var showSettingsSheet by remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(showHint) }
+
+    // Expand-all / collapse-all from the toolbar drives every card.
+    LaunchedEffect(expandCommand) {
+        if (expandCommand > 0) isExpanded = expandTarget
+    }
 
     if (showResetConfirmation) MeadowConfirmationSheet(
         title = stringResource(R.string.reset_marks_title, subject.name),
@@ -157,7 +172,7 @@ fun SemesterMarksItem(
             )
 
             if (!isExpanded) {
-                TotalMarks(subject = subject, empty = subject.courseMarks == 0.0)
+                CollapsedSummary(subject = subject)
             }
 
             if (isExpanded) {
@@ -301,6 +316,44 @@ private fun TotalMarks(subject: Subject, empty: Boolean) {
     }
 }
 
+/** Collapsed row summary: the best still-reachable grade + its needed marks
+ *  (e.g. "A- · 58"); falls back to the running total when nothing is reachable. */
+@Composable
+private fun CollapsedSummary(subject: Subject) {
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
+
+    val best = subject.grades.firstOrNull { it.achievable is Grade.Achievable.Yes }
+    val needed = (best?.achievable as? Grade.Achievable.Yes)?.neededMarks
+
+    if (best != null && needed != null) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            modifier = Modifier
+                .clip(RoundedCornerShape(MeadowRadius.pill))
+                .background(accent.container)
+                .padding(horizontal = 10.dp, vertical = 4.dp),
+        ) {
+            Text(
+                text = best.symbol,
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontSize = 12.sp,
+                    textDirection = TextDirection.Ltr,
+                ),
+                color = accent.deep,
+            )
+            Text(
+                text = needed.toStringWithOptionalDecimals(),
+                style = MaterialTheme.typography.labelMedium.copy(fontSize = 12.sp),
+                color = accent.soft,
+            )
+        }
+    } else {
+        TotalMarks(subject = subject, empty = subject.courseMarks == 0.0)
+    }
+}
+
 /** The "final-exam marks needed" ladder: amber = reachable, faded = out of reach. */
 @Composable
 private fun GradeLadder(grades: List<Grade>) {
@@ -310,28 +363,54 @@ private fun GradeLadder(grades: List<Grade>) {
     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         grades.forEach { grade ->
             val achievable = grade.achievable as? Grade.Achievable.Yes
+            val reachable = achievable != null
+
+            // Cells fade between amber (reachable) and neutral as marks change.
+            val cellBg by animateColorAsState(
+                targetValue = if (reachable) accent.container else colors.chipBg,
+                label = "cellBg",
+            )
+            val symbolColor by animateColorAsState(
+                targetValue = if (reachable) accent.deep else colors.inkDisabled,
+                label = "cellSymbol",
+            )
+            val cellAlpha by animateFloatAsState(
+                targetValue = if (reachable) 1f else 0.55f,
+                label = "cellAlpha",
+            )
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(MeadowRadius.tile))
-                    .background(if (achievable != null) accent.container else colors.chipBg)
-                    .alpha(if (achievable != null) 1f else 0.55f)
+                    .background(cellBg)
+                    .alpha(cellAlpha)
                     .padding(top = 7.dp, bottom = 6.dp),
             ) {
                 Text(
                     text = grade.symbol,
                     style = MaterialTheme.typography.titleSmall.copy(textDirection = TextDirection.Ltr),
-                    color = if (achievable != null) accent.deep else colors.inkDisabled,
+                    color = symbolColor,
                     maxLines = 1,
                 )
-                Text(
-                    text = achievable?.neededMarks?.toStringWithOptionalDecimals() ?: "—",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = if (achievable != null) accent.soft else colors.inkDisabled,
-                    maxLines = 1,
-                )
+                // Needed-marks number slides when it recomputes.
+                val neededText = achievable?.neededMarks?.toStringWithOptionalDecimals() ?: "—"
+                AnimatedContent(
+                    targetState = neededText,
+                    transitionSpec = {
+                        (slideInVertically { it / 2 } + fadeIn()) togetherWith
+                                (slideOutVertically { -it / 2 } + fadeOut())
+                    },
+                    label = "neededMarks",
+                ) { text ->
+                    Text(
+                        text = text,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (reachable) accent.soft else colors.inkDisabled,
+                        maxLines = 1,
+                    )
+                }
             }
         }
     }

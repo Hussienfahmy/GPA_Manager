@@ -90,6 +90,8 @@ fun MeadowConfirmationDialogContent(
                 text = icon,
                 style = MaterialTheme.typography.headlineLarge,
                 color = if (destructive) colors.onDangerContainer else accent.deep,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
             )
         }
 

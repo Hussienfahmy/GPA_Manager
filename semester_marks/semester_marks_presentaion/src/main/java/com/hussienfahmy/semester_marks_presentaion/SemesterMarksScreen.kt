@@ -2,8 +2,11 @@ package com.hussienfahmy.semester_marks_presentaion
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -13,12 +16,20 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.hussienfahmy.core.R
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.AddSubjectsHint
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
 import com.hussienfahmy.core_ui.theme.MeadowTheme
@@ -131,17 +142,42 @@ fun SemesterMarksScreenContent(
 ) {
     val spacing = LocalSpacing.current
 
+    // Expand-all / collapse-all: bump the command counter, all cards obey.
+    var expandCommand by remember { mutableIntStateOf(0) }
+    var expandTarget by remember { mutableStateOf(false) }
+
     if (subjects.isNotEmpty()) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(spacing.small),
-            modifier = modifier
-                .fillMaxSize()
-                .padding(horizontal = spacing.small),
-            contentPadding = PaddingValues(vertical = spacing.small)
-        ) {
-            itemsIndexed(subjects, key = { _, subject -> subject.id }) { index, subject ->
-                SemesterMarksItem(
-                    subject = subject,
+        Column(modifier = modifier.fillMaxSize()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.small, vertical = 8.dp),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                PillButton(
+                    text = if (expandTarget) stringResource(R.string.collapse_all)
+                    else stringResource(R.string.expand_all),
+                    onClick = {
+                        expandTarget = !expandTarget
+                        expandCommand++
+                    },
+                    style = PillButtonStyle.Tonal,
+                    compact = true,
+                )
+            }
+
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(spacing.small),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = spacing.small),
+                contentPadding = PaddingValues(bottom = spacing.small)
+            ) {
+                itemsIndexed(subjects, key = { _, subject -> subject.id }) { index, subject ->
+                    SemesterMarksItem(
+                        subject = subject,
+                        expandCommand = expandCommand,
+                        expandTarget = expandTarget,
                     onMidTermMarksChange = { onMidTermMarksChange(subject.id, it) },
                     onOralMarksChange = { onOralMarksChange(subject.id, it) },
                     onPracticalMarksChange = { onPracticalMarksChange(subject.id, it) },
@@ -174,6 +210,7 @@ fun SemesterMarksScreenContent(
                         )
                     },
                 )
+                }
             }
         }
     } else {
