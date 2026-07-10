@@ -109,6 +109,7 @@ fun MoreScreenContent(
                 institutionLine = stringResource(
                     R.string.more_institution_line,
                     userData.academicInfo.university,
+                    userData.academicInfo.faculty,
                     userData.academicInfo.department,
                 ),
                 gpaChip = stringResource(

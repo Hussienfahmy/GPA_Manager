@@ -111,8 +111,6 @@ fun MeadowSettingsRow(
                     text = summary,
                     style = MaterialTheme.typography.bodySmall,
                     color = colors.more.soft,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }

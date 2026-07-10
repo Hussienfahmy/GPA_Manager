@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -61,68 +60,65 @@ fun MeadowUserCard(
         radius = MeadowRadius.hero,
         contentPadding = PaddingValues(horizontal = 20.dp, vertical = 18.dp),
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(CircleShape)
-                    .background(more.container),
-            ) {
-                if (photoUrl.isNullOrBlank()) {
-                    Text(
-                        text = name.initials(),
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = more.deep,
-                    )
-                } else {
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(photoUrl)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(CircleShape),
-                    )
+        Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            // Avatar + GPA below it, freeing the row for the (possibly wrapping)
+            // institution line and year chip.
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(CircleShape)
+                        .background(more.container),
+                ) {
+                    if (photoUrl.isNullOrBlank()) {
+                        Text(
+                            text = name.initials(),
+                            style = MaterialTheme.typography.headlineLarge,
+                            color = more.deep,
+                        )
+                    } else {
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(photoUrl)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape),
+                        )
+                    }
                 }
+                Spacer(modifier = Modifier.height(8.dp))
+                MeadowChip(text = gpaChip, style = MeadowChipStyle.Accent)
             }
 
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = name,
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = more.ink,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                Row(verticalAlignment = Alignment.Top) {
+                    Text(
+                        text = name,
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = more.ink,
+                        modifier = Modifier.weight(1f),
+                    )
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+                        contentDescription = null,
+                        tint = colors.inkGhost,
+                        modifier = Modifier.size(18.dp),
+                    )
+                }
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = institutionLine,
                     style = MaterialTheme.typography.bodySmall,
                     color = more.soft,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
                 )
-
-                Spacer(modifier = Modifier.height(6.dp))
-
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    MeadowChip(text = gpaChip, style = MeadowChipStyle.Accent)
-                    MeadowChip(text = yearChip)
-                }
+                Spacer(modifier = Modifier.height(8.dp))
+                MeadowChip(text = yearChip)
             }
-
-            Icon(
-                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-                contentDescription = null,
-                tint = colors.inkGhost,
-                modifier = Modifier.size(18.dp),
-            )
         }
     }
 }
