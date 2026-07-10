@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -39,9 +40,12 @@ fun QuickScreen(
     val state by viewModel.state
 
     if (state.isLoading) {
+        // Spinner anchored top (not center) so content doesn't jump up on load.
         Box(modifier = Modifier.fillMaxSize()) {
             CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(top = 40.dp)
             )
         }
     } else MeadowAccentProvider(MeadowTheme.colors.quick) {
@@ -98,8 +102,9 @@ private fun QuickScreenPortrait(
             !invalidCumulativeGPAAboveMax && !invalidSemesterGPAAboveMax &&
             !invalidTotalHoursInput && !invalidSemesterHoursInput
 
-    // Result first — the screen reads like an instrument (design 2c)
-    Column(modifier = modifier.padding(spacing.small)) {
+    // Result first — the screen reads like an instrument (design 2c).
+    // fillMaxSize keeps the same height as the loading state → no vertical jump.
+    Column(modifier = modifier.fillMaxSize().padding(spacing.small)) {
         QuickResultCard(
             modifier = Modifier.fillMaxWidth(),
             cumulativeGPA = cumulativeGPA,
