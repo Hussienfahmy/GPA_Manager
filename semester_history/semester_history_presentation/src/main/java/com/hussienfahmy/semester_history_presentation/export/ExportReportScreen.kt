@@ -3,6 +3,7 @@ package com.hussienfahmy.semester_history_presentation.export
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,32 +11,29 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.domain.report.ReportTemplate
+import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
+import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
+import com.hussienfahmy.core_ui.theme.MeadowTheme
 
 @Composable
 fun ExportReportSheetContent(
@@ -43,52 +41,48 @@ fun ExportReportSheetContent(
     onEvent: (ExportReportEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp),
-        ) {
-            Text(
-                stringResource(R.string.export_select_template),
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.padding(bottom = 4.dp),
-            )
-            Text(
-                stringResource(R.string.export_archived_only_note),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(bottom = 12.dp),
-            )
-            TemplateGrid(
-                selectedTemplate = state.selectedTemplate,
-                onSelectTemplate = { onEvent(ExportReportEvent.SelectTemplate(it)) },
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+    val colors = MeadowTheme.colors
 
-        Surface(
-            tonalElevation = 3.dp,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Button(
-                onClick = { onEvent(ExportReportEvent.Export) },
-                enabled = !state.isExporting,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
+    Column(modifier = modifier.fillMaxWidth()) {
+        Text(
+            text = stringResource(R.string.export_select_template),
+            style = MaterialTheme.typography.headlineMedium,
+            color = colors.ink,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = stringResource(R.string.export_archived_only_note),
+            style = MaterialTheme.typography.bodySmall,
+            color = colors.inkFaint,
+        )
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        TemplateGrid(
+            selectedTemplate = state.selectedTemplate,
+            onSelectTemplate = { onEvent(ExportReportEvent.SelectTemplate(it)) },
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (state.isExporting) {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center,
             ) {
-                if (state.isExporting) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
-                        strokeWidth = 2.dp,
-                    )
-                } else {
-                    Text(stringResource(R.string.export_pdf))
-                }
+                CircularProgressIndicator(
+                    modifier = Modifier.height(28.dp),
+                    strokeWidth = 3.dp,
+                    color = MeadowTheme.accent.accent,
+                )
             }
+        } else {
+            PillButton(
+                text = stringResource(R.string.export_pdf),
+                onClick = { onEvent(ExportReportEvent.Export) },
+                style = PillButtonStyle.Primary,
+                modifier = Modifier.fillMaxWidth(),
+            )
         }
     }
 }
@@ -100,11 +94,9 @@ private fun TemplateGrid(
     onSelectTemplate: (ReportTemplate) -> Unit,
 ) {
     FlowRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         maxItemsInEachRow = 2,
     ) {
         ReportTemplate.entries.forEach { template ->
@@ -125,26 +117,30 @@ private fun TemplateCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val borderColor = if (isSelected)
-        MaterialTheme.colorScheme.primary
-    else
-        MaterialTheme.colorScheme.outlineVariant
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
 
-    val shape = RoundedCornerShape(12.dp)
+    val shape = RoundedCornerShape(16.dp)
     val bg = Color(template.backgroundColorHex)
-    val accent = Color(template.accentColorHex)
+    val stripe = Color(template.accentColorHex)
     val textOnBg = if (template.isDark) Color.White else Color(0xFF14181F)
 
     Column(
         modifier = modifier
             .clip(shape)
+            .background(colors.card)
             .border(
                 width = if (isSelected) 2.dp else 1.dp,
-                color = borderColor,
+                color = if (isSelected) accent.accent else colors.divider,
                 shape = shape,
             )
-            .clickable(onClick = onClick),
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onClick,
+            ),
     ) {
+        // Colored preview swatch — the template's own palette
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -155,7 +151,7 @@ private fun TemplateCard(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(6.dp)
-                    .background(accent),
+                    .background(stripe),
             )
             Column(
                 modifier = Modifier
@@ -163,51 +159,38 @@ private fun TemplateCard(
                     .padding(start = 14.dp, end = 8.dp),
             ) {
                 Text(
-                    stringResource(template.displayNameRes),
+                    text = stringResource(template.displayNameRes),
                     style = MaterialTheme.typography.labelLarge,
                     color = textOnBg,
                 )
                 Text(
-                    stringResource(template.taglineRes),
+                    text = stringResource(template.taglineRes),
                     style = MaterialTheme.typography.labelSmall,
                     color = textOnBg.copy(alpha = 0.7f),
                 )
             }
         }
         Text(
-            stringResource(template.descriptionRes),
+            text = stringResource(template.descriptionRes),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Start,
-            minLines = 3,
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis,
+            color = colors.inkMuted,
             modifier = Modifier.padding(12.dp),
         )
     }
 }
 
-@Preview(showBackground = true, heightDp = 800)
+@Preview(showBackground = true, heightDp = 700)
 @Composable
 private fun ExportReportSheetContentPreview() {
-    MaterialTheme {
-        ExportReportSheetContent(
-            state = ExportReportState(
-                selectedTemplate = ReportTemplate.LEDGER,
-                isExporting = false
-            ),
-            onEvent = {},
-        )
-    }
-}
-
-@Preview(showBackground = true, heightDp = 800, name = "Exporting")
-@Composable
-private fun ExportReportSheetContentExportingPreview() {
-    MaterialTheme {
-        ExportReportSheetContent(
-            state = ExportReportState(selectedTemplate = ReportTemplate.MODERN, isExporting = true),
-            onEvent = {},
-        )
+    MeadowTheme(darkTheme = false) {
+        Column(modifier = Modifier.background(MeadowTheme.colors.card).padding(20.dp)) {
+            ExportReportSheetContent(
+                state = ExportReportState(
+                    selectedTemplate = ReportTemplate.LEDGER,
+                    isExporting = false
+                ),
+                onEvent = {},
+            )
+        }
     }
 }
