@@ -225,7 +225,7 @@ fun SemesterHistoryContent(
         contentWindowInsets = WindowInsets(0),
         floatingActionButton = {
             // Design 2b FABs: primary "✓ Finish semester" pill + square "+"
-            Column(horizontalAlignment = Alignment.End) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 PillButton(
                     text = "✓ ${stringResource(R.string.history_finish_semester)}",
                     onClick = onFinishSemesterClick,
@@ -260,7 +260,8 @@ fun SemesterHistoryContent(
                 .padding(paddingValues)
                 .padding(horizontal = spacing.small),
             verticalArrangement = Arrangement.spacedBy(11.dp),
-            contentPadding = PaddingValues(vertical = spacing.small),
+            // Clear the stacked Finish + Add FABs so they never cover a card.
+            contentPadding = PaddingValues(top = spacing.small, bottom = 128.dp),
         ) {
             item {
                 CumulativeGpaCard(

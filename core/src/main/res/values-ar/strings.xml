@@ -287,7 +287,10 @@
     <string name="history_grade_label">التقدير</string>
     <string name="history_edit_subject">تعديل المادة</string>
     <string name="history_edit_semester">تعديل الفصل</string>
-    <string name="history_marks_section_title">الدرجات (اختياري، للسجل فقط - لا تؤثر على التقدير المحدد)</string>
+    <string name="history_marks_section_title">الدرجات</string>
+    <string name="history_marks_section_note">اختياري — للسجل فقط، لا تؤثر على التقدير المحدد. تُدرَج في تقرير PDF المُصدَّر.</string>
+    <string name="history_assign_grade_hint">يرجى تحديد تقدير.</string>
+    <string name="history_no_grade_excluded_hint">لا يوجد تقدير — مستبعدة من المعدل. يرجى تحديد تقدير.</string>
     <string name="history_score_with_total">%1$s / %2$s</string>
     <string name="history_score_no_total">الدرجة: %1$s</string>
     <string name="history_total_marks_info">المجموع: %1$s</string>

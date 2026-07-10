@@ -192,7 +192,7 @@ private fun SemesterDetailContent(
     LazyColumn(
         modifier = modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(11.dp),
-        contentPadding = PaddingValues(top = 12.dp, bottom = 88.dp),
+        contentPadding = PaddingValues(top = 4.dp, bottom = 96.dp),
     ) {
         item {
             SemesterHeaderCard(semester = detail.semester, subjectCount = detail.subjectCount)
@@ -320,7 +320,7 @@ private fun SubjectRow(
                 )
                 if (noGrade) {
                     Text(
-                        text = stringResource(R.string.history_no_grade_excluded),
+                        text = stringResource(R.string.history_no_grade_excluded_hint),
                         style = MaterialTheme.typography.titleSmall.copy(fontSize = 11.5.sp),
                         color = colors.marks.deep,
                     )

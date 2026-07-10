@@ -296,7 +296,10 @@
     <string name="history_grade_label">Grade</string>
     <string name="history_edit_subject">Edit Subject</string>
     <string name="history_edit_semester">Edit semester</string>
-    <string name="history_marks_section_title">Marks (optional, historical only - does not affect assigned grade)</string>
+    <string name="history_marks_section_title">Marks</string>
+    <string name="history_marks_section_note">Optional — historical only, doesn\'t affect the assigned grade. Included in the exported PDF report.</string>
+    <string name="history_assign_grade_hint">Please assign a grade.</string>
+    <string name="history_no_grade_excluded_hint">No grade — excluded from GPA. Please assign a grade.</string>
     <string name="history_score_with_total">%1$s / %2$s</string>
     <string name="history_score_no_total">Score: %1$s</string>
     <string name="history_total_marks_info">Total: %1$s</string>

@@ -143,10 +143,22 @@ fun AddSubjectSheet(
                     )
                 }
             }
+            if (selectedGrade == null) {
+                Text(
+                    text = stringResource(R.string.history_assign_grade_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MeadowTheme.colors.marks.deep,
+                )
+            }
 
             SheetDivider()
 
             CapsLabel(text = stringResource(R.string.history_marks_section_title))
+            Text(
+                text = stringResource(R.string.history_marks_section_note),
+                style = MaterialTheme.typography.bodySmall,
+                color = MeadowTheme.colors.inkFaint,
+            )
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 SelectablePill(stringResource(R.string.midterm), midtermEnabled) { midtermEnabled = !midtermEnabled }
                 SelectablePill(stringResource(R.string.practical), practicalEnabled) { practicalEnabled = !practicalEnabled }
