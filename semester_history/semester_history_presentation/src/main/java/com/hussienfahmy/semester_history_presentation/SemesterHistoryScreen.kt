@@ -224,8 +224,9 @@ fun SemesterHistoryContent(
         containerColor = colors.paper,
         contentWindowInsets = WindowInsets(0),
         floatingActionButton = {
-            // Design 2b FABs: primary "✓ Finish semester" pill + square "+"
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            // Design 2b FABs: primary "✓ Finish semester" pill + square "+",
+            // both end-aligned to the trailing edge.
+            Column(horizontalAlignment = Alignment.End) {
                 PillButton(
                     text = "✓ ${stringResource(R.string.history_finish_semester)}",
                     onClick = onFinishSemesterClick,
