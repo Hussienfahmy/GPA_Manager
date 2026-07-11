@@ -1,43 +1,61 @@
+<div align="center">
+
 # GPA Manager
 
-A feature-rich Android application for managing student GPA calculations, grades, and academic data — built with modern Android development practices.
+**Track every semester. Know your grades before you get them.**
 
----
+A GPA tracker for Android — grade calculation, semester history, and predictive planning, built with Jetpack Compose and a design system of its own.
 
-## Download
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2.0-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
+[![Min SDK](https://img.shields.io/badge/minSdk-26-brightgreen)](https://android-arsenal.com/api?level=26)
+[![Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
+[![License](https://img.shields.io/badge/license-proprietary-lightgrey)](#license)
 
 <a href="https://play.google.com/store/apps/details?id=com.hussienFahmy.myGpaManager&hl=en">
   <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
        alt="Get it on Google Play"
-       height="80"/>
+       height="64"/>
 </a>
+
+<br/>
+<br/>
+
+<img src="docs/screenshots/01_semester.png" width="360" alt="GPA Manager — Your GPA, live" />
+
+</div>
 
 ---
 
 ## Screenshots
 
-<!-- TODO: Add app screenshots here -->
-<!-- Example:
-| Home | GPA Calculator | Semester View |
-|------|---------------|---------------|
-| ![Home](screenshots/home.png) | ![Calculator](screenshots/calculator.png) | ![Semester](screenshots/semester.png) |
--->
-<img width="305" height="678" alt="image" src="https://github.com/user-attachments/assets/a28aa0dd-837a-46c9-9270-409b506c6e1d" />
-<img width="305" height="678 alt="image" src="https://github.com/user-attachments/assets/d1320c42-95fc-4b59-a880-04d5463d6731" />
-<img width="305" height="678" alt="image" src="https://github.com/user-attachments/assets/011f9ff0-aa09-4b0c-8b60-73857dfecde4" />
-<img width="305" height="678" alt="image" src="https://github.com/user-attachments/assets/e1dc2e00-63ac-4294-ac57-e61323611372" />
+<table align="center">
+  <tr>
+    <td align="center"><img src="docs/screenshots/02_semester.png" width="200" alt="Predictive mode" /></td>
+    <td align="center"><img src="docs/screenshots/03_marks.png" width="200" alt="Target marks" /></td>
+    <td align="center"><img src="docs/screenshots/04_history.png" width="200" alt="Semester history" /></td>
+    <td align="center"><img src="docs/screenshots/05_history.png" width="200" alt="Semester detail" /></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/06_quick.png" width="200" alt="Quick what-if calculator" /></td>
+    <td align="center"><img src="docs/screenshots/07_marks.png" width="200" alt="Grade customization" /></td>
+    <td align="center"><img src="docs/screenshots/08_more.png" width="200" alt="Profile and settings" /></td>
+    <td></td>
+  </tr>
+</table>
 
 ---
 
 ## Features
 
-- **GPA Calculation** — Quick and accurate GPA calculations based on your grading system
-- **Grade Management** — Track and manage grades across subjects and semesters
-- **Custom GPA Systems** — Configure custom grading scales to match your institution
-- **Semester Tracking** — Organize academic data by semester
+- **GPA Calculation** — Tap a grade, watch the cumulative update instantly
+- **Predictive Mode** — Set a target GPA and see exactly what you need next semester to hit it
+- **Target Marks** — Know the minimum final-exam score needed for any grade, before you sit the exam
+- **Semester History** — Your whole degree, organized year by year with full subject-level detail
+- **Quick What-If Calculator** — Plug in a hypothetical semester GPA and see where your cumulative lands
+- **Custom GPA Systems** — 4.0 or 5.0 scale, configurable points and percentages to match any institution
 - **Firebase Sync** — Backup and restore data across devices
 - **Google Sign-In** — Secure authentication with your Google account
-- **Material 3 Design** — Clean, modern UI following Material Design guidelines
+- **Material 3 + Meadow Design System** — A cohesive, hand-tuned dark-first design system built on top of Material 3
 
 ---
 
