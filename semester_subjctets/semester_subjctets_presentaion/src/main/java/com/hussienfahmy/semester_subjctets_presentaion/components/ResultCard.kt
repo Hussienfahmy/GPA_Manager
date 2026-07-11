@@ -280,13 +280,17 @@ private fun PredictHero(
             horizontalArrangement = Arrangement.spacedBy(14.dp),
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                // Target row
+                // Target label on its own line — full card width to fit
+                // "Target Cumulative GPA" without crowding the input+chip row.
+                CapsLabel(text = stringResource(R.string.target))
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                // Target row: input pill + reachability chip
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    CapsLabel(text = stringResource(R.string.target))
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(6.dp),
