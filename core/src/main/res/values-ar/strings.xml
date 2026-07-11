@@ -271,7 +271,7 @@
     <string name="history_finish_semester_title">إنهاء الفصل الدراسي الحالي؟</string>
     <string name="history_finish_semester_will_be_saved">سيتم الحفظ كـ: \"%1$s\"</string>
     <string name="history_finish_semester_message">سيتم أرشفة موادك وتقديراتها من الفصل الحالي كما هي. تأكد من مراجعة وتقديد التقديرات الصحيحة قبل المتابعة - لا يزال يمكنك تعديلها لاحقاً من السجل.\n\nسينقلك هذا إلى السنة %1$d – الفصل %2$d.</string>
-    <string name="history_gpa_value">المعدل: %1$.2f</string>
+    <string name="history_gpa_value">المعدل: %1$.3f</string>
     <string name="history_hours_value">· %1$d ساعة</string>
     <string name="history_points_value">النقاط: %1$.2f</string>
     <string name="history_move_up">تحريك لأعلى</string>
