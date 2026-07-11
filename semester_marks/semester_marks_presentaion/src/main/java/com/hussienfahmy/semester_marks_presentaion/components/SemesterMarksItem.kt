@@ -74,7 +74,7 @@ fun SemesterMarksItem(
     onPracticalAvailabilityCheckChanges: (Boolean) -> Unit,
     onOralAvailabilityCheckChanges: (Boolean) -> Unit,
     onProjectAvailabilityCheckChanges: (Boolean) -> Unit,
-    expanded: Boolean = false,
+    isExpanded: Boolean = false,
     onToggleExpand: () -> Unit = {},
 ) {
     val colors = MeadowTheme.colors
@@ -88,8 +88,6 @@ fun SemesterMarksItem(
     var showResetConfirmation by remember { mutableStateOf(false) }
     var showSettingsSheet by remember { mutableStateOf(false) }
 
-    // Expansion is owned by the screen (so Expand/Collapse-all tracks real state).
-    val isExpanded = expanded
 
     // Don't replay the expand animation when a row is recycled back into view;
     // only animate size once the row has settled after its first frame.
@@ -176,9 +174,7 @@ fun SemesterMarksItem(
 
             if (!isExpanded) {
                 CollapsedSummary(subject = subject)
-            }
-
-            if (isExpanded) {
+            } else {
                 Icon(
                     imageVector = Icons.Default.Refresh,
                     contentDescription = stringResource(R.string.reset),
@@ -190,7 +186,9 @@ fun SemesterMarksItem(
                             indication = null,
                         ) { showResetConfirmation = true },
                 )
+
             }
+
             Icon(
                 imageVector = Icons.Default.Edit,
                 contentDescription = stringResource(R.string.edit),
@@ -323,7 +321,6 @@ private fun TotalMarks(subject: Subject, empty: Boolean) {
  *  (e.g. "A- · 58"); falls back to the running total when nothing is reachable. */
 @Composable
 private fun CollapsedSummary(subject: Subject) {
-    val colors = MeadowTheme.colors
     val accent = MeadowTheme.accent
 
     val best = subject.grades.firstOrNull { it.achievable is Grade.Achievable.Yes }
@@ -479,7 +476,7 @@ private fun PreviewItem() {
                 onOralAvailabilityCheckChanges = {},
                 onProjectAvailabilityCheckChanges = {},
                 onResetClick = {},
-                expanded = true,
+                isExpanded = true,
             )
         }
     }

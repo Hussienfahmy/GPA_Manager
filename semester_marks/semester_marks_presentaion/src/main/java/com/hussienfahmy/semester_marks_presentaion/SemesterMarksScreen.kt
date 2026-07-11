@@ -178,7 +178,7 @@ fun SemesterMarksScreenContent(
                 itemsIndexed(subjects, key = { _, subject -> subject.id }) { index, subject ->
                     SemesterMarksItem(
                         subject = subject,
-                        expanded = subject.id in expandedIds,
+                        isExpanded = subject.id in expandedIds,
                         onToggleExpand = {
                             expandedIds = if (subject.id in expandedIds) {
                                 expandedIds - subject.id
