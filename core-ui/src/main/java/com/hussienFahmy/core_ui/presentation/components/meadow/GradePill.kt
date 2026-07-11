@@ -20,7 +20,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.scale
@@ -98,8 +97,12 @@ fun GradePill(
         }
     }
 
+    // Rest = a solid neutral chip (clearly tappable); Locked has no tile at all
+    // and fainter text, so it visibly recedes instead of just looking like a
+    // paler Rest pill.
     val textColor = when (state) {
-        GradePillState.Rest, GradePillState.Locked -> colors.inkDisabled
+        GradePillState.Rest -> colors.inkMuted
+        GradePillState.Locked -> colors.inkGhost
         GradePillState.Selected, GradePillState.Fixed -> accent.onAccent
         GradePillState.Suggested -> accent.deep
     }
@@ -118,7 +121,13 @@ fun GradePill(
                 ) else Modifier
             )
             .clip(shape)
-            .background(if (selectedLike) accent.accent else Color.Transparent)
+            .background(
+                when {
+                    selectedLike -> accent.accent
+                    state == GradePillState.Rest -> colors.chipBg
+                    else -> Color.Transparent
+                }
+            )
             .then(
                 if (state == GradePillState.Suggested) Modifier.dashedBorder(
                     color = accent.accent,
@@ -132,7 +141,6 @@ fun GradePill(
                     onClick = onClick,
                 ) else Modifier
             )
-            .alpha(if (state == GradePillState.Locked) 0.5f else 1f),
     ) {
         Text(
             text = text,
