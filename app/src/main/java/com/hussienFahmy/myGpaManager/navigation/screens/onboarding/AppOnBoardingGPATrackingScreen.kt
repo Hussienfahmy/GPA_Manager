@@ -1,22 +1,16 @@
 package com.hussienfahmy.myGpaManager.navigation.screens.onboarding
 
-import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Card
@@ -29,11 +23,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -44,16 +37,15 @@ import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChip
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChipStyle
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
-import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
 import com.hussienfahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.models.AppOnBoardingGPATrackingEvent
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.models.AppOnBoardingGPATrackingState
 import com.hussienfahmy.semester_history_domain.model.Semester
-import com.hussienfahmy.semester_history_presentation.SemesterDetailRoot
 import com.hussienfahmy.semester_history_presentation.components.AddPastSemesterSheet
 import com.hussienfahmy.semester_history_presentation.components.CumulativeGpaCard
 import com.ramcosta.composedestinations.annotation.Destination
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Destination<OnBoardingNavGraph>(style = SlideTransitions::class)
@@ -62,6 +54,7 @@ fun AppOnBoardingGPATrackingScreen(
     onNextClick: () -> Unit,
     snackBarHostState: SnackbarHostState,
     onBackClick: (() -> Unit)?,
+    onOpenSemesterDetail: (semesterId: Long, semesterLabel: String) -> Unit,
 ) {
     val viewModel: AppOnBoardingGPATrackingViewModel = koinViewModel()
     val uiState = viewModel.state.value
@@ -73,6 +66,8 @@ fun AppOnBoardingGPATrackingScreen(
         snackBarHostState = snackBarHostState,
     )
 
+    val coroutineScope = rememberCoroutineScope()
+
     AppOnBoardingGPATrackingContent(
         uiState = uiState,
         semesters = semesters,
@@ -81,6 +76,13 @@ fun AppOnBoardingGPATrackingScreen(
         onEvent = viewModel::onEvent,
         onNextClick = onNextClick,
         onBackClick = onBackClick,
+        onOpenSemesterDetail = onOpenSemesterDetail,
+        onAddDetailedSemester = { label, level ->
+            coroutineScope.launch {
+                val semesterId = viewModel.addDetailedSemester(label, level)
+                onOpenSemesterDetail(semesterId, label)
+            }
+        },
     )
 }
 
@@ -93,20 +95,9 @@ internal fun AppOnBoardingGPATrackingContent(
     onEvent: (AppOnBoardingGPATrackingEvent) -> Unit,
     onNextClick: () -> Unit,
     onBackClick: (() -> Unit)?,
+    onOpenSemesterDetail: (semesterId: Long, semesterLabel: String) -> Unit,
+    onAddDetailedSemester: (label: String, level: Int) -> Unit,
 ) {
-    val viewingSemesterId = uiState.viewingSemesterDetailId
-
-    if (viewingSemesterId != null) {
-        // Same subject list/add/edit/delete experience as History -> Semester
-        // Detail — no separate single-subject flow to keep in sync.
-        OnboardingSemesterDetailView(
-            semesterId = viewingSemesterId,
-            semesterLabel = semesters.firstOrNull { it.id == viewingSemesterId }?.label.orEmpty(),
-            onBack = { onEvent(AppOnBoardingGPATrackingEvent.ViewSemesterDetail(null)) },
-        )
-        return
-    }
-
     val spacing = LocalSpacing.current
 
     OnboardingLayout(
@@ -139,7 +130,7 @@ internal fun AppOnBoardingGPATrackingContent(
                     semester = semester,
                     onDelete = { onEvent(AppOnBoardingGPATrackingEvent.DeleteSemesterEvent(semester.id)) },
                     onOpenDetail = if (semester.type == Semester.Type.DETAILED) {
-                        { onEvent(AppOnBoardingGPATrackingEvent.ViewSemesterDetail(semester.id)) }
+                        { onOpenSemesterDetail(semester.id, semester.label) }
                     } else null,
                 )
             }
@@ -153,66 +144,9 @@ internal fun AppOnBoardingGPATrackingContent(
                 onEvent(AppOnBoardingGPATrackingEvent.AddSummarySemester(label, gpa, hours, level))
             },
             onAddDetailed = { label, level ->
-                onEvent(AppOnBoardingGPATrackingEvent.AddDetailedSemester(label, level))
+                onAddDetailedSemester(label, level)
             },
         )
-    }
-}
-
-/**
- * The real Semester Detail screen, embedded in-flow with a minimal back
- * header since onboarding has no bottom nav / system app bar to pop from.
- */
-@Composable
-private fun OnboardingSemesterDetailView(
-    semesterId: Long,
-    semesterLabel: String,
-    onBack: () -> Unit,
-) {
-    val colors = MeadowTheme.colors
-
-    BackHandler(onBack = onBack)
-
-    Column(modifier = Modifier.fillMaxSize()) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(colors.paper)
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(36.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .background(colors.card)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = onBack,
-                    ),
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                    contentDescription = stringResource(R.string.onboarding_back),
-                    tint = colors.ink,
-                    modifier = Modifier.size(18.dp),
-                )
-            }
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(
-                text = semesterLabel,
-                style = MaterialTheme.typography.headlineSmall,
-                color = colors.ink,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-
-        androidx.compose.foundation.layout.Box(modifier = Modifier.weight(1f)) {
-            SemesterDetailRoot(semesterId = semesterId)
-        }
     }
 }
 
@@ -322,5 +256,7 @@ private fun AppOnBoardingGPATrackingContentPreview() {
         onEvent = {},
         onNextClick = {},
         onBackClick = {},
+        onOpenSemesterDetail = { _, _ -> },
+        onAddDetailedSemester = { _, _ -> },
     )
 }

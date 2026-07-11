@@ -11,6 +11,7 @@ import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoarding
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingInstitutionInfoScreen
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingPersonalInfoScreen
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingScreen
+import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingSemesterDetailScreen
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.generated.destinations.AppGPASettingsScreenDestination
@@ -23,6 +24,7 @@ import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingGrad
 import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingInstitutionInfoScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingPersonalInfoScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingSemesterDetailScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.AppSubjectSettingsScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.AppUserDataScreenDestination
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
@@ -114,6 +116,25 @@ fun AppDestinationsNavHost(
                     navController.navigate(AppOnBoardingGradesSettingsScreenDestination.route)
                 },
                 snackBarHostState = snackBarHostState,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onOpenSemesterDetail = { semesterId, semesterLabel ->
+                    navController.navigate(
+                        AppOnBoardingSemesterDetailScreenDestination(
+                            semesterId = semesterId,
+                            semesterLabel = semesterLabel,
+                        ).route
+                    )
+                }
+            )
+        }
+
+        // Step 5b: DETAILED semester subject list, reached from GPA Tracking
+        composable(AppOnBoardingSemesterDetailScreenDestination) {
+            AppOnBoardingSemesterDetailScreen(
+                semesterId = navArgs.semesterId,
+                semesterLabel = navArgs.semesterLabel,
                 onBackClick = {
                     navController.popBackStack()
                 }

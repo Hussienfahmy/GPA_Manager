@@ -35,6 +35,7 @@ import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingGrad
 import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingInstitutionInfoScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingPersonalInfoScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingSemesterDetailScreenDestination
 import com.ramcosta.composedestinations.utils.startDestination
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -47,7 +48,8 @@ class MainActivity : ComponentActivity() {
         AppOnBoardingPersonalInfoScreenDestination.route -> OnboardingConstants.Steps.PERSONAL_INFO
         AppOnBoardingInstitutionInfoScreenDestination.route -> OnboardingConstants.Steps.INSTITUTION_INFO
         AppOnBoardingAcademicStatusScreenDestination.route -> OnboardingConstants.Steps.ACADEMIC_STATUS
-        AppOnBoardingGPATrackingScreenDestination.route -> OnboardingConstants.Steps.GPA_TRACKING
+        AppOnBoardingGPATrackingScreenDestination.route,
+        AppOnBoardingSemesterDetailScreenDestination.route -> OnboardingConstants.Steps.GPA_TRACKING
         AppOnBoardingGradesSettingsScreenDestination.route -> OnboardingConstants.Steps.GRADES_SETTINGS
         AppOnBoardingGPASubjectsSettingsDestination.route -> OnboardingConstants.Steps.FINAL_SETUP
         else -> OnboardingConstants.Steps.WELCOME
@@ -111,7 +113,10 @@ class MainActivity : ComponentActivity() {
                         val isOnboardingScreen = currentDestination in onboardingRoutes
                         val currentStep = getOnboardingStep(currentDestination)
 
-                        if (isOnboardingScreen && currentDestination != AppOnBoardingScreenDestination.route) {
+                        if (isOnboardingScreen &&
+                            currentDestination != AppOnBoardingScreenDestination.route &&
+                            currentDestination != AppOnBoardingSemesterDetailScreenDestination.route
+                        ) {
                             // Show progress indicator outside animated content for steps 2-7
                             OnboardingProgressIndicator(
                                 currentStep = currentStep,

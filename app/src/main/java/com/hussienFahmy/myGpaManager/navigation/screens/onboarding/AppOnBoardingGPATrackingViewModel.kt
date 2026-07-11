@@ -19,8 +19,7 @@ import kotlinx.coroutines.launch
 /**
  * Subject CRUD for a DETAILED semester is fully delegated to
  * [com.hussienfahmy.semester_history_presentation.SemesterDetailRoot] (its own
- * self-contained screen + view model) — this view model only tracks which
- * semester, if any, the user is currently viewing.
+ * self-contained screen + view model).
  */
 class AppOnBoardingGPATrackingViewModel(
     getSemesterHistory: GetSemesterHistory,
@@ -52,9 +51,6 @@ class AppOnBoardingGPATrackingViewModel(
             is AppOnBoardingGPATrackingEvent.HideAddSheet ->
                 state.value = state.value.copy(showAddSheet = false)
 
-            is AppOnBoardingGPATrackingEvent.ViewSemesterDetail ->
-                state.value = state.value.copy(viewingSemesterDetailId = event.id)
-
             is AppOnBoardingGPATrackingEvent.DeleteSemesterEvent ->
                 viewModelScope.launch { deleteSemester(event.id) }
 
@@ -70,18 +66,12 @@ class AppOnBoardingGPATrackingViewModel(
                     )
                 }
 
-            is AppOnBoardingGPATrackingEvent.AddDetailedSemester ->
-                viewModelScope.launch {
-                    val semesterId = addPastSemester(
-                        AddPastSemester.Request.Detailed(
-                            label = event.label,
-                            level = event.level
-                        )
-                    )
-                    // Same behavior as tapping a Detailed card in History:
-                    // creating it enters its subject list right away.
-                    state.value = state.value.copy(viewingSemesterDetailId = semesterId)
-                }
         }
     }
+
+    // Called directly from the add-sheet's click handler — the caller awaits
+    // the new id to navigate straight into it, same as tapping a Detailed
+    // card in History.
+    suspend fun addDetailedSemester(label: String, level: Int): Long =
+        addPastSemester(AddPastSemester.Request.Detailed(label = label, level = level))
 }
