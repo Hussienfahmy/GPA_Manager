@@ -1,19 +1,14 @@
 package com.hussienfahmy.myGpaManager.navigation.screens.onboarding
 
 import androidx.lifecycle.viewModelScope
-import com.hussienfahmy.core.data.local.entity.Grade
-import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
-import com.hussienfahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core_ui.presentation.viewmodel.UiViewModel
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.models.AppOnBoardingGPATrackingEvent
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.models.AppOnBoardingGPATrackingState
 import com.hussienfahmy.semester_history_domain.model.Semester
 import com.hussienfahmy.semester_history_domain.use_case.AddPastSemester
-import com.hussienfahmy.semester_history_domain.use_case.AddSubjectToSemester
 import com.hussienfahmy.semester_history_domain.use_case.CalculateCumulativeFromHistory
 import com.hussienfahmy.semester_history_domain.use_case.DeleteSemester
-import com.hussienfahmy.semester_history_domain.use_case.EditSemester
 import com.hussienfahmy.semester_history_domain.use_case.GetSemesterHistory
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -21,25 +16,20 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-
+/**
+ * Subject CRUD for a DETAILED semester is fully delegated to
+ * [com.hussienfahmy.semester_history_presentation.SemesterDetailRoot] (its own
+ * self-contained screen + view model) — this view model only tracks which
+ * semester, if any, the user is currently viewing.
+ */
 class AppOnBoardingGPATrackingViewModel(
     getSemesterHistory: GetSemesterHistory,
     calculateCumulativeFromHistory: CalculateCumulativeFromHistory,
-    getActiveGrades: GetActiveGrades,
-    getSubjectsSettings: GetSubjectsSettings,
     private val addPastSemester: AddPastSemester,
     private val deleteSemester: DeleteSemester,
-    private val addSubjectToSemester: AddSubjectToSemester,
-    private val editSemester: EditSemester,
 ) : UiViewModel<AppOnBoardingGPATrackingEvent, AppOnBoardingGPATrackingState>(
     initialState = { AppOnBoardingGPATrackingState() }
 ) {
-
-    init {
-        viewModelScope.launch {
-            state.value = state.value.copy(subjectSettings = getSubjectsSettings())
-        }
-    }
 
     val semesters: StateFlow<List<Semester>> = getSemesterHistory()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
@@ -54,9 +44,6 @@ class AppOnBoardingGPATrackingViewModel(
             UserData.AcademicProgress(cumulativeGPA = 0.0, creditHours = 0)
         )
 
-    val grades: StateFlow<List<Grade>> = getActiveGrades()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-
     override fun onEvent(event: AppOnBoardingGPATrackingEvent) {
         when (event) {
             is AppOnBoardingGPATrackingEvent.ShowAddSheet ->
@@ -65,8 +52,8 @@ class AppOnBoardingGPATrackingViewModel(
             is AppOnBoardingGPATrackingEvent.HideAddSheet ->
                 state.value = state.value.copy(showAddSheet = false)
 
-            is AppOnBoardingGPATrackingEvent.SetAddingSubjectsSemester ->
-                state.value = state.value.copy(addingSubjectsToSemesterId = event.id)
+            is AppOnBoardingGPATrackingEvent.ViewSemesterDetail ->
+                state.value = state.value.copy(viewingSemesterDetailId = event.id)
 
             is AppOnBoardingGPATrackingEvent.DeleteSemesterEvent ->
                 viewModelScope.launch { deleteSemester(event.id) }
@@ -91,21 +78,9 @@ class AppOnBoardingGPATrackingViewModel(
                             level = event.level
                         )
                     )
-                    state.value = state.value.copy(addingSubjectsToSemesterId = semesterId)
-                }
-
-            is AppOnBoardingGPATrackingEvent.AddSubject ->
-                viewModelScope.launch {
-                    addSubjectToSemester(
-                        event.semesterId,
-                        event.name,
-                        event.creditHours,
-                        event.gradeName,
-                        event.totalMarks,
-                        event.semesterMarks,
-                        event.metadata,
-                    )
-                    editSemester(EditSemester.Request.RecalculateDetailed(event.semesterId))
+                    // Same behavior as tapping a Detailed card in History:
+                    // creating it enters its subject list right away.
+                    state.value = state.value.copy(viewingSemesterDetailId = semesterId)
                 }
         }
     }
