@@ -41,7 +41,6 @@ fun MeadowConfirmationSheet(
     onDismiss: () -> Unit,
     cancelText: String = stringResource(R.string.cancel),
     destructive: Boolean = true,
-    icon: String = if (destructive) "!" else "✓",
 ) {
     MeadowBottomSheet(onDismiss = onDismiss) {
         MeadowConfirmationSheetContent(
@@ -52,7 +51,6 @@ fun MeadowConfirmationSheet(
             onDismiss = onDismiss,
             cancelText = cancelText,
             destructive = destructive,
-            icon = icon,
         )
     }
 }
@@ -66,7 +64,6 @@ fun MeadowConfirmationSheetContent(
     onDismiss: () -> Unit,
     cancelText: String,
     destructive: Boolean,
-    icon: String,
     modifier: Modifier = Modifier,
 ) {
     val colors = MeadowTheme.colors
@@ -144,7 +141,6 @@ private fun MeadowConfirmationSheetShowcase() {
             onDismiss = {},
             cancelText = "Cancel",
             destructive = true,
-            icon = "!",
         )
     }
 }
