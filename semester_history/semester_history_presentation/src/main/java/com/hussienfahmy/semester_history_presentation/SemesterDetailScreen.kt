@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.rounded.PriorityHigh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -314,13 +315,21 @@ private fun SubjectRow(
                     .clip(RoundedCornerShape(14.dp))
                     .background(if (noGrade) colors.marks.container else accent.container),
             ) {
-                Text(
-                    text = subject.gradeName?.symbol ?: "!",
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        textDirection = TextDirection.Ltr
-                    ),
-                    color = if (noGrade) colors.marks.deep else accent.deep,
-                )
+                if (noGrade) {
+                    Icon(
+                        imageVector = Icons.Rounded.PriorityHigh,
+                        contentDescription = null,
+                        tint = colors.marks.deep,
+                    )
+                } else {
+                    Text(
+                        text = subject.gradeName?.symbol.orEmpty(),
+                        style = MaterialTheme.typography.headlineSmall.copy(
+                            textDirection = TextDirection.Ltr
+                        ),
+                        color = accent.deep,
+                    )
+                }
             }
 
             Column(modifier = Modifier.weight(1f)) {
