@@ -69,7 +69,15 @@ import java.util.Locale
 @Composable
 fun SemesterDetailRoot(
     semesterId: Long,
-    viewModel: SemesterDetailViewModel = koinViewModel { parametersOf(semesterId) },
+    // Koin/AndroidX cache a ViewModel by class name by default — parametersOf
+    // alone won't give a different semesterId a fresh instance if the same
+    // ViewModelStoreOwner is reused (e.g. embedded inline without a new nav
+    // back-stack entry, as onboarding does). Keying by semesterId fixes that
+    // and is a no-op for normal navigation, where each entry is already
+    // distinct.
+    viewModel: SemesterDetailViewModel = koinViewModel(
+        key = "semester_detail_$semesterId",
+    ) { parametersOf(semesterId) },
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
