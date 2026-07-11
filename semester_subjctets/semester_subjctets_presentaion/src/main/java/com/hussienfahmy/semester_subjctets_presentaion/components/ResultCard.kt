@@ -52,9 +52,12 @@ import com.hussienfahmy.core.R
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
 import com.hussienfahmy.core_ui.presentation.components.meadow.GpaRings
+import com.hussienfahmy.core_ui.presentation.components.meadow.GpaTooltipBox
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChip
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChipStyle
+import com.hussienfahmy.core_ui.presentation.components.meadow.asGpa
+import com.hussienfahmy.core_ui.presentation.components.meadow.asGpaFloor
 import com.hussienfahmy.core_ui.presentation.components.meadow.dashedBorder
 import com.hussienfahmy.core_ui.theme.CapsLabelStyle
 import com.hussienfahmy.core_ui.theme.MeadowRadius
@@ -317,13 +320,22 @@ private fun PredictHero(
                         )
 
                         predictResult is PredictGrades.Result.TargetNotAchieved ->
-                            MeadowChip(
-                                text = if (predictedCumulative != null) stringResource(
-                                    R.string.out_of_reach_max,
-                                    predictedCumulative.toFloat().asGpa(),
-                                ) else stringResource(R.string.out_of_reach),
-                                style = MeadowChipStyle.Warn,
-                            )
+                            if (predictedCumulative != null) {
+                                GpaTooltipBox(fullValue = predictedCumulative) {
+                                    MeadowChip(
+                                        text = stringResource(
+                                            R.string.out_of_reach_max,
+                                            predictedCumulative.toFloat().asGpaFloor(),
+                                        ),
+                                        style = MeadowChipStyle.Warn,
+                                    )
+                                }
+                            } else {
+                                MeadowChip(
+                                    text = stringResource(R.string.out_of_reach),
+                                    style = MeadowChipStyle.Warn,
+                                )
+                            }
                     }
                 }
 
@@ -360,11 +372,13 @@ private fun PredictHero(
                                 animationSpec = spring(stiffness = Spring.StiffnessLow),
                                 label = "neededGpa",
                             )
-                            Text(
-                                text = animatedNeeded.asGpa(),
-                                style = MaterialTheme.typography.displayMedium,
-                                color = colors.ink,
-                            )
+                            GpaTooltipBox(fullValue = calculationResult.semester.gpa) {
+                                Text(
+                                    text = animatedNeeded.asGpa(),
+                                    style = MaterialTheme.typography.displayMedium,
+                                    color = colors.ink,
+                                )
+                            }
                             Text(
                                 text = calculationResult.semester.grade.symbol,
                                 style = MaterialTheme.typography.titleSmall,
@@ -493,8 +507,6 @@ private fun androidx.compose.foundation.layout.BoxScope.SparkDot(
 }
 
 private fun Float.asPercent(): String = String.format(Locale.getDefault(), "%.1f%%", this)
-
-private fun Float.asGpa(): String = String.format(Locale.getDefault(), "%.2f", this)
 
 private val previewSuccess = Calculate.Result.Success(
     semester = Calculate.Result.Success.Data(gpa = 3.35, grade = GradeName.BPlus, percentage = 83.8f),
