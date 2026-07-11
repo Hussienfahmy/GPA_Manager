@@ -137,13 +137,15 @@ private fun NormalHero(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
+                            // Semester leads (bold + big) — it's the number that
+                            // actually moves as the user edits grades this semester.
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                             ) {
-                                CapsLabel(text = stringResource(R.string.cumulative_gpa))
+                                CapsLabel(text = stringResource(R.string.semester))
                                 Text(
-                                    text = calculationResult.cumulative.percentage.asPercent(),
+                                    text = calculationResult.semester.percentage.asPercent(),
                                     style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
                                     color = colors.inkFaint,
                                 )
@@ -155,21 +157,21 @@ private fun NormalHero(
                                 verticalAlignment = Alignment.Bottom,
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                             ) {
-                                val cumulativeGpa = calculationResult.cumulative.gpa.toFloat()
+                                val semesterGpa = calculationResult.semester.gpa.toFloat()
 
                                 // Count-up (design: "GPA counts up alongside the ring")
-                                val animatedCumulative by animateFloatAsState(
-                                    targetValue = cumulativeGpa,
+                                val animatedSemester by animateFloatAsState(
+                                    targetValue = semesterGpa,
                                     animationSpec = spring(stiffness = Spring.StiffnessLow),
-                                    label = "cumulativeGpa",
+                                    label = "semesterGpa",
                                 )
 
                                 // Jump on change: dip then spring back with overshoot
                                 val bounce = remember { Animatable(1f) }
-                                var previousGpa by remember { mutableFloatStateOf(cumulativeGpa) }
-                                LaunchedEffect(cumulativeGpa) {
-                                    if (previousGpa != cumulativeGpa) {
-                                        previousGpa = cumulativeGpa
+                                var previousGpa by remember { mutableFloatStateOf(semesterGpa) }
+                                LaunchedEffect(semesterGpa) {
+                                    if (previousGpa != semesterGpa) {
+                                        previousGpa = semesterGpa
                                         bounce.snapTo(0.9f)
                                         bounce.animateTo(
                                             targetValue = 1f,
@@ -181,14 +183,16 @@ private fun NormalHero(
                                     }
                                 }
 
+                                GpaTooltipBox(fullValue = semesterGpa) {
+                                    Text(
+                                        text = animatedSemester.asGpa(),
+                                        style = MaterialTheme.typography.displayLarge,
+                                        color = colors.ink,
+                                        modifier = Modifier.scale(bounce.value),
+                                    )
+                                }
                                 Text(
-                                    text = animatedCumulative.asGpa(),
-                                    style = MaterialTheme.typography.displayLarge,
-                                    color = colors.ink,
-                                    modifier = Modifier.scale(bounce.value),
-                                )
-                                Text(
-                                    text = calculationResult.cumulative.grade.symbol,
+                                    text = calculationResult.semester.grade.symbol,
                                     style = MaterialTheme.typography.titleMedium,
                                     color = accent.deep,
                                     modifier = Modifier
@@ -205,19 +209,21 @@ private fun NormalHero(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                             ) {
-                                CapsLabel(text = stringResource(R.string.semester))
-                                val animatedSemester by animateFloatAsState(
-                                    targetValue = calculationResult.semester.gpa.toFloat(),
+                                CapsLabel(text = stringResource(R.string.cumulative_gpa))
+                                val animatedCumulative by animateFloatAsState(
+                                    targetValue = calculationResult.cumulative.gpa.toFloat(),
                                     animationSpec = spring(stiffness = Spring.StiffnessLow),
-                                    label = "semesterGpa",
+                                    label = "cumulativeGpa",
                                 )
+                                GpaTooltipBox(fullValue = calculationResult.cumulative.gpa) {
+                                    Text(
+                                        text = animatedCumulative.asGpa(),
+                                        style = MaterialTheme.typography.headlineLarge,
+                                        color = accent.accent,
+                                    )
+                                }
                                 Text(
-                                    text = animatedSemester.asGpa(),
-                                    style = MaterialTheme.typography.headlineLarge,
-                                    color = accent.accent,
-                                )
-                                Text(
-                                    text = "${calculationResult.semester.grade.symbol} · ${calculationResult.semester.percentage.asPercent()}",
+                                    text = "${calculationResult.cumulative.grade.symbol} · ${calculationResult.cumulative.percentage.asPercent()}",
                                     style = MaterialTheme.typography.labelMedium.copy(fontSize = 12.sp),
                                     color = colors.inkGhost,
                                 )
