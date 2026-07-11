@@ -2,11 +2,10 @@
   "people": [],
   "projects": [
     "Koin",
-    "Room",
     "Build",
     "Compose",
+    "Semester",
     "Core",
-    "Google",
-    "User"
+    "Google"
   ]
 }
