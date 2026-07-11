@@ -258,7 +258,6 @@ private fun PredictHero(
         onTargetGPAChange(targetGPA, preferLowHours)
     }
 
-    val target = targetGPA.toDoubleOrNull()
     // When the target is unreachable the planner has assigned the best grades it
     // can, so the predicted cumulative IS the max cumulative achievable.
     val predictedCumulative =
@@ -400,19 +399,6 @@ private fun PredictHero(
                                 style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
                                 color = colors.inkFaint,
                                 modifier = Modifier.padding(bottom = 6.dp),
-                            )
-                        }
-
-                        if (reachable && target != null) {
-                            Spacer(modifier = Modifier.height(2.dp))
-
-                            // "Cumulative 3.54 → 3.40" (design 3a); when out of
-                            // reach the chip already shows the max instead.
-                            Text(
-                                text = "${stringResource(R.string.cumulative)} " +
-                                        "${calculationResult.cumulative.gpa.toFloat().asGpa()} → ${targetGPA.trim()}",
-                                style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
-                                color = colors.inkFaint,
                             )
                         }
                     }
