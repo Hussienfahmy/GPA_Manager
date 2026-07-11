@@ -59,6 +59,18 @@ googleServices = "4.4.4"
 firebaseCrashlyticsGradle = "3.0.6"
 credentials = "1.6.0-rc02"
 
+# Kotlin Multiplatform / Compose Multiplatform
+# Added for the KMP/CMP migration (see docs/kmp-migration-plan.md). Not wired into any module yet
+# except via the new base_kmp_module/base_kmp_compose_module convention plugins themselves.
+# composeMultiplatform 1.10.1 is confirmed compatible with kotlin = "2.3.10" above.
+composeMultiplatform = "1.10.1"
+sqlite = "2.7.0"
+coil3 = "3.5.0"
+gitliveFirebase = "2.4.0"
+# JetBrains' multiplatform publication of Jetpack Navigation 3. Reconfirm exact group/version at
+# Phase 8 kickoff - this is a fast-moving library.
+navigation3 = "1.1.1"
+
 # Baseline Profile
 # Plugin pinned to 1.5.0-alpha07: latest stable (1.4.1) doesn't detect AGP 9's application
 # plugin ("Module `:app` is not a supported android module") - only the alpha line supports AGP 9.
@@ -138,15 +150,35 @@ koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin"
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-androidx-worker = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
 koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
 koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koin" }
 
 # Third Party
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+# Coil 3 (multiplatform) - added for the core-ui KMP migration phase, not wired in yet
+coil3-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil3" }
+coil3-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coil3" }
 
 # Compose Destinations
 compose-destinations-core = { group = "io.github.raamcosta.compose-destinations", name = "core", version.ref = "raamcosta" }
 compose-destinations-ksp = { group = "io.github.raamcosta.compose-destinations", name = "ksp", version.ref = "raamcosta" }
+
+# Jetpack Navigation 3 (multiplatform) - added for the navigation migration phase, not wired in yet
+androidx-navigation3-runtime = { group = "org.jetbrains.androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3" }
+androidx-navigation3-ui = { group = "org.jetbrains.androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
+
+# Room KMP - same artifact coordinates as the Android-only ones above, just the multiplatform
+# driver needed for non-Android targets, added for the Room KMP migration phase
+androidx-sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }
+
+# GitLive Firebase Kotlin SDK - added for the Firebase migration phase, not wired in yet
+gitlive-firebase-app = { group = "dev.gitlive", name = "firebase-app", version.ref = "gitliveFirebase" }
+gitlive-firebase-auth = { group = "dev.gitlive", name = "firebase-auth", version.ref = "gitliveFirebase" }
+gitlive-firebase-firestore = { group = "dev.gitlive", name = "firebase-firestore", version.ref = "gitliveFirebase" }
+gitlive-firebase-storage = { group = "dev.gitlive", name = "firebase-storage", version.ref = "gitliveFirebase" }
+gitlive-firebase-analytics = { group = "dev.gitlive", name = "firebase-analytics", version.ref = "gitliveFirebase" }
 
 # Firebase
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuth" }
@@ -186,7 +218,11 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 base-module = { id = "com.gpa.base_module" }
 base-module-compose = { id = "com.gpa.base_compose_module" }
+base-kmp-module = { id = "com.gpa.base_kmp_module" }
+base-kmp-compose-module = { id = "com.gpa.base_kmp_compose_module" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsGradle" }
 androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineProfileGradlePlugin" }
 
