@@ -308,7 +308,7 @@
     <string name="history_error_delete_subject_failed">Failed to delete subject. Please try again.</string>
 
     <!-- Meadow redesign -->
-    <string name="target">Target</string>
+    <string name="target">Target Cumulative GPA</string>
     <string name="semester_gpa_needed">Semester GPA needed</string>
     <string name="needed_this_semester">needed this semester</string>
     <string name="reachable">reachable</string>

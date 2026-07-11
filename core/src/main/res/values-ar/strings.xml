@@ -299,7 +299,7 @@
     <string name="history_error_delete_subject_failed">فشل حذف المادة. يرجى المحاولة مرة أخرى.</string>
 
     <!-- Meadow redesign -->
-    <string name="target">الهدف</string>
+    <string name="target">هدف المعدل التراكمي</string>
     <string name="semester_gpa_needed">المعدل المطلوب للفصل</string>
     <string name="needed_this_semester">مطلوب هذا الفصل</string>
     <string name="reachable">قابل للتحقيق</string>
