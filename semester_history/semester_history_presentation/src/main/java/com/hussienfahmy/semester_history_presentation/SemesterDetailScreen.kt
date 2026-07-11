@@ -52,6 +52,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core.data.local.entity.Subject
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
+import com.hussienfahmy.core_ui.presentation.components.meadow.GpaTooltipBox
+import com.hussienfahmy.core_ui.presentation.components.meadow.asGpa
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
@@ -65,7 +67,6 @@ import com.hussienfahmy.semester_history_domain.model.SemesterDetail
 import com.hussienfahmy.semester_history_presentation.components.AddSubjectSheet
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-import java.util.Locale
 
 @Composable
 fun SemesterDetailRoot(
@@ -251,11 +252,13 @@ private fun SemesterHeaderCard(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
                 CapsLabel(text = stringResource(R.string.history_semester_gpa))
-                Text(
-                    text = String.format(Locale.getDefault(), "%.2f", semester.semesterGPA),
-                    style = MaterialTheme.typography.displayMedium.copy(fontSize = 34.sp),
-                    color = accent.ink,
-                )
+                GpaTooltipBox(fullValue = semester.semesterGPA) {
+                    Text(
+                        text = semester.semesterGPA.asGpa(),
+                        style = MaterialTheme.typography.displayMedium.copy(fontSize = 34.sp),
+                        color = accent.ink,
+                    )
+                }
             }
             Column(horizontalAlignment = Alignment.End) {
                 CapsLabel(text = stringResource(R.string.credit_hours))

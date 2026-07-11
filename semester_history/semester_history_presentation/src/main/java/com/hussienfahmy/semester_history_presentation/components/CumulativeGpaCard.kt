@@ -23,13 +23,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
+import com.hussienfahmy.core_ui.presentation.components.meadow.GpaTooltipBox
+import com.hussienfahmy.core_ui.presentation.components.meadow.asGpa
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
 import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
 import com.hussienfahmy.core_ui.theme.MeadowRadius
 import com.hussienfahmy.core_ui.theme.MeadowTheme
-import java.util.Locale
 
 /** Cumulative hero (design 2b): GPA + journey stats + Export PDF. */
 @Composable
@@ -61,11 +62,13 @@ fun CumulativeGpaCard(
                     animationSpec = spring(stiffness = Spring.StiffnessLow),
                     label = "historyCumulative",
                 )
-                Text(
-                    text = String.format(Locale.getDefault(), "%.2f", animatedGpa),
-                    style = MaterialTheme.typography.displayLarge.copy(fontSize = 38.sp),
-                    color = accent.ink,
-                )
+                GpaTooltipBox(fullValue = cumulativeGPA) {
+                    Text(
+                        text = animatedGpa.asGpa(),
+                        style = MaterialTheme.typography.displayLarge.copy(fontSize = 38.sp),
+                        color = accent.ink,
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(2.dp))
 

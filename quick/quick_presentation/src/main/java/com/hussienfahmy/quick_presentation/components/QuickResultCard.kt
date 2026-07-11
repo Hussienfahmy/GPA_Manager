@@ -26,6 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.R
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
+import com.hussienfahmy.core_ui.presentation.components.meadow.GpaTooltipBox
+import com.hussienfahmy.core_ui.presentation.components.meadow.asGpa
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
 import com.hussienfahmy.core_ui.presentation.components.meadow.ScoreRing
 import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
@@ -90,11 +92,13 @@ fun QuickResultCard(
 
                 ScoreRing(progress = cumulativeGPAPercentage / 100f) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = String.format(Locale.getDefault(), "%.2f", animatedGpa),
-                            style = MaterialTheme.typography.displayMedium,
-                            color = accent.ink,
-                        )
+                        GpaTooltipBox(fullValue = cumulativeGPA) {
+                            Text(
+                                text = animatedGpa.asGpa(),
+                                style = MaterialTheme.typography.displayMedium,
+                                color = accent.ink,
+                            )
+                        }
                         Text(
                             text = String.format(
                                 Locale.getDefault(), "%.1f%%", cumulativeGPAPercentage
