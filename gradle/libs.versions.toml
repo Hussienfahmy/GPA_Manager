@@ -60,7 +60,12 @@ firebaseCrashlyticsGradle = "3.0.6"
 credentials = "1.6.0-rc02"
 
 # Baseline Profile
+# Plugin pinned to 1.5.0-alpha07: latest stable (1.4.1) doesn't detect AGP 9's application
+# plugin ("Module `:app` is not a supported android module") - only the alpha line supports AGP 9.
+baselineProfileGradlePlugin = "1.5.0-alpha07"
 baselineProfile = "1.4.1"
+benchmarkMacro = "1.4.1"
+uiautomator = "2.4.0"
 
 # Testing
 androidxTestRunner = "1.7.0"
@@ -101,6 +106,8 @@ androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx"
 
 # Baseline Profile
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "baselineProfile" }
+androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacro" }
+androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 
 # Constraint Layout
 androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintLayoutCompose" }
@@ -171,6 +178,7 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+android-test = { id = "com.android.test", version.ref = "agp" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
@@ -180,6 +188,7 @@ base-module = { id = "com.gpa.base_module" }
 base-module-compose = { id = "com.gpa.base_compose_module" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsGradle" }
+androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineProfileGradlePlugin" }
 
 [bundles]
 compose = [

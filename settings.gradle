@@ -43,4 +43,5 @@ include ':sync:sync_domain'
 include ':semester_history'
 include ':semester_history:semester_history_domain'
 include ':semester_history:semester_history_presentation'
+include ':baselineprofile'
 includeBuild("build-logic")

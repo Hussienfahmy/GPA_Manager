@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.androidx.baselineprofile)
 }
 
 android {
@@ -46,6 +47,11 @@ android {
     packaging {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
     }
+}
+
+baselineProfile {
+    // Only auto-generate on demand (./gradlew generateBaselineProfile), not on every release build.
+    automaticGenerationDuringBuild = false
 }
 
 dependencies {
@@ -108,6 +114,7 @@ dependencies {
 
     // Baseline Profile
     implementation(libs.androidx.profileinstaller)
+    baselineProfile(project(":baselineprofile"))
 
     // Firebase
     implementation(libs.firebase.firestore)
