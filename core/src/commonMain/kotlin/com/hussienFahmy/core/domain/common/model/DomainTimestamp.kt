@@ -1,11 +1,13 @@
 package com.hussienfahmy.core.domain.common.model
 
-import androidx.annotation.Keep
-
 /**
- * Domain-level timestamp abstraction that's independent of any specific backend implementation
+ * Domain-level timestamp abstraction that's independent of any specific backend implementation.
+ *
+ * `now()` and `toDate()` still use JVM-only APIs (`java.lang.System`, `java.util.Date`) - this
+ * compiles today because :core only targets androidTarget, but both need replacing with
+ * kotlinx-datetime (or an expect/actual, pending confirmation) before an iosMain source set is
+ * added to this module.
  */
-@Keep
 data class DomainTimestamp(
     val seconds: Long,
     val nanoseconds: Int = 0
