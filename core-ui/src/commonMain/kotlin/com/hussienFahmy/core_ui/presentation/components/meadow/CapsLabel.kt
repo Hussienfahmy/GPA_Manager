@@ -20,7 +20,7 @@ fun CapsLabel(
 ) {
     Text(
         text = text.uppercase(),
-        style = CapsLabelStyle,
+        style = CapsLabelStyle(),
         color = color,
         modifier = modifier,
         maxLines = 1,

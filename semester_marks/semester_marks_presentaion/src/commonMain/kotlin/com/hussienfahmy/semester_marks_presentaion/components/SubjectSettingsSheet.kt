@@ -123,7 +123,7 @@ fun SubjectSettingsSheet(
         ) {
             Text(
                 text = stringResource(Res.string.final_exam_label).uppercase(),
-                style = CapsLabelStyle.copy(fontSize = 10.5.sp, letterSpacing = 0.06.em),
+                style = CapsLabelStyle().copy(fontSize = 10.5.sp, letterSpacing = 0.06.em),
                 color = accent.soft,
                 maxLines = 1,
             )

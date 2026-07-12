@@ -117,7 +117,7 @@ fun MeadowTheme(
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
-            typography = MeadowTypography,
+            typography = MeadowTypography(),
             shapes = MeadowShapes,
             content = content,
         )

@@ -91,7 +91,7 @@ fun MeadowTextField(
     ) {
         Text(
             text = label.uppercase(),
-            style = CapsLabelStyle.copy(fontSize = 10.sp, letterSpacing = 0.05.em),
+            style = CapsLabelStyle().copy(fontSize = 10.sp, letterSpacing = 0.05.em),
             color = labelColor,
             maxLines = 1,
         )
