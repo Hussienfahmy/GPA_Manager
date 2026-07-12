@@ -33,7 +33,7 @@ import com.hussienfahmy.core_ui.presentation.components.meadow.ScoreRing
 import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
 import com.hussienfahmy.core_ui.theme.MeadowRadius
 import com.hussienfahmy.core_ui.theme.MeadowTheme
-import java.util.Locale
+import com.hussienfahmy.core.util.toFixedString
 
 /**
  * Result-first hero (design 2c): "YOUR CUMULATIVE WOULD BE" + big coral ring.
@@ -100,9 +100,7 @@ fun QuickResultCard(
                             )
                         }
                         Text(
-                            text = String.format(
-                                Locale.getDefault(), "%.1f%%", cumulativeGPAPercentage
-                            ),
+                            text = "${cumulativeGPAPercentage.toDouble().toFixedString(1)}%",
                             style = MaterialTheme.typography.labelMedium,
                             color = colors.inkFaint,
                         )
