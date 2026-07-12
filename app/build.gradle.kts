@@ -119,11 +119,11 @@ dependencies {
     implementation(libs.androidx.profileinstaller)
     baselineProfile(project(":baselineprofile"))
 
-    // Firebase (Firestore migrated to GitLive; Auth/Storage/Analytics migrate in follow-up
+    // Firebase (Firestore + Storage migrated to GitLive; Auth/Analytics migrate in follow-up
     // sub-PRs, still on the Android SDK for now)
     implementation(libs.gitlive.firebase.firestore)
+    implementation(libs.gitlive.firebase.storage)
     implementation(libs.firebase.auth)
-    implementation(libs.firebase.storage)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.inappmessaging)
