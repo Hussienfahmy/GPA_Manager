@@ -61,7 +61,7 @@ import com.hussienfahmy.semester_history_presentation.components.SemesterCard
 import com.hussienfahmy.semester_history_presentation.export.ExportReportSheetContent
 import com.hussienfahmy.semester_history_presentation.export.ExportReportViewModel
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SemesterHistoryScreen(

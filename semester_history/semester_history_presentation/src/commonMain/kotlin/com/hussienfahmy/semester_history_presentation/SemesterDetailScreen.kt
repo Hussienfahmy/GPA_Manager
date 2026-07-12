@@ -64,7 +64,7 @@ import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.semester_history_domain.model.Semester
 import com.hussienfahmy.semester_history_domain.model.SemesterDetail
 import com.hussienfahmy.semester_history_presentation.components.AddSubjectSheet
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
