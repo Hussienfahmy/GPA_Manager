@@ -34,4 +34,5 @@ gradlePlugin {
 dependencies {
     compileClasspath(libs.gradle)
     implementation(libs.kotlin.gradle.plugin)
+    implementation(libs.compose.multiplatform.gradle.plugin)
 }
