@@ -23,10 +23,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
 import com.hussienfahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
@@ -71,7 +71,7 @@ fun AppOnBoardingSemesterDetailScreen(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                    contentDescription = stringResource(R.string.onboarding_back),
+                    contentDescription = stringResource(Res.string.onboarding_back),
                     tint = colors.ink,
                     modifier = Modifier.size(18.dp),
                 )

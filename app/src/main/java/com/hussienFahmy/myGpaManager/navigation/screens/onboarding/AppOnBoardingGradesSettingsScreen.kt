@@ -2,8 +2,8 @@ package com.hussienfahmy.myGpaManager.navigation.screens.onboarding
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import com.hussienfahmy.core.R
+import org.jetbrains.compose.resources.stringResource
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.grades_setting_presentation.GradeSettingsScreen
@@ -19,8 +19,8 @@ fun AppOnBoardingGradesSettingsScreen(
     onBackClick: (() -> Unit)?
 ) {
     OnboardingLayout(
-        title = stringResource(R.string.onboarding_grades_title),
-        subtitle = stringResource(R.string.onboarding_grades_subtitle),
+        title = stringResource(Res.string.onboarding_grades_title),
+        subtitle = stringResource(Res.string.onboarding_grades_subtitle),
         currentStep = OnboardingConstants.Steps.GRADES_SETTINGS,
         onNextClick = onNextClick,
         onBackClick = onBackClick,

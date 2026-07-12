@@ -6,9 +6,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
@@ -28,11 +28,11 @@ fun AppOnBoardingGPASubjectsSettings(
     val spacing = LocalSpacing.current
 
     OnboardingLayout(
-        title = stringResource(R.string.onboarding_final_title),
-        subtitle = stringResource(R.string.onboarding_final_subtitle),
+        title = stringResource(Res.string.onboarding_final_title),
+        subtitle = stringResource(Res.string.onboarding_final_subtitle),
         currentStep = OnboardingConstants.Steps.FINAL_SETUP,
         onNextClick = onStartClick,
-        nextButtonText = stringResource(R.string.onboarding_start_using_app),
+        nextButtonText = stringResource(Res.string.onboarding_start_using_app),
         onSkipClick = onStartClick,
         onBackClick = onBackClick
     ) {
@@ -40,7 +40,7 @@ fun AppOnBoardingGPASubjectsSettings(
             verticalArrangement = Arrangement.spacedBy(spacing.large)
         ) {
             Text(
-                text = stringResource(R.string.onboarding_gpa_calculation_settings),
+                text = stringResource(Res.string.onboarding_gpa_calculation_settings),
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
             )
@@ -48,7 +48,7 @@ fun AppOnBoardingGPASubjectsSettings(
             GPASettingsScreen()
 
             Text(
-                text = stringResource(R.string.onboarding_subject_configuration),
+                text = stringResource(Res.string.onboarding_subject_configuration),
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
             )

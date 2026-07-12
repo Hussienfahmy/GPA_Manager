@@ -9,10 +9,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core_ui.presentation.components.ExpandableTextField
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
@@ -33,10 +33,10 @@ fun AcademicStatusSection(
         contentPadding = PaddingValues(vertical = 16.dp),
     ) {
         Column(modifier = Modifier.padding(horizontal = 18.dp)) {
-            CapsLabel(text = stringResource(R.string.onboarding_academic_status_title))
+            CapsLabel(text = stringResource(Res.string.onboarding_academic_status_title))
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(R.string.onboarding_academic_status_subtitle),
+                text = stringResource(Res.string.onboarding_academic_status_subtitle),
                 style = MaterialTheme.typography.bodySmall,
                 color = MeadowTheme.colors.inkFaint,
             )
@@ -45,7 +45,7 @@ fun AcademicStatusSection(
         Spacer(modifier = Modifier.height(10.dp))
 
         ExpandableTextField(
-            title = stringResource(R.string.level),
+            title = stringResource(Res.string.level),
             value = level.toString(),
             onNewValueSubmitted = onLevelChange,
             keyboardType = KeyboardType.Number,

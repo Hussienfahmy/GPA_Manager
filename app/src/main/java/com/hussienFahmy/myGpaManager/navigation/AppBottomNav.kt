@@ -20,7 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -111,13 +111,13 @@ fun AppBottomNav(
                     ) {
                         Icon(
                             imageVector = destination.icon,
-                            contentDescription = stringResource(id = destination.label),
+                            contentDescription = stringResource(destination.label),
                             tint = if (selected) accent.deep else colors.navItemIcon,
                             modifier = Modifier.size(17.dp),
                         )
                     }
                     Text(
-                        text = stringResource(id = destination.label),
+                        text = stringResource(destination.label),
                         style = CapsLabelStyle.copy(
                             fontSize = 10.5.sp,
                             letterSpacing = 0.sp,

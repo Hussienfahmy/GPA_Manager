@@ -37,11 +37,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChip
@@ -75,7 +75,7 @@ fun SemesterHistoryScreen(
     UiEventHandler(uiEvent = viewModel.uiEvent, snackBarHostState = snackBarHostState)
 
     val scope = rememberCoroutineScope()
-    val addSubjectsFirstMsg = stringResource(R.string.history_add_subjects_first)
+    val addSubjectsFirstMsg = stringResource(Res.string.history_add_subjects_first)
 
     LaunchedEffect(Unit) {
         viewModel.navigateToDetail.collect { semesterId ->
@@ -228,7 +228,7 @@ fun SemesterHistoryContent(
             // both end-aligned to the trailing edge.
             Column(horizontalAlignment = Alignment.End) {
                 PillButton(
-                    text = "✓ ${stringResource(R.string.history_finish_semester)}",
+                    text = "✓ ${stringResource(Res.string.history_finish_semester)}",
                     onClick = onFinishSemesterClick,
                     style = PillButtonStyle.Primary,
                     enabled = state.hasWorkspaceSubjects,
@@ -249,7 +249,7 @@ fun SemesterHistoryContent(
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Add,
-                        contentDescription = stringResource(R.string.add),
+                        contentDescription = stringResource(Res.string.add),
                         tint = accent.deep,
                         modifier = Modifier
                             .size(22.dp)
@@ -280,7 +280,7 @@ fun SemesterHistoryContent(
             item {
                 MeadowChip(
                     text = stringResource(
-                        R.string.history_you_are_in,
+                        Res.string.history_you_are_in,
                         state.currentLevel,
                         state.currentSemesterNum
                     ),
@@ -297,7 +297,7 @@ fun SemesterHistoryContent(
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
-                            text = stringResource(R.string.history_empty_state),
+                            text = stringResource(Res.string.history_empty_state),
                             style = MaterialTheme.typography.bodyMedium,
                             color = colors.inkMuted,
                             textAlign = TextAlign.Center,

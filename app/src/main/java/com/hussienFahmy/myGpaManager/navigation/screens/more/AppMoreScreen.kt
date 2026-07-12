@@ -24,11 +24,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.util.truncate
@@ -93,8 +93,8 @@ fun MoreScreenContent(
     val colors = MeadowTheme.colors
     val context = LocalContext.current
     var showSignOutSheet by remember { mutableStateOf(false) }
-    val githubRepoUrl = stringResource(R.string.github_repo_url)
-    val playStoreLink = stringResource(R.string.play_store_link)
+    val githubRepoUrl = stringResource(Res.string.github_repo_url)
+    val playStoreLink = stringResource(Res.string.play_store_link)
 
     MeadowAccentProvider(colors.more) {
         Column(
@@ -107,60 +107,60 @@ fun MoreScreenContent(
             MeadowUserCard(
                 name = userData.name,
                 institutionLine = stringResource(
-                    R.string.more_institution_line,
+                    Res.string.more_institution_line,
                     userData.academicInfo.university,
                     userData.academicInfo.faculty,
                     userData.academicInfo.department,
                 ),
                 gpaChip = stringResource(
-                    R.string.more_gpa_chip,
+                    Res.string.more_gpa_chip,
                     userData.academicProgress.cumulativeGPA.truncate(),
                 ),
                 yearChip = stringResource(
-                    R.string.level_semester,
+                    Res.string.level_semester,
                     userData.academicInfo.level,
                     when (userData.academicInfo.semester) {
-                        UserData.AcademicInfo.Semester.First -> stringResource(R.string.first)
-                        UserData.AcademicInfo.Semester.Second -> stringResource(R.string.second)
+                        UserData.AcademicInfo.Semester.First -> stringResource(Res.string.first)
+                        UserData.AcademicInfo.Semester.Second -> stringResource(Res.string.second)
                     },
                 ),
                 photoUrl = userData.photoUrl,
                 onClick = onUserDataCardClick,
             )
 
-            SettingsGroupLabel(text = stringResource(R.string.more_group_settings))
+            SettingsGroupLabel(text = stringResource(Res.string.more_group_settings))
             MeadowSettingsGroup {
                 MeadowSettingsRow(
                     icon = Icons.Outlined.DonutLarge,
-                    title = stringResource(R.string.gpa_settings),
-                    summary = stringResource(R.string.gpa_settings_details),
+                    title = stringResource(Res.string.gpa_settings),
+                    summary = stringResource(Res.string.gpa_settings_details),
                     tileAccent = colors.semester,
                     onClick = onGPASettingsClick,
                 )
                 MeadowRowDivider()
                 MeadowSettingsRow(
                     icon = Icons.Outlined.Star,
-                    title = stringResource(R.string.grades_settings),
-                    summary = stringResource(R.string.grades_settings_screen_summary),
+                    title = stringResource(Res.string.grades_settings),
+                    summary = stringResource(Res.string.grades_settings_screen_summary),
                     tileAccent = colors.marks,
                     onClick = onGradeSettingsClick,
                 )
                 MeadowRowDivider()
                 MeadowSettingsRow(
                     icon = Icons.Outlined.GridView,
-                    title = stringResource(R.string.subject_settings),
-                    summary = stringResource(R.string.subject_settings_screen_summary),
+                    title = stringResource(Res.string.subject_settings),
+                    summary = stringResource(Res.string.subject_settings_screen_summary),
                     tileAccent = colors.history,
                     onClick = onSubjectSettingsClick,
                 )
             }
 
-            SettingsGroupLabel(text = stringResource(R.string.more_group_app))
+            SettingsGroupLabel(text = stringResource(Res.string.more_group_app))
             MeadowSettingsGroup {
                 MeadowSettingsRow(
                     icon = Icons.Outlined.Code,
-                    title = stringResource(R.string.contribute_to_app),
-                    summary = stringResource(R.string.contribute_to_app_summary),
+                    title = stringResource(Res.string.contribute_to_app),
+                    summary = stringResource(Res.string.contribute_to_app_summary),
                     trailing = SettingsRowTrailing.External,
                     onClick = {
                         context.startActivity(Intent(Intent.ACTION_VIEW, githubRepoUrl.toUri()))
@@ -169,8 +169,8 @@ fun MoreScreenContent(
                 MeadowRowDivider()
                 MeadowSettingsRow(
                     icon = Icons.Outlined.WorkspacePremium,
-                    title = stringResource(R.string.is_app_useful),
-                    summary = stringResource(R.string.is_app_useful_details),
+                    title = stringResource(Res.string.is_app_useful),
+                    summary = stringResource(Res.string.is_app_useful_details),
                     tileAccent = colors.marks,
                     trailing = SettingsRowTrailing.External,
                     onClick = {
@@ -183,7 +183,7 @@ fun MoreScreenContent(
             MeadowSettingsGroup {
                 MeadowSettingsRow(
                     icon = Icons.AutoMirrored.Outlined.Logout,
-                    title = stringResource(R.string.sign_out),
+                    title = stringResource(Res.string.sign_out),
                     trailing = SettingsRowTrailing.None,
                     danger = true,
                     onClick = { showSignOutSheet = true },
@@ -194,9 +194,9 @@ fun MoreScreenContent(
 
     if (showSignOutSheet) {
         MeadowConfirmationSheet(
-            title = stringResource(R.string.sign_out),
-            body = stringResource(R.string.sign_out_confirmation_message),
-            confirmText = stringResource(R.string.sign_out),
+            title = stringResource(Res.string.sign_out),
+            body = stringResource(Res.string.sign_out_confirmation_message),
+            confirmText = stringResource(Res.string.sign_out),
             onConfirm = onSignOutClick,
             onDismiss = { showSignOutSheet = false },
         )

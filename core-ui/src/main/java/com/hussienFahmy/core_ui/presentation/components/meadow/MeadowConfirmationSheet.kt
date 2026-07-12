@@ -21,10 +21,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.theme.MeadowRadius
 import com.hussienfahmy.core_ui.theme.MeadowTheme
 
@@ -39,7 +39,7 @@ fun MeadowConfirmationSheet(
     confirmText: String,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
-    cancelText: String = stringResource(R.string.cancel),
+    cancelText: String = stringResource(Res.string.cancel),
     destructive: Boolean = true,
 ) {
     MeadowBottomSheet(onDismiss = onDismiss) {

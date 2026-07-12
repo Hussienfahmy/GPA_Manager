@@ -1,6 +1,6 @@
 package com.hussienfahmy.semester_subjctets_domain.use_case
 
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.entity.Subject
 import com.hussienfahmy.core.data.local.util.UpdateResult
@@ -21,10 +21,10 @@ class AddSubject(
         projectAvailable: Boolean,
     ): UpdateResult {
         val creditHours = hours.toDoubleOrNull()
-            ?: return UpdateResult.Failed(UiText.StringResource(R.string.invalid_input))
+            ?: return UpdateResult.Failed(UiText.Resource(Res.string.invalid_input))
 
-        if (name.isBlank()) return UpdateResult.Failed(UiText.StringResource(R.string.err_subject_name_empty))
-        if (creditHours <= 0) return UpdateResult.Failed(UiText.StringResource(R.string.err_subject_credit_hours_negative))
+        if (name.isBlank()) return UpdateResult.Failed(UiText.Resource(Res.string.err_subject_name_empty))
+        if (creditHours <= 0) return UpdateResult.Failed(UiText.Resource(Res.string.err_subject_credit_hours_negative))
 
         val subjectSettings = getSubjectsSettings()
 

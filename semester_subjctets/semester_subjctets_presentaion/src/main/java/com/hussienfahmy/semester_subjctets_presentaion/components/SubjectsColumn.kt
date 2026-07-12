@@ -27,11 +27,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core_ui.presentation.components.meadow.CardAction
 import com.hussienfahmy.core_ui.presentation.components.meadow.CardActionStyle
@@ -97,9 +97,9 @@ fun SubjectCard(
     var showConfirmDeleteDialog by remember { mutableStateOf(false) }
 
     if (showConfirmDeleteDialog) MeadowConfirmationSheet(
-        title = stringResource(R.string.delete_subject_title, subject.name),
-        body = stringResource(R.string.delete_subject_message),
-        confirmText = stringResource(R.string.delete),
+        title = stringResource(Res.string.delete_subject_title, subject.name),
+        body = stringResource(Res.string.delete_subject_message),
+        confirmText = stringResource(Res.string.delete),
         onConfirm = { onDeleteSubject(subject.id) },
         onDismiss = { showConfirmDeleteDialog = false },
     )
@@ -145,14 +145,14 @@ fun SubjectCard(
             if (isPredict && capped) {
                 MeadowChip(
                     text = stringResource(
-                        R.string.capped_max, subject.maxGradeNameCanBeAssigned.symbol
+                        Res.string.capped_max, subject.maxGradeNameCanBeAssigned.symbol
                     ),
                     style = MeadowChipStyle.Warn,
                 )
             }
 
             MeadowChip(
-                text = stringResource(R.string.hrs_value, subject.creditHours.toString()),
+                text = stringResource(Res.string.hrs_value, subject.creditHours.toString()),
             )
 
             if (isPredict) {
@@ -209,18 +209,18 @@ fun SubjectCard(
                 when (mode) {
                     Mode.Normal -> {
                         CardAction(
-                            text = stringResource(R.string.rename),
+                            text = stringResource(Res.string.rename),
                             onClick = { onRenameClick(subject) },
                             modifier = Modifier.weight(1f),
                         )
                         CardAction(
-                            text = stringResource(R.string.delete),
+                            text = stringResource(Res.string.delete),
                             onClick = { showConfirmDeleteDialog = true },
                             style = CardActionStyle.Danger,
                             modifier = Modifier.weight(1f),
                         )
                         CardAction(
-                            text = stringResource(R.string.reset),
+                            text = stringResource(Res.string.reset),
                             onClick = { onResetClick(subject.id) },
                             modifier = Modifier.weight(1f),
                         )
@@ -230,14 +230,14 @@ fun SubjectCard(
                         // One action at a time: lock it, or hand it back to the planner
                         if (!subject.fixedGrade) {
                             CardAction(
-                                text = stringResource(R.string.fix_grade),
+                                text = stringResource(Res.string.fix_grade),
                                 onClick = { onFixGradeClick(subject.id, true) },
                                 style = CardActionStyle.Accent,
                                 modifier = Modifier.weight(1f),
                             )
                         } else {
                             CardAction(
-                                text = stringResource(R.string.let_app_predict),
+                                text = stringResource(Res.string.let_app_predict),
                                 onClick = { onFixGradeClick(subject.id, false) },
                                 style = CardActionStyle.Accent,
                                 modifier = Modifier.weight(1f),
@@ -250,8 +250,8 @@ fun SubjectCard(
             if (mode is Mode.Predict) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = if (subject.fixedGrade) stringResource(R.string.locked_prediction_hint)
-                    else stringResource(R.string.lock_grade_hint),
+                    text = if (subject.fixedGrade) stringResource(Res.string.locked_prediction_hint)
+                    else stringResource(Res.string.lock_grade_hint),
                     style = MaterialTheme.typography.bodySmall,
                     color = colors.inkFaint,
                 )

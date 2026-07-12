@@ -21,10 +21,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.AddSubjectsHint
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
@@ -157,8 +157,8 @@ fun SemesterMarksScreenContent(
                 horizontalArrangement = Arrangement.End,
             ) {
                 PillButton(
-                    text = if (anyExpanded) stringResource(R.string.collapse_all)
-                    else stringResource(R.string.expand_all),
+                    text = if (anyExpanded) stringResource(Res.string.collapse_all)
+                    else stringResource(Res.string.expand_all),
                     onClick = {
                         expandedIds = if (anyExpanded) emptySet()
                         else subjects.map { it.id }.toSet()

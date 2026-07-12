@@ -22,7 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -31,7 +31,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSwitch
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
@@ -70,12 +70,12 @@ fun SubjectSettingsSheet(
 
     MeadowBottomSheet(onDismiss = onDismiss) {
         Text(
-            text = stringResource(R.string.sheet_setup_title, subjectName),
+            text = stringResource(Res.string.sheet_setup_title, subjectName),
             style = MaterialTheme.typography.headlineMedium,
             color = colors.ink,
         )
         Text(
-            text = stringResource(R.string.sheet_components_question),
+            text = stringResource(Res.string.sheet_components_question),
             style = MaterialTheme.typography.bodySmall,
             color = colors.inkFaint,
         )
@@ -83,25 +83,25 @@ fun SubjectSettingsSheet(
         Spacer(modifier = Modifier.height(12.dp))
 
         ToggleRow(
-            title = stringResource(R.string.midterm),
+            title = stringResource(Res.string.midterm),
             checked = midtermAvailable,
             onCheckedChange = onMidtermCheckChanges,
         )
         RowDivider()
         ToggleRow(
-            title = stringResource(R.string.oral),
+            title = stringResource(Res.string.oral),
             checked = oralAvailable,
             onCheckedChange = onOralCheckChanges,
         )
         RowDivider()
         ToggleRow(
-            title = stringResource(R.string.practical),
+            title = stringResource(Res.string.practical),
             checked = practicalAvailable,
             onCheckedChange = onPracticalCheckChanges,
         )
         RowDivider()
         ToggleRow(
-            title = stringResource(R.string.project),
+            title = stringResource(Res.string.project),
             checked = projectAvailable,
             onCheckedChange = onProjectCheckChanges,
         )
@@ -122,7 +122,7 @@ fun SubjectSettingsSheet(
                 .padding(horizontal = 16.dp, vertical = 12.dp),
         ) {
             Text(
-                text = stringResource(R.string.final_exam_label).uppercase(),
+                text = stringResource(Res.string.final_exam_label).uppercase(),
                 style = CapsLabelStyle.copy(fontSize = 10.5.sp, letterSpacing = 0.06.em),
                 color = accent.soft,
                 maxLines = 1,
@@ -145,7 +145,7 @@ fun SubjectSettingsSheet(
 
         Text(
             text = buildAnnotatedString {
-                append(stringResource(R.string.final_exam_description_prefix))
+                append(stringResource(Res.string.final_exam_description_prefix))
                 append(" ")
                 withStyle(
                     SpanStyle(
@@ -153,10 +153,10 @@ fun SubjectSettingsSheet(
                         fontWeight = FontWeight.ExtraBold,
                     )
                 ) {
-                    append(stringResource(R.string.final_exam_description_emphasis))
+                    append(stringResource(Res.string.final_exam_description_emphasis))
                 }
                 append(" ")
-                append(stringResource(R.string.final_exam_description_suffix))
+                append(stringResource(Res.string.final_exam_description_suffix))
             },
             style = MaterialTheme.typography.bodySmall,
             color = colors.inkFaint,
@@ -165,7 +165,7 @@ fun SubjectSettingsSheet(
         Spacer(modifier = Modifier.height(14.dp))
 
         PillButton(
-            text = stringResource(R.string.save),
+            text = stringResource(Res.string.save),
             onClick = {
                 onFinalExamMaxMarksSave(finalExamInput)
                 onDismiss()

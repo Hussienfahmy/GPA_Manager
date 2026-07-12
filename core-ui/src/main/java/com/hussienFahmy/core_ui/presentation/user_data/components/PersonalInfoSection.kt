@@ -24,9 +24,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.ExpandableTextField
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
@@ -50,10 +50,10 @@ fun PersonalInfoSection(
         contentPadding = PaddingValues(vertical = 16.dp),
     ) {
         Column(modifier = Modifier.padding(horizontal = 18.dp)) {
-            CapsLabel(text = stringResource(R.string.onboarding_personal_info_title))
+            CapsLabel(text = stringResource(Res.string.onboarding_personal_info_title))
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(R.string.onboarding_personal_info_subtitle),
+                text = stringResource(Res.string.onboarding_personal_info_subtitle),
                 style = androidx.compose.material3.MaterialTheme.typography.bodySmall,
                 color = colors.inkFaint,
             )
@@ -76,7 +76,7 @@ fun PersonalInfoSection(
         MeadowRowDivider()
 
         ExpandableTextField(
-            title = stringResource(R.string.name),
+            title = stringResource(Res.string.name),
             value = name,
             onNewValueSubmitted = onNameChange,
         )
@@ -128,7 +128,7 @@ fun ProfilePhotoEditable(
             ) {
                 Icon(
                     imageVector = Icons.Filled.PhotoCamera,
-                    contentDescription = stringResource(R.string.change_photo),
+                    contentDescription = stringResource(Res.string.change_photo),
                     tint = accent.onAccent,
                     modifier = Modifier.size(18.dp),
                 )

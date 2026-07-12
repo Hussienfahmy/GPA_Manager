@@ -25,14 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
 import com.hussienfahmy.core_ui.presentation.util.toStringWithOptionalDecimals
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
@@ -119,14 +119,14 @@ fun SubjectsSettingsScreenContent(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(horizontal = 18.dp, vertical = 16.dp),
         ) {
-            CapsLabel(text = stringResource(R.string.subject_marks_depend_on))
+            CapsLabel(text = stringResource(Res.string.subject_marks_depend_on))
 
             Spacer(modifier = Modifier.height(10.dp))
 
             SegmentedToggle(
                 options = listOf(
-                    stringResource(R.string.subject_depends_credit_hours),
-                    stringResource(R.string.subject_depends_constant),
+                    stringResource(Res.string.subject_depends_credit_hours),
+                    stringResource(Res.string.subject_depends_constant),
                 ),
                 selectedIndex = if (dependsOnCredit) 0 else 1,
                 onSelect = { index ->
@@ -143,7 +143,7 @@ fun SubjectsSettingsScreenContent(
             // Only the field for the selected mode is shown.
             if (dependsOnCredit) {
                 ValueField(
-                    label = stringResource(R.string.marks_per_credit_hour),
+                    label = stringResource(Res.string.marks_per_credit_hour),
                     value = marksPerCredit,
                     enabled = true,
                     onValueChange = {
@@ -153,7 +153,7 @@ fun SubjectsSettingsScreenContent(
                 )
             } else {
                 ValueField(
-                    label = stringResource(R.string.constant_subject_marks_label),
+                    label = stringResource(Res.string.constant_subject_marks_label),
                     value = constantMarks,
                     enabled = true,
                     onValueChange = {
@@ -166,7 +166,7 @@ fun SubjectsSettingsScreenContent(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = stringResource(R.string.subject_marks_example, exampleTotal),
+                text = stringResource(Res.string.subject_marks_example, exampleTotal),
                 style = MaterialTheme.typography.bodySmall,
                 color = colors.inkFaint,
             )

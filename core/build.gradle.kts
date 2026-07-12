@@ -1,5 +1,10 @@
 plugins {
     alias(libs.plugins.base.kmp.module)
+    // Needed for UiText's @Composable asString() and the generated Res.string.* accessors below -
+    // :core does NOT pull in compose.foundation/material3/ui, just the compiler plugin + the
+    // resources library, so it stays a data/domain module rather than a UI module.
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.compose.multiplatform)
 }
 
 android {
@@ -18,6 +23,9 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.bundles.room)
             implementation(libs.androidx.sqlite.bundled)
+            // api, not implementation: UiText.Resource exposes StringResource as part of :core's
+            // public API surface, and ~70 downstream modules need Res.string.* to resolve.
+            api(compose.components.resources)
         }
 
         androidMain.dependencies {
@@ -26,6 +34,16 @@ kotlin {
             implementation(libs.androidx.activity.ktx)
             implementation(libs.koin.android)
         }
+    }
+}
+
+// Res needs to be public (default is module-internal) since dozens of downstream Android-only
+// modules reference com.hussienfahmy.core.generated.resources.Res.string.* directly, and a fixed
+// package name keeps their imports stable regardless of :core's own namespace.
+compose {
+    resources {
+        publicResClass = true
+        packageOfResClass = "com.hussienfahmy.core.generated.resources"
     }
 }
 

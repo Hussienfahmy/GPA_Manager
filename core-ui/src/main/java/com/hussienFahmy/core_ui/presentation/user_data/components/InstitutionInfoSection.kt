@@ -9,9 +9,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.ExpandableTextField
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
@@ -33,10 +33,10 @@ fun InstitutionInfoSection(
         contentPadding = PaddingValues(vertical = 16.dp),
     ) {
         Column(modifier = Modifier.padding(horizontal = 18.dp)) {
-            CapsLabel(text = stringResource(R.string.onboarding_institution_info_title))
+            CapsLabel(text = stringResource(Res.string.onboarding_institution_info_title))
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(R.string.onboarding_institution_info_subtitle),
+                text = stringResource(Res.string.onboarding_institution_info_subtitle),
                 style = MaterialTheme.typography.bodySmall,
                 color = MeadowTheme.colors.inkFaint,
             )
@@ -45,19 +45,19 @@ fun InstitutionInfoSection(
         Spacer(modifier = Modifier.height(10.dp))
 
         ExpandableTextField(
-            title = stringResource(R.string.university),
+            title = stringResource(Res.string.university),
             value = university,
             onNewValueSubmitted = onUniversityChange,
         )
         MeadowRowDivider()
         ExpandableTextField(
-            title = stringResource(R.string.faculty),
+            title = stringResource(Res.string.faculty),
             value = faculty,
             onNewValueSubmitted = onFacultyChange,
         )
         MeadowRowDivider()
         ExpandableTextField(
-            title = stringResource(R.string.department),
+            title = stringResource(Res.string.department),
             value = department,
             onNewValueSubmitted = onDepartmentChange,
         )

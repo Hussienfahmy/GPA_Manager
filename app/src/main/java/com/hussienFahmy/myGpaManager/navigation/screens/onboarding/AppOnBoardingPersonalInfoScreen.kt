@@ -5,9 +5,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.core_ui.presentation.user_data.UserDataEvent
@@ -44,8 +44,8 @@ fun AppOnBoardingPersonalInfoScreen(
     val state by viewModel.customState.collectAsStateWithLifecycle()
 
     OnboardingLayout(
-        title = stringResource(R.string.onboarding_personal_info_title),
-        subtitle = stringResource(R.string.onboarding_personal_info_subtitle),
+        title = stringResource(Res.string.onboarding_personal_info_title),
+        subtitle = stringResource(Res.string.onboarding_personal_info_subtitle),
         currentStep = OnboardingConstants.Steps.PERSONAL_INFO,
         onNextClick = onNextClick,
         onSkipClick = onNextClick,

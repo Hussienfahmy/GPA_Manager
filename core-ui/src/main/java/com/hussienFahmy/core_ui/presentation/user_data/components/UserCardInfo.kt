@@ -19,11 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.util.truncate
 import com.hussienfahmy.core_ui.LocalSpacing
@@ -43,7 +43,7 @@ fun UserInfoCard(onCardClick: () -> Unit, userData: UserData) {
 
             Icon(
                 imageVector = Icons.Outlined.Edit,
-                contentDescription = stringResource(id = R.string.edit),
+                contentDescription = stringResource(resource = Res.string.edit),
                 modifier = Modifier
                     .constrainAs(editIcon) {
                         top.linkTo(parent.top)
@@ -90,25 +90,25 @@ fun AcademicProgressColumn(
         // Level and semester
         Text(
             text = stringResource(
-                id = R.string.level_semester,
+                resource = Res.string.level_semester,
                 userData.academicInfo.level,
                 when (userData.academicInfo.semester) {
-                    UserData.AcademicInfo.Semester.First -> stringResource(id = R.string.first)
-                    UserData.AcademicInfo.Semester.Second -> stringResource(id = R.string.second)
+                    UserData.AcademicInfo.Semester.First -> stringResource(resource = Res.string.first)
+                    UserData.AcademicInfo.Semester.Second -> stringResource(resource = Res.string.second)
                 }
             )
         )
         // C.GPA
         Text(
             text = stringResource(
-                id = R.string.cumulative_gpa_value,
+                resource = Res.string.cumulative_gpa_value,
                 userData.academicProgress.cumulativeGPA.truncate()
             )
         )
         // Credit hour
         Text(
             text = stringResource(
-                id = R.string.credit_hours_value,
+                resource = Res.string.credit_hours_value,
                 userData.academicProgress.creditHours
             )
         )

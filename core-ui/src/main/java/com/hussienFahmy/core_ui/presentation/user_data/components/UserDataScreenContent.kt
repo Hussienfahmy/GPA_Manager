@@ -14,10 +14,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core_ui.presentation.components.ExpandableTextField
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
@@ -86,23 +86,23 @@ fun UserDataScreenContent(
                 contentPadding = PaddingValues(vertical = 6.dp),
             ) {
                 ExpandableTextField(
-                    title = stringResource(R.string.cumulative_gpa),
+                    title = stringResource(Res.string.cumulative_gpa),
                     value = "%.4f".format(
                         floor(userData.academicProgress.cumulativeGPA * 10000) / 10000.0
                     ),
                     onNewValueSubmitted = onUpdateCumulativeGPA,
                     keyboardType = KeyboardType.Number,
                     enabled = false,
-                    supportingText = stringResource(R.string.calculated_from_history),
+                    supportingText = stringResource(Res.string.calculated_from_history),
                 )
                 MeadowRowDivider()
                 ExpandableTextField(
-                    title = stringResource(R.string.total_hours),
+                    title = stringResource(Res.string.total_hours),
                     value = userData.academicProgress.creditHours.toString(),
                     onNewValueSubmitted = onUpdateCreditHours,
                     keyboardType = KeyboardType.Number,
                     enabled = false,
-                    supportingText = stringResource(R.string.calculated_from_history),
+                    supportingText = stringResource(Res.string.calculated_from_history),
                 )
             }
         }
