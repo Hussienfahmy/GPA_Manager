@@ -20,7 +20,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.hussienfahmy.core.util.PermissionHelper
+import com.hussienfahmy.core.util.AppPermission
+import com.hussienfahmy.core.util.PermissionController
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingProgressIndicator
@@ -42,6 +43,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModel<MainViewModel>()
+    private lateinit var permissionController: PermissionController
 
     private fun getOnboardingStep(destination: String?): Int = when (destination) {
         AppOnBoardingScreenDestination.route -> OnboardingConstants.Steps.WELCOME
@@ -59,7 +61,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        PermissionHelper.init(this)
+        permissionController = PermissionController(this)
 
         setContent {
             GPAManagerTheme {
@@ -88,7 +90,7 @@ class MainActivity : ComponentActivity() {
 
                     if (currentDestination == NavGraphs.root.startDestination.route) {
                         // request notification permission if not granted after user complete sign in.
-                        PermissionHelper.requestNotificationPermission(this@MainActivity)
+                        permissionController.requestPermission(AppPermission.Notifications)
                     }
                 }
 
