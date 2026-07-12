@@ -10,13 +10,21 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project(":core"))
+
+            // coil3.compose is genuinely multiplatform (unlike coil3.network.okhttp below), so
+            // AsyncImage/ImageRequest/LocalPlatformContext now resolve on iOS too - this is what
+            // unblocks UserPhoto.kt/MeadowUserCard.kt out of androidMain (Phase 11e).
+            implementation(libs.coil3.compose)
         }
 
-        // UserPhoto.kt / MeadowUserCard.kt (Coil 3) and UserCardInfo.kt (ConstraintLayout
-        // Compose, no CMP port) stay androidMain-only - MeadowType.kt's font blocker is resolved
-        // (Phase 11), everything else in this module is commonMain now.
+        // Android's network engine is auto-discovered via Coil's ServiceLoader mechanism (JVM-only
+        // - Kotlin/Native has no such thing), so it stays a plain runtime dependency here and Coil
+        // keeps working on Android exactly as before, zero behavior change. iOS has no network
+        // engine wired yet: Kotlin/Native needs an explicit SingletonImageLoader.setSafe { ... }
+        // with a coil3-network-ktor (Darwin Ktor engine) fetcher registered - deferred until the
+        // iOS app entry point (iosApp/) exists to actually call that setup. Until then, network
+        // photo loading on iOS will silently fail at runtime even though this compiles fine.
         androidMain.dependencies {
-            implementation(libs.coil3.compose)
             implementation(libs.coil3.network.okhttp)
             implementation(libs.androidx.constraintlayout.compose)
         }

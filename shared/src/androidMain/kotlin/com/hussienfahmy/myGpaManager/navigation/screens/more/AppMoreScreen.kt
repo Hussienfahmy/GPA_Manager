@@ -40,7 +40,7 @@ import com.hussienfahmy.core_ui.presentation.components.meadow.SettingsGroupLabe
 import com.hussienfahmy.core_ui.presentation.components.meadow.SettingsRowTrailing
 import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
 import com.hussienfahmy.core_ui.theme.MeadowTheme
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AppMoreScreen(
