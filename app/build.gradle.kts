@@ -1,10 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
-    // Needed for the new @Serializable Firestore DTOs (FirebaseNetworkSemester,
-    // FirebaseUserData, etc.) - GitLive Firestore is kotlinx.serialization-based - and now also
-    // for the @Serializable Navigation 3 route keys (AppRoute/OnboardingRoute).
-    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.androidx.baselineprofile)
@@ -92,7 +88,6 @@ dependencies {
 
     // Koin
     implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
     implementation(libs.koin.androidx.worker)
 
     // Kotlin BOM
@@ -108,11 +103,6 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(libs.bundles.compose.debug)
     implementation(libs.bundles.compose.presentation)
-
-    // Navigation 3 (Phase 8 - replaces Compose Destinations)
-    implementation(libs.androidx.navigation3.runtime)
-    implementation(libs.androidx.navigation3.ui)
-    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
 
     // Work Manager
     implementation(libs.androidx.work.runtime.ktx)

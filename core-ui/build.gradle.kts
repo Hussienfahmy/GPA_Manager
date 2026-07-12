@@ -32,14 +32,6 @@ kotlin {
             implementation(libs.coil3.network.ktor)
             implementation(libs.ktor.client.darwin)
         }
-
-        // iOS has no ServiceLoader-style auto-discovery, so it needs an explicit
-        // SingletonImageLoader.setSafe { ... } with a Ktor/Darwin-backed fetcher registered - see
-        // CoilImageLoader.ios.kt, called from :shared's doInitKoin() now that iosApp/ exists.
-        iosMain.dependencies {
-            implementation(libs.coil3.network.ktor)
-            implementation(libs.ktor.client.darwin)
-        }
     }
 }
 
