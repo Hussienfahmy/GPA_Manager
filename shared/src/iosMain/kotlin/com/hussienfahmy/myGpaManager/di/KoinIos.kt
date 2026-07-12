@@ -8,6 +8,7 @@ import com.hussienfahmy.core.domain.grades.di.coreGradesDomainModule
 import com.hussienfahmy.core.domain.subject_settings.di.coreSubjectSettingsDomainModule
 import com.hussienfahmy.core.domain.user_data.di.coreUserDataDomainModule
 import com.hussienfahmy.core_ui.domain.di.coreUiDomainModule
+import com.hussienfahmy.core_ui.presentation.util.initCoilImageLoader
 import com.hussienfahmy.gpa_system_settings_data.di.gpaSystemSettingsDataModule
 import com.hussienfahmy.gpa_system_sittings_presentaion.di.gpaSystemSettingsPresentationModule
 import com.hussienfahmy.grades_setting_domain.di.gradesSettingDomainModule
@@ -41,6 +42,8 @@ import org.koin.dsl.module
 // name starts with "init" as an initializer, which would otherwise mangle how this is callable
 // from Swift - the same reason JetBrains' own KMP project template avoids "init"-prefixed names.
 fun doInitKoin() {
+    initCoilImageLoader()
+
     startKoin {
         modules(
             coreModule,
