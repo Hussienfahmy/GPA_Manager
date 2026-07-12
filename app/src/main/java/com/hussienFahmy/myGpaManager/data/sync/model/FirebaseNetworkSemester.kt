@@ -1,11 +1,11 @@
 package com.hussienfahmy.myGpaManager.data.sync.model
 
-import androidx.annotation.Keep
 import com.hussienfahmy.core.data.local.entity.Semester
 import com.hussienfahmy.sync_domain.model.NetworkSemester
 import com.hussienfahmy.sync_domain.model.Subject
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class FirebaseNetworkSemester(
     val id: Long = 0,
     val label: String = "",

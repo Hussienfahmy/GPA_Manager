@@ -1,39 +1,40 @@
 package com.hussienfahmy.myGpaManager.data.user_data.model
 
-import androidx.annotation.Keep
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.DocumentId
-import com.google.firebase.firestore.PropertyName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+// No id/@DocumentId field: the document id is always the Firebase Auth uid already known to the
+// caller (userDoc(userId) = .document(userId)), so it's redundant to also store/read it from the
+// document body - the repository passes it in separately when mapping to the domain UserData.
+@Serializable
 internal data class FirebaseUserData(
-    @DocumentId val id: String = "id",
-    @PropertyName(PROPERTY_NAME) val name: String = "User",
-    @PropertyName(PROPERTY_PHOTO_URL) val photoUrl: String = "",
-    @PropertyName(PROPERTY_EMAIL) val email: String = "email@user.com",
-    @PropertyName(PROPERTY_ACADEMIC_INFO) val academicInfo: AcademicInfo = AcademicInfo(),
-    @PropertyName(PROPERTY_FCM_TOKEN) val fcmToken: String = "",
-    @PropertyName(PROPERTY_ACADEMIC_PROGRESS) val academicProgress: AcademicProgress = AcademicProgress(),
-    @PropertyName(PROPERTY_CREATED_AT) val createdAt: Timestamp? = null,
-    @PropertyName(PROPERTY_UPDATED_AT) val updatedAt: Timestamp? = null,
+    @SerialName(PROPERTY_NAME) val name: String = "User",
+    @SerialName(PROPERTY_PHOTO_URL) val photoUrl: String = "",
+    @SerialName(PROPERTY_EMAIL) val email: String = "email@user.com",
+    @SerialName(PROPERTY_ACADEMIC_INFO) val academicInfo: AcademicInfo = AcademicInfo(),
+    @SerialName(PROPERTY_FCM_TOKEN) val fcmToken: String = "",
+    @SerialName(PROPERTY_ACADEMIC_PROGRESS) val academicProgress: AcademicProgress = AcademicProgress(),
+    @SerialName(PROPERTY_CREATED_AT) val createdAt: Long? = null,
+    @SerialName(PROPERTY_UPDATED_AT) val updatedAt: Long? = null,
 ) {
-    @Keep
+    @Serializable
     data class AcademicInfo(
-        @PropertyName(UNIVERSITY_FIELD) val university: String = "University",
-        @PropertyName(FACULTY_FIELD) val faculty: String = "Faculty",
-        @PropertyName(DEPARTMENT_FIELD) val department: String = "Department",
-        @PropertyName(LEVEL_FIELD) val level: Int = 1,
-        @PropertyName(SEMESTER_FIELD) val semester: Semester = Semester.First
+        @SerialName(UNIVERSITY_FIELD) val university: String = "University",
+        @SerialName(FACULTY_FIELD) val faculty: String = "Faculty",
+        @SerialName(DEPARTMENT_FIELD) val department: String = "Department",
+        @SerialName(LEVEL_FIELD) val level: Int = 1,
+        @SerialName(SEMESTER_FIELD) val semester: Semester = Semester.First
     ) {
+        @Serializable
         enum class Semester {
             First, Second
         }
     }
 
-    @Keep
+    @Serializable
     data class AcademicProgress(
-        @PropertyName(CUMULATIVE_GPA_FIELD) val cumulativeGPA: Double = 0.0,
-        @PropertyName(CREDIT_HOURS_FIELD) val creditHours: Int = 0
+        @SerialName(CUMULATIVE_GPA_FIELD) val cumulativeGPA: Double = 0.0,
+        @SerialName(CREDIT_HOURS_FIELD) val creditHours: Int = 0
     )
 
     companion object {

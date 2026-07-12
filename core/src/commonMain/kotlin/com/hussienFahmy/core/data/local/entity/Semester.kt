@@ -2,6 +2,7 @@ package com.hussienfahmy.core.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
 @Entity(tableName = "semester")
 data class Semester(
@@ -18,6 +19,9 @@ data class Semester(
     val createdAt: Long = System.currentTimeMillis(),
     val archivedAt: Long? = null,
 ) {
+    // @Serializable on Type only (not the whole Room @Entity) - needed for
+    // sync_domain.model.NetworkSemester's Firestore (kotlinx.serialization) round-trip.
+    @Serializable
     enum class Type { SUMMARY, DETAILED }
     enum class Status { CURRENT, ARCHIVED }
 }

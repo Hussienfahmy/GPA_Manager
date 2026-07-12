@@ -3,7 +3,9 @@ package com.hussienfahmy.myGpaManager.data.user_data.mapper
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.myGpaManager.data.user_data.model.FirebaseUserData
 
-internal fun FirebaseUserData.toDomain(): UserData = UserData(
+// id is passed in rather than read from FirebaseUserData - see the comment on FirebaseUserData
+// for why the document body no longer carries its own id field.
+internal fun FirebaseUserData.toDomain(id: String): UserData = UserData(
     id = id,
     name = name,
     photoUrl = photoUrl,

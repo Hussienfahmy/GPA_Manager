@@ -1,5 +1,9 @@
 package com.hussienfahmy.core.data.local.model
 
+import kotlinx.serialization.Serializable
+
+// @Serializable needed for sync_domain's Firestore (kotlinx.serialization) round-trip.
+@Serializable
 enum class GradeName(val symbol: String) {
     F("F"),
     DMinus("D-"),

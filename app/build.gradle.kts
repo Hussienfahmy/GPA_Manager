@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.compose)
+    // Needed for the new @Serializable Firestore DTOs (FirebaseNetworkSemester,
+    // FirebaseUserData, etc.) - GitLive Firestore is kotlinx.serialization-based.
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.androidx.baselineprofile)
@@ -116,8 +119,9 @@ dependencies {
     implementation(libs.androidx.profileinstaller)
     baselineProfile(project(":baselineprofile"))
 
-    // Firebase
-    implementation(libs.firebase.firestore)
+    // Firebase (Firestore migrated to GitLive; Auth/Storage/Analytics migrate in follow-up
+    // sub-PRs, still on the Android SDK for now)
+    implementation(libs.gitlive.firebase.firestore)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.storage)
     implementation(libs.firebase.crashlytics)
