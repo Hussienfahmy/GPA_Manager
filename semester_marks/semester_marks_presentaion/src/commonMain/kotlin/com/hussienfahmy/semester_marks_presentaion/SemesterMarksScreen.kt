@@ -35,7 +35,7 @@ import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.semester_marks_domain.model.Grade
 import com.hussienfahmy.semester_marks_domain.model.Subject
 import com.hussienfahmy.semester_marks_presentaion.components.SemesterMarksItem
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SemesterMarksScreen(

@@ -1,6 +1,5 @@
 package com.hussienfahmy.semester_subjctets_presentaion
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,16 +17,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
 import com.hussienfahmy.core_ui.presentation.components.AddSubjectsHint
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
+import com.hussienfahmy.core_ui.presentation.util.isLandscapeOrientation
 import com.hussienfahmy.semester_subjctets_domain.model.Grade
 import com.hussienfahmy.semester_subjctets_domain.model.Subject
 import com.hussienfahmy.semester_subjctets_domain.use_case.Calculate
@@ -38,7 +36,7 @@ import com.hussienfahmy.semester_subjctets_presentaion.components.ResultCard
 import com.hussienfahmy.semester_subjctets_presentaion.components.SubjectsColumn
 import com.hussienfahmy.semester_subjctets_presentaion.model.Mode
 import com.hussienfahmy.semester_subjctets_presentaion.model.ModeResult
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
@@ -160,9 +158,8 @@ fun SemesterScreenContent(
     onResetSubjectClick: (subjectId: Long) -> Unit,
     onGradeClick: (subjectId: Long, grade: GradeName) -> Unit,
 ) {
-    val configuration = LocalConfiguration.current
-    when (configuration.orientation) {
-        Configuration.ORIENTATION_LANDSCAPE -> SemesterContentLandscape(
+    if (isLandscapeOrientation()) {
+        SemesterContentLandscape(
             modifier = modifier,
             state = state,
             onAddClick = onAddClick,
@@ -175,8 +172,8 @@ fun SemesterScreenContent(
             onResetSubjectClick = onResetSubjectClick,
             onGradeClick = onGradeClick
         )
-
-        else -> SemesterContentPortrait(
+    } else {
+        SemesterContentPortrait(
             modifier = modifier,
             state = state,
             onAddClick = onAddClick,
@@ -307,7 +304,6 @@ fun SemesterContentLandscape(
     }
 }
 
-@PreviewScreenSizes
 @Preview(showBackground = true)
 @Composable
 fun SemesterScreenContentPreviewPortrait() {
