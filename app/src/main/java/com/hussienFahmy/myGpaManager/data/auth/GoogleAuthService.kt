@@ -4,11 +4,12 @@ import android.app.Activity
 import com.hussienfahmy.core.domain.auth.service.AuthService
 import com.hussienfahmy.core.domain.auth.service.AuthServiceResult
 import com.hussienfahmy.core.domain.auth.service.AuthServiceUserData
+import com.hussienfahmy.core.domain.auth.service.AuthSignIn
 import kotlinx.coroutines.flow.StateFlow
 
 class GoogleAuthService(
     private val googleAuthUiClient: GoogleAuthUiClient
-) : AuthService {
+) : AuthService, AuthSignIn {
 
     override val isSignedInFlow: StateFlow<Boolean?> = googleAuthUiClient.isSignedInFlow
 

@@ -59,6 +59,7 @@ baselineProfile {
 
 dependencies {
     // Local modules
+    implementation(project(":shared"))
     implementation(project(":core"))
     implementation(project(":core-ui"))
 
