@@ -1,6 +1,5 @@
 package com.hussienfahmy.quick_presentation
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,17 +16,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
+import com.hussienfahmy.core_ui.presentation.util.isLandscapeOrientation
 import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
 import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.quick_domain.model.QuickCalculationRequest
 import com.hussienfahmy.quick_presentation.components.InputCard
 import com.hussienfahmy.quick_presentation.components.QuickResultCard
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun QuickScreen(
@@ -49,10 +48,8 @@ fun QuickScreen(
             )
         }
     } else MeadowAccentProvider(MeadowTheme.colors.quick) {
-        val configuration = LocalConfiguration.current
-
-        when (configuration.orientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> QuickScreenLandscape(
+        if (isLandscapeOrientation()) {
+            QuickScreenLandscape(
                 modifier = modifier,
                 academicProgress = state.academicProgress,
                 invalidCumulativeGPAInput = state.invalidCumulativeGPAInput,
@@ -65,8 +62,8 @@ fun QuickScreen(
                 cumulativeGPAPercentage = state.cumulativeGPAPercentage,
                 onCalculate = { viewModel.onEvent(QuickEvent.Calculate(it)) }
             )
-
-            else -> QuickScreenPortrait(
+        } else {
+            QuickScreenPortrait(
                 academicProgress = state.academicProgress,
                 invalidCumulativeGPAInput = state.invalidCumulativeGPAInput,
                 invalidSemesterGPAInput = state.invalidSemesterGPAInput,
