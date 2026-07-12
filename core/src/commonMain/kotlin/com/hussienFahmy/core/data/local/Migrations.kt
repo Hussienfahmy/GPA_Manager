@@ -1,12 +1,16 @@
 package com.hussienfahmy.core.data.local
 
 import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.sqlite.SQLiteConnection
+import androidx.sqlite.execSQL
 
+// Uses the multiplatform SQLiteConnection.execSQL (androidx.sqlite) instead of the Android-only
+// SupportSQLiteDatabase, so this migration lives in commonMain - unverified against a real build
+// in this sandbox, please confirm the exact `androidx.sqlite.execSQL` import resolves as expected.
 val MIGRATION_10_11 = object : Migration(10, 11) {
-    override fun migrate(db: SupportSQLiteDatabase) {
+    override fun migrate(connection: SQLiteConnection) {
         // Create new grade table with meta_data as primary key
-        db.execSQL(
+        connection.execSQL(
             """
             CREATE TABLE IF NOT EXISTS grade_new (
                 meta_data TEXT NOT NULL,
@@ -20,7 +24,7 @@ val MIGRATION_10_11 = object : Migration(10, 11) {
 
         // Insert data from old table to new table, converting enum names to symbol strings
         // Use GROUP BY to handle potential duplicates
-        db.execSQL(
+        connection.execSQL(
             """
             INSERT INTO grade_new (meta_data, active, points, percentage)
             SELECT 
@@ -64,13 +68,13 @@ val MIGRATION_10_11 = object : Migration(10, 11) {
         )
 
         // Drop the old table
-        db.execSQL("DROP TABLE grade")
+        connection.execSQL("DROP TABLE grade")
 
         // Rename the new table to grade
-        db.execSQL("ALTER TABLE grade_new RENAME TO grade")
+        connection.execSQL("ALTER TABLE grade_new RENAME TO grade")
 
         // Create new subject table without fixedGrade and max_grade columns (version 13 structure)
-        db.execSQL(
+        connection.execSQL(
             """
             CREATE TABLE IF NOT EXISTS subject_new (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -91,7 +95,7 @@ val MIGRATION_10_11 = object : Migration(10, 11) {
         )
 
         // Copy data from old subject table, ensuring gradeName values are valid
-        db.execSQL(
+        connection.execSQL(
             """
             INSERT INTO subject_new (id, name, creditHours, gradeName, totalMarks, midterm, practical, oral, project, midtermAvailable, oralAvailable, practicalAvailable, projectAvailable)
             SELECT 
@@ -127,7 +131,7 @@ val MIGRATION_10_11 = object : Migration(10, 11) {
         """
         )
 
-        db.execSQL("DROP TABLE subject")
-        db.execSQL("ALTER TABLE subject_new RENAME TO subject")
+        connection.execSQL("DROP TABLE subject")
+        connection.execSQL("ALTER TABLE subject_new RENAME TO subject")
     }
 }

@@ -7,13 +7,20 @@ android {
 
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")
+        // Room KMP needs its generated _Impl classes in Kotlin, not Java, to target non-JVM
+        // platforms. Harmless on Android-only today; required once iosMain is added here.
+        arg("room.generateKotlin", "true")
     }
 }
 
 kotlin {
     sourceSets {
-        androidMain.dependencies {
+        commonMain.dependencies {
             implementation(libs.bundles.room)
+            implementation(libs.androidx.sqlite.bundled)
+        }
+
+        androidMain.dependencies {
             implementation(libs.firebase.analytics)
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.activity.ktx)
@@ -23,8 +30,8 @@ kotlin {
 }
 
 dependencies {
-    // Room is still Android-only for this phase (its KMP move is a separate, dedicated phase);
-    // "kspAndroid" is the per-target KSP configuration created for the androidTarget() by the
-    // ksp + kotlin.multiplatform plugin combination.
+    // Room's entities/DAOs/database now live in commonMain, but KSP still has to generate a
+    // per-target implementation; "kspAndroid" is the only target processor needed until iOS is
+    // added here, at which point kspIosArm64/kspIosSimulatorArm64/kspIosX64 join it.
     add("kspAndroid", libs.androidx.room.compiler)
 }
