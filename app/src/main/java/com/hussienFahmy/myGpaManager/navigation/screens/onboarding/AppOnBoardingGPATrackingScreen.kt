@@ -37,18 +37,14 @@ import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChip
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChipStyle
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
-import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
-import com.hussienfahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.models.AppOnBoardingGPATrackingEvent
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.models.AppOnBoardingGPATrackingState
 import com.hussienfahmy.semester_history_domain.model.Semester
 import com.hussienfahmy.semester_history_presentation.components.AddPastSemesterSheet
 import com.hussienfahmy.semester_history_presentation.components.CumulativeGpaCard
-import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
-@Destination<OnBoardingNavGraph>(style = SlideTransitions::class)
 @Composable
 fun AppOnBoardingGPATrackingScreen(
     onNextClick: () -> Unit,

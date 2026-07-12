@@ -20,21 +20,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import com.hussienfahmy.core_ui.theme.CapsLabelStyle
 import com.hussienfahmy.core_ui.theme.MeadowAccent
 import com.hussienfahmy.core_ui.theme.MeadowColors
 import com.hussienfahmy.core_ui.theme.MeadowTheme
-import com.ramcosta.composedestinations.generated.NavGraphs
-import com.ramcosta.composedestinations.generated.destinations.AppSemesterDetailScreenDestination
-import com.ramcosta.composedestinations.utils.currentDestinationAsState
-import com.ramcosta.composedestinations.utils.startDestination
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
 private fun BottomNavDestination.accent(colors: MeadowColors): MeadowAccent = when (this) {
@@ -47,16 +41,13 @@ private fun BottomNavDestination.accent(colors: MeadowColors): MeadowAccent = wh
 
 @Composable
 fun AppBottomNav(
-    navController: NavHostController
+    appNavigationState: AppNavigationState
 ) {
     val analyticsLogger = koinInject<AnalyticsLogger>()
-    val currentDestination = navController.currentDestinationAsState().value
-        ?: NavGraphs.root.startDestination
-
-    // Treat SemesterDetail as a child of the History tab
-    val isOnSemesterDetail = currentDestination == AppSemesterDetailScreenDestination
-    val effectiveDestination =
-        if (isOnSemesterDetail) BottomNavDestination.History.direction else currentDestination
+    // SemesterDetail lives inside the History tab's own stack, so topLevelRoute stays
+    // AppRoute.SemesterHistory the whole time it's pushed - no special-casing needed here,
+    // unlike the old NavHostController-based currentDestinationAsState() approach.
+    val currentTopLevelRoute = appNavigationState.topLevelRoute
 
     val colors = MeadowTheme.colors
 
@@ -74,7 +65,7 @@ fun AppBottomNav(
                 .navigationBarsPadding()
         ) {
             BottomNavDestination.entries.forEach { destination ->
-                val selected = effectiveDestination == destination.direction
+                val selected = currentTopLevelRoute == destination.route
                 val accent = destination.accent(colors)
 
                 Column(
@@ -87,19 +78,7 @@ fun AppBottomNav(
                             indication = null,
                         ) {
                             analyticsLogger.logBottomNavClicked(destination.name.lowercase())
-
-                            if (isOnSemesterDetail) {
-                                navController.popBackStack()
-                                if (destination == BottomNavDestination.History) return@clickable
-                            }
-
-                            navController.navigate(destination.direction.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
+                            appNavigationState.onTabSelected(destination.route)
                         },
                 ) {
                     Box(

@@ -15,12 +15,8 @@ import com.hussienfahmy.core_ui.presentation.user_data.UserDataState
 import com.hussienfahmy.core_ui.presentation.user_data.UserDataViewModel
 import com.hussienfahmy.core_ui.presentation.user_data.components.PersonalInfoSection
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
-import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
-import com.hussienfahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
-import com.ramcosta.composedestinations.annotation.Destination
 import org.koin.androidx.compose.koinViewModel
 
-@Destination<OnBoardingNavGraph>(style = SlideTransitions::class)
 @Composable
 fun AppOnBoardingPersonalInfoScreen(
     onNextClick: () -> Unit,

@@ -13,12 +13,8 @@ import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.gpa_system_sittings_presentaion.GPASettingsScreen
-import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
-import com.hussienfahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
 import com.hussienfahmy.subject_settings_presentation.SubjectsSettingsScreen
-import com.ramcosta.composedestinations.annotation.Destination
 
-@Destination<OnBoardingNavGraph>(style = SlideTransitions::class)
 @Composable
 fun AppOnBoardingGPASubjectsSettings(
     onStartClick: () -> Unit,
