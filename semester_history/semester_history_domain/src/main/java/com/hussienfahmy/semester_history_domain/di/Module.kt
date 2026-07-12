@@ -13,8 +13,8 @@ import com.hussienfahmy.semester_history_domain.use_case.GenerateAcademicReport
 import com.hussienfahmy.semester_history_domain.use_case.GetSemesterDetail
 import com.hussienfahmy.semester_history_domain.use_case.GetSemesterHistory
 import com.hussienfahmy.semester_history_domain.use_case.GetWorkspaceSubjectCount
+import com.hussienfahmy.core.domain.report.createReportBrandingProvider
 import com.hussienfahmy.semester_history_domain.use_case.ReorderSemester
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val semesterHistoryDomainModule = module {
@@ -45,7 +45,7 @@ val semesterHistoryDomainModule = module {
             userDataRepository = get(),
             gpaSettingsRepository = get(),
             registry = get(),
-            context = androidContext(),
+            brandingProvider = createReportBrandingProvider(),
         )
     }
     single {
