@@ -1,12 +1,11 @@
 package com.hussienfahmy.core.domain.analytics.di
 
-import com.google.firebase.Firebase
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.analytics
 import com.hussienfahmy.core.data.analytics.FirebaseAnalyticsService
 import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import com.hussienfahmy.core.domain.analytics.AnalyticsService
-import org.koin.android.ext.koin.androidContext
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.analytics.FirebaseAnalytics
+import dev.gitlive.firebase.analytics.analytics
 import org.koin.dsl.module
 
 val analyticsModule = module {
