@@ -15,6 +15,9 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.bundles.room)
             implementation(libs.firebase.analytics)
+            implementation(libs.androidx.core.ktx)
+            implementation(libs.androidx.activity.ktx)
+            implementation(libs.koin.android)
         }
     }
 }
