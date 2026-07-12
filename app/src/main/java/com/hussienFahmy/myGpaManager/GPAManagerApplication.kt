@@ -32,6 +32,7 @@ import com.hussienfahmy.subject_settings_data.di.subjectSettingsDataModule
 import com.hussienfahmy.subject_settings_domain.di.subjectSettingsDomainModule
 import com.hussienfahmy.subject_settings_presentation.di.subjectSettingsPresentationModule
 import com.hussienfahmy.sync_domain.di.syncDomainModule
+import com.hussienfahmy.sync_domain.di.syncWorkerModule
 import com.hussienfahmy.sync_domain.worker.SyncWorkerUpload
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.koin.workManagerFactory
@@ -68,6 +69,7 @@ class GPAManagerApplication : Application(), KoinComponent {
                 semesterHistoryDomainModule,
                 semesterHistoryPresentationModule,
                 syncDomainModule,
+                syncWorkerModule,
                 onboardingPresentationModule,
                 appKoinModule,
                 firebaseModule,
