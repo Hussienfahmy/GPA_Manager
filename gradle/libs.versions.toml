@@ -161,6 +161,10 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 # Coil 3 (multiplatform) - added for the core-ui KMP migration phase, not wired in yet
 coil3-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil3" }
 coil3-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coil3" }
+# OkHttp-backed network engine - used instead of coil3-network-ktor while Coil consumers are
+# still Android-only (no Ktor client engine artifact configured yet); switch to the ktor3 engine
+# above once these move to commonMain for iOS.
+coil3-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil3" }
 
 # Compose Destinations
 compose-destinations-core = { group = "io.github.raamcosta.compose-destinations", name = "core", version.ref = "raamcosta" }
