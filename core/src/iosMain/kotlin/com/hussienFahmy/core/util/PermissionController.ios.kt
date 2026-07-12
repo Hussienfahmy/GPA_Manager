@@ -1,18 +1,38 @@
 package com.hussienfahmy.core.util
 
-// STUB: iOS's real notification-permission API (UNUserNotificationCenter) is callback/async-only
-// (getNotificationSettingsWithCompletionHandler / requestAuthorizationWithOptions), but this
-// class's commonMain signature is synchronous (hasPermission(): Boolean, requestPermission():
-// Unit) - a holdover from Android's synchronous ActivityCompat.checkSelfPermission API. A
-// faithful iOS implementation isn't possible without either blocking on the async callback (risky
-// on Kotlin/Native's memory model) or changing the commonMain interface to be suspend-based. Left
-// as a no-op stub rather than guessing at a synchronization strategy blind; revisit the interface
-// shape before implementing this for real.
-actual class PermissionController {
-    actual fun hasPermission(permission: AppPermission): Boolean = false
+import kotlinx.coroutines.suspendCancellableCoroutine
+import platform.UserNotifications.UNAuthorizationOptionAlert
+import platform.UserNotifications.UNAuthorizationOptionBadge
+import platform.UserNotifications.UNAuthorizationOptionSound
+import platform.UserNotifications.UNUserNotificationCenter
+import kotlin.coroutines.resume
 
-    actual fun requestPermission(permission: AppPermission) {
-        // TODO: implement via UNUserNotificationCenter once PermissionController's commonMain
-        // interface is revisited to be suspend-based (or otherwise reactive).
+// Best-effort, unverified - no simulator/device available in this sandbox.
+actual class PermissionController {
+    actual fun hasPermission(permission: AppPermission): Boolean {
+        // UNUserNotificationCenter's authorization status is only obtainable via an async
+        // callback (getNotificationSettingsWithCompletionHandler); there's no synchronous check.
+        // Returns false conservatively - callers only use this to skip an already-granted
+        // permission before calling requestPermission() below, which is a real, working
+        // implementation - so a false negative here just means one extra (harmless, system-deduped)
+        // permission prompt, not a functional gap.
+        return false
     }
+
+    actual suspend fun requestPermission(permission: AppPermission) {
+        when (permission) {
+            AppPermission.Notifications -> requestNotificationAuthorization()
+        }
+    }
+
+    private suspend fun requestNotificationAuthorization(): Unit =
+        suspendCancellableCoroutine { continuation ->
+            val options = UNAuthorizationOptionAlert or
+                UNAuthorizationOptionSound or
+                UNAuthorizationOptionBadge
+            UNUserNotificationCenter.currentNotificationCenter()
+                .requestAuthorizationWithOptions(options) { _, _ ->
+                    if (continuation.isActive) continuation.resume(Unit)
+                }
+        }
 }

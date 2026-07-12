@@ -1,14 +1,36 @@
 package com.hussienfahmy.core.domain.report
 
-// STUB: both methods return String? already (the Android actual also returns null on any
-// loading failure), so returning null here is a legitimate, already-handled outcome - the report
-// simply renders without branding - rather than a crash. Real implementation needs to load the
-// app icon from the iOS app bundle (Bundle.mainBundle) and a bundled QR code image resource,
-// converting each to a base64 PNG.
-actual class ReportBrandingProvider {
-    actual suspend fun loadAppIconBase64Png(): String? = null
+import com.hussienfahmy.core.util.toByteArray
+import kotlinx.cinterop.ExperimentalForeignApi
+import platform.Foundation.NSBundle
+import platform.UIKit.UIImage
+import platform.UIKit.UIImagePNGRepresentation
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
-    actual suspend fun loadQrCodeBase64Png(): String? = null
+// Best-effort, unverified - no simulator/device available in this sandbox. Reads the app's
+// primary icon name out of Info.plist's CFBundleIcons (populated by Xcode from the asset
+// catalog's App Icon set at build time) and loads it via UIImage(named:); falls back to the
+// conventional "AppIcon" asset-catalog name some Xcode configurations don't auto-populate
+// CFBundleIconFiles for.
+@OptIn(ExperimentalForeignApi::class, ExperimentalEncodingApi::class)
+actual class ReportBrandingProvider {
+    actual suspend fun loadAppIconBase64Png(): String? {
+        val iconName = primaryAppIconName() ?: "AppIcon"
+        val image = UIImage.imageNamed(iconName) ?: return null
+        val png = UIImagePNGRepresentation(image) ?: return null
+        return Base64.encode(png.toByteArray())
+    }
+
+    actual suspend fun loadQrCodeBase64Png(): String? = loadQrCodeBase64PngFromBundledResource()
+
+    private fun primaryAppIconName(): String? {
+        val info = NSBundle.mainBundle.infoDictionary ?: return null
+        val icons = info["CFBundleIcons"] as? Map<Any?, *> ?: return null
+        val primary = icons["CFBundlePrimaryIcon"] as? Map<Any?, *> ?: return null
+        val files = primary["CFBundleIconFiles"] as? List<*> ?: return null
+        return files.lastOrNull() as? String
+    }
 }
 
 actual fun createReportBrandingProvider(): ReportBrandingProvider = ReportBrandingProvider()

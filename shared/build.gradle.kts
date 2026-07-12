@@ -3,6 +3,18 @@ plugins {
 }
 
 kotlin {
+    // Kotlin/Native framework export: iosApp/ (the Xcode project) links against Shared.framework
+    // and calls MainViewController() (shared/src/iosMain/.../MainViewController.kt) to get a
+    // UIViewController hosting the whole Compose UI. Static (vs. dynamic) so Xcode just needs a
+    // plain "Embed Frameworks" build phase, no run-script step. Unverified in this sandbox - no
+    // Xcode/simulator available to confirm the framework actually links and runs.
+    listOf(iosArm64(), iosSimulatorArm64()).forEach { target ->
+        target.binaries.framework {
+            baseName = "Shared"
+            isStatic = true
+        }
+    }
+
     sourceSets {
         // FLAG FOR REVIEW: everything here is androidMain, not commonMain. Two of its Navigation 3
         // deps (navigation3-ui, lifecycle-viewmodel-navigation3) are genuine Android-only AndroidX

@@ -49,6 +49,13 @@ kotlin {
             implementation(libs.androidx.activity.ktx)
             implementation(libs.koin.android)
         }
+
+        // AppleSignIn.kt exchanges its Apple ID credential for a Firebase session directly -
+        // Android's equivalent (GoogleAuthUiClient/FirebaseAuthRepository) lives in :app instead,
+        // since it also needs androidx.credentials, which :core doesn't otherwise depend on.
+        iosMain.dependencies {
+            implementation(libs.gitlive.firebase.auth)
+        }
     }
 }
 

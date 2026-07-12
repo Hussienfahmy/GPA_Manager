@@ -19,6 +19,7 @@ import com.hussienfahmy.grades_setting_domain.di.gradesSettingDomainModule
 import com.hussienfahmy.grades_setting_presentation.di.gradesSettingPresentationModule
 import com.hussienfahmy.myGpaManager.di.appKoinModule
 import com.hussienfahmy.myGpaManager.di.firebaseModule
+import com.hussienfahmy.myGpaManager.di.sharedFirebaseModule
 import com.hussienfahmy.myGpaManager.di.sharedKoinModule
 import com.hussienfahmy.onboarding_presentation.di.onboardingPresentationModule
 import com.hussienfahmy.quick_domain.di.quickDomainModule
@@ -73,6 +74,7 @@ class GPAManagerApplication : Application(), KoinComponent {
                 syncWorkerModule,
                 onboardingPresentationModule,
                 sharedKoinModule,
+                sharedFirebaseModule,
                 appKoinModule,
                 firebaseModule,
                 analyticsModule
