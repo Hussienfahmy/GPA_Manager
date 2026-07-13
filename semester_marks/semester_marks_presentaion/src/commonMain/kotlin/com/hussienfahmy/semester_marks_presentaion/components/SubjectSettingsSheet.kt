@@ -31,7 +31,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSwitch
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton

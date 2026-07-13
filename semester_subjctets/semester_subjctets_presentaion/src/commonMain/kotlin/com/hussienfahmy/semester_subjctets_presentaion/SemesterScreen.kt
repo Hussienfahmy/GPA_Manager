@@ -19,7 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
