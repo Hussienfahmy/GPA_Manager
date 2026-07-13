@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 
 @Composable
 fun AddSubjectsHint(

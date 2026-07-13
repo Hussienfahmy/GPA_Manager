@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.LocalSpacing
 
 @OptIn(ExperimentalMaterial3Api::class)

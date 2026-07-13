@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
 import com.hussienfahmy.core_ui.theme.MeadowRadius
 import com.hussienfahmy.core_ui.theme.MeadowTheme

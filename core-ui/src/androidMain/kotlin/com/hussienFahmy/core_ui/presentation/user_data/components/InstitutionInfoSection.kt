@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.presentation.components.ExpandableTextField
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard

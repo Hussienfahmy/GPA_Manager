@@ -11,9 +11,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.hussienfahmy.core.util.PlatformImageSource
 import com.hussienfahmy.core_ui.presentation.user_data.components.UserDataScreenContent
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun UserDataScreen(
@@ -30,7 +31,7 @@ fun UserDataScreen(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             uri?.let {
-                viewModel.onEvent(UserDataEvent.UploadPhoto(it))
+                viewModel.onEvent(UserDataEvent.UploadPhoto(PlatformImageSource(it)))
             }
         }
     )

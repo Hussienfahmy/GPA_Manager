@@ -23,7 +23,7 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.util.truncate
 import com.hussienfahmy.core_ui.LocalSpacing

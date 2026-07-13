@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core_ui.presentation.components.ExpandableTextField
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel

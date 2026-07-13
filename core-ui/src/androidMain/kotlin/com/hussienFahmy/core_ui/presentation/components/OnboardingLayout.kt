@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.dropUnlessResumed
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
 import com.hussienfahmy.core_ui.theme.MeadowTheme
