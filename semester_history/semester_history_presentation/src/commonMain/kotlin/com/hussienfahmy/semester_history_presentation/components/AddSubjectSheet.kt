@@ -33,7 +33,7 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.entity.Grade
 import com.hussienfahmy.core.data.local.entity.Subject
 import com.hussienfahmy.core.data.local.model.GradeName
