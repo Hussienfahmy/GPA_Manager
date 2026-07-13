@@ -167,9 +167,9 @@ coil3-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp
 
 # Compose Destinations
 # Jetpack Navigation 3 (multiplatform) - wired into :app in Phase 8, replacing Compose Destinations
-androidx-navigation3-runtime = { group = "org.jetbrains.androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3" }
-androidx-navigation3-ui = { group = "org.jetbrains.androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
-androidx-lifecycle-viewmodel-navigation3 = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "androidxLifecycle" }
+androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3" }
+androidx-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
+androidx-lifecycle-viewmodel-navigation3 = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "androidxLifecycle" }
 
 # Room KMP - same artifact coordinates as the Android-only ones above, just the multiplatform
 # driver needed for non-Android targets, added for the Room KMP migration phase
