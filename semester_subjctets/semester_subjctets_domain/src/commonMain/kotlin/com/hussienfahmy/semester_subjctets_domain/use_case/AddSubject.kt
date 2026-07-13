@@ -1,6 +1,6 @@
 package com.hussienfahmy.semester_subjctets_domain.use_case
 
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.entity.Subject
 import com.hussienfahmy.core.data.local.util.UpdateResult

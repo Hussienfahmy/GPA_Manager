@@ -1,6 +1,6 @@
 package com.hussienfahmy.subject_settings_domain.use_case
 
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.util.UpdateResult
 import com.hussienfahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
 import com.hussienfahmy.core.model.UiText

@@ -1,6 +1,6 @@
 package com.hussienfahmy.semester_subjctets_domain.use_case
 
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
 import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades

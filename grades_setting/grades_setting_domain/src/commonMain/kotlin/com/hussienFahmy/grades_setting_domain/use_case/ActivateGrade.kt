@@ -1,6 +1,6 @@
 package com.hussienfahmy.grades_setting_domain.use_case
 
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.GradeDao
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.util.UpdateResult
