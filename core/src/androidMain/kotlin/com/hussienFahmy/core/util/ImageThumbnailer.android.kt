@@ -10,16 +10,16 @@ import android.provider.MediaStore
 import org.koin.core.context.GlobalContext
 import java.io.ByteArrayOutputStream
 
-actual typealias PlatformImageSource = Uri
+actual class PlatformImageSource(val uri: Uri)
 
 actual class ImageThumbnailer(private val contentResolver: ContentResolver) {
     actual suspend fun createThumbnail(source: PlatformImageSource, quality: Int): ByteArray {
         val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            val decoderSource = ImageDecoder.createSource(contentResolver, source)
+            val decoderSource = ImageDecoder.createSource(contentResolver, source.uri)
             ImageDecoder.decodeBitmap(decoderSource)
         } else {
             @Suppress("DEPRECATION")
-            MediaStore.Images.Media.getBitmap(contentResolver, source)
+            MediaStore.Images.Media.getBitmap(contentResolver, source.uri)
         }
 
         val outputStream = ByteArrayOutputStream()
