@@ -24,7 +24,7 @@ import androidx.compose.ui.draw.clip
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.domain.gpa_settings.model.GPA
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
 import com.hussienfahmy.core_ui.theme.MeadowRadius
