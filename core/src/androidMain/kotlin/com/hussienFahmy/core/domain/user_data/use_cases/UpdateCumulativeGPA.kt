@@ -1,6 +1,6 @@
 package com.hussienfahmy.core.domain.user_data.use_cases
 
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.util.UpdateResult
 import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
 import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository

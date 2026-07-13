@@ -1,7 +1,7 @@
 package com.hussienfahmy.core.domain.report
 
 import org.jetbrains.compose.resources.StringResource
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 
 enum class ReportTemplate(
     val id: String,
