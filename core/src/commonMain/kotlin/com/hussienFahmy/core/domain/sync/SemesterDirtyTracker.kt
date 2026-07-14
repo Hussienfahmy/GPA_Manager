@@ -2,7 +2,6 @@ package com.hussienfahmy.core.domain.sync
 
 import kotlin.concurrent.atomics.AtomicBoolean
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
-import kotlin.concurrent.atomics.exchange
 
 /**
  * Tracks whether semester data has been modified since the last sync.

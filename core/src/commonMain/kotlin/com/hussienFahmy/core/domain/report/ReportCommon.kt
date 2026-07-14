@@ -168,12 +168,12 @@ private val MONTH_ABBREVIATIONS = arrayOf(
 internal fun formatDate(instant: Instant? = Clock.System.now()): String {
     if (instant == null) return "—"
     val date = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-    return "${MONTH_ABBREVIATIONS[date.month.number - 1]} ${date.dayOfMonth}, ${date.year}"
+    return "${MONTH_ABBREVIATIONS[date.monthNumber - 1]} ${date.dayOfMonth}, ${date.year}"
 }
 
 @OptIn(ExperimentalTime::class)
 internal fun formatShortDate(instant: Instant? = Clock.System.now()): String {
     if (instant == null) return "—"
     val date = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-    return "${MONTH_ABBREVIATIONS[date.month.number - 1]} ${date.dayOfMonth}"
+    return "${MONTH_ABBREVIATIONS[date.monthNumber - 1]} ${date.dayOfMonth}"
 }
