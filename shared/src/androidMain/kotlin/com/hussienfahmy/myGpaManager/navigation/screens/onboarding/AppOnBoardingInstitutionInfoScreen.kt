@@ -5,18 +5,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import org.jetbrains.compose.resources.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.core_ui.presentation.user_data.UserDataEvent
 import com.hussienfahmy.core_ui.presentation.user_data.UserDataState
 import com.hussienfahmy.core_ui.presentation.user_data.UserDataViewModel
-import com.hussienfahmy.core_ui.presentation.user_data.components.AcademicStatusSection
+import com.hussienfahmy.core_ui.presentation.user_data.components.InstitutionInfoSection
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun AppOnBoardingAcademicStatusScreen(
+fun AppOnBoardingInstitutionInfoScreen(
     onNextClick: () -> Unit,
     snackBarHostState: SnackbarHostState,
     onBackClick: (() -> Unit)?,
@@ -30,9 +30,9 @@ fun AppOnBoardingAcademicStatusScreen(
     val state by viewModel.customState.collectAsStateWithLifecycle()
 
     OnboardingLayout(
-        title = stringResource(Res.string.onboarding_academic_status_title),
-        subtitle = stringResource(Res.string.onboarding_academic_status_subtitle),
-        currentStep = OnboardingConstants.Steps.ACADEMIC_STATUS,
+        title = stringResource(Res.string.onboarding_institution_info_title),
+        subtitle = stringResource(Res.string.onboarding_institution_info_subtitle),
+        currentStep = OnboardingConstants.Steps.INSTITUTION_INFO,
         onNextClick = onNextClick,
         onBackClick = onBackClick,
         onSkipClick = onNextClick,
@@ -46,11 +46,13 @@ fun AppOnBoardingAcademicStatusScreen(
             is UserDataState.Loaded -> {
                 val userData = s.userData
 
-                AcademicStatusSection(
-                    level = userData.academicInfo.level,
-                    semester = userData.academicInfo.semester,
-                    onLevelChange = { viewModel.onEvent(UserDataEvent.UpdateLevel(it)) },
-                    onSemesterChange = { viewModel.onEvent(UserDataEvent.UpdateSemester(it)) }
+                InstitutionInfoSection(
+                    university = userData.academicInfo.university,
+                    faculty = userData.academicInfo.faculty,
+                    department = userData.academicInfo.department,
+                    onUniversityChange = { viewModel.onEvent(UserDataEvent.UpdateUniversity(it)) },
+                    onFacultyChange = { viewModel.onEvent(UserDataEvent.UpdateFaculty(it)) },
+                    onDepartmentChange = { viewModel.onEvent(UserDataEvent.UpdateDepartment(it)) }
                 )
             }
         }

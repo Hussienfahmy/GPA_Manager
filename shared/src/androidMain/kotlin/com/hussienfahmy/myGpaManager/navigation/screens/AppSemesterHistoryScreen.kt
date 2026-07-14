@@ -15,7 +15,7 @@ import kotlin.time.ExperimentalTime
 private fun exportTimestamp(): String {
     val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     fun Int.pad() = toString().padStart(2, '0')
-    return "${now.year}-${now.month.number.pad()}-${now.dayOfMonth.pad()}_" +
+    return "${now.year}-${now.monthNumber.pad()}-${now.dayOfMonth.pad()}_" +
         "${now.hour.pad()}-${now.minute.pad()}"
 }
 

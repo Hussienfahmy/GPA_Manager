@@ -26,7 +26,7 @@ import androidx.compose.ui.draw.clip
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.semester_history_presentation.SemesterDetailRoot
 

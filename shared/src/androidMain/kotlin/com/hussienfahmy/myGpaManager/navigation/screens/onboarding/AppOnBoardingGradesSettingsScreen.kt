@@ -3,7 +3,7 @@ package com.hussienfahmy.myGpaManager.navigation.screens.onboarding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.stringResource
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.grades_setting_presentation.GradeSettingsScreen

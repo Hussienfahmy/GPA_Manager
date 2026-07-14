@@ -4,7 +4,17 @@ plugins {
 
 kotlin {
     sourceSets {
-        commonMain.dependencies {
+        // FLAG FOR REVIEW: everything here is androidMain, not commonMain. Two of its Navigation 3
+        // deps (navigation3-ui, lifecycle-viewmodel-navigation3) are genuine Android-only AndroidX
+        // artifacts with no iOS klib published ("KMP Dependencies Resolution Failure" when they
+        // sat in commonMain against this module's iosArm64/iosSimulatorArm64 targets, added
+        // globally to base_kmp_module in Phase 11). The composition root (AppNavHost/
+        // OnboardingNavHost/AppNavigationState/the onboarding screens) is entirely Android Compose
+        // code today with no iOS entry point calling it yet, so keeping the whole module
+        // Android-only for now is honest, not a workaround - same "not attempted blind" stance as
+        // the other Phase 11 iOS stubs. Revisit once there's a real iOS app shell and either
+        // Navigation 3 or its own nav host to hand this off to.
+        androidMain.dependencies {
             implementation(project(":core"))
             implementation(project(":core-ui"))
 
@@ -35,12 +45,13 @@ kotlin {
 
             implementation(project(":sync:sync_domain"))
 
-            // Navigation 3 (JetBrains-republished multiplatform artifacts) - the app-level
-            // composition root (AppNavHost/OnboardingNavHost/AppNavigationState) lives here so
-            // both the Android and (future) iOS entry points can share it.
             implementation(libs.androidx.navigation3.runtime)
             implementation(libs.androidx.navigation3.ui)
             implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+
+            // MainViewModel checks Firebase.auth.currentUser directly to decide whether to run
+            // the one-time existing-user data migration.
+            implementation(libs.gitlive.firebase.auth)
 
             // Replaces java.text.SimpleDateFormat/java.util.Date in the semester-history HTML
             // export's filename timestamp.
