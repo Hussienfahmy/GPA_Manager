@@ -2,7 +2,6 @@ package com.hussienfahmy.myGpaManager.navigation
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.hussienfahmy.myGpaManager.navigation.screens.AppGPASettingsScreen

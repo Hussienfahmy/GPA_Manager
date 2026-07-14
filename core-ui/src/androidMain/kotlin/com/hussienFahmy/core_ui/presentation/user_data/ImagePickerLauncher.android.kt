@@ -9,7 +9,7 @@ import com.hussienfahmy.core.util.PlatformImageSource
 actual fun rememberImagePickerLauncher(onImagePicked: (PlatformImageSource) -> Unit): () -> Unit {
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
-        onResult = { uri -> uri?.let(onImagePicked) },
+        onResult = { uri -> uri?.let { onImagePicked(PlatformImageSource(it)) } },
     )
     return { launcher.launch("image/*") }
 }
