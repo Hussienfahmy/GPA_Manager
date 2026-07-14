@@ -65,6 +65,11 @@ kotlin {
             // the one-time existing-user data migration.
             implementation(libs.gitlive.firebase.auth)
 
+            // FirebaseSyncRepository / FirebaseUserDataRepository (Firestore) and
+            // FirebaseStorageRepository, moved here from :app in this phase.
+            implementation(libs.gitlive.firebase.firestore)
+            implementation(libs.gitlive.firebase.storage)
+
             // Replaces java.text.SimpleDateFormat/java.util.Date in the semester-history HTML
             // export's filename timestamp.
             implementation(libs.kotlinx.datetime)

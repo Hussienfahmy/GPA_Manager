@@ -80,7 +80,7 @@ class FirebaseSyncRepository(
 
         existingDocs.forEach { batch.delete(it.reference) }
         semesters.forEach { semester ->
-            batch.set(collection.document(), semester.toFirebase())
+            batch.set(collection.document, semester.toFirebase())
         }
         batch.commit()
     }
