@@ -1,3 +1,9 @@
+// Same package + file name as :app's own di/FirebaseModule.kt would otherwise both compile to
+// the identical facade class com.hussienfahmy.myGpaManager.di.FirebaseModuleKt - whichever
+// module's dex wins the merge silently shadows the other's, so :app's firebaseModule vanishes
+// at runtime (NoSuchMethodError) with zero build-time warning. Disambiguated explicitly.
+@file:JvmName("SharedFirebaseModule")
+
 package com.hussienfahmy.myGpaManager.di
 
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository

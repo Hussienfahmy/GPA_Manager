@@ -1,3 +1,8 @@
+// Same package + file name as :shared's own di/FirebaseModule.kt would otherwise both compile to
+// the identical facade class com.hussienfahmy.myGpaManager.di.FirebaseModuleKt - whichever
+// module's dex wins the merge silently shadows the other's. Disambiguated explicitly.
+@file:JvmName("AppFirebaseModule")
+
 package com.hussienfahmy.myGpaManager.di
 
 import androidx.credentials.CredentialManager
