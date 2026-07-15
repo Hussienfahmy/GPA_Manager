@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
@@ -112,6 +113,7 @@ dependencies {
     baselineProfile(project(":baselineprofile"))
 
     // Firebase (Firestore + Storage + Analytics + Auth all migrated to GitLive)
+    implementation(platform(libs.firebase.bom))
     implementation(libs.gitlive.firebase.firestore)
     implementation(libs.gitlive.firebase.storage)
     implementation(libs.gitlive.firebase.analytics)

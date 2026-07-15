@@ -45,6 +45,11 @@ kotlin {
         }
 
         androidMain.dependencies {
+            // Supplies the version for firebase-analytics (unversioned) that
+            // gitlive.firebase.analytics's Android artifact pulls in transitively.
+            // project.dependencies.platform(...), not the bare platform(...) DSL extension - that
+            // overload is broken inside KMP sourceSet dependency blocks under Kotlin 2.3 (KT-58759).
+            implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.activity.ktx)
             implementation(libs.koin.android)

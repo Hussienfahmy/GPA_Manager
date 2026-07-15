@@ -6,7 +6,8 @@ import com.hussienfahmy.core.domain.auth.service.AuthSignIn
 import com.hussienfahmy.myGpaManager.data.auth.GoogleAuthService
 import com.hussienfahmy.myGpaManager.data.auth.GoogleAuthUiClient
 import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.binds
 import org.koin.dsl.module
 
 // The GitLive Firebase singletons + AuthRepository/StorageRepository/UserDataRepository/
@@ -27,5 +28,8 @@ val firebaseModule = module {
         )
     }
 
-    single { GoogleAuthService(get()) } bind AuthService::class bind AuthSignIn::class
+    // .bind<T>() narrows the KoinDefinition to T on return, so chaining two of them fails once
+    // AuthService and AuthSignIn are unrelated sibling interfaces (the second bind can't see the
+    // original GoogleAuthService type anymore) - binds(Array<KClass<*>>) sets both without narrowing.
+    singleOf(::GoogleAuthService).binds(arrayOf(AuthService::class, AuthSignIn::class))
 }

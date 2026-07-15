@@ -42,6 +42,7 @@ koin = "4.1.1"
 mockk = "1.14.9"
 
 # Firebase
+firebaseBom = "34.16.0"
 firebaseAuth = "23.2.1"
 firebaseFirestore = "25.1.4"
 firebaseStorage = "22.0.1"
@@ -187,6 +188,10 @@ gitlive-firebase-storage = { group = "dev.gitlive", name = "firebase-storage", v
 gitlive-firebase-analytics = { group = "dev.gitlive", name = "firebase-analytics", version.ref = "gitliveFirebase" }
 
 # Firebase
+# BOM supplies versions for firebase-firestore/storage/analytics/auth (unversioned as of the
+# KTX-merge era) that GitLive's Android artifacts pull in transitively - without this, those
+# transitive deps have no version anywhere and fail to resolve.
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestore" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
@@ -218,6 +223,16 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+# android.builtInKotlin=false in gradle.properties disables AGP's built-in Kotlin compiler
+# project-wide (needed so the KMP library modules don't conflict with com.android.library under
+# AGP 9 - see BaseKmpModulePlugin). :app and :baselineprofile are plain com.android.application/
+# com.android.test modules with no KMP involvement, so with the built-in compiler off they need
+# this applied explicitly or their own .kt sources never get compiled at all.
+# No version.ref: AGP's built-in Kotlin machinery already puts this plugin's marker on the
+# buildscript classpath even with android.builtInKotlin=false, so pinning our own version here
+# conflicts ("already on the classpath with an unknown version"). Let it resolve against
+# whatever's already present.
+kotlin-android = { id = "org.jetbrains.kotlin.android" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
