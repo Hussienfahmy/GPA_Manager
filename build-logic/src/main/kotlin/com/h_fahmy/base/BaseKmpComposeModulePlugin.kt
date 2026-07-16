@@ -33,7 +33,9 @@ class BaseKmpComposeModulePlugin : Plugin<Project> {
                     implementation(composeDependencies.runtime)
                     implementation(composeDependencies.foundation)
                     implementation(composeDependencies.material3)
+                    implementation(composeDependencies.materialIconsExtended)
                     implementation(composeDependencies.components.resources)
+                    implementation(composeDependencies.components.uiToolingPreview)
                     implementation(libs.getLibrary("koin-compose"))
                     implementation(libs.getLibrary("koin-compose-viewmodel"))
                 }
