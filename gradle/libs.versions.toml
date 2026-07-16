@@ -109,7 +109,6 @@ androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core",
 # Room
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
-androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 
 # DataStore
 androidx-datastore-core = { group = "androidx.datastore", name = "datastore", version.ref = "dataStore" }
@@ -244,8 +243,7 @@ compose-debug = [
 ]
 
 room = [
-    "androidx-room-runtime",
-    "androidx-room-ktx"
+    "androidx-room-runtime"
 ]
 
 lifecycle = [
