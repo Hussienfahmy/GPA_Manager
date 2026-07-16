@@ -11,10 +11,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
 import com.hussienfahmy.core_ui.presentation.components.meadow.SegmentedToggle
@@ -42,8 +42,8 @@ fun Controllers(
 
         SegmentedToggle(
             options = listOf(
-                stringResource(R.string.mode_normal),
-                stringResource(R.string.mode_predictive),
+                stringResource(Res.string.mode_normal),
+                stringResource(Res.string.mode_predictive),
             ),
             selectedIndex = selectedIndex,
             onSelect = { index -> if (index != selectedIndex) onChangeModeClick() },
@@ -52,7 +52,7 @@ fun Controllers(
         Spacer(modifier = Modifier.weight(1f))
 
         PillButton(
-            text = "+ ${stringResource(R.string.add)}",
+            text = "+ ${stringResource(Res.string.add)}",
             onClick = onAddClick,
             style = PillButtonStyle.Tonal,
             compact = true,
@@ -61,7 +61,7 @@ fun Controllers(
         Spacer(modifier = Modifier.width(4.dp))
 
         PillButton(
-            text = stringResource(R.string.reset),
+            text = stringResource(Res.string.reset),
             onClick = onResetClick,
             style = PillButtonStyle.Text,
             compact = true,

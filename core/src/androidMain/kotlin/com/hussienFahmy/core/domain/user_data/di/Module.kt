@@ -1,6 +1,5 @@
 package com.hussienfahmy.core.domain.user_data.di
 
-import android.content.Context
 import com.hussienfahmy.core.domain.user_data.use_cases.GetAcademicProgress
 import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
 import com.hussienfahmy.core.domain.user_data.use_cases.ObserveUserData
@@ -17,6 +16,7 @@ import com.hussienfahmy.core.domain.user_data.use_cases.UpdateSemester
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateUniversity
 import com.hussienfahmy.core.domain.user_data.use_cases.UploadPhoto
 import com.hussienfahmy.core.domain.user_data.use_cases.UserDataUseCases
+import com.hussienfahmy.core.util.createImageThumbnailer
 import org.koin.dsl.module
 
 val coreUserDataDomainModule = module {
@@ -36,7 +36,7 @@ val coreUserDataDomainModule = module {
                 repository = get(),
                 updatePhotoUrl = UpdatePhotoUrl(get()),
                 storageRepository = get(),
-                contentResolver = get<Context>().contentResolver
+                imageThumbnailer = createImageThumbnailer(),
             ),
             updateUniversity = UpdateUniversity(get()),
             updateFaculty = UpdateFaculty(get()),

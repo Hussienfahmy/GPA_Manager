@@ -9,10 +9,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core_ui.presentation.components.meadow.SegmentedToggle
 import com.hussienfahmy.core_ui.theme.MeadowTheme
@@ -30,15 +30,15 @@ fun SemesterSelection(
             .padding(horizontal = 16.dp, vertical = 12.dp),
     ) {
         Text(
-            text = stringResource(id = R.string.semester),
+            text = stringResource(resource = Res.string.semester),
             style = MaterialTheme.typography.titleMedium,
             color = MeadowTheme.accent.deep,
         )
 
         SegmentedToggle(
             options = listOf(
-                stringResource(R.string.first),
-                stringResource(R.string.second),
+                stringResource(Res.string.first),
+                stringResource(Res.string.second),
             ),
             selectedIndex = if (semester == UserData.AcademicInfo.Semester.First) 0 else 1,
             onSelect = { index ->

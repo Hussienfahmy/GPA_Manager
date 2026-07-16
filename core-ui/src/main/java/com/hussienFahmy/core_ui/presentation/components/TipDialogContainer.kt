@@ -21,9 +21,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.LocalSpacing
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,7 +46,7 @@ fun TipDialogContainer(
 
         Icon(
             imageVector = Icons.Outlined.QuestionMark,
-            contentDescription = stringResource(id = R.string.more_info),
+            contentDescription = stringResource(resource = Res.string.more_info),
             tint = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier
                 .scale(0.7f)
@@ -59,7 +59,7 @@ fun TipDialogContainer(
             onDismissRequest = { showDialog = false },
             confirmButton = {
                 Button(onClick = { showDialog = false }) {
-                    Text(text = stringResource(R.string.thanks), textAlign = TextAlign.Center)
+                    Text(text = stringResource(Res.string.thanks), textAlign = TextAlign.Center)
                 }
             },
             text = {

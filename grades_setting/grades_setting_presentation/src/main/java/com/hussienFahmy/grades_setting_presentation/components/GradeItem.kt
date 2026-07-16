@@ -23,12 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core.util.toTwoDecimals
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSwitch
@@ -56,9 +56,9 @@ fun GradeItem(
 
     if (showEditPointsSheet) EditGradeValueSheet(
         symbol = gradeSetting.symbol,
-        title = stringResource(R.string.grade_edit_points_title, gradeSetting.symbol),
-        subtitle = stringResource(R.string.grade_edit_points_subtitle),
-        fieldLabel = stringResource(R.string.grade_edit_points_field),
+        title = stringResource(Res.string.grade_edit_points_title, gradeSetting.symbol),
+        subtitle = stringResource(Res.string.grade_edit_points_subtitle),
+        fieldLabel = stringResource(Res.string.grade_edit_points_field),
         value = gradeSetting.points?.toString() ?: "",
         onDismiss = { showEditPointsSheet = false },
         onSaveClick = onSavePoint,
@@ -66,9 +66,9 @@ fun GradeItem(
 
     if (showEditPercentageSheet) EditGradeValueSheet(
         symbol = gradeSetting.symbol,
-        title = stringResource(R.string.grade_edit_percentage_title, gradeSetting.symbol),
-        subtitle = stringResource(R.string.grade_edit_percentage_subtitle),
-        fieldLabel = stringResource(R.string.grade_edit_percentage_field),
+        title = stringResource(Res.string.grade_edit_percentage_title, gradeSetting.symbol),
+        subtitle = stringResource(Res.string.grade_edit_percentage_subtitle),
+        fieldLabel = stringResource(Res.string.grade_edit_percentage_field),
         value = gradeSetting.percentage?.toString() ?: "",
         onDismiss = { showEditPercentageSheet = false },
         onSaveClick = onSavePercentage,
@@ -113,15 +113,15 @@ fun GradeItem(
         ) {
             ValuePill(
                 text = gradeSetting.points?.let {
-                    stringResource(R.string.grade_pts_pill, it.toFloat().toTwoDecimals().toString())
-                } ?: stringResource(R.string.not_set),
+                    stringResource(Res.string.grade_pts_pill, it.toFloat().toTwoDecimals().toString())
+                } ?: stringResource(Res.string.not_set),
                 focused = showEditPointsSheet,
                 onClick = { showEditPointsSheet = true },
             )
             ValuePill(
                 text = gradeSetting.percentage?.let {
-                    stringResource(R.string.grade_pct_pill, it.toFloat().toTwoDecimals().toString())
-                } ?: stringResource(R.string.not_set),
+                    stringResource(Res.string.grade_pct_pill, it.toFloat().toTwoDecimals().toString())
+                } ?: stringResource(Res.string.not_set),
                 focused = showEditPercentageSheet,
                 onClick = { showEditPercentageSheet = true },
             )

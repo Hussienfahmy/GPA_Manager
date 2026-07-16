@@ -1,7 +1,7 @@
 package com.hussienfahmy.quick_presentation
 
 import androidx.lifecycle.viewModelScope
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import com.hussienfahmy.core.domain.user_data.use_cases.GetAcademicProgress
 import com.hussienfahmy.core.model.UiText
@@ -108,8 +108,8 @@ class QuickViewModel(
 
                 QuickCalculate.Result.TotalHoursIsZero -> _uiEvent.send(
                     UiEvent.ShowToast(
-                        UiText.StringResource(
-                            R.string.total_hours_is_zero
+                        UiText.Resource(
+                            Res.string.total_hours_is_zero
                         )
                     )
                 )

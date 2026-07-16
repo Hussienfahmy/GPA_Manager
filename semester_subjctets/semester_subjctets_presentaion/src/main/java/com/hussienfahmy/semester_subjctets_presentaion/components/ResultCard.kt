@@ -40,15 +40,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
 import com.hussienfahmy.core_ui.presentation.components.meadow.GpaRings
@@ -111,8 +110,7 @@ private fun NormalHero(
     ) {
         when (calculationResult) {
             is Calculate.Result.Failed -> {
-                val context = LocalContext.current
-                calculationResult.message?.asString(context)?.let {
+                calculationResult.message?.asString()?.let {
                     Text(
                         text = it,
                         style = MaterialTheme.typography.bodyLarge,
@@ -143,7 +141,7 @@ private fun NormalHero(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                             ) {
-                                CapsLabel(text = stringResource(R.string.semester))
+                                CapsLabel(text = stringResource(Res.string.semester))
                                 Text(
                                     text = calculationResult.semester.percentage.asPercent(),
                                     style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
@@ -209,7 +207,7 @@ private fun NormalHero(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                             ) {
-                                CapsLabel(text = stringResource(R.string.cumulative_gpa))
+                                CapsLabel(text = stringResource(Res.string.cumulative_gpa))
                                 val animatedCumulative by animateFloatAsState(
                                     targetValue = calculationResult.cumulative.gpa.toFloat(),
                                     animationSpec = spring(stiffness = Spring.StiffnessLow),
@@ -249,7 +247,6 @@ private fun PredictHero(
 ) {
     val colors = MeadowTheme.colors
     val accent = MeadowTheme.accent
-    val context = LocalContext.current
 
     var targetGPA by rememberSaveable { mutableStateOf("") }
     var preferLowHours by rememberSaveable { mutableStateOf(false) }
@@ -282,7 +279,7 @@ private fun PredictHero(
             Column(modifier = Modifier.weight(1f)) {
                 // Target label on its own line — full card width to fit
                 // "Target Cumulative GPA" without crowding the input+chip row.
-                CapsLabel(text = stringResource(R.string.target))
+                CapsLabel(text = stringResource(Res.string.target))
 
                 Spacer(modifier = Modifier.height(6.dp))
 
@@ -324,7 +321,7 @@ private fun PredictHero(
 
                     when {
                         reachable -> MeadowChip(
-                            text = "${stringResource(R.string.reachable)} ✓",
+                            text = "${stringResource(Res.string.reachable)} ✓",
                             style = MeadowChipStyle.Accent,
                         )
 
@@ -333,7 +330,7 @@ private fun PredictHero(
                                 GpaTooltipBox(fullValue = predictedCumulative) {
                                     MeadowChip(
                                         text = stringResource(
-                                            R.string.out_of_reach_max,
+                                            Res.string.out_of_reach_max,
                                             predictedCumulative.toFloat().asGpaFloor(),
                                         ),
                                         style = MeadowChipStyle.Warn,
@@ -341,7 +338,7 @@ private fun PredictHero(
                                 }
                             } else {
                                 MeadowChip(
-                                    text = stringResource(R.string.out_of_reach),
+                                    text = stringResource(Res.string.out_of_reach),
                                     style = MeadowChipStyle.Warn,
                                 )
                             }
@@ -357,13 +354,13 @@ private fun PredictHero(
                         // not the cumulative shown in Normal mode.
                         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                             Text(
-                                text = stringResource(R.string.semester).uppercase(),
+                                text = stringResource(Res.string.semester).uppercase(),
                                 style = CapsLabelStyle.copy(fontWeight = FontWeight.Black),
                                 color = accent.deep,
                                 maxLines = 1,
                             )
                             Text(
-                                text = stringResource(R.string.gpa_needed).uppercase(),
+                                text = stringResource(Res.string.gpa_needed).uppercase(),
                                 style = CapsLabelStyle,
                                 color = colors.inkFaint,
                                 maxLines = 1,
@@ -399,7 +396,7 @@ private fun PredictHero(
                                     .padding(horizontal = 9.dp, vertical = 2.dp),
                             )
                             Text(
-                                text = stringResource(R.string.needed_this_semester),
+                                text = stringResource(Res.string.needed_this_semester),
                                 style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
                                 color = colors.inkFaint,
                                 modifier = Modifier.padding(bottom = 6.dp),
@@ -408,7 +405,7 @@ private fun PredictHero(
                     }
 
                     is Calculate.Result.Failed -> Text(
-                        text = calculationResult.message?.asString(context) ?: "",
+                        text = calculationResult.message?.asString() ?: "",
                         style = MaterialTheme.typography.bodyMedium,
                         color = colors.inkMuted,
                     )
@@ -469,12 +466,12 @@ private fun PredictHero(
             }
             Column {
                 Text(
-                    text = stringResource(R.string.prefer_high_grades_low_hours),
+                    text = stringResource(Res.string.prefer_high_grades_low_hours),
                     style = MaterialTheme.typography.bodySmall,
                     color = colors.inkMuted,
                 )
                 Text(
-                    text = stringResource(R.string.prefer_high_grades_low_hours_hint),
+                    text = stringResource(Res.string.prefer_high_grades_low_hours_hint),
                     style = MaterialTheme.typography.bodySmall.copy(fontSize = 10.5.sp),
                     color = colors.inkFaint,
                 )

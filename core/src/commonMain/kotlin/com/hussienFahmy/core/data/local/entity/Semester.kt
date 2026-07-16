@@ -1,11 +1,9 @@
 package com.hussienfahmy.core.data.local.entity
 
-import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "semester")
-@Keep
 data class Semester(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val label: String = "",
@@ -15,6 +13,8 @@ data class Semester(
     val totalCreditHours: Int = 0,
     val status: Status = Status.ARCHIVED,
     val order: Int = 0,
+    // JVM-only API (java.lang.System) - compiles today because :core only targets androidTarget;
+    // needs kotlinx-datetime (or an expect/actual, pending confirmation) before iosMain is added.
     val createdAt: Long = System.currentTimeMillis(),
     val archivedAt: Long? = null,
 ) {

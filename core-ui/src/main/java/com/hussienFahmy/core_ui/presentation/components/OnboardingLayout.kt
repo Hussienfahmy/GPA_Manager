@@ -18,12 +18,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.dropUnlessResumed
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
 import com.hussienfahmy.core_ui.theme.MeadowTheme
@@ -94,7 +94,7 @@ fun OnboardingLayout(
         ) {
             if (currentStep > 1 && onBackClick != null) {
                 PillButton(
-                    text = stringResource(R.string.onboarding_back),
+                    text = stringResource(Res.string.onboarding_back),
                     onClick = dropUnlessResumed { onBackClick() },
                     style = PillButtonStyle.Text,
                     compact = true,
@@ -105,7 +105,7 @@ fun OnboardingLayout(
 
             if (showSkip && onSkipClick != null) {
                 PillButton(
-                    text = stringResource(R.string.onboarding_skip_for_now),
+                    text = stringResource(Res.string.onboarding_skip_for_now),
                     onClick = dropUnlessResumed { onSkipClick() },
                     style = PillButtonStyle.Text,
                     compact = true,
@@ -123,7 +123,7 @@ fun OnboardingLayout(
                     )
                 } else {
                     PillButton(
-                        text = nextButtonText ?: stringResource(R.string.onboarding_next),
+                        text = nextButtonText ?: stringResource(Res.string.onboarding_next),
                         onClick = dropUnlessResumed { onNextClick() },
                         style = PillButtonStyle.Primary,
                         enabled = nextButtonEnabled,

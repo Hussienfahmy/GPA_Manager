@@ -18,11 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSwitch
@@ -97,12 +97,12 @@ fun InputCard(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(R.string.use_my_information),
+                        text = stringResource(Res.string.use_my_information),
                         style = MaterialTheme.typography.titleMedium,
                         color = MeadowTheme.accent.ink,
                     )
                     Text(
-                        text = stringResource(R.string.use_my_information_hint),
+                        text = stringResource(Res.string.use_my_information_hint),
                         style = MaterialTheme.typography.bodySmall,
                         color = colors.inkFaint,
                     )
@@ -122,15 +122,15 @@ fun InputCard(
                 value = cumulativeGPA,
                 onValueChange = { cumulativeGPA = it },
                 label = if (useMyAcademicProgress) {
-                    "${stringResource(R.string.current_cumulative_gpa)} · ${stringResource(R.string.auto)}"
+                    "${stringResource(Res.string.current_cumulative_gpa)} · ${stringResource(Res.string.auto)}"
                 } else when {
                     invalidCumulativeGPAAboveMax ->
-                        "${stringResource(R.string.current_cumulative_gpa)} — ${stringResource(R.string.above_max)}"
+                        "${stringResource(Res.string.current_cumulative_gpa)} — ${stringResource(Res.string.above_max)}"
 
                     invalidCumulativeGPAInput ->
-                        "${stringResource(R.string.current_cumulative_gpa)} — ${stringResource(R.string.invalid_input)}"
+                        "${stringResource(Res.string.current_cumulative_gpa)} — ${stringResource(Res.string.invalid_input)}"
 
-                    else -> stringResource(R.string.current_cumulative_gpa)
+                    else -> stringResource(Res.string.current_cumulative_gpa)
                 },
                 isError = !useMyAcademicProgress &&
                         (invalidCumulativeGPAInput || invalidCumulativeGPAAboveMax),
@@ -142,11 +142,11 @@ fun InputCard(
                 value = totalHours,
                 onValueChange = { totalHours = it },
                 label = if (useMyAcademicProgress) {
-                    "${stringResource(R.string.current_total_hours)} · ${stringResource(R.string.auto)}"
+                    "${stringResource(Res.string.current_total_hours)} · ${stringResource(Res.string.auto)}"
                 } else if (invalidTotalHoursInput) {
-                    "${stringResource(R.string.current_total_hours)} — ${stringResource(R.string.invalid_input)}"
+                    "${stringResource(Res.string.current_total_hours)} — ${stringResource(Res.string.invalid_input)}"
                 } else {
-                    stringResource(R.string.current_total_hours)
+                    stringResource(Res.string.current_total_hours)
                 },
                 isError = !useMyAcademicProgress && invalidTotalHoursInput,
                 enabled = !useMyAcademicProgress,
@@ -164,12 +164,12 @@ fun InputCard(
                 onValueChange = { semesterGPA = it },
                 label = when {
                     invalidSemesterGPAAboveMax ->
-                        "${stringResource(R.string.expected_semester_gpa)} — ${stringResource(R.string.above_max)}"
+                        "${stringResource(Res.string.expected_semester_gpa)} — ${stringResource(Res.string.above_max)}"
 
                     invalidSemesterGPAInput ->
-                        "${stringResource(R.string.expected_semester_gpa)} — ${stringResource(R.string.invalid_input)}"
+                        "${stringResource(Res.string.expected_semester_gpa)} — ${stringResource(Res.string.invalid_input)}"
 
-                    else -> stringResource(R.string.expected_semester_gpa)
+                    else -> stringResource(Res.string.expected_semester_gpa)
                 },
                 isError = invalidSemesterGPAInput || invalidSemesterGPAAboveMax,
                 outlined = true,
@@ -180,9 +180,9 @@ fun InputCard(
                 value = semesterHours,
                 onValueChange = { semesterHours = it },
                 label = if (invalidSemesterHoursInput) {
-                    "${stringResource(R.string.semester_credit_hours)} — ${stringResource(R.string.invalid_input)}"
+                    "${stringResource(Res.string.semester_credit_hours)} — ${stringResource(Res.string.invalid_input)}"
                 } else {
-                    stringResource(R.string.semester_credit_hours)
+                    stringResource(Res.string.semester_credit_hours)
                 },
                 isError = invalidSemesterHoursInput,
                 outlined = true,

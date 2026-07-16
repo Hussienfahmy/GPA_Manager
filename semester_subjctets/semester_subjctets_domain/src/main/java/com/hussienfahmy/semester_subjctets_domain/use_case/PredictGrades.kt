@@ -1,6 +1,6 @@
 package com.hussienfahmy.semester_subjctets_domain.use_case
 
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
 import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
@@ -44,7 +44,7 @@ class PredictGrades(
         return withContext(defaultDispatcher) {
             // ------------- CHECK ----------------- //
             if (subjectWithAssignedGrades.isEmpty()) return@withContext Result.Failed(
-                UiText.StringResource(R.string.err_waiting_to_add_subjects)
+                UiText.Resource(Res.string.err_waiting_to_add_subjects)
             )
 
             val target =
@@ -54,7 +54,7 @@ class PredictGrades(
 
             if (target > maxGPA)
                 return@withContext Result.Failed(
-                    UiText.StringResource(R.string.above_max)
+                    UiText.Resource(Res.string.above_max)
                 )
 
             // -------------- PREPARE ----------------//

@@ -19,12 +19,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowTextField
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
@@ -116,13 +116,13 @@ fun EditGradeValueSheet(
             horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
         ) {
             PillButton(
-                text = stringResource(R.string.cancel),
+                text = stringResource(Res.string.cancel),
                 onClick = onDismiss,
                 style = PillButtonStyle.Text,
                 compact = true,
             )
             PillButton(
-                text = stringResource(R.string.save),
+                text = stringResource(Res.string.save),
                 onClick = save,
                 style = PillButtonStyle.Primary,
                 compact = true,

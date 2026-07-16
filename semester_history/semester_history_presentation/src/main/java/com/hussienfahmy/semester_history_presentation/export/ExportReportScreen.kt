@@ -25,10 +25,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.domain.report.ReportTemplate
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
@@ -45,13 +45,13 @@ fun ExportReportSheetContent(
 
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = stringResource(R.string.export_select_template),
+            text = stringResource(Res.string.export_select_template),
             style = MaterialTheme.typography.headlineMedium,
             color = colors.ink,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = stringResource(R.string.export_archived_only_note),
+            text = stringResource(Res.string.export_archived_only_note),
             style = MaterialTheme.typography.bodySmall,
             color = colors.inkFaint,
         )
@@ -78,7 +78,7 @@ fun ExportReportSheetContent(
             }
         } else {
             PillButton(
-                text = stringResource(R.string.export_pdf),
+                text = stringResource(Res.string.export_pdf),
                 onClick = { onEvent(ExportReportEvent.Export) },
                 style = PillButtonStyle.Primary,
                 modifier = Modifier.fillMaxWidth(),

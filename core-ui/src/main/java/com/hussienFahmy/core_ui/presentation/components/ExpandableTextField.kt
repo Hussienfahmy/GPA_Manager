@@ -33,13 +33,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowTextField
 import com.hussienfahmy.core_ui.theme.MeadowTheme
 
@@ -109,7 +109,7 @@ fun ExpandableTextField(
                         Spacer(modifier = Modifier.width(6.dp))
                         Icon(
                             imageVector = Icons.Outlined.Edit,
-                            contentDescription = stringResource(R.string.edit),
+                            contentDescription = stringResource(Res.string.edit),
                             tint = colors.navItemIcon,
                             modifier = Modifier
                                 .size(15.dp)
@@ -158,14 +158,14 @@ fun ExpandableTextField(
                 )
                 ActionTile(
                     icon = Icons.Outlined.Done,
-                    description = stringResource(R.string.save),
+                    description = stringResource(Res.string.save),
                     background = accent.container,
                     tint = accent.deep,
                     onClick = commit,
                 )
                 ActionTile(
                     icon = Icons.Outlined.Close,
-                    description = stringResource(R.string.cancel),
+                    description = stringResource(Res.string.cancel),
                     background = null,
                     tint = colors.inkFaint,
                     onClick = {

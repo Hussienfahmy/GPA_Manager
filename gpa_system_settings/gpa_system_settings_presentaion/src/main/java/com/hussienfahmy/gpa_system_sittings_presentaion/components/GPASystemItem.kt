@@ -21,10 +21,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.domain.gpa_settings.model.GPA
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
 import com.hussienfahmy.core_ui.theme.MeadowRadius
@@ -41,14 +41,14 @@ fun GPASystemItem(
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             ScaleCard(
                 scale = GPA.System.FOUR.number,
-                detail = stringResource(R.string.gpa_scale_four_detail),
+                detail = stringResource(Res.string.gpa_scale_four_detail),
                 selected = currentGPASystem == GPA.System.FOUR,
                 onClick = { onGPASystemChanged(GPA.System.FOUR) },
                 modifier = Modifier.weight(1f),
             )
             ScaleCard(
                 scale = GPA.System.FIVE.number,
-                detail = stringResource(R.string.gpa_scale_five_detail),
+                detail = stringResource(Res.string.gpa_scale_five_detail),
                 selected = currentGPASystem == GPA.System.FIVE,
                 onClick = { onGPASystemChanged(GPA.System.FIVE) },
                 modifier = Modifier.weight(1f),
@@ -57,7 +57,7 @@ fun GPASystemItem(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        WarningBanner(text = stringResource(R.string.gpa_scale_warning))
+        WarningBanner(text = stringResource(Res.string.gpa_scale_warning))
     }
 }
 
@@ -113,7 +113,7 @@ private fun ScaleCard(
                 color = if (selected) accent.ink else colors.inkDisabled,
             )
             Text(
-                text = stringResource(R.string.gpa_scale),
+                text = stringResource(Res.string.gpa_scale),
                 style = MaterialTheme.typography.titleSmall.copy(fontSize = 12.sp),
                 color = if (selected) accent.deep else colors.inkFaint,
             )

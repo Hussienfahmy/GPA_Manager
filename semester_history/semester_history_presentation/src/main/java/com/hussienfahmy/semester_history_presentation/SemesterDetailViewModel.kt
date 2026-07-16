@@ -2,7 +2,7 @@ package com.hussienfahmy.semester_history_presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
 import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
@@ -90,7 +90,7 @@ class SemesterDetailViewModel(
                 )
                 editSemester(EditSemester.Request.RecalculateDetailed(semesterId))
             } catch (_: Exception) {
-                _events.send(SemesterDetailEvent.ShowError(UiText.StringResource(R.string.history_error_add_subject_failed)))
+                _events.send(SemesterDetailEvent.ShowError(UiText.Resource(Res.string.history_error_add_subject_failed)))
             } finally {
                 _isSubmitting.value = false
             }
@@ -107,7 +107,7 @@ class SemesterDetailViewModel(
                 )
                 editSemester(EditSemester.Request.RecalculateDetailed(semesterId))
             } catch (_: Exception) {
-                _events.send(SemesterDetailEvent.ShowError(UiText.StringResource(R.string.history_error_update_subject_failed)))
+                _events.send(SemesterDetailEvent.ShowError(UiText.Resource(Res.string.history_error_update_subject_failed)))
             } finally {
                 _isSubmitting.value = false
             }
@@ -121,7 +121,7 @@ class SemesterDetailViewModel(
                 deleteSubjectFromSemester(subjectId)
                 editSemester(EditSemester.Request.RecalculateDetailed(semesterId))
             } catch (_: Exception) {
-                _events.send(SemesterDetailEvent.ShowError(UiText.StringResource(R.string.history_error_delete_subject_failed)))
+                _events.send(SemesterDetailEvent.ShowError(UiText.Resource(Res.string.history_error_delete_subject_failed)))
             } finally {
                 _isSubmitting.value = false
             }

@@ -29,11 +29,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.data.local.entity.Grade
 import com.hussienfahmy.core.data.local.entity.Subject
 import com.hussienfahmy.core.data.local.model.GradeName
@@ -113,8 +113,8 @@ fun AddSubjectSheet(
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             Text(
-                text = if (isEditMode) stringResource(R.string.history_edit_subject)
-                else stringResource(R.string.add_subject),
+                text = if (isEditMode) stringResource(Res.string.history_edit_subject)
+                else stringResource(Res.string.add_subject),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MeadowTheme.colors.ink,
             )
@@ -123,20 +123,20 @@ fun AddSubjectSheet(
                 MeadowTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = stringResource(R.string.subject_name),
+                    label = stringResource(Res.string.subject_name),
                     modifier = Modifier.weight(2.2f),
                 )
                 MeadowTextField(
                     value = creditHours,
                     onValueChange = { creditHours = it },
-                    label = stringResource(R.string.credit_hours),
+                    label = stringResource(Res.string.credit_hours),
                     isError = creditHours.isNotBlank() && creditHours.toDoubleOrNull() == null,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     modifier = Modifier.weight(1f),
                 )
             }
 
-            CapsLabel(text = stringResource(R.string.history_grade_label))
+            CapsLabel(text = stringResource(Res.string.history_grade_label))
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 availableGrades.sortedByDescending { it.percentage ?: 0.0 }.forEach { grade ->
                     SelectablePill(
@@ -149,7 +149,7 @@ fun AddSubjectSheet(
             }
             if (selectedGrade == null) {
                 Text(
-                    text = stringResource(R.string.history_assign_grade_hint),
+                    text = stringResource(Res.string.history_assign_grade_hint),
                     style = MaterialTheme.typography.bodySmall,
                     color = MeadowTheme.colors.marks.deep,
                 )
@@ -157,17 +157,17 @@ fun AddSubjectSheet(
 
             SheetDivider()
 
-            CapsLabel(text = stringResource(R.string.history_marks_section_title))
+            CapsLabel(text = stringResource(Res.string.history_marks_section_title))
             Text(
-                text = stringResource(R.string.history_marks_section_note),
+                text = stringResource(Res.string.history_marks_section_note),
                 style = MaterialTheme.typography.bodySmall,
                 color = MeadowTheme.colors.inkFaint,
             )
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                SelectablePill(stringResource(R.string.midterm), midtermEnabled) { midtermEnabled = !midtermEnabled }
-                SelectablePill(stringResource(R.string.practical), practicalEnabled) { practicalEnabled = !practicalEnabled }
-                SelectablePill(stringResource(R.string.oral), oralEnabled) { oralEnabled = !oralEnabled }
-                SelectablePill(stringResource(R.string.project), projectEnabled) { projectEnabled = !projectEnabled }
+                SelectablePill(stringResource(Res.string.midterm), midtermEnabled) { midtermEnabled = !midtermEnabled }
+                SelectablePill(stringResource(Res.string.practical), practicalEnabled) { practicalEnabled = !practicalEnabled }
+                SelectablePill(stringResource(Res.string.oral), oralEnabled) { oralEnabled = !oralEnabled }
+                SelectablePill(stringResource(Res.string.project), projectEnabled) { projectEnabled = !projectEnabled }
             }
 
             if (anyMarkEnabled) {
@@ -180,7 +180,7 @@ fun AddSubjectSheet(
                     if (midtermEnabled) MeadowTextField(
                         value = midtermInput,
                         onValueChange = { midtermInput = it },
-                        label = stringResource(R.string.midterm),
+                        label = stringResource(Res.string.midterm),
                         isError = midtermInput.isNotBlank() && midtermInput.toDoubleOrNull() == null,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                         modifier = Modifier.fillMaxWidth(),
@@ -188,7 +188,7 @@ fun AddSubjectSheet(
                     if (practicalEnabled) MeadowTextField(
                         value = practicalInput,
                         onValueChange = { practicalInput = it },
-                        label = stringResource(R.string.practical),
+                        label = stringResource(Res.string.practical),
                         isError = practicalInput.isNotBlank() && practicalInput.toDoubleOrNull() == null,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                         modifier = Modifier.fillMaxWidth(),
@@ -196,7 +196,7 @@ fun AddSubjectSheet(
                     if (oralEnabled) MeadowTextField(
                         value = oralInput,
                         onValueChange = { oralInput = it },
-                        label = stringResource(R.string.oral),
+                        label = stringResource(Res.string.oral),
                         isError = oralInput.isNotBlank() && oralInput.toDoubleOrNull() == null,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                         modifier = Modifier.fillMaxWidth(),
@@ -204,7 +204,7 @@ fun AddSubjectSheet(
                     if (projectEnabled) MeadowTextField(
                         value = projectInput,
                         onValueChange = { projectInput = it },
-                        label = stringResource(R.string.project),
+                        label = stringResource(Res.string.project),
                         isError = projectInput.isNotBlank() && projectInput.toDoubleOrNull() == null,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                         modifier = Modifier.fillMaxWidth(),
@@ -214,7 +214,7 @@ fun AddSubjectSheet(
                 if (totalMarks > 0) {
                     Text(
                         text = stringResource(
-                            R.string.history_total_marks_info,
+                            Res.string.history_total_marks_info,
                             totalMarks.toStringWithOptionalDecimals()
                         ),
                         style = MaterialTheme.typography.bodySmall,
@@ -225,11 +225,11 @@ fun AddSubjectSheet(
 
             SheetDivider()
 
-            CapsLabel(text = stringResource(R.string.final_exam))
+            CapsLabel(text = stringResource(Res.string.final_exam))
             MeadowTextField(
                 value = finalExamScoreInput,
                 onValueChange = { finalExamScoreInput = it },
-                label = stringResource(R.string.final_exam_score),
+                label = stringResource(Res.string.final_exam_score),
                 isError = finalExamScoreInput.isNotBlank() && finalExamScoreInput.toDoubleOrNull() == null,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.fillMaxWidth(),
@@ -238,7 +238,7 @@ fun AddSubjectSheet(
             Spacer(modifier = Modifier.height(4.dp))
 
             PillButton(
-                text = if (isEditMode) stringResource(R.string.save) else stringResource(R.string.add),
+                text = if (isEditMode) stringResource(Res.string.save) else stringResource(Res.string.add),
                 onClick = {
                     val midterm = if (midtermEnabled) midtermInput.toDoubleOrNull() else null
                     val practical = if (practicalEnabled) practicalInput.toDoubleOrNull() else null

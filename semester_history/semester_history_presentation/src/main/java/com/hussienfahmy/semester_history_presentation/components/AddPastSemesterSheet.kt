@@ -12,10 +12,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowTextField
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
@@ -50,7 +50,7 @@ fun AddPastSemesterSheet(
 
     MeadowBottomSheet(onDismiss = onDismiss, modifier = modifier) {
         Text(
-            text = stringResource(R.string.history_add_past_semester),
+            text = stringResource(Res.string.history_add_past_semester),
             style = MaterialTheme.typography.headlineMedium,
             color = colors.ink,
         )
@@ -59,8 +59,8 @@ fun AddPastSemesterSheet(
 
         SegmentedToggle(
             options = listOf(
-                stringResource(R.string.history_type_summary),
-                stringResource(R.string.history_type_detailed),
+                stringResource(Res.string.history_type_summary),
+                stringResource(Res.string.history_type_detailed),
             ),
             selectedIndex = if (selectedType == Semester.Type.SUMMARY) 0 else 1,
             onSelect = { index ->
@@ -73,8 +73,8 @@ fun AddPastSemesterSheet(
 
         Text(
             text = when (selectedType) {
-                Semester.Type.SUMMARY -> stringResource(R.string.history_summary_type_description)
-                Semester.Type.DETAILED -> stringResource(R.string.history_detailed_type_description)
+                Semester.Type.SUMMARY -> stringResource(Res.string.history_summary_type_description)
+                Semester.Type.DETAILED -> stringResource(Res.string.history_detailed_type_description)
             },
             style = MaterialTheme.typography.bodySmall,
             color = colors.inkFaint,
@@ -85,7 +85,7 @@ fun AddPastSemesterSheet(
         MeadowTextField(
             value = label,
             onValueChange = { label = it },
-            label = stringResource(R.string.history_label),
+            label = stringResource(Res.string.history_label),
             modifier = Modifier.fillMaxWidth(),
         )
 
@@ -94,7 +94,7 @@ fun AddPastSemesterSheet(
             MeadowTextField(
                 value = gpa,
                 onValueChange = { gpa = it },
-                label = stringResource(R.string.cumulative_gpa),
+                label = stringResource(Res.string.cumulative_gpa),
                 isError = gpa.isNotBlank() && (gpa.toDoubleOrNull() ?: -1.0) < 0.0,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.fillMaxWidth(),
@@ -104,7 +104,7 @@ fun AddPastSemesterSheet(
             MeadowTextField(
                 value = hours,
                 onValueChange = { hours = it },
-                label = stringResource(R.string.credit_hours),
+                label = stringResource(Res.string.credit_hours),
                 isError = hours.isNotBlank() && (hours.toIntOrNull() ?: 0) <= 0,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
@@ -114,7 +114,7 @@ fun AddPastSemesterSheet(
         Spacer(modifier = Modifier.height(14.dp))
 
         PillButton(
-            text = stringResource(R.string.add),
+            text = stringResource(Res.string.add),
             onClick = {
                 when (selectedType) {
                     Semester.Type.SUMMARY -> onAddSummary(label, gpa.toDouble(), hours.toInt(), 0)

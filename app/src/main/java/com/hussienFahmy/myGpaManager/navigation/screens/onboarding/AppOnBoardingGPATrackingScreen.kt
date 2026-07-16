@@ -26,11 +26,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
@@ -101,8 +101,8 @@ internal fun AppOnBoardingGPATrackingContent(
     val spacing = LocalSpacing.current
 
     OnboardingLayout(
-        title = stringResource(R.string.onboarding_gpa_tracking_title),
-        subtitle = stringResource(R.string.onboarding_gpa_tracking_subtitle),
+        title = stringResource(Res.string.onboarding_gpa_tracking_title),
+        subtitle = stringResource(Res.string.onboarding_gpa_tracking_subtitle),
         currentStep = OnboardingConstants.Steps.GPA_TRACKING,
         onNextClick = onNextClick,
         onBackClick = onBackClick,
@@ -122,7 +122,7 @@ internal fun AppOnBoardingGPATrackingContent(
             ) {
                 Icon(Icons.Outlined.Add, contentDescription = null)
                 Spacer(modifier = Modifier.width(spacing.small))
-                Text(stringResource(R.string.history_add_past_data))
+                Text(stringResource(Res.string.history_add_past_data))
             }
 
             semesters.forEach { semester ->
@@ -188,20 +188,20 @@ private fun OnboardingSemesterItem(
                 ) {
                     if (semester.type == Semester.Type.DETAILED) {
                         MeadowChip(
-                            text = "${stringResource(R.string.history_type_detailed)} ›",
+                            text = "${stringResource(Res.string.history_type_detailed)} ›",
                             style = MeadowChipStyle.Accent,
                         )
                     } else {
-                        MeadowChip(text = stringResource(R.string.history_type_summary))
+                        MeadowChip(text = stringResource(Res.string.history_type_summary))
                     }
                     Text(
-                        text = stringResource(R.string.history_gpa_value, semester.semesterGPA),
+                        text = stringResource(Res.string.history_gpa_value, semester.semesterGPA),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary,
                     )
                     Text(
                         text = stringResource(
-                            R.string.history_hours_value,
+                            Res.string.history_hours_value,
                             semester.totalCreditHours
                         ),
                         style = MaterialTheme.typography.bodySmall,
@@ -212,7 +212,7 @@ private fun OnboardingSemesterItem(
             IconButton(onClick = onDelete) {
                 Icon(
                     Icons.Outlined.Delete,
-                    contentDescription = stringResource(R.string.delete),
+                    contentDescription = stringResource(Res.string.delete),
                     tint = MaterialTheme.colorScheme.error,
                 )
             }

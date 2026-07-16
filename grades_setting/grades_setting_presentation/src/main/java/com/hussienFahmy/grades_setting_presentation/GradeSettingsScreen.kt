@@ -20,10 +20,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowRowDivider
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSettingsGroup
@@ -62,8 +62,8 @@ fun GradeSettingsScreen(
             if (displayFilterChips) {
                 SegmentedToggle(
                     options = listOf(
-                        stringResource(R.string.active_grades_only),
-                        stringResource(R.string.all_grades),
+                        stringResource(Res.string.active_grades_only),
+                        stringResource(Res.string.all_grades),
                     ),
                     selectedIndex = if (state.mode == Mode.ONLY_ACTIVE) 0 else 1,
                     onSelect = { index ->

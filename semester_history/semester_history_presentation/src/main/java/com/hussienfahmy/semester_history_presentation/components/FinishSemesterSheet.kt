@@ -15,9 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
@@ -60,7 +60,7 @@ fun FinishSemesterSheet(
         Spacer(modifier = Modifier.height(12.dp))
 
         Text(
-            text = stringResource(R.string.history_finish_semester_title),
+            text = stringResource(Res.string.history_finish_semester_title),
             style = MaterialTheme.typography.headlineMedium,
             color = colors.ink,
         )
@@ -68,7 +68,7 @@ fun FinishSemesterSheet(
         Spacer(modifier = Modifier.height(6.dp))
 
         Text(
-            text = stringResource(R.string.history_finish_semester_will_be_saved, archiveLabel),
+            text = stringResource(Res.string.history_finish_semester_will_be_saved, archiveLabel),
             style = MaterialTheme.typography.labelMedium,
             color = accent.deep,
         )
@@ -77,7 +77,7 @@ fun FinishSemesterSheet(
 
         Text(
             text = stringResource(
-                R.string.history_finish_semester_message,
+                Res.string.history_finish_semester_message,
                 nextLevel,
                 nextSemesterNum,
             ),
@@ -92,13 +92,13 @@ fun FinishSemesterSheet(
             horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
         ) {
             PillButton(
-                text = stringResource(R.string.cancel),
+                text = stringResource(Res.string.cancel),
                 onClick = onDismiss,
                 style = PillButtonStyle.Text,
                 compact = true,
             )
             PillButton(
-                text = "${stringResource(R.string.history_finish_semester)} ✓",
+                text = "${stringResource(Res.string.history_finish_semester)} ✓",
                 onClick = onConfirm,
                 style = PillButtonStyle.Primary,
                 compact = true,

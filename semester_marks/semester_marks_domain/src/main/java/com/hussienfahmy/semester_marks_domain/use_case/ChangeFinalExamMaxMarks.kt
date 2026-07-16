@@ -1,6 +1,6 @@
 package com.hussienfahmy.semester_marks_domain.use_case
 
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.util.UpdateResult
 import com.hussienfahmy.core.model.UiText
@@ -11,7 +11,7 @@ class ChangeFinalExamMaxMarks(
     suspend operator fun invoke(subjectId: Long, marks: String): UpdateResult {
         val value = marks.toDoubleOrNull()
         if (value == null || value <= 0) {
-            return UpdateResult.Failed(UiText.StringResource(R.string.err_subject_final_exam_invalid))
+            return UpdateResult.Failed(UiText.Resource(Res.string.err_subject_final_exam_invalid))
         }
 
         val subject = subjectDao.getSubjectById(subjectId)
@@ -19,7 +19,7 @@ class ChangeFinalExamMaxMarks(
             // final exam total is a portion of the subject total marks
             if (value > subject.totalMarks) {
                 return UpdateResult.Failed(
-                    UiText.StringResource(R.string.err_subject_final_exam_exceeds_total)
+                    UiText.Resource(Res.string.err_subject_final_exam_exceeds_total)
                 )
             }
 
@@ -33,7 +33,7 @@ class ChangeFinalExamMaxMarks(
                     (semesterMarks?.project ?: 0.0)
             if (semesterWork > 0 && value <= semesterWork) {
                 return UpdateResult.Failed(
-                    UiText.StringResource(R.string.err_subject_final_exam_below_semester)
+                    UiText.Resource(Res.string.err_subject_final_exam_below_semester)
                 )
             }
         }
