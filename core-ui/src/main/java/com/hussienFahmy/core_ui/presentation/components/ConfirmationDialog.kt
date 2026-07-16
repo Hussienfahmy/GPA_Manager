@@ -6,8 +6,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import com.hussienfahmy.core.R
+import org.jetbrains.compose.resources.stringResource
+import com.hussienfahmy.core.generated.resources.Res
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,7 +24,7 @@ fun ConfirmationDialog(
                     onDismiss()
                 }) {
                 Text(
-                    text = stringResource(R.string.yes),
+                    text = stringResource(Res.string.yes),
                     color = MaterialTheme.colorScheme.error
                 )
             }
@@ -34,12 +34,12 @@ fun ConfirmationDialog(
                 onClick = {
                     onDismiss()
                 }) {
-                Text(text = stringResource(id = R.string.cancel))
+                Text(text = stringResource(resource = Res.string.cancel))
             }
         },
         text = {
             Text(
-                text = stringResource(R.string.are_you_sure),
+                text = stringResource(Res.string.are_you_sure),
                 style = MaterialTheme.typography.titleLarge
             )
         }

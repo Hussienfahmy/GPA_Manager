@@ -20,12 +20,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSwitch
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowTextField
@@ -95,7 +95,7 @@ fun AddSubjectSheetContent(
 
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = stringResource(R.string.add_subject),
+            text = stringResource(Res.string.add_subject),
             style = MaterialTheme.typography.headlineMedium,
             color = colors.ink,
         )
@@ -109,7 +109,7 @@ fun AddSubjectSheetContent(
                     subjectName = it
                     if (!validSubjectName) validSubjectName = it.isNotBlank()
                 },
-                label = stringResource(R.string.subject_name),
+                label = stringResource(Res.string.subject_name),
                 isError = !validSubjectName,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -123,7 +123,7 @@ fun AddSubjectSheetContent(
                     creditHours = it.filter { char -> char.isDigit() }
                     if (!validCreditHours) validCreditHours = creditHours.isNotBlank()
                 },
-                label = stringResource(R.string.hours),
+                label = stringResource(Res.string.hours),
                 isError = !validCreditHours,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
@@ -144,7 +144,7 @@ fun AddSubjectSheetContent(
         Spacer(modifier = Modifier.height(14.dp))
 
         Text(
-            text = stringResource(R.string.sheet_components_question),
+            text = stringResource(Res.string.sheet_components_question),
             style = MaterialTheme.typography.bodySmall,
             color = colors.inkFaint,
         )
@@ -152,25 +152,25 @@ fun AddSubjectSheetContent(
         Spacer(modifier = Modifier.height(4.dp))
 
         ComponentToggleRow(
-            title = stringResource(R.string.midterm),
+            title = stringResource(Res.string.midterm),
             checked = midtermAvailable,
             onCheckedChange = { midtermAvailable = it },
         )
         SheetDivider()
         ComponentToggleRow(
-            title = stringResource(R.string.oral),
+            title = stringResource(Res.string.oral),
             checked = oralAvailable,
             onCheckedChange = { oralAvailable = it },
         )
         SheetDivider()
         ComponentToggleRow(
-            title = stringResource(R.string.practical),
+            title = stringResource(Res.string.practical),
             checked = practicalAvailable,
             onCheckedChange = { practicalAvailable = it },
         )
         SheetDivider()
         ComponentToggleRow(
-            title = stringResource(R.string.project),
+            title = stringResource(Res.string.project),
             checked = projectAvailable,
             onCheckedChange = { projectAvailable = it },
         )
@@ -178,7 +178,7 @@ fun AddSubjectSheetContent(
         Spacer(modifier = Modifier.height(14.dp))
 
         PillButton(
-            text = stringResource(R.string.add_and_close),
+            text = stringResource(Res.string.add_and_close),
             onClick = {
                 if (validate()) {
                     saveSubject()
@@ -192,7 +192,7 @@ fun AddSubjectSheetContent(
         Spacer(modifier = Modifier.height(8.dp))
 
         PillButton(
-            text = stringResource(R.string.add_another_subject),
+            text = stringResource(Res.string.add_another_subject),
             onClick = {
                 if (validate()) {
                     saveSubject()

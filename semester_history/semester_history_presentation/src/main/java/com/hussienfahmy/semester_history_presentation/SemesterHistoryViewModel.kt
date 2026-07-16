@@ -1,7 +1,7 @@
 package com.hussienfahmy.semester_history_presentation
 
 import androidx.lifecycle.viewModelScope
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
 import com.hussienfahmy.core.domain.user_data.model.UserData
@@ -94,16 +94,16 @@ class SemesterHistoryViewModel(
                     is SemesterHistoryEvent.FinishSemester -> {
                         when (archiveCurrentSemester()) {
                             is ArchiveCurrentSemester.Result.NoSubjects ->
-                                _uiEvent.send(UiEvent.ShowSnackBar(UiText.StringResource(R.string.history_no_subjects_in_semester)))
+                                _uiEvent.send(UiEvent.ShowSnackBar(UiText.Resource(Res.string.history_no_subjects_in_semester)))
 
                             is ArchiveCurrentSemester.Result.Success ->
-                                _uiEvent.send(UiEvent.ShowSnackBar(UiText.StringResource(R.string.history_semester_archived)))
+                                _uiEvent.send(UiEvent.ShowSnackBar(UiText.Resource(Res.string.history_semester_archived)))
                         }
                     }
 
                     is SemesterHistoryEvent.DeleteSemester -> {
                         deleteSemester(event.id)
-                        _uiEvent.send(UiEvent.ShowSnackBar(UiText.StringResource(R.string.history_semester_deleted)))
+                        _uiEvent.send(UiEvent.ShowSnackBar(UiText.Resource(Res.string.history_semester_deleted)))
                     }
 
                     is SemesterHistoryEvent.AddSummarySemester -> {
@@ -151,7 +151,7 @@ class SemesterHistoryViewModel(
                     }
                 }
             } catch (_: Exception) {
-                _uiEvent.send(UiEvent.ShowSnackBar(UiText.StringResource(R.string.history_error_try_again)))
+                _uiEvent.send(UiEvent.ShowSnackBar(UiText.Resource(Res.string.history_error_try_again)))
             }
         }
     }

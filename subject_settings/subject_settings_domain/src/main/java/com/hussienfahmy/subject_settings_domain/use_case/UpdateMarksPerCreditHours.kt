@@ -1,6 +1,6 @@
 package com.hussienfahmy.subject_settings_domain.use_case
 
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.data.local.util.UpdateResult
 import com.hussienfahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
 import com.hussienfahmy.core.model.UiText
@@ -11,11 +11,11 @@ class UpdateMarksPerCreditHours(
 ) {
     suspend operator fun invoke(marksPerCreditHours: String): UpdateResult {
         if (marksPerCreditHours.isBlank()) return UpdateResult.Failed(
-            UiText.StringResource(R.string.cannot_be_empty)
+            UiText.Resource(Res.string.cannot_be_empty)
         )
 
         if (marksPerCreditHours.toDoubleOrNull() == null) return UpdateResult.Failed(
-            UiText.StringResource(R.string.invalid_number)
+            UiText.Resource(Res.string.invalid_number)
         )
 
         repository.updateMarksPerCreditHour(marksPerCreditHours.toDouble())

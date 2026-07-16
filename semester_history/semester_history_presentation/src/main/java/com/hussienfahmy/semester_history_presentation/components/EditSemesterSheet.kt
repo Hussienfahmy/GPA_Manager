@@ -12,10 +12,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowTextField
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
@@ -47,7 +47,7 @@ fun EditSemesterSheet(
 
     MeadowBottomSheet(onDismiss = onDismiss, modifier = modifier) {
         Text(
-            text = stringResource(R.string.edit),
+            text = stringResource(Res.string.edit),
             style = MaterialTheme.typography.headlineMedium,
             color = colors.ink,
         )
@@ -57,7 +57,7 @@ fun EditSemesterSheet(
         MeadowTextField(
             value = label,
             onValueChange = { label = it },
-            label = stringResource(R.string.history_semester_label),
+            label = stringResource(Res.string.history_semester_label),
             isError = label.isBlank(),
             modifier = Modifier.fillMaxWidth(),
         )
@@ -67,7 +67,7 @@ fun EditSemesterSheet(
             MeadowTextField(
                 value = gpa,
                 onValueChange = { gpa = it },
-                label = stringResource(R.string.cumulative_gpa),
+                label = stringResource(Res.string.cumulative_gpa),
                 isError = gpa.isNotBlank() && (gpa.toDoubleOrNull() ?: -1.0) < 0.0,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.fillMaxWidth(),
@@ -77,7 +77,7 @@ fun EditSemesterSheet(
             MeadowTextField(
                 value = hours,
                 onValueChange = { hours = it },
-                label = stringResource(R.string.credit_hours),
+                label = stringResource(Res.string.credit_hours),
                 isError = hours.isNotBlank() && (hours.toIntOrNull() ?: 0) <= 0,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
@@ -87,7 +87,7 @@ fun EditSemesterSheet(
         Spacer(modifier = Modifier.height(14.dp))
 
         PillButton(
-            text = stringResource(R.string.save),
+            text = stringResource(Res.string.save),
             onClick = {
                 if (isSummary) {
                     onSaveSummary(semester.id, label, gpa.toDouble(), hours.toInt())

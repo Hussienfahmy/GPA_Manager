@@ -17,11 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
 import com.hussienfahmy.core_ui.presentation.components.meadow.GpaTooltipBox
 import com.hussienfahmy.core_ui.presentation.components.meadow.asGpa
@@ -55,7 +55,7 @@ fun CumulativeGpaCard(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                CapsLabel(text = stringResource(R.string.cumulative_gpa))
+                CapsLabel(text = stringResource(Res.string.cumulative_gpa))
 
                 val animatedGpa by animateFloatAsState(
                     targetValue = cumulativeGPA.toFloat(),
@@ -74,7 +74,7 @@ fun CumulativeGpaCard(
 
                 Text(
                     text = stringResource(
-                        R.string.history_hero_subtitle,
+                        Res.string.history_hero_subtitle,
                         totalCreditHours,
                         semestersCount,
                     ),
@@ -85,7 +85,7 @@ fun CumulativeGpaCard(
 
             if (onExportClick != null) {
                 PillButton(
-                    text = stringResource(R.string.export_pdf),
+                    text = stringResource(Res.string.export_pdf),
                     onClick = onExportClick,
                     style = PillButtonStyle.Outline,
                     enabled = !isExporting,

@@ -41,15 +41,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.data.local.entity.Subject
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
 import com.hussienfahmy.core_ui.presentation.components.meadow.GpaTooltipBox
@@ -83,13 +82,12 @@ fun SemesterDetailRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
-    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
                 is SemesterDetailEvent.ShowError -> snackbarHostState.showSnackbar(
-                    event.message.asString(context)
+                    event.message.asStringSuspend()
                 )
             }
         }
@@ -137,7 +135,7 @@ fun SemesterDetailScreen(
                         }
                     } else {
                         PillButton(
-                            text = stringResource(R.string.detail_add_subject),
+                            text = stringResource(Res.string.detail_add_subject),
                             onClick = { showAddSubjectSheet = true },
                             style = PillButtonStyle.Primary,
                         )
@@ -216,7 +214,7 @@ private fun SemesterDetailContent(
         if (detail.subjects.isEmpty()) {
             item {
                 Text(
-                    text = stringResource(R.string.history_no_subjects_hint),
+                    text = stringResource(Res.string.history_no_subjects_hint),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MeadowTheme.colors.inkMuted,
                     modifier = Modifier.padding(16.dp),
@@ -251,7 +249,7 @@ private fun SemesterHeaderCard(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
-                CapsLabel(text = stringResource(R.string.history_semester_gpa))
+                CapsLabel(text = stringResource(Res.string.history_semester_gpa))
                 GpaTooltipBox(fullValue = semester.semesterGPA) {
                     Text(
                         text = semester.semesterGPA.asGpa(),
@@ -261,14 +259,14 @@ private fun SemesterHeaderCard(
                 }
             }
             Column(horizontalAlignment = Alignment.End) {
-                CapsLabel(text = stringResource(R.string.credit_hours))
+                CapsLabel(text = stringResource(Res.string.credit_hours))
                 Text(
                     text = semester.totalCreditHours.toString(),
                     style = MaterialTheme.typography.displaySmall.copy(fontSize = 22.sp),
                     color = accent.ink,
                 )
                 Text(
-                    text = stringResource(R.string.detail_subjects_count, subjectCount),
+                    text = stringResource(Res.string.detail_subjects_count, subjectCount),
                     style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
                     color = colors.inkFaint,
                 )
@@ -290,9 +288,9 @@ private fun SubjectRow(
     var showDeleteConfirmation by remember { mutableStateOf(false) }
 
     if (showDeleteConfirmation) MeadowConfirmationSheet(
-        title = stringResource(R.string.history_delete_subject_title),
-        body = stringResource(R.string.history_delete_subject_message, subject.name),
-        confirmText = stringResource(R.string.delete),
+        title = stringResource(Res.string.history_delete_subject_title),
+        body = stringResource(Res.string.history_delete_subject_message, subject.name),
+        confirmText = stringResource(Res.string.delete),
         onConfirm = onDelete,
         onDismiss = { showDeleteConfirmation = false },
     )
@@ -345,7 +343,7 @@ private fun SubjectRow(
                 )
                 if (noGrade) {
                     Text(
-                        text = stringResource(R.string.history_no_grade_excluded_hint),
+                        text = stringResource(Res.string.history_no_grade_excluded_hint),
                         style = MaterialTheme.typography.titleSmall.copy(fontSize = 11.5.sp),
                         color = colors.marks.deep,
                     )
@@ -355,13 +353,13 @@ private fun SubjectRow(
                     Text(
                         text = if (marks != null && subject.totalMarks > 0) {
                             stringResource(
-                                R.string.detail_hrs_marks,
+                                Res.string.detail_hrs_marks,
                                 hrs,
                                 marks.value.toStringWithOptionalDecimals(),
                                 subject.totalMarks.toStringWithOptionalDecimals(),
                             )
                         } else {
-                            stringResource(R.string.detail_hrs_only, hrs)
+                            stringResource(Res.string.detail_hrs_only, hrs)
                         },
                         style = MaterialTheme.typography.bodySmall,
                         color = colors.inkFaint,
@@ -371,7 +369,7 @@ private fun SubjectRow(
 
             Icon(
                 imageVector = Icons.Outlined.Edit,
-                contentDescription = stringResource(R.string.edit),
+                contentDescription = stringResource(Res.string.edit),
                 tint = colors.navItemIcon,
                 modifier = Modifier
                     .size(18.dp)
@@ -395,7 +393,7 @@ private fun SubjectRow(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Close,
-                    contentDescription = stringResource(R.string.delete),
+                    contentDescription = stringResource(Res.string.delete),
                     tint = colors.onDangerContainer,
                     modifier = Modifier.size(14.dp),
                 )

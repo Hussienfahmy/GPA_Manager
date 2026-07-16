@@ -19,10 +19,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
@@ -87,9 +87,9 @@ fun SemesterScreen(
 
     if (showResetAllDialog) {
         MeadowConfirmationSheet(
-            title = stringResource(R.string.reset_all_title),
-            body = stringResource(R.string.reset_all_message),
-            confirmText = stringResource(R.string.reset_all),
+            title = stringResource(Res.string.reset_all_title),
+            body = stringResource(Res.string.reset_all_message),
+            confirmText = stringResource(Res.string.reset_all),
             onConfirm = { viewModel.onEvent(SemesterSubjectsEvent.CLearAll) },
             onDismiss = { showResetAllDialog = false },
         )

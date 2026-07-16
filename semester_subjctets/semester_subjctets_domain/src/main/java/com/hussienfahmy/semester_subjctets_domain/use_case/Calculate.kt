@@ -1,6 +1,6 @@
 package com.hussienfahmy.semester_subjctets_domain.use_case
 
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
@@ -36,10 +36,10 @@ class Calculate(
         // the calculation steps
         var semesterHours = 0.0
         var semesterPointsBigDecimal = BigDecimal("0.0")
-        if (list.isEmpty()) return@withContext Result.Failed(UiText.StringResource(R.string.err_waiting_to_add_subjects))
+        if (list.isEmpty()) return@withContext Result.Failed(UiText.Resource(Res.string.err_waiting_to_add_subjects))
         if (list.all { it.assignedGrade == null }) {
             return@withContext Result.Failed(
-                UiText.StringResource(R.string.err_calculation_failed_please_select_grade)
+                UiText.Resource(Res.string.err_calculation_failed_please_select_grade)
             )
         }
 
@@ -64,7 +64,7 @@ class Calculate(
 
         return@withContext if (semesterGrade == null || cumulativeGrade == null) {
             Result.Failed(
-                UiText.StringResource(R.string.err_calculation_failed_please_select_grade)
+                UiText.Resource(Res.string.err_calculation_failed_please_select_grade)
             )
         } else {
             val gpaSystemNumber = getGPASettings().system.number

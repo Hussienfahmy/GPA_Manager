@@ -16,12 +16,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowTextField
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
@@ -64,7 +64,7 @@ fun RenameSheetContent(
 
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = stringResource(R.string.rename_subject),
+            text = stringResource(Res.string.rename_subject),
             style = MaterialTheme.typography.headlineMedium,
             color = colors.ink,
         )
@@ -74,7 +74,7 @@ fun RenameSheetContent(
         MeadowTextField(
             value = newName,
             onValueChange = { newName = it },
-            label = stringResource(R.string.new_subject_name),
+            label = stringResource(Res.string.new_subject_name),
             isError = newName.isBlank(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
@@ -87,7 +87,7 @@ fun RenameSheetContent(
         Spacer(modifier = Modifier.height(14.dp))
 
         PillButton(
-            text = stringResource(R.string.save),
+            text = stringResource(Res.string.save),
             onClick = save,
             style = PillButtonStyle.Primary,
             modifier = Modifier.fillMaxWidth(),

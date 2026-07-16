@@ -26,12 +26,12 @@ fun UiEventHandler(
                 is UiEvent.ShowSnackBar -> {
                     keyboardController?.hide()
                     snackBarHostState?.showSnackbar(
-                        message = event.message.asString(context = context)
+                        message = event.message.asStringSuspend()
                     )
                 }
 
                 is UiEvent.ShowToast -> {
-                    Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT)
+                    Toast.makeText(context, event.message.asStringSuspend(), Toast.LENGTH_SHORT)
                         .show()
                 }
             }

@@ -43,13 +43,13 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.domain.auth.service.AuthService
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
@@ -90,8 +90,8 @@ fun OnBoardingScreen(
     UiEventHandler(uiEvent = viewModel.uiEvent)
 
     OnboardingLayout(
-        title = stringResource(R.string.onboarding_welcome_title),
-        subtitle = stringResource(R.string.onboarding_welcome_subtitle),
+        title = stringResource(Res.string.onboarding_welcome_title),
+        subtitle = stringResource(Res.string.onboarding_welcome_subtitle),
         currentStep = OnboardingConstants.Steps.WELCOME,
         onNextClick = {
             scope.launch {
@@ -100,7 +100,7 @@ fun OnBoardingScreen(
                 viewModel.onEvent(AuthEvent.OnSignInResult(signInResult))
             }
         },
-        nextButtonText = stringResource(R.string.onboarding_welcome_get_started),
+        nextButtonText = stringResource(Res.string.onboarding_welcome_get_started),
         nextButtonEnabled = state != SignInState.Loading && state != SignInState.Syncing,
         nextButtonLoading = state == SignInState.Loading || state == SignInState.Syncing
     ) {
@@ -120,7 +120,7 @@ fun OnBoardingScreen(
                 verticalArrangement = Arrangement.spacedBy(spacing.small)
             ) {
                 Text(
-                    text = stringResource(R.string.onboarding_welcome_tagline),
+                    text = stringResource(Res.string.onboarding_welcome_tagline),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.headlineSmall,
                     textAlign = TextAlign.Center,
@@ -128,7 +128,7 @@ fun OnBoardingScreen(
                 )
 
                 Text(
-                    text = stringResource(R.string.onboarding_welcome_subtitle_motivational),
+                    text = stringResource(Res.string.onboarding_welcome_subtitle_motivational),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -221,26 +221,26 @@ private fun FeatureHighlights() {
     val features = listOf(
         Feature(
             Icons.Outlined.CalendarMonth,
-            stringResource(R.string.onboarding_feature_semester_title),
-            stringResource(R.string.onboarding_feature_semester_desc),
+            stringResource(Res.string.onboarding_feature_semester_title),
+            stringResource(Res.string.onboarding_feature_semester_desc),
             colors.semester,
         ),
         Feature(
             Icons.Outlined.Check,
-            stringResource(R.string.onboarding_feature_marks_title),
-            stringResource(R.string.onboarding_feature_marks_desc),
+            stringResource(Res.string.onboarding_feature_marks_title),
+            stringResource(Res.string.onboarding_feature_marks_desc),
             colors.marks,
         ),
         Feature(
             Icons.Outlined.History,
-            stringResource(R.string.onboarding_feature_more_title),
-            stringResource(R.string.onboarding_feature_more_desc),
+            stringResource(Res.string.onboarding_feature_more_title),
+            stringResource(Res.string.onboarding_feature_more_desc),
             colors.history,
         ),
         Feature(
             Icons.Outlined.AutoAwesome,
-            stringResource(R.string.onboarding_feature_quick_title),
-            stringResource(R.string.onboarding_feature_quick_desc),
+            stringResource(Res.string.onboarding_feature_quick_title),
+            stringResource(Res.string.onboarding_feature_quick_desc),
             colors.quick,
         ),
     )

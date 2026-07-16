@@ -45,13 +45,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
 import com.hussienfahmy.core_ui.presentation.util.toStringWithOptionalDecimals
@@ -95,9 +95,9 @@ fun SemesterMarksItem(
     LaunchedEffect(Unit) { settled = true }
 
     if (showResetConfirmation) MeadowConfirmationSheet(
-        title = stringResource(R.string.reset_marks_title, subject.name),
-        body = stringResource(R.string.reset_marks_message),
-        confirmText = stringResource(R.string.reset),
+        title = stringResource(Res.string.reset_marks_title, subject.name),
+        body = stringResource(Res.string.reset_marks_message),
+        confirmText = stringResource(Res.string.reset),
         onConfirm = {
             onResetClick()
             midtermInput = ""
@@ -177,7 +177,7 @@ fun SemesterMarksItem(
             } else {
                 Icon(
                     imageVector = Icons.Default.Refresh,
-                    contentDescription = stringResource(R.string.reset),
+                    contentDescription = stringResource(Res.string.reset),
                     tint = colors.navItemIcon,
                     modifier = Modifier
                         .size(18.dp)
@@ -191,7 +191,7 @@ fun SemesterMarksItem(
 
             Icon(
                 imageVector = Icons.Default.Edit,
-                contentDescription = stringResource(R.string.edit),
+                contentDescription = stringResource(Res.string.edit),
                 tint = colors.navItemIcon,
                 modifier = Modifier
                     .size(18.dp)
@@ -240,7 +240,7 @@ fun SemesterMarksItem(
             Spacer(modifier = Modifier.height(if (isExpanded) 14.dp else 12.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 if (subject.midtermAvailable) MarkTile(
-                    title = stringResource(R.string.midterm),
+                    title = stringResource(Res.string.midterm),
                     value = midtermInput,
                     onValueChange = {
                         midtermInput = it
@@ -250,7 +250,7 @@ fun SemesterMarksItem(
                     modifier = Modifier.weight(1f),
                 )
                 if (subject.practicalAvailable) MarkTile(
-                    title = stringResource(R.string.practical),
+                    title = stringResource(Res.string.practical),
                     value = practicalInput,
                     onValueChange = {
                         practicalInput = it
@@ -260,7 +260,7 @@ fun SemesterMarksItem(
                     modifier = Modifier.weight(1f),
                 )
                 if (subject.oralAvailable) MarkTile(
-                    title = stringResource(R.string.oral),
+                    title = stringResource(Res.string.oral),
                     value = oralInput,
                     onValueChange = {
                         oralInput = it
@@ -270,7 +270,7 @@ fun SemesterMarksItem(
                     modifier = Modifier.weight(1f),
                 )
                 if (subject.projectAvailable) MarkTile(
-                    title = stringResource(R.string.project),
+                    title = stringResource(Res.string.project),
                     value = projectInput,
                     onValueChange = {
                         projectInput = it
@@ -287,7 +287,7 @@ fun SemesterMarksItem(
             Column {
                 Spacer(modifier = Modifier.height(14.dp))
                 Text(
-                    text = stringResource(R.string.final_exam_marks_needed),
+                    text = stringResource(Res.string.final_exam_marks_needed),
                     style = MaterialTheme.typography.bodySmall,
                     color = colors.navItemText,
                 )

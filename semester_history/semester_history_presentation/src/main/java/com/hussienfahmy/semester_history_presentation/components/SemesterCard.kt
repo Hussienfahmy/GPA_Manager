@@ -31,12 +31,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hussienfahmy.core.R
+import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChip
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChipStyle
@@ -67,9 +67,9 @@ fun SemesterCard(
     var showDeleteConfirmation by remember { mutableStateOf(false) }
 
     if (showDeleteConfirmation) MeadowConfirmationSheet(
-        title = stringResource(R.string.delete),
-        body = stringResource(R.string.history_delete_semester_message, semester.label),
-        confirmText = stringResource(R.string.delete),
+        title = stringResource(Res.string.delete),
+        body = stringResource(Res.string.history_delete_semester_message, semester.label),
+        confirmText = stringResource(Res.string.delete),
         onConfirm = onDeleteClick,
         onDismiss = { showDeleteConfirmation = false },
     )
@@ -97,7 +97,7 @@ fun SemesterCard(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowUp,
-                    contentDescription = stringResource(R.string.history_move_up),
+                    contentDescription = stringResource(Res.string.history_move_up),
                     tint = colors.inkGhost,
                     modifier = Modifier
                         .size(20.dp)
@@ -111,7 +111,7 @@ fun SemesterCard(
                 )
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowDown,
-                    contentDescription = stringResource(R.string.history_move_down),
+                    contentDescription = stringResource(Res.string.history_move_down),
                     tint = colors.inkGhost,
                     modifier = Modifier
                         .size(20.dp)
@@ -149,7 +149,7 @@ fun SemesterCard(
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.PriorityHigh,
-                                contentDescription = stringResource(R.string.history_missing_grade),
+                                contentDescription = stringResource(Res.string.history_missing_grade),
                                 tint = colors.marks.deep,
                                 modifier = Modifier.size(11.dp),
                             )
@@ -165,23 +165,23 @@ fun SemesterCard(
                 ) {
                     if (isDetailed) {
                         MeadowChip(
-                            text = "${stringResource(R.string.history_type_detailed)} ›",
+                            text = "${stringResource(Res.string.history_type_detailed)} ›",
                             style = MeadowChipStyle.Accent,
                         )
                     } else {
-                        MeadowChip(text = stringResource(R.string.history_type_summary))
+                        MeadowChip(text = stringResource(Res.string.history_type_summary))
                     }
                     Text(
-                        text = stringResource(R.string.history_gpa_value, semester.semesterGPA),
+                        text = stringResource(Res.string.history_gpa_value, semester.semesterGPA),
                         style = MaterialTheme.typography.labelMedium.copy(fontSize = 12.sp),
                         color = accent.accent,
                     )
                     Text(
                         text = "${
-                            stringResource(R.string.history_hours_value, semester.totalCreditHours)
+                            stringResource(Res.string.history_hours_value, semester.totalCreditHours)
                         } · ${
                             stringResource(
-                                R.string.history_points_value,
+                                Res.string.history_points_value,
                                 semester.semesterGPA * semester.totalCreditHours,
                             )
                         }",
@@ -195,7 +195,7 @@ fun SemesterCard(
 
             Icon(
                 imageVector = Icons.Outlined.Edit,
-                contentDescription = stringResource(R.string.edit),
+                contentDescription = stringResource(Res.string.edit),
                 tint = colors.navItemIcon,
                 modifier = Modifier
                     .size(18.dp)
@@ -219,7 +219,7 @@ fun SemesterCard(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Close,
-                    contentDescription = stringResource(R.string.delete),
+                    contentDescription = stringResource(Res.string.delete),
                     tint = colors.onDangerContainer,
                     modifier = Modifier.size(14.dp),
                 )
