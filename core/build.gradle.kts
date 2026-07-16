@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.base.module)
+    alias(libs.plugins.base.kmp.module)
 }
 
 android {
@@ -10,8 +10,21 @@ android {
     }
 }
 
+kotlin {
+    sourceSets {
+        androidMain.dependencies {
+            implementation(libs.bundles.room)
+            implementation(libs.firebase.analytics)
+            implementation(libs.androidx.core.ktx)
+            implementation(libs.androidx.activity.ktx)
+            implementation(libs.koin.android)
+        }
+    }
+}
+
 dependencies {
-    implementation(libs.bundles.room)
-    ksp(libs.androidx.room.compiler)
-    implementation(libs.firebase.analytics)
+    // Room is still Android-only for this phase (its KMP move is a separate, dedicated phase);
+    // "kspAndroid" is the per-target KSP configuration created for the androidTarget() by the
+    // ksp + kotlin.multiplatform plugin combination.
+    add("kspAndroid", libs.androidx.room.compiler)
 }

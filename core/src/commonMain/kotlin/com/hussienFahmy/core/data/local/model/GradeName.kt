@@ -1,8 +1,5 @@
 package com.hussienfahmy.core.data.local.model
 
-import androidx.annotation.Keep
-
-@Keep
 enum class GradeName(val symbol: String) {
     F("F"),
     DMinus("D-"),
