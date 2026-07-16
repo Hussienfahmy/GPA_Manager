@@ -1,81 +1,65 @@
 package com.hussienfahmy.myGpaManager.data.auth
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.auth.repository.AuthResult
 import com.hussienfahmy.core.domain.auth.repository.AuthUserData
+import dev.gitlive.firebase.auth.FirebaseAuth
+import dev.gitlive.firebase.auth.GoogleAuthProvider
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.tasks.await
-import java.util.concurrent.CancellationException
 
 class FirebaseAuthRepository(
     private val auth: FirebaseAuth,
     scope: CoroutineScope
 ) : AuthRepository {
 
-    private val firebaseUserId get() = auth.currentUser?.uid
-
-    private val _userId = MutableStateFlow(firebaseUserId)
-    override val userId: StateFlow<String?> = _userId
-        .onStart {
-            auth.addAuthStateListener(firebaseAuthStateListener)
-        }.onCompletion {
-            auth.removeAuthStateListener(firebaseAuthStateListener)
-        }.stateIn(
+    // GitLive's authStateChanged Flow replaces the manual addAuthStateListener/callbackFlow
+    // wiring the Android SDK needed - same pattern already used for
+    // FirebaseUserDataRepository's snapshots Flow.
+    override val userId: StateFlow<String?> = auth.authStateChanged
+        .map { it?.uid }
+        .stateIn(
             scope = scope,
             started = SharingStarted.Lazily,
-            initialValue = firebaseUserId
+            initialValue = auth.currentUser?.uid
         )
 
-    override val isSignedInFlow = userId.map { it != null }
+    override val isSignedInFlow: StateFlow<Boolean?> = userId.map { it != null }
         .stateIn(
             scope = scope,
             started = SharingStarted.Lazily,
             initialValue = null
         )
 
-
-    private val firebaseAuthStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
-        val userId = firebaseAuth.currentUser?.uid
-        _userId.value = userId
-    }
-
     override suspend fun signInWithCredential(idToken: String): AuthResult {
-        val googleCredential = GoogleAuthProvider.getCredential(idToken, null)
+        val googleCredential = GoogleAuthProvider.credential(idToken, null)
 
         return try {
-            auth.signInWithCredential(googleCredential)
-                .await()
-                .user!!.run {
-                    AuthResult.Success(
-                        AuthUserData(
-                            id = uid,
-                            name = displayName ?: "",
-                            photoUrl = photoUrl.toString(),
-                            email = email ?: "",
-                        )
-                    )
-                }
+            val user = auth.signInWithCredential(googleCredential).user!!
+            AuthResult.Success(
+                AuthUserData(
+                    id = user.uid,
+                    name = user.displayName ?: "",
+                    photoUrl = user.photoURL ?: "",
+                    email = user.email ?: "",
+                )
+            )
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
-            if (e is CancellationException) throw e
-            else AuthResult.Error(e.message ?: "Unknown error")
+            AuthResult.Error(e.message ?: "Unknown error")
         }
     }
 
     override suspend fun signOut() {
         auth.signOut()
-        while (auth.currentUser?.uid != null) {
+        while (userId.value != null) {
             delay(100)
         }
-        _userId.value = null
     }
 }

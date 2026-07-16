@@ -2,10 +2,10 @@ package com.hussienfahmy.myGpaManager
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import com.hussienfahmy.core.domain.auth.service.AuthService
 import com.hussienfahmy.sync_domain.use_case.MigrateExistingUserDataIfNeeded
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.auth
 import kotlinx.coroutines.launch
 
 class MainViewModel(
