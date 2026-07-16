@@ -1,27 +1,20 @@
 package com.hussienfahmy.myGpaManager.data.user_data
 
-import android.util.Log
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.toObject
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienfahmy.myGpaManager.data.user_data.mapper.toDomain
 import com.hussienfahmy.myGpaManager.data.user_data.model.FirebaseUserData
+import dev.gitlive.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 class FirebaseUserDataRepository(
     authRepository: AuthRepository,
@@ -36,7 +29,7 @@ class FirebaseUserDataRepository(
     }
 
     override suspend fun isUserExists(): Boolean {
-        return userDoc.first()?.get()?.await()?.exists() ?: false
+        return userDoc.first()?.get()?.exists ?: false
     }
 
     override suspend fun createUserData(
@@ -45,49 +38,32 @@ class FirebaseUserDataRepository(
         photoUrl: String,
         email: String,
     ) {
-        val now = Timestamp.now()
+        val now = System.currentTimeMillis()
         userDoc.first()?.set(
             FirebaseUserData(
-                id = id,
                 name = name,
                 photoUrl = photoUrl,
                 email = email,
                 createdAt = now,
                 updatedAt = now,
             )
-        )?.await()
+        )
     }
 
+    // GitLive's DocumentReference.snapshots Flow replaces the manual
+    // addSnapshotListener/callbackFlow/awaitClose wiring the Android SDK needed.
     @OptIn(ExperimentalCoroutinesApi::class)
     override val userData: Flow<UserData?> =
         userDoc.flatMapLatest { docRef ->
-            callbackFlow {
-                if (docRef == null) {
-                    // User is signed out, emit null and close
-                    trySend(null)
-                    close()
-                    return@callbackFlow
-                }
-
-                val registration = docRef.addSnapshotListener { value, error ->
-                    if (error != null) {
-                        close(error)
-                        return@addSnapshotListener
+            if (docRef == null) {
+                flowOf(null)
+            } else {
+                docRef.snapshots.map { snapshot ->
+                    if (snapshot.exists) {
+                        snapshot.data<FirebaseUserData>().toDomain(snapshot.id)
+                    } else {
+                        null
                     }
-
-                    if (value != null && value.exists()) {
-                        value.toObject<FirebaseUserData>()?.let {
-                            scope.launch {
-                                send(it.toDomain())
-                            }
-                        } ?: kotlin.run {
-                            Log.e(TAG, "observeUserData: snapshot is null or empty")
-                        }
-                    }
-                }
-
-                awaitClose {
-                    registration.remove()
                 }
             }
         }.stateIn(
@@ -96,13 +72,21 @@ class FirebaseUserDataRepository(
             initialValue = null
         )
 
+    // FLAG FOR REVIEW: the old Android SDK's mapOf(field to value) update worked with value typed
+    // as plain Any because Firestore's Android SDK serializes via reflection at runtime. GitLive's
+    // updateFields{} DSL is kotlinx.serialization-based, which typically resolves serializers from
+    // *static* (often reified) type info - "field to value" here has value statically typed as
+    // Any, which may not resolve a serializer correctly for non-String/primitive values (in
+    // particular updateSemester's FirebaseUserData.AcademicInfo.Semester enum argument). This is
+    // the single highest-risk line in this phase and needs verification against a real build;
+    // if it doesn't compile or doesn't serialize correctly, each updateXxx caller below may need
+    // its own non-generic updateFields{} call with the concrete type inline instead of routing
+    // through this shared helper.
     private suspend fun updateField(field: String, value: Any) {
-        userDoc.first()?.update(
-            mapOf(
-                field to value,
-                FirebaseUserData.PROPERTY_UPDATED_AT to FieldValue.serverTimestamp()
-            )
-        )?.await()
+        userDoc.first()?.updateFields {
+            field to value
+            FirebaseUserData.PROPERTY_UPDATED_AT to System.currentTimeMillis()
+        }
     }
 
     override suspend fun updateName(name: String) {
@@ -153,9 +137,5 @@ class FirebaseUserDataRepository(
 
     override suspend fun updateFCMToken(fcmToken: String) {
         updateField(FirebaseUserData.PROPERTY_FCM_TOKEN, fcmToken)
-    }
-
-    companion object {
-        private const val TAG = "FirebaseUserDataRepository"
     }
 }

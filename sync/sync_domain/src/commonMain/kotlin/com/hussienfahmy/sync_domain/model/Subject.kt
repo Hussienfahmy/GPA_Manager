@@ -1,8 +1,12 @@
 package com.hussienfahmy.sync_domain.model
 
 import com.hussienfahmy.core.data.local.model.GradeName
+import kotlinx.serialization.Serializable
 import com.hussienfahmy.core.data.local.entity.Subject as SubjectEntity
 
+// @Serializable needed for FirebaseNetworkSubjects/FirebaseNetworkSemester's Firestore round-trip
+// (app module) - this is the same Subject already used app-wide, not a separate Firebase DTO.
+@Serializable
 data class Subject(
     val id: Long = 0,
     val name: String = "",
@@ -13,6 +17,7 @@ data class Subject(
     val metadata: MetaData = MetaData()
 ) {
 
+    @Serializable
     data class SemesterMarks(
         val midterm: Double? = null,
         val practical: Double? = null,
@@ -20,6 +25,7 @@ data class Subject(
         val project: Double? = null,
     )
 
+    @Serializable
     data class MetaData(
         val midtermAvailable: Boolean = true,
         val practicalAvailable: Boolean = true,
