@@ -1,21 +1,20 @@
 package com.hussienfahmy.myGpaManager.navigation.screens.onboarding
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import org.jetbrains.compose.resources.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.core_ui.presentation.user_data.UserDataEvent
 import com.hussienfahmy.core_ui.presentation.user_data.UserDataState
 import com.hussienfahmy.core_ui.presentation.user_data.UserDataViewModel
 import com.hussienfahmy.core_ui.presentation.user_data.components.PersonalInfoSection
+import com.hussienfahmy.core_ui.presentation.user_data.rememberImagePickerLauncher
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AppOnBoardingPersonalInfoScreen(
@@ -28,13 +27,8 @@ fun AppOnBoardingPersonalInfoScreen(
         snackBarHostState = snackBarHostState,
     )
 
-    val galleryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri ->
-            uri?.let {
-                viewModel.onEvent(UserDataEvent.UploadPhoto(it))
-            }
-        }
+    val pickImage = rememberImagePickerLauncher(
+        onImagePicked = { viewModel.onEvent(UserDataEvent.UploadPhoto(it)) },
     )
 
     val state by viewModel.customState.collectAsStateWithLifecycle()
@@ -61,7 +55,7 @@ fun AppOnBoardingPersonalInfoScreen(
                     photoUrl = userData.photoUrl,
                     uploadingPhoto = viewModel.uploadingPhoto,
                     onNameChange = { viewModel.onEvent(UserDataEvent.UpdateName(it)) },
-                    onChangePhotoClick = { galleryLauncher.launch("image/*") }
+                    onChangePhotoClick = pickImage
                 )
             }
         }

@@ -1,7 +1,5 @@
 package com.hussienfahmy.core_ui.presentation.user_data
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -11,7 +9,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.hussienfahmy.core.util.PlatformImageSource
 import com.hussienfahmy.core_ui.presentation.user_data.components.UserDataScreenContent
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import org.koin.compose.viewmodel.koinViewModel
@@ -27,13 +24,8 @@ fun UserDataScreen(
         snackBarHostState = snackBarHostState,
     )
 
-    val galleryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri ->
-            uri?.let {
-                viewModel.onEvent(UserDataEvent.UploadPhoto(PlatformImageSource(it)))
-            }
-        }
+    val pickImage = rememberImagePickerLauncher(
+        onImagePicked = { viewModel.onEvent(UserDataEvent.UploadPhoto(it)) },
     )
 
     val state by viewModel.customState.collectAsStateWithLifecycle()
@@ -50,7 +42,7 @@ fun UserDataScreen(
                 modifier = modifier,
                 state = (state as UserDataState.Loaded),
                 uploadingPhoto = viewModel.uploadingPhoto,
-                onChangePhotoClick = { galleryLauncher.launch("image/*") },
+                onChangePhotoClick = pickImage,
                 onUpdateName = { viewModel.onEvent(UserDataEvent.UpdateName(it)) },
                 onUpdateCumulativeGPA = { viewModel.onEvent(UserDataEvent.UpdateCumulativeGPA(it)) },
                 onUpdateCreditHours = { viewModel.onEvent(UserDataEvent.UpdateCreditHours(it)) },

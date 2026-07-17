@@ -9,16 +9,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.hussienfahmy.core.generated.resources.*
-import com.hussienfahmy.core_ui.R as CoreUiR
+import com.hussienfahmy.core_ui.generated.resources.baseline_person_24
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import com.hussienfahmy.core_ui.generated.resources.Res as CoreUiRes
 
 @Composable
 fun UserPhoto(
@@ -26,12 +27,12 @@ fun UserPhoto(
     photoUrl: String?
 ) {
     AsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
+        model = ImageRequest.Builder(LocalPlatformContext.current)
             .data(photoUrl)
             .crossfade(true)
             .build(),
         contentDescription = stringResource(Res.string.user_photo),
-        error = painterResource(id = CoreUiR.drawable.baseline_person_24),
+        error = painterResource(CoreUiRes.drawable.baseline_person_24),
         contentScale = ContentScale.Crop,
         modifier = modifier
             .clip(CircleShape)

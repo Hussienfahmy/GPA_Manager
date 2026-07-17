@@ -19,6 +19,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.domain.user_data.model.UserData
+import com.hussienfahmy.core.util.truncate
 import com.hussienfahmy.core_ui.presentation.components.ExpandableTextField
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
@@ -26,7 +27,6 @@ import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowRowDivider
 import com.hussienfahmy.core_ui.presentation.user_data.UserDataState
 import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
 import com.hussienfahmy.core_ui.theme.MeadowTheme
-import kotlin.math.floor
 
 @Composable
 fun UserDataScreenContent(
@@ -87,9 +87,7 @@ fun UserDataScreenContent(
             ) {
                 ExpandableTextField(
                     title = stringResource(Res.string.cumulative_gpa),
-                    value = "%.4f".format(
-                        floor(userData.academicProgress.cumulativeGPA * 10000) / 10000.0
-                    ),
+                    value = userData.academicProgress.cumulativeGPA.truncate(),
                     onNewValueSubmitted = onUpdateCumulativeGPA,
                     keyboardType = KeyboardType.Number,
                     enabled = false,
