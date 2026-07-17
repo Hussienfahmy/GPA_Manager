@@ -1,7 +1,7 @@
 package com.hussienfahmy.quick_presentation
 
 import androidx.lifecycle.viewModelScope
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import com.hussienfahmy.core.domain.user_data.use_cases.GetAcademicProgress
 import com.hussienfahmy.core.model.UiText

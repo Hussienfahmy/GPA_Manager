@@ -28,7 +28,7 @@ import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core.util.toTwoDecimals
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSwitch
