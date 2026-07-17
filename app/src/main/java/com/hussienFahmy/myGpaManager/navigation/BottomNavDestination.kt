@@ -8,41 +8,35 @@ import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.hussienfahmy.core.generated.resources.Res
-import com.ramcosta.composedestinations.generated.destinations.AppMoreScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.AppQuickScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.AppSemesterHistoryScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.AppSemesterMarksScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.AppSemesterScreenDestination
-import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 import org.jetbrains.compose.resources.StringResource
 
 enum class BottomNavDestination(
-    val direction: DirectionDestinationSpec,
+    val route: AppRoute,
     val icon: ImageVector,
     val label: StringResource
 ) {
     Semester(
-        direction = AppSemesterScreenDestination,
+        route = AppRoute.Semester,
         icon = Icons.Outlined.CalendarMonth,
         label = Res.string.semester
     ),
     Marks(
-        direction = AppSemesterMarksScreenDestination,
+        route = AppRoute.SemesterMarks,
         icon = Icons.Outlined.Check,
         label = Res.string.marks
     ),
     History(
-        direction = AppSemesterHistoryScreenDestination,
+        route = AppRoute.SemesterHistory,
         icon = Icons.Outlined.History,
         label = Res.string.history
     ),
     Quick(
-        direction = AppQuickScreenDestination,
+        route = AppRoute.Quick,
         icon = Icons.Outlined.AutoAwesome,
         label = Res.string.quick
     ),
     More(
-        direction = AppMoreScreenDestination,
+        route = AppRoute.More,
         icon = Icons.Outlined.MoreHoriz,
         label = Res.string.more
     )

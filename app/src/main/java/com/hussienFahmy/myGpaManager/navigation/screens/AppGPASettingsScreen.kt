@@ -6,12 +6,8 @@ import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core_ui.presentation.analytics.TrackScreenTime
 import com.hussienfahmy.gpa_system_sittings_presentaion.GPASettingsScreen
-import com.hussienfahmy.myGpaManager.navigation.FadeTransitions
-import com.hussienfahmy.myGpaManager.navigation.graphs.MoreNavGraph
-import com.ramcosta.composedestinations.annotation.Destination
 import org.koin.compose.koinInject
 
-@Destination<MoreNavGraph>(style = FadeTransitions::class)
 @Composable
 fun AppGPASettingsScreen() {
     val analyticsLogger = koinInject<AnalyticsLogger>()

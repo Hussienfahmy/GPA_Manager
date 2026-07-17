@@ -14,30 +14,26 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.hussienfahmy.core.util.AppPermission
 import com.hussienfahmy.core.util.PermissionController
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingProgressIndicator
 import com.hussienfahmy.myGpaManager.navigation.AppBottomNav
-import com.hussienfahmy.myGpaManager.navigation.AppDestinationsNavHost
+import com.hussienfahmy.myGpaManager.navigation.AppNavHost
+import com.hussienfahmy.myGpaManager.navigation.AppRoute
+import com.hussienfahmy.myGpaManager.navigation.OnboardingNavHost
+import com.hussienfahmy.myGpaManager.navigation.OnboardingRoute
+import com.hussienfahmy.myGpaManager.navigation.rememberAppNavigationState
 import com.hussienfahmy.myGpaManager.ui.theme.GPAManagerTheme
-import com.ramcosta.composedestinations.generated.NavGraphs
-import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingAcademicStatusScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingGPASubjectsSettingsDestination
-import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingGPATrackingScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingGradesSettingsScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingInstitutionInfoScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingPersonalInfoScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.AppOnBoardingSemesterDetailScreenDestination
-import com.ramcosta.composedestinations.utils.startDestination
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -45,15 +41,15 @@ class MainActivity : ComponentActivity() {
     private val viewModel by viewModel<MainViewModel>()
     private lateinit var permissionController: PermissionController
 
-    private fun getOnboardingStep(destination: String?): Int = when (destination) {
-        AppOnBoardingScreenDestination.route -> OnboardingConstants.Steps.WELCOME
-        AppOnBoardingPersonalInfoScreenDestination.route -> OnboardingConstants.Steps.PERSONAL_INFO
-        AppOnBoardingInstitutionInfoScreenDestination.route -> OnboardingConstants.Steps.INSTITUTION_INFO
-        AppOnBoardingAcademicStatusScreenDestination.route -> OnboardingConstants.Steps.ACADEMIC_STATUS
-        AppOnBoardingGPATrackingScreenDestination.route,
-        AppOnBoardingSemesterDetailScreenDestination.route -> OnboardingConstants.Steps.GPA_TRACKING
-        AppOnBoardingGradesSettingsScreenDestination.route -> OnboardingConstants.Steps.GRADES_SETTINGS
-        AppOnBoardingGPASubjectsSettingsDestination.route -> OnboardingConstants.Steps.FINAL_SETUP
+    private fun getOnboardingStep(route: NavKey?): Int = when (route) {
+        OnboardingRoute.Welcome -> OnboardingConstants.Steps.WELCOME
+        OnboardingRoute.PersonalInfo -> OnboardingConstants.Steps.PERSONAL_INFO
+        OnboardingRoute.InstitutionInfo -> OnboardingConstants.Steps.INSTITUTION_INFO
+        OnboardingRoute.AcademicStatus -> OnboardingConstants.Steps.ACADEMIC_STATUS
+        OnboardingRoute.GPATracking,
+        is OnboardingRoute.SemesterDetail -> OnboardingConstants.Steps.GPA_TRACKING
+        OnboardingRoute.GradesSettings -> OnboardingConstants.Steps.GRADES_SETTINGS
+        OnboardingRoute.GPASubjectsSettings -> OnboardingConstants.Steps.FINAL_SETUP
         else -> OnboardingConstants.Steps.WELCOME
     }
 
@@ -68,69 +64,100 @@ class MainActivity : ComponentActivity() {
                 val spacing = LocalSpacing.current
                 val localFocusManager = LocalFocusManager.current
                 val snackBarHostState = remember { SnackbarHostState() }
-                val navController = rememberNavController()
-                val currentBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = currentBackStackEntry?.destination?.route
                 val isSingedIn by viewModel.isSignedIn.collectAsState()
-                val onboardingRoutes =
-                    remember { NavGraphs.onBoarding.destinations.map { it.route } }
+
+                val appNavigationState = rememberAppNavigationState()
+                val onboardingBackStack = rememberNavBackStack(OnboardingRoute.Welcome)
+                // Deliberately separate from isSingedIn: sign-in succeeds at onboarding's very
+                // first step (Welcome), but the user still has several data-entry steps left
+                // before tapping "Start" - isSingedIn flips true mid-onboarding while the flow
+                // should keep showing, exactly like the old code's navController only ever
+                // force-navigated INTO onboarding on sign-out and relied on onStartClick's own
+                // explicit navigate() call to leave it, never on isSingedIn flipping true.
+                var showOnboarding by remember { mutableStateOf(false) }
 
                 LaunchedEffect(key1 = isSingedIn) {
                     if (isSingedIn == false) {
-                        navController.navigate(NavGraphs.onBoarding.startDestination.route) {
-                            popUpTo(NavGraphs.root.startDestination.route) {
-                                inclusive = true
-                            }
+                        showOnboarding = true
+                        // Reset onboarding to its start whenever the user signs out, mirroring
+                        // the old popUpTo(root.startDestination){inclusive=true} reset.
+                        while (onboardingBackStack.size > 1) {
+                            onboardingBackStack.removeLastOrNull()
                         }
                     }
                 }
 
-                LaunchedEffect(currentDestination, isSingedIn) {
+                LaunchedEffect(appNavigationState.topLevelRoute, isSingedIn) {
                     if (isSingedIn != true) return@LaunchedEffect
 
-                    if (currentDestination == NavGraphs.root.startDestination.route) {
+                    if (appNavigationState.topLevelRoute == AppRoute.Semester) {
                         // request notification permission if not granted after user complete sign in.
                         permissionController.requestPermission(AppPermission.Notifications)
                     }
                 }
 
-                Scaffold(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .pointerInput(Unit) {
-                            detectTapGestures(onTap = {
-                                localFocusManager.clearFocus()
-                            })
-                        },
-                    snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
-                    bottomBar = {
-                        if (currentDestination !in onboardingRoutes) {
-                            AppBottomNav(navController = navController)
-                        }
-                    }
-                ) { paddingValues ->
-                    Column(modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)) {
-                        val isOnboardingScreen = currentDestination in onboardingRoutes
-                        val currentStep = getOnboardingStep(currentDestination)
+                if (showOnboarding) {
+                    val currentOnboardingRoute = onboardingBackStack.lastOrNull()
 
-                        if (isOnboardingScreen &&
-                            currentDestination != AppOnBoardingScreenDestination.route &&
-                            currentDestination != AppOnBoardingSemesterDetailScreenDestination.route
+                    Scaffold(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .pointerInput(Unit) {
+                                detectTapGestures(onTap = { localFocusManager.clearFocus() })
+                            },
+                        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
+                    ) { paddingValues ->
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(paddingValues)
                         ) {
-                            // Show progress indicator outside animated content for steps 2-7
-                            OnboardingProgressIndicator(
-                                currentStep = currentStep,
-                                totalSteps = OnboardingConstants.TOTAL_STEPS,
-                                modifier = Modifier.padding(spacing.medium)
+                            if (currentOnboardingRoute != OnboardingRoute.Welcome &&
+                                currentOnboardingRoute !is OnboardingRoute.SemesterDetail
+                            ) {
+                                // Show progress indicator outside animated content for steps 2-7
+                                OnboardingProgressIndicator(
+                                    currentStep = getOnboardingStep(currentOnboardingRoute),
+                                    totalSteps = OnboardingConstants.TOTAL_STEPS,
+                                    modifier = Modifier.padding(spacing.medium)
+                                )
+                            }
+
+                            OnboardingNavHost(
+                                backStack = onboardingBackStack,
+                                snackBarHostState = snackBarHostState,
+                                onSignInSuccess = {
+                                    onboardingBackStack.add(OnboardingRoute.PersonalInfo)
+                                },
+                                onOnboardingComplete = {
+                                    while (onboardingBackStack.size > 1) {
+                                        onboardingBackStack.removeLastOrNull()
+                                    }
+                                    showOnboarding = false
+                                },
                             )
                         }
-
-                        AppDestinationsNavHost(
-                            navController = navController,
-                            snackBarHostState = snackBarHostState,
-                        )
+                    }
+                } else {
+                    Scaffold(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .pointerInput(Unit) {
+                                detectTapGestures(onTap = { localFocusManager.clearFocus() })
+                            },
+                        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
+                        bottomBar = { AppBottomNav(appNavigationState = appNavigationState) }
+                    ) { paddingValues ->
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(paddingValues)
+                        ) {
+                            AppNavHost(
+                                appNavigationState = appNavigationState,
+                                snackBarHostState = snackBarHostState,
+                            )
+                        }
                     }
                 }
             }

@@ -28,10 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.theme.MeadowTheme
-import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
-import com.hussienfahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
 import com.hussienfahmy.semester_history_presentation.SemesterDetailRoot
-import com.ramcosta.composedestinations.annotation.Destination
 
 /**
  * Real nested nav destination for a DETAILED semester's subject list —
@@ -40,7 +37,6 @@ import com.ramcosta.composedestinations.annotation.Destination
  * swap. Keeps its own minimal back header since onboarding has no bottom
  * nav / system app bar to provide one.
  */
-@Destination<OnBoardingNavGraph>(style = SlideTransitions::class)
 @Composable
 fun AppOnBoardingSemesterDetailScreen(
     semesterId: Long,

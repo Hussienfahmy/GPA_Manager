@@ -7,11 +7,7 @@ import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.grades_setting_presentation.GradeSettingsScreen
-import com.hussienfahmy.myGpaManager.navigation.SlideTransitions
-import com.hussienfahmy.myGpaManager.navigation.graphs.OnBoardingNavGraph
-import com.ramcosta.composedestinations.annotation.Destination
 
-@Destination<OnBoardingNavGraph>(style = SlideTransitions::class)
 @Composable
 fun AppOnBoardingGradesSettingsScreen(
     onNextClick: () -> Unit,
