@@ -11,10 +11,10 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
-// KMP counterpart to BaseModulePlugin. Android target only for now: iOS targets are added
-// per-module once that module has real iosMain code to compile (see the migration plan's iOS
-// phase, deliberately last). Coexists with BaseModulePlugin/BaseComposeModulePlugin - modules
-// that haven't migrated yet keep using those.
+// Android target only for now: iOS targets are added per-module once that module has real
+// iosMain code to compile (see the migration plan's iOS phase, deliberately last). The old
+// Android-only BaseModulePlugin/BaseComposeModulePlugin this coexisted with during the migration
+// are gone now - every library module has migrated to this plugin (or its Compose counterpart).
 class BaseKmpModulePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         val libs = target.extensions.getByType(VersionCatalogsExtension::class.java).named("libs")

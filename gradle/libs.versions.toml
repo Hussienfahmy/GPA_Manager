@@ -224,8 +224,6 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-base-module = { id = "com.gpa.base_module" }
-base-module-compose = { id = "com.gpa.base_compose_module" }
 base-kmp-module = { id = "com.gpa.base_kmp_module" }
 base-kmp-compose-module = { id = "com.gpa.base_kmp_compose_module" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
