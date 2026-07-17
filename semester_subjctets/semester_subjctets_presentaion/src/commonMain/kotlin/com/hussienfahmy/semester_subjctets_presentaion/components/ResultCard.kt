@@ -355,13 +355,13 @@ private fun PredictHero(
                         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                             Text(
                                 text = stringResource(Res.string.semester).uppercase(),
-                                style = CapsLabelStyle.copy(fontWeight = FontWeight.Black),
+                                style = CapsLabelStyle().copy(fontWeight = FontWeight.Black),
                                 color = accent.deep,
                                 maxLines = 1,
                             )
                             Text(
                                 text = stringResource(Res.string.gpa_needed).uppercase(),
-                                style = CapsLabelStyle,
+                                style = CapsLabelStyle(),
                                 color = colors.inkFaint,
                                 maxLines = 1,
                             )

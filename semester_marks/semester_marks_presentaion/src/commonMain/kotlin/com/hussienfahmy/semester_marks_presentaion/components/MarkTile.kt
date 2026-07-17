@@ -62,7 +62,7 @@ fun MarkTile(
     ) {
         Text(
             text = title.uppercase(),
-            style = CapsLabelStyle.copy(fontSize = 10.5.sp, letterSpacing = 0.06.em),
+            style = CapsLabelStyle().copy(fontSize = 10.5.sp, letterSpacing = 0.06.em),
             color = when {
                 focused -> accent.deep
                 empty -> colors.inkDisabled

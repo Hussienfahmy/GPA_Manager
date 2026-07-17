@@ -97,7 +97,7 @@ fun AppBottomNav(
                     }
                     Text(
                         text = stringResource(destination.label),
-                        style = CapsLabelStyle.copy(
+                        style = CapsLabelStyle().copy(
                             fontSize = 10.5.sp,
                             letterSpacing = 0.sp,
                             fontWeight = if (selected) FontWeight.ExtraBold else FontWeight.Bold,

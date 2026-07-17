@@ -206,7 +206,7 @@ private fun ValueField(
         ) {
             Text(
                 text = label.uppercase(),
-                style = CapsLabelStyle.copy(fontSize = 10.5.sp, letterSpacing = 0.06.em),
+                style = CapsLabelStyle().copy(fontSize = 10.5.sp, letterSpacing = 0.06.em),
                 color = colors.inkFaint,
                 maxLines = 1,
             )
