@@ -2,7 +2,7 @@ package com.hussienfahmy.semester_history_presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
 import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings

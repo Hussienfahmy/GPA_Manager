@@ -41,7 +41,7 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChip
@@ -61,7 +61,7 @@ import com.hussienfahmy.semester_history_presentation.components.SemesterCard
 import com.hussienfahmy.semester_history_presentation.export.ExportReportSheetContent
 import com.hussienfahmy.semester_history_presentation.export.ExportReportViewModel
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SemesterHistoryScreen(

@@ -15,41 +15,69 @@ import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowTextField
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
+import com.hussienfahmy.core_ui.presentation.components.meadow.SegmentedToggle
 import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.semester_history_domain.model.Semester
 
 @Composable
-fun EditSemesterSheet(
-    semester: Semester,
+fun AddPastSemesterSheet(
     onDismiss: () -> Unit,
-    onSaveLabel: (id: Long, label: String) -> Unit,
-    onSaveSummary: (id: Long, label: String, gpa: Double, hours: Int) -> Unit,
+    onAddSummary: (label: String, gpa: Double, hours: Int, level: Int) -> Unit,
+    onAddDetailed: (label: String, level: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = MeadowTheme.colors
 
-    var label by remember { mutableStateOf(semester.label) }
-    var gpa by remember { mutableStateOf(semester.semesterGPA.toString()) }
-    var hours by remember { mutableStateOf(semester.totalCreditHours.toString()) }
+    var selectedType by remember { mutableStateOf(Semester.Type.SUMMARY) }
+    var label by remember { mutableStateOf("") }
+    var gpa by remember { mutableStateOf("") }
+    var hours by remember { mutableStateOf("") }
 
-    val isSummary = semester.type == Semester.Type.SUMMARY
+    val isValid = when (selectedType) {
+        Semester.Type.SUMMARY ->
+            label.isNotBlank()
+                    && (gpa.toDoubleOrNull() ?: -1.0) >= 0.0
+                    && (hours.toIntOrNull() ?: 0) > 0
 
-    val isValid = label.isNotBlank()
-            && if (isSummary) (
-            (gpa.toDoubleOrNull() ?: -1.0) >= 0.0 &&
-                    (hours.toIntOrNull() ?: 0) > 0
-            ) else true
+        Semester.Type.DETAILED ->
+            label.isNotBlank()
+    }
 
     MeadowBottomSheet(onDismiss = onDismiss, modifier = modifier) {
         Text(
-            text = stringResource(Res.string.edit),
+            text = stringResource(Res.string.history_add_past_semester),
             style = MaterialTheme.typography.headlineMedium,
             color = colors.ink,
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        SegmentedToggle(
+            options = listOf(
+                stringResource(Res.string.history_type_summary),
+                stringResource(Res.string.history_type_detailed),
+            ),
+            selectedIndex = if (selectedType == Semester.Type.SUMMARY) 0 else 1,
+            onSelect = { index ->
+                selectedType = if (index == 0) Semester.Type.SUMMARY
+                else Semester.Type.DETAILED
+            },
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = when (selectedType) {
+                Semester.Type.SUMMARY -> stringResource(Res.string.history_summary_type_description)
+                Semester.Type.DETAILED -> stringResource(Res.string.history_detailed_type_description)
+            },
+            style = MaterialTheme.typography.bodySmall,
+            color = colors.inkFaint,
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -57,12 +85,11 @@ fun EditSemesterSheet(
         MeadowTextField(
             value = label,
             onValueChange = { label = it },
-            label = stringResource(Res.string.history_semester_label),
-            isError = label.isBlank(),
+            label = stringResource(Res.string.history_label),
             modifier = Modifier.fillMaxWidth(),
         )
 
-        if (isSummary) {
+        if (selectedType == Semester.Type.SUMMARY) {
             Spacer(modifier = Modifier.height(8.dp))
             MeadowTextField(
                 value = gpa,
@@ -87,12 +114,11 @@ fun EditSemesterSheet(
         Spacer(modifier = Modifier.height(14.dp))
 
         PillButton(
-            text = stringResource(Res.string.save),
+            text = stringResource(Res.string.add),
             onClick = {
-                if (isSummary) {
-                    onSaveSummary(semester.id, label, gpa.toDouble(), hours.toInt())
-                } else {
-                    onSaveLabel(semester.id, label)
+                when (selectedType) {
+                    Semester.Type.SUMMARY -> onAddSummary(label, gpa.toDouble(), hours.toInt(), 0)
+                    Semester.Type.DETAILED -> onAddDetailed(label, 0)
                 }
                 onDismiss()
             },
