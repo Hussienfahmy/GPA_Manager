@@ -34,6 +34,11 @@ kotlin {
             // that used to live in androidMain, now that FirebaseAnalyticsService/AnalyticsModule
             // are commonMain.
             implementation(libs.gitlive.firebase.analytics)
+            // api: createDataStore()/OkioSerializer are part of :core's public API surface -
+            // *_data modules' own DataStore-backed sources (GPADatastore,
+            // SubjectSettingsDataSource) implement OkioSerializer<T> directly.
+            api(libs.androidx.datastore.core.okio)
+            api(libs.okio)
         }
 
         androidMain.dependencies {
