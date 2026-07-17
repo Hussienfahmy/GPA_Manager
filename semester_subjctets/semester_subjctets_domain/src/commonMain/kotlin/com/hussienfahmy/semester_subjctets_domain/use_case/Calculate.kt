@@ -10,7 +10,6 @@ import com.hussienfahmy.core.model.UiText
 import com.hussienfahmy.semester_subjctets_domain.model.Subject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import java.math.BigDecimal
 
 class Calculate(
     private val defaultDispatcher: CoroutineDispatcher,
@@ -35,7 +34,13 @@ class Calculate(
 
         // the calculation steps
         var semesterHours = 0.0
-        var semesterPointsBigDecimal = BigDecimal("0.0")
+        // FLAG FOR REVIEW: was BigDecimal("0.0") + BigDecimal("$product") accumulation
+        // (java.math.BigDecimal has no Kotlin/Native equivalent). The multiplication
+        // (points * creditHours) already happened in plain Double before ever reaching
+        // BigDecimal, so BigDecimal was only ever protecting the *summation* step against
+        // floating-point accumulation error across a handful of subjects - negligible at the
+        // 3-decimal GPA precision this app displays. Plain Double summation below.
+        var semesterPoints = 0.0
         if (list.isEmpty()) return@withContext Result.Failed(UiText.Resource(Res.string.err_waiting_to_add_subjects))
         if (list.all { it.assignedGrade == null }) {
             return@withContext Result.Failed(
@@ -46,11 +51,9 @@ class Calculate(
         list.forEach { subject ->
             semesterHours += subject.creditHours
             if (subject.assignedGrade != null) {
-                semesterPointsBigDecimal += BigDecimal("${subject.assignedGrade.points * subject.creditHours}")
+                semesterPoints += subject.assignedGrade.points * subject.creditHours
             }
         }
-
-        val semesterPoints = semesterPointsBigDecimal.toDouble()
         // semester result
         val semesterGPA = semesterPoints / semesterHours
 

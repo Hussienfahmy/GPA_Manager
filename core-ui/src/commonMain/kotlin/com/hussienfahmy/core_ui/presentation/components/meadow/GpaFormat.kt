@@ -8,13 +8,13 @@ import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import java.util.Locale
+import com.hussienfahmy.core.util.toFixedString
 import kotlin.math.floor
 import kotlin.math.pow
 
 /** The 3-decimal figure shown throughout the app for any GPA value. */
-fun Float.asGpa(): String = String.format(Locale.getDefault(), "%.3f", this)
-fun Double.asGpa(): String = toFloat().asGpa()
+fun Float.asGpa(): String = this.toDouble().toFixedString(3)
+fun Double.asGpa(): String = this.toFixedString(3)
 
 /**
  * Truncates rather than rounds. Round-half-up can push a figure that claims an
@@ -25,13 +25,13 @@ fun Double.asGpa(): String = toFloat().asGpa()
 fun Float.asGpaFloor(decimals: Int = 3): String {
     val factor = 10.0.pow(decimals)
     val truncated = floor(this * factor) / factor
-    return String.format(Locale.getDefault(), "%.${decimals}f", truncated)
+    return truncated.toFixedString(decimals)
 }
 fun Double.asGpaFloor(decimals: Int = 3): String = toFloat().asGpaFloor(decimals)
 
 /** Higher-precision string for the tooltip revealing the value behind a rounded GPA figure. */
-fun Float.asGpaFull(): String = String.format(Locale.getDefault(), "%.6f", this)
-fun Double.asGpaFull(): String = toFloat().asGpaFull()
+fun Float.asGpaFull(): String = this.toDouble().toFixedString(6)
+fun Double.asGpaFull(): String = this.toFixedString(6)
 
 /**
  * Wraps a rounded GPA figure with a tooltip showing the unrounded value —

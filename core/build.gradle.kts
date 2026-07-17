@@ -39,6 +39,9 @@ kotlin {
             // SubjectSettingsDataSource) implement OkioSerializer<T> directly.
             api(libs.androidx.datastore.core.okio)
             api(libs.okio)
+            // Replaces java.text.SimpleDateFormat/java.util.Date (no Kotlin/Native equivalent) in
+            // the report-template renderers' date stamps.
+            implementation(libs.kotlinx.datetime)
         }
 
         androidMain.dependencies {

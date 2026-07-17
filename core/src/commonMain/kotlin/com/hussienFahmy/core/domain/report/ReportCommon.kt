@@ -1,9 +1,11 @@
 package com.hussienfahmy.core.domain.report
 
 import com.hussienfahmy.core.domain.report.ReportCommon.pageFooterCss
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 internal fun String?.escapeHtml(): String {
     if (this == null) return ""
@@ -153,12 +155,25 @@ internal object ReportCommon {
     }
 }
 
-internal fun formatDate(date: Date? = Date()): String {
-    if (date == null) return "—"
-    return SimpleDateFormat("MMM d, yyyy", Locale.US).format(date)
+// java.text.SimpleDateFormat/java.util.Date have no Kotlin/Native equivalent. Every call site
+// uses the default (today's date, in the device's local timezone) - none pass an explicit date -
+// so this is rewritten around kotlin.time.Clock/kotlinx.datetime rather than kept JVM-only.
+// Locale.US was already hardcoded (not the device locale), so a fixed English month-abbreviation
+// table is equivalent, not a behavior change.
+private val MONTH_ABBREVIATIONS = arrayOf(
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+)
+
+@OptIn(ExperimentalTime::class)
+internal fun formatDate(instant: Instant? = Clock.System.now()): String {
+    if (instant == null) return "—"
+    val date = instant.toLocalDateTime(TimeZone.currentSystemDefault())
+    return "${MONTH_ABBREVIATIONS[date.monthNumber - 1]} ${date.dayOfMonth}, ${date.year}"
 }
 
-internal fun formatShortDate(date: Date? = Date()): String {
-    if (date == null) return "—"
-    return SimpleDateFormat("MMM d", Locale.US).format(date)
+@OptIn(ExperimentalTime::class)
+internal fun formatShortDate(instant: Instant? = Clock.System.now()): String {
+    if (instant == null) return "—"
+    val date = instant.toLocalDateTime(TimeZone.currentSystemDefault())
+    return "${MONTH_ABBREVIATIONS[date.monthNumber - 1]} ${date.dayOfMonth}"
 }

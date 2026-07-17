@@ -65,7 +65,7 @@ import com.hussienfahmy.semester_subjctets_domain.use_case.Calculate
 import com.hussienfahmy.semester_subjctets_domain.use_case.PredictGrades
 import com.hussienfahmy.semester_subjctets_presentaion.model.Mode
 import com.hussienfahmy.semester_subjctets_presentaion.model.ModeResult
-import java.util.Locale
+import com.hussienfahmy.core.util.toFixedString
 
 /**
  * The hero card. Normal mode: cumulative GPA + semester GPA + progress rings.
@@ -499,7 +499,7 @@ private fun androidx.compose.foundation.layout.BoxScope.SparkDot(
     )
 }
 
-private fun Float.asPercent(): String = String.format(Locale.getDefault(), "%.1f%%", this)
+private fun Float.asPercent(): String = "${this.toDouble().toFixedString(1)}%"
 
 private val previewSuccess = Calculate.Result.Success(
     semester = Calculate.Result.Success.Data(gpa = 3.35, grade = GradeName.BPlus, percentage = 83.8f),
