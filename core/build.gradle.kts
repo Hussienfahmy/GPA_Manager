@@ -61,7 +61,8 @@ compose {
 
 dependencies {
     // Room's entities/DAOs/database now live in commonMain, but KSP still has to generate a
-    // per-target implementation; "kspAndroid" is the only target processor needed until iOS is
-    // added here, at which point kspIosArm64/kspIosSimulatorArm64/kspIosX64 join it.
+    // per-target implementation - one processor per target that actually compiles this module.
     add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
 }

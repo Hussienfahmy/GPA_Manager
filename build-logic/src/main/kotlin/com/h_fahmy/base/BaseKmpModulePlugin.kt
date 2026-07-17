@@ -11,10 +11,10 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
-// Android target only for now: iOS targets are added per-module once that module has real
-// iosMain code to compile (see the migration plan's iOS phase, deliberately last). The old
-// Android-only BaseModulePlugin/BaseComposeModulePlugin this coexisted with during the migration
-// are gone now - every library module has migrated to this plugin (or its Compose counterpart).
+// Adds iosArm64/iosSimulatorArm64 alongside Android (Phase 11) - applyDefaultHierarchyTemplate()
+// below auto-creates the iosMain/iosTest intermediate source sets once these targets exist, no
+// per-module wiring needed. iosX64 (Intel simulator) is deliberately omitted, matching the
+// migration plan's target list.
 class BaseKmpModulePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         val libs = target.extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
@@ -52,6 +52,9 @@ class BaseKmpModulePlugin : Plugin<Project> {
                         jvmTarget.set(JvmTarget.JVM_17)
                     }
                 }
+
+                iosArm64()
+                iosSimulatorArm64()
 
                 applyDefaultHierarchyTemplate()
 
