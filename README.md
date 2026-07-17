@@ -204,7 +204,7 @@ Contributions are welcome! Please follow these steps:
 
 ## License
 
-This project is proprietary software. All rights reserved.
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0). See the LICENSE file for full details. Commercial licensing is available separately — contact the developer for inquiries.
 
 ---
 
