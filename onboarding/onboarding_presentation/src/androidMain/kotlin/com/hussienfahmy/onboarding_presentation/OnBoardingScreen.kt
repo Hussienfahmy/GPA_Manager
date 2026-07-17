@@ -50,7 +50,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hussienfahmy.core.generated.resources.*
-import com.hussienfahmy.core.domain.auth.service.AuthService
+import com.hussienfahmy.core.domain.auth.service.AuthSignIn
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
@@ -69,7 +69,7 @@ fun OnBoardingScreen(
     viewModel: SignInViewModel = koinViewModel(),
     onSignInSuccess: () -> Unit
 ) {
-    val authService = koinInject<AuthService>()
+    val authSignIn = koinInject<AuthSignIn>()
     val scope = rememberCoroutineScope()
     val spacing = LocalSpacing.current
     val context = LocalContext.current
@@ -96,7 +96,7 @@ fun OnBoardingScreen(
         onNextClick = {
             scope.launch {
                 viewModel.setLoadingState()
-                val signInResult = authService.signIn(context as Activity)
+                val signInResult = authSignIn.signIn(context as Activity)
                 viewModel.onEvent(AuthEvent.OnSignInResult(signInResult))
             }
         },

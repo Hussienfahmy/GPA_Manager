@@ -30,7 +30,7 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
@@ -43,7 +43,7 @@ import com.hussienfahmy.semester_history_domain.model.Semester
 import com.hussienfahmy.semester_history_presentation.components.AddPastSemesterSheet
 import com.hussienfahmy.semester_history_presentation.components.CumulativeGpaCard
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AppOnBoardingGPATrackingScreen(

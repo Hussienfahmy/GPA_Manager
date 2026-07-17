@@ -7,7 +7,7 @@ import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.generated.resources.*
 import org.jetbrains.compose.resources.StringResource
 
 enum class BottomNavDestination(

@@ -1,6 +1,5 @@
 package com.hussienfahmy.myGpaManager.navigation.screens.more
 
-import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,14 +22,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core.domain.user_data.model.UserData
+import com.hussienfahmy.core.util.openUrl
 import com.hussienfahmy.core.util.truncate
 import com.hussienfahmy.core_ui.presentation.analytics.TrackScreenTime
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
@@ -87,7 +85,6 @@ fun MoreScreenContent(
     onAppRatingClick: () -> Unit,
 ) {
     val colors = MeadowTheme.colors
-    val context = LocalContext.current
     var showSignOutSheet by remember { mutableStateOf(false) }
     val githubRepoUrl = stringResource(Res.string.github_repo_url)
     val playStoreLink = stringResource(Res.string.play_store_link)
@@ -158,9 +155,7 @@ fun MoreScreenContent(
                     title = stringResource(Res.string.contribute_to_app),
                     summary = stringResource(Res.string.contribute_to_app_summary),
                     trailing = SettingsRowTrailing.External,
-                    onClick = {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, githubRepoUrl.toUri()))
-                    },
+                    onClick = { openUrl(githubRepoUrl) },
                 )
                 MeadowRowDivider()
                 MeadowSettingsRow(
@@ -171,7 +166,7 @@ fun MoreScreenContent(
                     trailing = SettingsRowTrailing.External,
                     onClick = {
                         onAppRatingClick()
-                        context.startActivity(Intent(Intent.ACTION_VIEW, playStoreLink.toUri()))
+                        openUrl(playStoreLink)
                     },
                 )
             }

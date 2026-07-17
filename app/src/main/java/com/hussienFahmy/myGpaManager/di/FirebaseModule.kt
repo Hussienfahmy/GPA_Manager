@@ -3,6 +3,7 @@ package com.hussienfahmy.myGpaManager.di
 import androidx.credentials.CredentialManager
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.auth.service.AuthService
+import com.hussienfahmy.core.domain.auth.service.AuthSignIn
 import com.hussienfahmy.core.domain.storage.repository.StorageRepository
 import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienfahmy.myGpaManager.data.auth.FirebaseAuthRepository
@@ -69,7 +70,5 @@ val firebaseModule = module {
         )
     }
 
-    single<AuthService> {
-        GoogleAuthService(get())
-    }
+    single { GoogleAuthService(get()) } bind AuthService::class bind AuthSignIn::class
 }
