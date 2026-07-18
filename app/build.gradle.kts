@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
@@ -56,6 +56,7 @@ baselineProfile {
 
 dependencies {
     // Local modules
+    implementation(project(":shared"))
     implementation(project(":core"))
     implementation(project(":core-ui"))
 
@@ -88,7 +89,6 @@ dependencies {
 
     // Koin
     implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
     implementation(libs.koin.androidx.worker)
 
     // Kotlin BOM
@@ -105,10 +105,6 @@ dependencies {
     implementation(libs.bundles.compose.debug)
     implementation(libs.bundles.compose.presentation)
 
-    // Compose Destinations
-    implementation(libs.compose.destinations.core)
-    ksp(libs.compose.destinations.ksp)
-
     // Work Manager
     implementation(libs.androidx.work.runtime.ktx)
 
@@ -116,12 +112,13 @@ dependencies {
     implementation(libs.androidx.profileinstaller)
     baselineProfile(project(":baselineprofile"))
 
-    // Firebase
-    implementation(libs.firebase.firestore)
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.storage)
+    // Firebase (Firestore + Storage + Analytics + Auth all migrated to GitLive)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.gitlive.firebase.firestore)
+    implementation(libs.gitlive.firebase.storage)
+    implementation(libs.gitlive.firebase.analytics)
+    implementation(libs.gitlive.firebase.auth)
     implementation(libs.firebase.crashlytics)
-    implementation(libs.firebase.analytics)
     implementation(libs.firebase.inappmessaging)
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.perf)

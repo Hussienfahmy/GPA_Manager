@@ -7,10 +7,9 @@ import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-// KMP + Compose Multiplatform counterpart to BaseComposeModulePlugin. Applies base_kmp_module
-// first, then wires Compose Multiplatform + Koin's Compose Multiplatform artifacts into
-// commonMain. Deliberately does not touch androidx.navigation / Compose Destinations - those stay
-// on the Android-only plugin until the navigation migration phase (Navigation 3).
+// Applies base_kmp_module first, then wires Compose Multiplatform + Koin's Compose Multiplatform
+// artifacts into commonMain. Navigation 3 (androidx.navigation3) isn't wired in here since it's
+// only used by :app's own navigation host, not by individual feature modules.
 class BaseKmpComposeModulePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         val libs = target.extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
@@ -33,7 +32,9 @@ class BaseKmpComposeModulePlugin : Plugin<Project> {
                     implementation(composeDependencies.runtime)
                     implementation(composeDependencies.foundation)
                     implementation(composeDependencies.material3)
+                    implementation(composeDependencies.materialIconsExtended)
                     implementation(composeDependencies.components.resources)
+                    implementation(composeDependencies.components.uiToolingPreview)
                     implementation(libs.getLibrary("koin-compose"))
                     implementation(libs.getLibrary("koin-compose-viewmodel"))
                 }

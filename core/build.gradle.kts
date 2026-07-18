@@ -30,13 +30,36 @@ kotlin {
             // is itself @Composable, which needs the Compose runtime (Composable annotation,
             // stringResource) on the classpath too.
             api(compose.runtime)
+            // GitLive Firebase Analytics (Phase 7d) - replaces the Android-only SDK dependency
+            // that used to live in androidMain, now that FirebaseAnalyticsService/AnalyticsModule
+            // are commonMain.
+            implementation(libs.gitlive.firebase.analytics)
+            // api: createDataStore()/OkioSerializer are part of :core's public API surface -
+            // *_data modules' own DataStore-backed sources (GPADatastore,
+            // SubjectSettingsDataSource) implement OkioSerializer<T> directly.
+            api(libs.androidx.datastore.core.okio)
+            api(libs.okio)
+            // Replaces java.text.SimpleDateFormat/java.util.Date (no Kotlin/Native equivalent) in
+            // the report-template renderers' date stamps.
+            implementation(libs.kotlinx.datetime)
         }
 
         androidMain.dependencies {
-            implementation(libs.firebase.analytics)
+            // Supplies the version for firebase-analytics (unversioned) that
+            // gitlive.firebase.analytics's Android artifact pulls in transitively.
+            // project.dependencies.platform(...), not the bare platform(...) DSL extension - that
+            // overload is broken inside KMP sourceSet dependency blocks under Kotlin 2.3 (KT-58759).
+            implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.activity.ktx)
             implementation(libs.koin.android)
+        }
+
+        // AppleSignIn.kt exchanges its Apple ID credential for a Firebase session directly -
+        // Android's equivalent (GoogleAuthUiClient/FirebaseAuthRepository) lives in :app instead,
+        // since it also needs androidx.credentials, which :core doesn't otherwise depend on.
+        iosMain.dependencies {
+            implementation(libs.gitlive.firebase.auth)
         }
     }
 }
@@ -53,7 +76,8 @@ compose {
 
 dependencies {
     // Room's entities/DAOs/database now live in commonMain, but KSP still has to generate a
-    // per-target implementation; "kspAndroid" is the only target processor needed until iOS is
-    // added here, at which point kspIosArm64/kspIosSimulatorArm64/kspIosX64 join it.
+    // per-target implementation - one processor per target that actually compiles this module.
     add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
 }

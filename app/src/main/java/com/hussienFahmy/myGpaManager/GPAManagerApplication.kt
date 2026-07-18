@@ -19,6 +19,8 @@ import com.hussienfahmy.grades_setting_domain.di.gradesSettingDomainModule
 import com.hussienfahmy.grades_setting_presentation.di.gradesSettingPresentationModule
 import com.hussienfahmy.myGpaManager.di.appKoinModule
 import com.hussienfahmy.myGpaManager.di.firebaseModule
+import com.hussienfahmy.myGpaManager.di.sharedFirebaseModule
+import com.hussienfahmy.myGpaManager.di.sharedKoinModule
 import com.hussienfahmy.onboarding_presentation.di.onboardingPresentationModule
 import com.hussienfahmy.quick_domain.di.quickDomainModule
 import com.hussienfahmy.quick_presentation.di.quickPresentationModule
@@ -32,6 +34,7 @@ import com.hussienfahmy.subject_settings_data.di.subjectSettingsDataModule
 import com.hussienfahmy.subject_settings_domain.di.subjectSettingsDomainModule
 import com.hussienfahmy.subject_settings_presentation.di.subjectSettingsPresentationModule
 import com.hussienfahmy.sync_domain.di.syncDomainModule
+import com.hussienfahmy.sync_domain.di.syncWorkerModule
 import com.hussienfahmy.sync_domain.worker.SyncWorkerUpload
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.koin.workManagerFactory
@@ -68,7 +71,10 @@ class GPAManagerApplication : Application(), KoinComponent {
                 semesterHistoryDomainModule,
                 semesterHistoryPresentationModule,
                 syncDomainModule,
+                syncWorkerModule,
                 onboardingPresentationModule,
+                sharedKoinModule,
+                sharedFirebaseModule,
                 appKoinModule,
                 firebaseModule,
                 analyticsModule

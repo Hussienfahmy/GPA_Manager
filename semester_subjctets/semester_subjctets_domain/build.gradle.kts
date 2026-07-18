@@ -1,6 +1,11 @@
 plugins {
-    alias(libs.plugins.base.module)
+    alias(libs.plugins.base.kmp.module)
 }
-dependencies {
-    implementation(project(":core"))
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":core"))
+        }
+    }
 }

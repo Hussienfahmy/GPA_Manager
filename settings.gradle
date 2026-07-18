@@ -14,6 +14,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "GPAManager"
 include ':app'
+include ':shared'
 include ':core'
 include ':grades_setting'
 include ':grades_setting:grades_setting_domain'
