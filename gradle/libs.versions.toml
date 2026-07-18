@@ -33,14 +33,12 @@ espressoCore = "3.7.0"
 
 # Compose
 composeBom = "2026.02.01"
-composeIconsAndroid = "1.0.0"
 material-icons = "1.7.8"
 
 # Koin
 koin = "4.1.1"
 
 # Third Party Libraries
-coil = "2.7.0"
 mockk = "1.14.9"
 
 # Firebase
@@ -147,9 +145,6 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "material-icons" }
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "material-icons" }
 
-# Third Party Compose Icons
-compose-icons-font-awesome = { group = "br.com.devsrsouza.compose.icons.android", name = "font-awesome", version.ref = "composeIconsAndroid" }
-
 # Kotlin
 kotlin-bom = { group = "org.jetbrains.kotlin", name = "kotlin-bom", version.ref = "kotlinBom" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
@@ -159,7 +154,6 @@ kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime",
 # Koin
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
-koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-androidx-worker = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
@@ -167,19 +161,16 @@ koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin"
 koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koin" }
 
 # Third Party
-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
-# Coil 3 (multiplatform) - added for the core-ui KMP migration phase, not wired in yet
 coil3-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil3" }
 coil3-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coil3" }
-# OkHttp-backed network engine - used instead of coil3-network-ktor while Coil consumers are
-# still Android-only (no Ktor client engine artifact configured yet); switch to the ktor3 engine
-# above once these move to commonMain for iOS.
+# OkHttp-backed network engine, used on Android only (auto-discovered via Coil's JVM-only
+# ServiceLoader mechanism); iOS uses coil3-network-ktor + ktor-client-darwin instead.
 coil3-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil3" }
 # iOS's coil3 network engine - Ktor's Darwin (NSURLSession-backed) client engine.
 ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 
-# Compose Destinations
-# Jetpack Navigation 3 (multiplatform) - wired into :app in Phase 8, replacing Compose Destinations
+# Jetpack Navigation 3 (multiplatform) - replaced Compose Destinations in Phase 8; the app-level
+# nav host lives in :shared as of Phase 11 (see shared/build.gradle.kts)
 androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3" }
 androidx-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
 androidx-lifecycle-viewmodel-navigation3 = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "androidxLifecycle" }
