@@ -27,6 +27,12 @@ kotlin {
         // the other Phase 11 iOS stubs. Revisit once there's a real iOS app shell and either
         // Navigation 3 or its own nav host to hand this off to.
         androidMain.dependencies {
+            // Supplies versions for firebase-firestore/storage/auth (unversioned) that the
+            // gitlive.firebase.* Android artifacts below pull in transitively.
+            // project.dependencies.platform(...), not the bare platform(...) DSL extension - that
+            // overload is broken inside KMP sourceSet dependency blocks under Kotlin 2.3 (KT-58759).
+            implementation(project.dependencies.platform(libs.firebase.bom))
+
             implementation(project(":core"))
             implementation(project(":core-ui"))
 

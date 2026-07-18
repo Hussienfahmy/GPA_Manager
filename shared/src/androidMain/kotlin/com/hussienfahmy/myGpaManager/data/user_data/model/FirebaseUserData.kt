@@ -1,7 +1,31 @@
 package com.hussienfahmy.myGpaManager.data.user_data.model
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+
+// Accounts created before the Phase 7a Firebase migration have createdAt/updatedAt stored as a
+// native Firestore Timestamp (the pre-migration Android SDK's server-timestamp type), not the
+// epoch-millis Long this migration switched to (see TimestampMapper.kt for why). Neither field is
+// read anywhere downstream - they're write-only bookkeeping - so on a legacy Timestamp-shaped
+// document there's nothing to recover; just don't let it crash the whole document decode.
+private object LenientEpochMillisSerializer : KSerializer<Long> {
+    override val descriptor = PrimitiveSerialDescriptor("LenientEpochMillis", PrimitiveKind.LONG)
+
+    override fun serialize(encoder: Encoder, value: Long) = encoder.encodeLong(value)
+
+    override fun deserialize(decoder: Decoder): Long {
+        return try {
+            decoder.decodeLong()
+        } catch (e: Exception) {
+            0L
+        }
+    }
+}
 
 // No id/@DocumentId field: the document id is always the Firebase Auth uid already known to the
 // caller (userDoc(userId) = .document(userId)), so it's redundant to also store/read it from the
@@ -14,7 +38,9 @@ internal data class FirebaseUserData(
     @SerialName(PROPERTY_ACADEMIC_INFO) val academicInfo: AcademicInfo = AcademicInfo(),
     @SerialName(PROPERTY_FCM_TOKEN) val fcmToken: String = "",
     @SerialName(PROPERTY_ACADEMIC_PROGRESS) val academicProgress: AcademicProgress = AcademicProgress(),
+    @Serializable(with = LenientEpochMillisSerializer::class)
     @SerialName(PROPERTY_CREATED_AT) val createdAt: Long? = null,
+    @Serializable(with = LenientEpochMillisSerializer::class)
     @SerialName(PROPERTY_UPDATED_AT) val updatedAt: Long? = null,
 ) {
     @Serializable
