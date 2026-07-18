@@ -68,6 +68,9 @@ composeMultiplatform = "1.10.1"
 sqlite = "2.7.0"
 coil3 = "3.5.0"
 gitliveFirebase = "2.4.0"
+# Only used for coil3's iOS network engine (coil3-network-ktor + ktor-client-darwin) - Android
+# keeps its existing OkHttp engine, so this doesn't need to match any other Ktor usage.
+ktor = "3.1.2"
 # JetBrains' multiplatform publication of Jetpack Navigation 3. Reconfirm exact group/version at
 # Phase 8 kickoff - this is a fast-moving library.
 navigation3 = "1.1.1"
@@ -172,6 +175,8 @@ coil3-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", 
 # still Android-only (no Ktor client engine artifact configured yet); switch to the ktor3 engine
 # above once these move to commonMain for iOS.
 coil3-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil3" }
+# iOS's coil3 network engine - Ktor's Darwin (NSURLSession-backed) client engine.
+ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 
 # Compose Destinations
 # Jetpack Navigation 3 (multiplatform) - wired into :app in Phase 8, replacing Compose Destinations

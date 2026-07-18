@@ -42,8 +42,6 @@ export. Written blind in a sandbox with no macOS/Xcode/simulator anywhere in the
 - Sign in with Apple's Xcode capability ("Sign in with Apple" under Signing & Capabilities) isn't
   enabled in this project file - add it, and enable the capability in the Apple Developer portal
   for this app ID.
-- Coil3's iOS image-loading network engine isn't wired up (see `core-ui/build.gradle.kts`) - photo
-  URLs won't load on iOS until a `SingletonImageLoader.setSafe { ... }` call is added somewhere in
-  this entry point.
-- `PdfReportPrinter`, `ImageThumbnailer`, `ReportBrandingProvider`'s iOS actuals are best-effort,
-  unverified native interop - see their file comments in `core/src/iosMain/`.
+- `PdfReportPrinter`, `ImageThumbnailer`, `ReportBrandingProvider`'s iOS actuals, and Coil3's iOS
+  network engine (`core-ui/src/iosMain/.../CoilImageLoader.ios.kt`) are all best-effort, unverified
+  native interop - see their file comments in `core/src/iosMain/` and `core-ui/src/iosMain/`.
