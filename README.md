@@ -9,7 +9,7 @@ A GPA tracker for Android — grade calculation, semester history, and predictiv
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.0-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
 [![Min SDK](https://img.shields.io/badge/minSdk-26-brightgreen)](https://android-arsenal.com/api?level=26)
 [![Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
-[![License](https://img.shields.io/badge/license-proprietary-lightgrey)](#license)
+[![License](https://img.shields.io/badge/license-GPL--3.0-blue)](#license)
 
 <a href="https://play.google.com/store/apps/details?id=com.hussienFahmy.myGpaManager&hl=en">
   <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
