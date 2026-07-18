@@ -19,7 +19,7 @@ actual class PermissionController(private val activity: ComponentActivity) {
     }
 
     @SuppressLint("InlinedApi")
-    actual fun requestPermission(permission: AppPermission) {
+    actual suspend fun requestPermission(permission: AppPermission) {
         when (permission) {
             AppPermission.Notifications -> {
                 if (!hasNotificationPermission()) {

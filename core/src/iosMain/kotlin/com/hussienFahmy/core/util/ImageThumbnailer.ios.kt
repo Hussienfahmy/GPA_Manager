@@ -1,19 +1,27 @@
 package com.hussienfahmy.core.util
 
+import kotlinx.cinterop.ExperimentalForeignApi
+import platform.Foundation.NSData
 import platform.Foundation.NSURL
+import platform.UIKit.UIImage
+import platform.UIKit.UIImageJPEGRepresentation
 
 // NSURL is the natural iOS analog of Android's Uri as a "picked file handle" - matches the shape
 // of the Android actual (actual typealias PlatformImageSource = Uri).
 actual typealias PlatformImageSource = NSURL
 
-// STUB: real implementation needs to load image data from the NSURL (likely via PHPickerResult/
-// PHAsset if picking through PhotosUI, or NSData(contentsOfURL:) for a plain file URL) and resize/
-// recompress it via Core Graphics (CGImage/CGBitmapContext) or UIImage's JPEG representation APIs.
-// Depends on how the iOS photo-picker UI itself ends up being built, which doesn't exist yet -
-// throws rather than returning a fabricated empty ByteArray, since callers expect real JPEG bytes.
+// Best-effort, unverified - no simulator/device available in this sandbox. Reads the picked
+// file's raw bytes via NSData(contentsOfURL:), decodes to a UIImage, and re-encodes as JPEG -
+// the same shape as the Android actual's ImageDecoder->Bitmap->JPEG pipeline.
+@OptIn(ExperimentalForeignApi::class)
 actual class ImageThumbnailer {
     actual suspend fun createThumbnail(source: PlatformImageSource, quality: Int): ByteArray {
-        throw NotImplementedError("ImageThumbnailer.createThumbnail is not yet implemented on iOS")
+        val data = NSData.dataWithContentsOfURL(source)
+            ?: error("Could not read image data from $source")
+        val image = UIImage(data = data)
+        val jpeg = UIImageJPEGRepresentation(image, quality / 100.0)
+            ?: error("Could not JPEG-encode image from $source")
+        return jpeg.toByteArray()
     }
 }
 

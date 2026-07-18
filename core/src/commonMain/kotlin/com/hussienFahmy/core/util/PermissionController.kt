@@ -4,12 +4,18 @@ enum class AppPermission {
     Notifications,
 }
 
-// iOS actual is deferred to the iOS phase, since nothing consumes it yet. Unlike the other :core
-// expect/actuals so far, this one is NOT created via a GlobalContext-backed factory function - the
-// Android actual must be constructed with the current Activity before it reaches STARTED (an
+// Not created via a GlobalContext-backed factory function like most other :core expect/actuals -
+// the Android actual must be constructed with the current Activity before it reaches STARTED (an
 // androidx.activity.result.ActivityResultLauncher registration constraint), so callers construct
-// it explicitly at the same point they used to call the old PermissionHelper.init(activity).
+// it explicitly at the same point they used to call the old PermissionHelper.init(activity). The
+// iOS actual has no such constraint and takes a no-arg constructor instead.
+//
+// requestPermission() is suspend (unlike the original Android-only design) because iOS's
+// UNUserNotificationCenter authorization API is callback-based, not synchronous like Android's
+// ActivityResultLauncher.launch(). The Android actual doesn't need to actually suspend - it still
+// just fires the launcher and returns - so this is a source-compatible widening, not a behavior
+// change on Android.
 expect class PermissionController {
     fun hasPermission(permission: AppPermission): Boolean
-    fun requestPermission(permission: AppPermission)
+    suspend fun requestPermission(permission: AppPermission)
 }

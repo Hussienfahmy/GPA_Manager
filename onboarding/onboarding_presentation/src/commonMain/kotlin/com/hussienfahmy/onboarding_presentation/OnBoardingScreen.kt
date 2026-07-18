@@ -1,6 +1,5 @@
 package com.hussienfahmy.onboarding_presentation
 
-import android.app.Activity
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,120 +29,44 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import org.jetbrains.compose.resources.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hussienfahmy.core.generated.resources.*
-import com.hussienfahmy.core.domain.auth.service.AuthSignIn
-import com.hussienfahmy.core_ui.LocalSpacing
-import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
-import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
-import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
+import com.hussienfahmy.core_ui.theme.MeadowAccent
 import com.hussienfahmy.core_ui.theme.MeadowTheme
-import com.hussienfahmy.onboarding_presentation.sign_in.AuthEvent
-import com.hussienfahmy.onboarding_presentation.sign_in.SignInState
 import com.hussienfahmy.onboarding_presentation.sign_in.SignInViewModel
-import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
+/**
+ * The onboarding welcome/sign-in screen. Presenting a sign-in UI is one of the few genuinely
+ * platform-specific things in this app - Android drives Google Sign-In via a CredentialManager
+ * flow needing an Activity, iOS drives Sign in with Apple via AuthenticationServices - so the
+ * top-level composable is expect/actual while the hero/feature-highlight UI below (identical on
+ * both platforms) stays shared.
+ */
 @Composable
-fun OnBoardingScreen(
+expect fun OnBoardingScreen(
     viewModel: SignInViewModel = koinViewModel(),
-    onSignInSuccess: () -> Unit
-) {
-    val authSignIn = koinInject<AuthSignIn>()
-    val scope = rememberCoroutineScope()
-    val spacing = LocalSpacing.current
-    val context = LocalContext.current
-
-    val state by viewModel.state
-
-    LaunchedEffect(key1 = state) {
-        when (state) {
-            SignInState.Success -> onSignInSuccess()
-            SignInState.Initial,
-            SignInState.Loading,
-            SignInState.Syncing,
-            SignInState.Error -> {
-            }
-        }
-    }
-
-    UiEventHandler(uiEvent = viewModel.uiEvent)
-
-    OnboardingLayout(
-        title = stringResource(Res.string.onboarding_welcome_title),
-        subtitle = stringResource(Res.string.onboarding_welcome_subtitle),
-        currentStep = OnboardingConstants.Steps.WELCOME,
-        onNextClick = {
-            scope.launch {
-                viewModel.setLoadingState()
-                val signInResult = authSignIn.signIn(context as Activity)
-                viewModel.onEvent(AuthEvent.OnSignInResult(signInResult))
-            }
-        },
-        nextButtonText = stringResource(Res.string.onboarding_welcome_get_started),
-        nextButtonEnabled = state != SignInState.Loading && state != SignInState.Syncing,
-        nextButtonLoading = state == SignInState.Loading || state == SignInState.Syncing
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(spacing.large),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(spacing.large)
-        ) {
-            // Animated Hero Section
-            AnimatedHeroSection()
-
-            // Welcome message with personality
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(spacing.small)
-            ) {
-                Text(
-                    text = stringResource(Res.string.onboarding_welcome_tagline),
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.primary
-                )
-
-                Text(
-                    text = stringResource(Res.string.onboarding_welcome_subtitle_motivational),
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-
-            // Feature highlights with icons
-            FeatureHighlights()
-        }
-    }
-}
+    onSignInSuccess: () -> Unit,
+)
 
 /** Brand ring mark (design 2d): a 3/4-swept green ring with "4.0" centered,
  *  a filled inner disc, and three slowly-orbiting spark dots in the tab hues. */
 @Composable
-private fun AnimatedHeroSection() {
+internal fun AnimatedHeroSection() {
     val colors = MeadowTheme.colors
     val accent = MeadowTheme.accent
 
@@ -189,13 +111,13 @@ private fun AnimatedHeroSection() {
 }
 
 @Composable
-private fun SparkDot(
-    color: androidx.compose.ui.graphics.Color,
+internal fun SparkDot(
+    color: Color,
     angle: Float,
-    distance: androidx.compose.ui.unit.Dp,
-    size: androidx.compose.ui.unit.Dp,
+    distance: Dp,
+    size: Dp,
 ) {
-    val rad = Math.toRadians(angle.toDouble())
+    val rad = kotlin.math.PI * angle.toDouble() / 180.0
     Box(
         modifier = Modifier
             .offset(
@@ -208,15 +130,15 @@ private fun SparkDot(
     )
 }
 
-private data class Feature(
+internal data class Feature(
     val icon: ImageVector,
     val title: String,
     val description: String,
-    val accent: com.hussienfahmy.core_ui.theme.MeadowAccent,
+    val accent: MeadowAccent,
 )
 
 @Composable
-private fun FeatureHighlights() {
+internal fun FeatureHighlights() {
     val colors = MeadowTheme.colors
     val features = listOf(
         Feature(
@@ -260,7 +182,7 @@ private fun FeatureHighlights() {
 }
 
 @Composable
-private fun FeatureCard(feature: Feature, modifier: Modifier = Modifier) {
+internal fun FeatureCard(feature: Feature, modifier: Modifier = Modifier) {
     val colors = MeadowTheme.colors
 
     MeadowCard(
@@ -293,12 +215,4 @@ private fun FeatureCard(feature: Feature, modifier: Modifier = Modifier) {
             color = colors.inkFaint,
         )
     }
-}
-
-@Preview
-@Composable
-fun OnBoardingScreenPreview() {
-    OnBoardingScreen(
-        onSignInSuccess = {}
-    )
 }
