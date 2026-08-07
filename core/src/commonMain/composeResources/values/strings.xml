@@ -10,10 +10,10 @@
     <string name="calculation_settings_screen_summary">GPA System (4 or 5), Subject Marks</string>
     <string name="cancel">Cancel</string>
     <string name="const_subject_marks">Const Subject Marks</string>
-    <string name="credit_hours_value">Credit Hours: %d</string>
+    <string name="credit_hours_value">Credit Hours: %1$d</string>
     <string name="cumulative">Cumulative</string>
     <string name="cumulative_gpa">Cumulative GPA</string>
-    <string name="cumulative_gpa_value">Cumulative GPA: %s</string>
+    <string name="cumulative_gpa_value">Cumulative GPA: %1$s</string>
     <string name="cumulative_gpa_will_be">The Cumulative GPA will be</string>
     <string name="cumulative_target_gpa">Target Cumulative GPA</string>
     <string name="current_cumulative_gpa">Current Cumulative GPA</string>
@@ -112,7 +112,7 @@
     <string name="is_app_useful_details">If you find the app useful and really helped you, make us happy by clicking here to rate and review the app on play store</string>
     <string name="about_app">About App</string>
     <string name="about_app_summary">Info about the app and the developer</string>
-    <string name="app_version" translatable="false">Version %s</string>
+    <string name="app_version" translatable="false">Version %1$s</string>
     <string name="connect_with_us">Connect with us</string>
     <string name="facebook_page">facebook page</string>
     <string name="like_us_on_facebook">Like us on Facebook</string>

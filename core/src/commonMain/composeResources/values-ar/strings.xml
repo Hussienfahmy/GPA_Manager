@@ -31,10 +31,10 @@
     <string name="calculation_settings_screen_summary">نظام المعدل التراكمي (4 أو 5)، إعدادات درجات المواد</string>
     <string name="cancel">إلغاء</string>
     <string name="const_subject_marks">القيمة الثابتة لدرجة المادة</string>
-    <string name="credit_hours_value">الساعات المعتمدة: %d</string>
+    <string name="credit_hours_value">الساعات المعتمدة: %1$d</string>
     <string name="cumulative">التراكمي</string>
     <string name="cumulative_gpa">المعدل التراكمي</string>
-    <string name="cumulative_gpa_value">المعدل التراكمي: %s</string>
+    <string name="cumulative_gpa_value">المعدل التراكمي: %1$s</string>
     <string name="cumulative_gpa_will_be">المعدل التراكمي سيصبح</string>
     <string name="cumulative_target_gpa">المعدل التراكمي المستهدف</string>
     <string name="current_cumulative_gpa">المعدل التراكمي الحالي</string>
