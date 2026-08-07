@@ -29,6 +29,11 @@ import com.hussienfahmy.myGpaManager.navigation.OnboardingNavHost
 import com.hussienfahmy.myGpaManager.navigation.OnboardingRoute
 import com.hussienfahmy.myGpaManager.navigation.rememberAppNavigationState
 import com.hussienfahmy.myGpaManager.ui.theme.GPAManagerTheme
+import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
+import com.mohamedrejeb.calf.permissions.Notification
+import com.mohamedrejeb.calf.permissions.Permission
+import com.mohamedrejeb.calf.permissions.PermissionStatus
+import com.mohamedrejeb.calf.permissions.rememberPermissionState
 import org.koin.compose.viewmodel.koinViewModel
 
 private fun getOnboardingStep(route: NavKey?): Int = when (route) {
@@ -45,17 +50,11 @@ private fun getOnboardingStep(route: NavKey?): Int = when (route) {
 
 /**
  * The whole app's composition root - both :app's MainActivity.kt (Android) and the iOS entry
- * point's MainViewController.kt call this directly. onRequestNotificationPermission is a
- * callback rather than this composable owning a PermissionController itself, since
- * PermissionController's Android actual must be constructed with the current Activity before it
- * reaches STARTED - a platform-specific timing constraint that belongs in the platform entry
- * point, not here. It's suspend because PermissionController.requestPermission() itself is
- * (see PermissionController.kt) - called directly from the LaunchedEffect below.
+ * point's MainViewController.kt call this directly with no arguments.
  */
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun GpaManagerApp(
-    onRequestNotificationPermission: suspend () -> Unit,
-) {
+fun GpaManagerApp() {
     val viewModel: MainViewModel = koinViewModel()
 
     GPAManagerTheme {
@@ -63,6 +62,7 @@ fun GpaManagerApp(
         val localFocusManager = LocalFocusManager.current
         val snackBarHostState = remember { SnackbarHostState() }
         val isSingedIn by viewModel.isSignedIn.collectAsState()
+        val notificationPermissionState = rememberPermissionState(Permission.Notification)
 
         val appNavigationState = rememberAppNavigationState()
         val onboardingBackStack = rememberNavBackStack(OnboardingRoute.Welcome)
@@ -84,9 +84,11 @@ fun GpaManagerApp(
         LaunchedEffect(appNavigationState.topLevelRoute, isSingedIn) {
             if (isSingedIn != true) return@LaunchedEffect
 
-            if (appNavigationState.topLevelRoute == AppRoute.Semester) {
+            if (appNavigationState.topLevelRoute == AppRoute.Semester &&
+                notificationPermissionState.status !is PermissionStatus.Granted
+            ) {
                 // request notification permission if not granted after user completes sign in.
-                onRequestNotificationPermission()
+                notificationPermissionState.launchPermissionRequest()
             }
         }
 

@@ -72,6 +72,10 @@ gitliveFirebase = "2.4.0"
 ktor = "3.1.2"
 navigation3 = "1.1.1"
 lifecycleViewmodelNavigation3 = "2.11.0"
+# Multiplatform runtime permissions (notification permission) - Compose-idiomatic
+# rememberPermissionState(), no manual Activity wiring needed, unlike the old hand-rolled
+# PermissionController which required constructing with the current Activity before STARTED.
+calfPermissions = "0.13.0"
 
 # Baseline Profile
 # Plugin pinned to 1.5.0-alpha07: latest stable (1.4.1) doesn't detect AGP 9's application
@@ -174,6 +178,10 @@ ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.r
 androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3" }
 androidx-navigation3-ui = { group = "org.jetbrains.androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
 androidx-lifecycle-viewmodel-navigation3 = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNavigation3" }
+
+# Calf Permissions - replaced the hand-rolled PermissionController expect/actual.
+calf-permissions-core = { group = "com.mohamedrejeb.calf", name = "calf-permissions-core", version.ref = "calfPermissions" }
+calf-permissions-notifications = { group = "com.mohamedrejeb.calf", name = "calf-permissions-notifications", version.ref = "calfPermissions" }
 
 # Room KMP - same artifact coordinates as the Android-only ones above, just the multiplatform
 # driver needed for non-Android targets, added for the Room KMP migration phase

@@ -62,6 +62,11 @@ kotlin {
             // Replaces java.text.SimpleDateFormat/java.util.Date in the semester-history HTML
             // export's filename timestamp.
             implementation(libs.kotlinx.datetime)
+
+            // Notification permission request in GpaManagerApp.kt - rememberPermissionState()
+            // handles lifecycle-aware permission state itself, no manual Activity wiring needed.
+            implementation(libs.calf.permissions.core)
+            implementation(libs.calf.permissions.notifications)
         }
 
         androidMain.dependencies {
