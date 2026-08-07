@@ -1,18 +1,17 @@
 package com.hussienfahmy.core.domain.report
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.Base64
 import androidx.core.graphics.createBitmap
+import com.hussienfahmy.core.util.PlatformContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.koin.core.context.GlobalContext
 import java.io.ByteArrayOutputStream
 
-actual class ReportBrandingProvider(private val context: Context) {
+actual class ReportBrandingProvider actual constructor(private val context: PlatformContext) {
     actual suspend fun loadAppIconBase64Png(): String? = withContext(Dispatchers.IO) {
         try {
             val drawable = context.packageManager.getApplicationIcon(context.packageName)
@@ -45,6 +44,3 @@ actual class ReportBrandingProvider(private val context: Context) {
         return Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
     }
 }
-
-actual fun createReportBrandingProvider(): ReportBrandingProvider =
-    ReportBrandingProvider(GlobalContext.get().get())

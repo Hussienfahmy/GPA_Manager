@@ -2,10 +2,11 @@ package com.hussienfahmy.myGpaManager.navigation.screens
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import com.hussienfahmy.core.domain.report.createPdfReportPrinter
+import com.hussienfahmy.core.domain.report.PdfReportPrinter
 import com.hussienfahmy.semester_history_presentation.SemesterHistoryScreen
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.koin.compose.koinInject
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -24,12 +25,14 @@ fun AppSemesterHistoryScreen(
     snackBarHostState: SnackbarHostState,
     onSemesterClick: (Long) -> Unit,
 ) {
+    val pdfReportPrinter = koinInject<PdfReportPrinter>()
+
     SemesterHistoryScreen(
         snackBarHostState = snackBarHostState,
         onSemesterClick = onSemesterClick,
         onExportHtml = { html ->
             val title = "Academic_Report_${exportTimestamp()}"
-            createPdfReportPrinter().print(html = html, title = title)
+            pdfReportPrinter.print(html = html, title = title)
         },
     )
 }

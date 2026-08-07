@@ -1,17 +1,16 @@
 package com.hussienfahmy.core.domain.report
 
 import com.hussienfahmy.core.generated.resources.Res
+import com.hussienfahmy.core.util.PlatformContext
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 // Loads the app icon / QR code as base64-encoded PNGs for embedding into the exported academic
 // report HTML.
-expect class ReportBrandingProvider {
+expect class ReportBrandingProvider(context: PlatformContext) {
     suspend fun loadAppIconBase64Png(): String?
     suspend fun loadQrCodeBase64Png(): String?
 }
-
-expect fun createReportBrandingProvider(): ReportBrandingProvider
 
 // Shared by both platform actuals - the QR code is a bundled Compose Multiplatform resource
 // (core/src/commonMain/composeResources/drawable/qr_code.png), so loading + base64-encoding it is

@@ -5,9 +5,9 @@ import android.print.PrintAttributes
 import android.print.PrintManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import org.koin.core.context.GlobalContext
+import com.hussienfahmy.core.util.PlatformContext
 
-actual class PdfReportPrinter(private val context: Context) {
+actual class PdfReportPrinter actual constructor(private val context: PlatformContext) {
     actual fun print(html: String, title: String) {
         val webView = WebView(context.applicationContext)
         webView.settings.javaScriptEnabled = false
@@ -26,8 +26,3 @@ actual class PdfReportPrinter(private val context: Context) {
         webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null)
     }
 }
-
-// Same GlobalContext pattern as the other :core factories (getDatabaseBuilder,
-// createImageThumbnailer) - the expect fun signature is shared with the future iOS actual.
-actual fun createPdfReportPrinter(): PdfReportPrinter =
-    PdfReportPrinter(GlobalContext.get().get())

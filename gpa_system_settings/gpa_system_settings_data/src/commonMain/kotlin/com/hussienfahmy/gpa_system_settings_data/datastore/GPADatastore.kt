@@ -1,12 +1,13 @@
 package com.hussienfahmy.gpa_system_settings_data.datastore
 
 import com.hussienfahmy.core.data.local.datastore.createDataStore
+import com.hussienfahmy.core.util.PlatformContext
 import com.hussienfahmy.gpa_system_settings_data.model.GPA
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
-internal class GPADatastore {
-    private val dataSource = createDataStore("gpa_system", GPASerializer)
+internal class GPADatastore(context: PlatformContext) {
+    private val dataSource = createDataStore(context, "gpa_system", GPASerializer)
 
     fun observeGPASystem(): Flow<GPA> {
         return dataSource.data

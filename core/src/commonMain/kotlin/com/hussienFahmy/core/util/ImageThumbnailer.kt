@@ -8,8 +8,6 @@ package com.hussienfahmy.core.util
 // aliased directly. Wrapping it sidesteps that entirely.
 expect class PlatformImageSource
 
-expect class ImageThumbnailer {
+expect class ImageThumbnailer(context: PlatformContext) {
     suspend fun createThumbnail(source: PlatformImageSource, quality: Int = 60): ByteArray
 }
-
-expect fun createImageThumbnailer(): ImageThumbnailer

@@ -11,7 +11,7 @@ import org.koin.dsl.module
 
 // Koin module for GPA System Settings Data
 val gpaSystemSettingsDataModule: Module = module {
-    single { GPADatastore() }
+    single { GPADatastore(get()) }
 
     // Repository binding
     single<GPASettingsRepository> { GPASettingsRepositoryImpl(get()) }

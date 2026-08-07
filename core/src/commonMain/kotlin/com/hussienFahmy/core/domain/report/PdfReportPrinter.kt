@@ -1,9 +1,7 @@
 package com.hussienfahmy.core.domain.report
 
-// iOS actual (WKWebView + UIPrintPageRenderer/UIGraphicsPDFRenderer, the direct analog of
-// Android's WebView+PrintManager) is deferred to the iOS phase, since nothing consumes it yet.
-expect class PdfReportPrinter {
+import com.hussienfahmy.core.util.PlatformContext
+
+expect class PdfReportPrinter(context: PlatformContext) {
     fun print(html: String, title: String)
 }
-
-expect fun createPdfReportPrinter(): PdfReportPrinter

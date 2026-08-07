@@ -4,8 +4,8 @@ enum class AppPermission {
     Notifications,
 }
 
-// Not created via a GlobalContext-backed factory function like most other :core expect/actuals -
-// the Android actual must be constructed with the current Activity before it reaches STARTED (an
+// Not a Koin single like most other :core expect/actuals (PlatformContext-taking classes) - the
+// Android actual must be constructed with the current Activity before it reaches STARTED (an
 // androidx.activity.result.ActivityResultLauncher registration constraint), so callers construct
 // it explicitly at the same point they used to call the old PermissionHelper.init(activity). The
 // iOS actual has no such constraint and takes a no-arg constructor instead.

@@ -1,4 +1,6 @@
 package com.hussienfahmy.core.util
 
-/** Opens [url] in the platform's default browser/handler. */
-expect fun openUrl(url: String)
+expect class UrlOpener(context: PlatformContext) {
+    /** Opens [url] in the platform's default browser/handler. */
+    fun open(url: String)
+}

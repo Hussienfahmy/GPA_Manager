@@ -16,7 +16,6 @@ import com.hussienfahmy.core.domain.user_data.use_cases.UpdateSemester
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateUniversity
 import com.hussienfahmy.core.domain.user_data.use_cases.UploadPhoto
 import com.hussienfahmy.core.domain.user_data.use_cases.UserDataUseCases
-import com.hussienfahmy.core.util.createImageThumbnailer
 import org.koin.dsl.module
 
 val coreUserDataDomainModule = module {
@@ -36,7 +35,7 @@ val coreUserDataDomainModule = module {
                 repository = get(),
                 updatePhotoUrl = UpdatePhotoUrl(get()),
                 storageRepository = get(),
-                imageThumbnailer = createImageThumbnailer(),
+                imageThumbnailer = get(),
             ),
             updateUniversity = UpdateUniversity(get()),
             updateFaculty = UpdateFaculty(get()),

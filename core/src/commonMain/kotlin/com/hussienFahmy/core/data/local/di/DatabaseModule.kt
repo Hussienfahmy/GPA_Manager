@@ -9,13 +9,14 @@ import com.hussienfahmy.core.data.local.MIGRATION_10_11
 import com.hussienfahmy.core.data.local.SemesterDao
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.entity.Grade
+import com.hussienfahmy.core.util.PlatformContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import org.koin.dsl.module
 
-// Android actual in data/local/di/DatabaseModule.android.kt; iOS actual added in the iOS phase.
-expect fun getDatabaseBuilder(): RoomDatabase.Builder<AppDatabase>
+expect fun getDatabaseBuilder(context: PlatformContext): RoomDatabase.Builder<AppDatabase>
 
 val databaseModule = module {
 
@@ -38,7 +39,7 @@ val databaseModule = module {
 
     // Room database
     single<AppDatabase> {
-        getDatabaseBuilder()
+        getDatabaseBuilder(get())
             .fallbackToDestructiveMigration(false)
             .addCallback(get<RoomDatabase.Callback>())
             .addMigrations(MIGRATION_10_11)

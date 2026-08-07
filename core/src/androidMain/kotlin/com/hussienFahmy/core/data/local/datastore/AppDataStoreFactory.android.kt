@@ -1,11 +1,9 @@
 package com.hussienfahmy.core.data.local.datastore
 
-import android.app.Application
+import com.hussienfahmy.core.util.PlatformContext
 import okio.Path
 import okio.Path.Companion.toOkioPath
-import org.koin.core.context.GlobalContext
 
-actual fun dataStoreFilePath(fileName: String): Path {
-    val appContext = GlobalContext.get().get<Application>()
-    return appContext.filesDir.resolve(fileName).toOkioPath()
+actual fun dataStoreFilePath(context: PlatformContext, fileName: String): Path {
+    return context.filesDir.resolve(fileName).toOkioPath()
 }

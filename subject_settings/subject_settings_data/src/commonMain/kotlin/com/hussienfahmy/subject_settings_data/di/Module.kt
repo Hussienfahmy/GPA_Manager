@@ -7,6 +7,6 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val subjectSettingsDataModule = module {
-    single { SubjectSettingsDataSource() }
+    single { SubjectSettingsDataSource(get()) }
     single { SubjectSettingsRepositoryImpl(get()) }.bind<SubjectSettingsRepository>()
 }

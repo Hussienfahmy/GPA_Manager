@@ -28,7 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core.domain.user_data.model.UserData
-import com.hussienfahmy.core.util.openUrl
+import com.hussienfahmy.core.util.UrlOpener
 import com.hussienfahmy.core.util.truncate
 import com.hussienfahmy.core_ui.presentation.analytics.TrackScreenTime
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
@@ -40,6 +40,7 @@ import com.hussienfahmy.core_ui.presentation.components.meadow.SettingsGroupLabe
 import com.hussienfahmy.core_ui.presentation.components.meadow.SettingsRowTrailing
 import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
 import com.hussienfahmy.core_ui.theme.MeadowTheme
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -85,6 +86,7 @@ fun MoreScreenContent(
     onAppRatingClick: () -> Unit,
 ) {
     val colors = MeadowTheme.colors
+    val urlOpener = koinInject<UrlOpener>()
     var showSignOutSheet by remember { mutableStateOf(false) }
     val githubRepoUrl = stringResource(Res.string.github_repo_url)
     val playStoreLink = stringResource(Res.string.play_store_link)
@@ -155,7 +157,7 @@ fun MoreScreenContent(
                     title = stringResource(Res.string.contribute_to_app),
                     summary = stringResource(Res.string.contribute_to_app_summary),
                     trailing = SettingsRowTrailing.External,
-                    onClick = { openUrl(githubRepoUrl) },
+                    onClick = { urlOpener.open(githubRepoUrl) },
                 )
                 MeadowRowDivider()
                 MeadowSettingsRow(
@@ -166,7 +168,7 @@ fun MoreScreenContent(
                     trailing = SettingsRowTrailing.External,
                     onClick = {
                         onAppRatingClick()
-                        openUrl(playStoreLink)
+                        urlOpener.open(playStoreLink)
                     },
                 )
             }

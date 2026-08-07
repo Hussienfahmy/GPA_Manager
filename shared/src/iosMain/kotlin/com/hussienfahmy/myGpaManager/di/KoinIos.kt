@@ -7,6 +7,7 @@ import com.hussienfahmy.core.domain.auth.service.AuthService
 import com.hussienfahmy.core.domain.grades.di.coreGradesDomainModule
 import com.hussienfahmy.core.domain.subject_settings.di.coreSubjectSettingsDomainModule
 import com.hussienfahmy.core.domain.user_data.di.coreUserDataDomainModule
+import com.hussienfahmy.core.util.PlatformContext
 import com.hussienfahmy.core_ui.domain.di.coreUiDomainModule
 import com.hussienfahmy.core_ui.presentation.util.initCoilImageLoader
 import com.hussienfahmy.gpa_system_settings_data.di.gpaSystemSettingsDataModule
@@ -72,6 +73,7 @@ fun doInitKoin() {
             analyticsModule,
             module {
                 single<AuthService> { IosAuthService(get()) }
+                single { object : PlatformContext() {} }
             },
         )
     }
