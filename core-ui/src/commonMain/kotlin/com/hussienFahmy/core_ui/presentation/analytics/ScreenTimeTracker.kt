@@ -5,16 +5,19 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import org.koin.compose.koinInject
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 @Composable
 fun TrackScreenTime(screenName: String) {
     val analyticsLogger = koinInject<AnalyticsLogger>()
-    val startTime = remember { System.currentTimeMillis().milliseconds }
+    val startTime = remember { Clock.System.now().toEpochMilliseconds().milliseconds }
 
     DisposableEffect(Unit) {
         onDispose {
-            val timeSpent = (System.currentTimeMillis().milliseconds - startTime)
+            val timeSpent = (Clock.System.now().toEpochMilliseconds().milliseconds - startTime)
             analyticsLogger.logScreenTime(screenName, timeSpent.inWholeSeconds)
         }
     }

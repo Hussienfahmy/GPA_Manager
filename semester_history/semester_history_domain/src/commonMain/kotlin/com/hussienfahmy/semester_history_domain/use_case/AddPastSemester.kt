@@ -3,6 +3,8 @@ package com.hussienfahmy.semester_history_domain.use_case
 import com.hussienfahmy.core.data.local.SemesterDao
 import com.hussienfahmy.core.data.local.entity.Semester
 import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class AddPastSemester(
     private val semesterDao: SemesterDao,
@@ -25,6 +27,7 @@ class AddPastSemester(
     /**
      * Returns the created semester ID (used by Detailed flow to navigate to subject entry).
      */
+    @OptIn(ExperimentalTime::class)
     suspend operator fun invoke(request: Request): Long {
         val nextOrder = (semesterDao.getMaxOrder() ?: 0) + 1
 
@@ -38,7 +41,7 @@ class AddPastSemester(
                     totalCreditHours = request.totalCreditHours,
                     status = Semester.Status.ARCHIVED,
                     order = nextOrder,
-                    archivedAt = System.currentTimeMillis(),
+                    archivedAt = Clock.System.now().toEpochMilliseconds(),
                 )
                 semesterDao.insert(semester)
             }
@@ -52,7 +55,7 @@ class AddPastSemester(
                     totalCreditHours = 0,
                     status = Semester.Status.ARCHIVED,
                     order = nextOrder,
-                    archivedAt = System.currentTimeMillis(),
+                    archivedAt = Clock.System.now().toEpochMilliseconds(),
                 )
                 semesterDao.insert(semester)
             }

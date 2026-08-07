@@ -3,7 +3,10 @@ package com.hussienfahmy.core.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 @Entity(tableName = "semester")
 data class Semester(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -14,9 +17,7 @@ data class Semester(
     val totalCreditHours: Int = 0,
     val status: Status = Status.ARCHIVED,
     val order: Int = 0,
-    // JVM-only API (java.lang.System) - compiles today because :core only targets androidTarget;
-    // needs kotlinx-datetime (or an expect/actual, pending confirmation) before iosMain is added.
-    val createdAt: Long = System.currentTimeMillis(),
+    val createdAt: Long = Clock.System.now().toEpochMilliseconds(),
     val archivedAt: Long? = null,
 ) {
     // @Serializable on Type only (not the whole Room @Entity) - needed for

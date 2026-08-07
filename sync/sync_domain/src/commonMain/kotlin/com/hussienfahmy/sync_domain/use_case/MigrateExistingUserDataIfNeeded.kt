@@ -7,6 +7,8 @@ import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
 import com.hussienfahmy.sync_domain.repository.SyncRepository
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class MigrateExistingUserDataIfNeeded(
     private val syncRepository: SyncRepository,
@@ -27,6 +29,7 @@ class MigrateExistingUserDataIfNeeded(
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     private suspend fun migrateExistingUserData(): Boolean {
         val userData = getUserData().filterNotNull().first()
         val cumulativeGPA = userData.academicProgress.cumulativeGPA
@@ -44,7 +47,7 @@ class MigrateExistingUserDataIfNeeded(
             totalCreditHours = creditHours,
             status = Semester.Status.ARCHIVED,
             order = 1,
-            archivedAt = System.currentTimeMillis(),
+            archivedAt = Clock.System.now().toEpochMilliseconds(),
         )
 
         semesterDao.insert(semester)
