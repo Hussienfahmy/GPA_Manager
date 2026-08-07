@@ -6,8 +6,7 @@ kotlin {
     // Kotlin/Native framework export: iosApp/ (the Xcode project) links against Shared.framework
     // and calls MainViewController() (shared/src/iosMain/.../MainViewController.kt) to get a
     // UIViewController hosting the whole Compose UI. Static (vs. dynamic) so Xcode just needs a
-    // plain "Embed Frameworks" build phase, no run-script step. Unverified in this sandbox - no
-    // Xcode/simulator available to confirm the framework actually links and runs.
+    // plain "Embed Frameworks" build phase, no run-script step.
     listOf(iosArm64(), iosSimulatorArm64()).forEach { target ->
         target.binaries.framework {
             baseName = "Shared"
@@ -55,8 +54,8 @@ kotlin {
             // the one-time existing-user data migration.
             implementation(libs.gitlive.firebase.auth)
 
-            // FirebaseSyncRepository / FirebaseUserDataRepository (Firestore) and
-            // FirebaseStorageRepository, moved here from :app in this phase.
+            // Used by FirebaseSyncRepository / FirebaseUserDataRepository (Firestore) and
+            // FirebaseStorageRepository.
             implementation(libs.gitlive.firebase.firestore)
             implementation(libs.gitlive.firebase.storage)
 

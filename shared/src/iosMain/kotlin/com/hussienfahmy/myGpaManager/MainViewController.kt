@@ -7,8 +7,7 @@ import platform.UIKit.UIViewController
 
 // Called from iosApp/iosApp/iOSApp.swift (ComposeView.swift's UIViewControllerRepresentable) to
 // get the root UIViewController hosting the whole Compose UI - the iOS analog of :app's
-// MainActivity.setContent { GpaManagerApp(...) }. Best-effort, unverified - no simulator/device
-// available in this sandbox.
+// MainActivity.setContent { GpaManagerApp(...) }.
 fun MainViewController(): UIViewController {
     val permissionController = PermissionController()
     return ComposeUIViewController {

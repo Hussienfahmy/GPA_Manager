@@ -75,14 +75,13 @@ class FirebaseUserDataRepository(
             initialValue = null
         )
 
-    // FLAG FOR REVIEW: the old Android SDK's mapOf(field to value) update worked with value typed
-    // as plain Any because Firestore's Android SDK serializes via reflection at runtime. GitLive's
+    // The old Android SDK's mapOf(field to value) update worked with value typed as plain Any
+    // because Firestore's Android SDK serializes via reflection at runtime. GitLive's
     // updateFields{} DSL is kotlinx.serialization-based, which typically resolves serializers from
     // *static* (often reified) type info - "field to value" here has value statically typed as
     // Any, which may not resolve a serializer correctly for non-String/primitive values (in
-    // particular updateSemester's FirebaseUserData.AcademicInfo.Semester enum argument). This is
-    // the single highest-risk line in this phase and needs verification against a real build;
-    // if it doesn't compile or doesn't serialize correctly, each updateXxx caller below may need
+    // particular updateSemester's FirebaseUserData.AcademicInfo.Semester enum argument), a risk
+    // untested at runtime. If it doesn't serialize correctly, each updateXxx caller below may need
     // its own non-generic updateFields{} call with the concrete type inline instead of routing
     // through this shared helper.
     @OptIn(ExperimentalTime::class)

@@ -13,7 +13,7 @@ kotlin {
 
             // coil3.compose is genuinely multiplatform (unlike coil3.network.okhttp below), so
             // AsyncImage/ImageRequest/LocalPlatformContext now resolve on iOS too - this is what
-            // unblocks UserPhoto.kt/MeadowUserCard.kt out of androidMain (Phase 11e).
+            // unblocks UserPhoto.kt/MeadowUserCard.kt out of androidMain.
             implementation(libs.coil3.compose)
         }
 

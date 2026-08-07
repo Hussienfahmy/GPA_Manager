@@ -34,7 +34,7 @@ class Calculate(
 
         // the calculation steps
         var semesterHours = 0.0
-        // FLAG FOR REVIEW: was BigDecimal("0.0") + BigDecimal("$product") accumulation
+        // Was BigDecimal("0.0") + BigDecimal("$product") accumulation
         // (java.math.BigDecimal has no Kotlin/Native equivalent). The multiplication
         // (points * creditHours) already happened in plain Double before ever reaching
         // BigDecimal, so BigDecimal was only ever protecting the *summation* step against

@@ -11,10 +11,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
-// Adds iosArm64/iosSimulatorArm64 alongside Android (Phase 11) - applyDefaultHierarchyTemplate()
-// below auto-creates the iosMain/iosTest intermediate source sets once these targets exist, no
-// per-module wiring needed. iosX64 (Intel simulator) is deliberately omitted, matching the
-// migration plan's target list.
+// Adds iosArm64/iosSimulatorArm64 alongside Android - applyDefaultHierarchyTemplate() below
+// auto-creates the iosMain/iosTest intermediate source sets once these targets exist, no
+// per-module wiring needed. iosX64 (Intel simulator) is deliberately omitted.
 class BaseKmpModulePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         val libs = target.extensions.getByType(VersionCatalogsExtension::class.java).named("libs")

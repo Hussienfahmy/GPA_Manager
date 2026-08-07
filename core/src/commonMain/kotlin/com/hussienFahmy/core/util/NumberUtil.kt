@@ -8,11 +8,10 @@ import kotlin.math.round
 
 // java.math.BigDecimal/RoundingMode and kotlin.text's JVM-only String.format("%.Nf", ...) have no
 // Kotlin/Native equivalent, so both functions here are rewritten on plain kotlin.math instead of
-// moved as-is. FLAG FOR REVIEW: BigDecimal("$this") parsed the float's *string* (decimal)
-// representation, while this.toDouble() below widens the float's *binary* representation - these
-// usually agree for the "nice" decimal values GPA/marks entry produces, but it's a real,
-// unverified behavioral difference worth double-checking against the old BigDecimal output once a
-// real build exists.
+// moved as-is. BigDecimal("$this") parsed the float's *string* (decimal) representation, while
+// this.toDouble() below widens the float's *binary* representation - these usually agree for the
+// "nice" decimal values GPA/marks entry produces, but it's a real behavioral difference worth
+// double-checking against the old BigDecimal output.
 fun Float.toTwoDecimals(): Float {
     val factor = 100.0
     val scaled = this.toDouble() * factor
@@ -32,13 +31,12 @@ fun Double.truncate(digits: Int = 4): String {
  * Rounds to [digits] decimal places and formats as a fixed-decimal string (e.g. "3.140") -
  * the multiplatform replacement for String.format(Locale.X, "%.Nf", value), which is JVM-only.
  *
- * FLAG FOR REVIEW: this always uses a '.' decimal point, unlike the callers this replaces in
+ * This always uses a '.' decimal point, unlike the callers this replaces in
  * GpaFormat.kt/QuickResultCard.kt/ResultCard.kt, which used String.format(Locale.getDefault(),
  * ...) - genuinely locale-sensitive (e.g. a device set to a comma-decimal locale like German
  * would previously show "3,140"). This is a real, user-visible behavior change on those locales,
- * not just a compile-target detail - worth confirming is acceptable (or replacing with a proper
- * locale-aware multiplatform number formatter) before shipping, not something to treat as settled
- * by this rewrite.
+ * worth confirming is acceptable (or replacing with a proper locale-aware multiplatform number
+ * formatter) before shipping.
  */
 fun Double.toFixedString(digits: Int): String {
     val factor = 10.0.pow(digits)

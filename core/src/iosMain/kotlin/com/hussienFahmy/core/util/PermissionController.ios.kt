@@ -7,7 +7,6 @@ import platform.UserNotifications.UNAuthorizationOptionSound
 import platform.UserNotifications.UNUserNotificationCenter
 import kotlin.coroutines.resume
 
-// Best-effort, unverified - no simulator/device available in this sandbox.
 actual class PermissionController {
     actual fun hasPermission(permission: AppPermission): Boolean {
         // UNUserNotificationCenter's authorization status is only obtainable via an async

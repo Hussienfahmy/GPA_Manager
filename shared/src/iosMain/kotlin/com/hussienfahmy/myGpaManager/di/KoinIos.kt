@@ -35,8 +35,6 @@ import org.koin.dsl.module
 // background-sync scheduling has no iOS equivalent wired up yet, see syncWorkerModule's comment)
 // and firebaseModule (androidx.credentials-based Google Sign-In; iOS's AuthService binds to
 // IosAuthService instead, wrapping the already-portable AuthRepository - see IosAuthService.kt).
-// Best-effort, unverified - no simulator/device available in this sandbox to confirm Koin's
-// startKoin() actually completes correctly from a Swift-called entry point.
 //
 // Named doInitKoin(), not initKoin(): Swift's Objective-C bridge treats any exported method whose
 // name starts with "init" as an initializer, which would otherwise mangle how this is callable

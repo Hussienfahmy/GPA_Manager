@@ -11,10 +11,6 @@ class FirebaseStorageRepository(
 
     override suspend fun uploadUserPhoto(userId: String, imageData: ByteArray): String {
         val photoRef = storage.reference.child("${FirebaseUserData.USERS_COLLECTION_NAME}/$userId")
-        // FLAG FOR REVIEW: Data(imageData)'s exact Android constructor signature could not be
-        // fully verified against GitLive's source in this sandbox (conflicting fetch results) -
-        // double check this against the actual dev.gitlive.firebase.storage.Data class before
-        // relying on it.
         photoRef.putData(Data(imageData))
         return photoRef.getDownloadUrl()
     }

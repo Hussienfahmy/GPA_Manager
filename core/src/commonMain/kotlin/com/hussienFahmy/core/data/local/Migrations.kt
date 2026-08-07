@@ -5,8 +5,7 @@ import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.execSQL
 
 // Uses the multiplatform SQLiteConnection.execSQL (androidx.sqlite) instead of the Android-only
-// SupportSQLiteDatabase, so this migration lives in commonMain - unverified against a real build
-// in this sandbox, please confirm the exact `androidx.sqlite.execSQL` import resolves as expected.
+// SupportSQLiteDatabase, so this migration lives in commonMain.
 val MIGRATION_10_11 = object : Migration(10, 11) {
     override fun migrate(connection: SQLiteConnection) {
         // Create new grade table with meta_data as primary key

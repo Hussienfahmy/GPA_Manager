@@ -30,9 +30,9 @@ kotlin {
             // is itself @Composable, which needs the Compose runtime (Composable annotation,
             // stringResource) on the classpath too.
             api(compose.runtime)
-            // GitLive Firebase Analytics (Phase 7d) - replaces the Android-only SDK dependency
-            // that used to live in androidMain, now that FirebaseAnalyticsService/AnalyticsModule
-            // are commonMain.
+            // GitLive Firebase Analytics replaces the Android-only SDK dependency that used to
+            // live in androidMain, now that FirebaseAnalyticsService/AnalyticsModule are
+            // commonMain.
             implementation(libs.gitlive.firebase.analytics)
             // api: createDataStore()/OkioSerializer are part of :core's public API surface -
             // *_data modules' own DataStore-backed sources (GPADatastore,

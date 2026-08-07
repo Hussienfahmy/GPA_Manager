@@ -10,9 +10,8 @@ import platform.UIKit.UIImageJPEGRepresentation
 // of the Android actual (actual typealias PlatformImageSource = Uri).
 actual typealias PlatformImageSource = NSURL
 
-// Best-effort, unverified - no simulator/device available in this sandbox. Reads the picked
-// file's raw bytes via NSData(contentsOfURL:), decodes to a UIImage, and re-encodes as JPEG -
-// the same shape as the Android actual's ImageDecoder->Bitmap->JPEG pipeline.
+// Reads the picked file's raw bytes via NSData(contentsOfURL:), decodes to a UIImage, and
+// re-encodes as JPEG - the same shape as the Android actual's ImageDecoder->Bitmap->JPEG pipeline.
 @OptIn(ExperimentalForeignApi::class)
 actual class ImageThumbnailer {
     actual suspend fun createThumbnail(source: PlatformImageSource, quality: Int): ByteArray {

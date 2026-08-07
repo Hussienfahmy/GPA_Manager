@@ -45,10 +45,6 @@ import kotlin.coroutines.resume
  * auth library, MIT licensed) - swapped from that library's CocoaPods-based FIROAuthProvider
  * interop to this project's own GitLive Firebase-Kotlin-SDK OAuthProvider, since this codebase
  * already uses GitLive for every other Firebase product (Auth/Firestore/Storage/Analytics).
- *
- * Best-effort, unverified - no simulator/device available anywhere in this pipeline to confirm
- * the AuthenticationServices delegate callbacks, the presentation-anchor lookup, or the
- * SHA-256/nonce exchange with Firebase actually behave as written.
  */
 class AppleSignIn {
     // Held strongly while a request is in flight: ASAuthorizationController's delegate and

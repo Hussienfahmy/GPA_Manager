@@ -18,12 +18,11 @@ import androidx.navigation3.ui.NavDisplay
  * transition API - NavDisplay.TransitionKey/PopTransitionKey put into a per-entry metadata map,
  * confirmed verbatim against developer.android.com's animate-destinations guide.
  *
- * FLAG FOR REVIEW: Nav3's docs don't fully spell out which entry's metadata (the one being
- * navigated to vs. the one being navigated back to) wins in which direction for a flat
- * multi-screen flow like onboarding - this is a best-effort port of the original visual timings,
- * not verified against a real build. Since these are purely cosmetic, worst case is a slightly
- * different animation, not a functional bug; spot-check the onboarding flow and the
- * History -> SemesterDetail push on a real device/emulator.
+ * Nav3's docs don't fully spell out which entry's metadata (the one being navigated to vs. the
+ * one being navigated back to) wins in which direction for a flat multi-screen flow like
+ * onboarding - this is a best-effort port of the original visual timings. Since these are purely
+ * cosmetic, worst case is a slightly different animation, not a functional bug; spot-check the
+ * onboarding flow and the History -> SemesterDetail push on a real device/emulator.
  */
 
 private const val FADE_IN_DURATION = 220

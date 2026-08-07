@@ -8,11 +8,11 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-// Accounts created before the Phase 7a Firebase migration have createdAt/updatedAt stored as a
-// native Firestore Timestamp (the pre-migration Android SDK's server-timestamp type), not the
-// epoch-millis Long this migration switched to (see TimestampMapper.kt for why). Neither field is
-// read anywhere downstream - they're write-only bookkeeping - so on a legacy Timestamp-shaped
-// document there's nothing to recover; just don't let it crash the whole document decode.
+// Accounts created before the switch to GitLive Firestore have createdAt/updatedAt stored as a
+// native Firestore Timestamp (the old Android SDK's server-timestamp type), not the epoch-millis
+// Long used now (see TimestampMapper.kt for why). Neither field is read anywhere downstream -
+// they're write-only bookkeeping - so on a legacy Timestamp-shaped document there's nothing to
+// recover; just don't let it crash the whole document decode.
 private object LenientEpochMillisSerializer : KSerializer<Long> {
     override val descriptor = PrimitiveSerialDescriptor("LenientEpochMillis", PrimitiveKind.LONG)
 

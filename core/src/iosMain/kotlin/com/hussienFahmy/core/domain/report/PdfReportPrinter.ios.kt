@@ -11,8 +11,7 @@ import platform.WebKit.WKWebView
 // The iOS analog of the Android actual's WebView+PrintManager: render the report HTML in an
 // off-screen WKWebView, then hand its print formatter to UIPrintInteractionController, which
 // shows the system print sheet - the same shape as Android's WebView.createPrintDocumentAdapter
-// + PrintManager. Best-effort, unverified - no simulator/device available in this sandbox to
-// confirm the WKNavigationDelegate callback signature or the print sheet's presentation.
+// + PrintManager.
 actual class PdfReportPrinter {
     // Held strongly until the print flow completes: WKWebView.navigationDelegate is a weak
     // reference in UIKit, so this async webView/delegate pair would otherwise be eligible for

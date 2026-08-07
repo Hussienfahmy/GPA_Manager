@@ -16,10 +16,10 @@ import org.koin.dsl.binds
 import org.koin.dsl.module
 
 // The GitLive Firebase singletons + AuthRepository/StorageRepository/UserDataRepository/
-// SyncRepository bindings moved to :shared's sharedFirebaseModule (Phase 11 - they had zero
-// Android coupling). What's left here needs androidx.credentials specifically: CredentialManager,
-// GoogleAuthUiClient (Google Sign-In's CredentialManager-based flow), and the AuthService/
-// AuthSignIn bindings that wrap it.
+// SyncRepository bindings live in :shared's sharedFirebaseModule (no Android coupling). What's
+// left here needs androidx.credentials specifically: CredentialManager, GoogleAuthUiClient
+// (Google Sign-In's CredentialManager-based flow), and the AuthService/AuthSignIn bindings that
+// wrap it.
 val firebaseModule = module {
     single<CredentialManager> {
         CredentialManager.create(androidContext())
