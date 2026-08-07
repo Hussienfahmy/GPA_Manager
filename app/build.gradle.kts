@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = libs.versions.nameSpace.get()
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdkVersion("android-${libs.versions.compileSdk.get()}")
 
     defaultConfig {
         applicationId = libs.versions.appId.get()

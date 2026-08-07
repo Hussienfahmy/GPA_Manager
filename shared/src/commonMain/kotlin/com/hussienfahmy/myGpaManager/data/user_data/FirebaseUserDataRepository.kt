@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class FirebaseUserDataRepository(
     authRepository: AuthRepository,
@@ -32,13 +34,14 @@ class FirebaseUserDataRepository(
         return userDoc.first()?.get()?.exists ?: false
     }
 
+    @OptIn(ExperimentalTime::class)
     override suspend fun createUserData(
         id: String,
         name: String,
         photoUrl: String,
         email: String,
     ) {
-        val now = System.currentTimeMillis()
+        val now = Clock.System.now().toEpochMilliseconds()
         userDoc.first()?.set(
             FirebaseUserData(
                 name = name,
@@ -82,10 +85,11 @@ class FirebaseUserDataRepository(
     // if it doesn't compile or doesn't serialize correctly, each updateXxx caller below may need
     // its own non-generic updateFields{} call with the concrete type inline instead of routing
     // through this shared helper.
+    @OptIn(ExperimentalTime::class)
     private suspend fun updateField(field: String, value: Any) {
         userDoc.first()?.updateFields {
             field to value
-            FirebaseUserData.PROPERTY_UPDATED_AT to System.currentTimeMillis()
+            FirebaseUserData.PROPERTY_UPDATED_AT to Clock.System.now().toEpochMilliseconds()
         }
     }
 

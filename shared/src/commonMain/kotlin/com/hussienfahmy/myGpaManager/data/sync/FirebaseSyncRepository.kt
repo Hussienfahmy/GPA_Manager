@@ -13,6 +13,8 @@ import com.hussienfahmy.sync_domain.model.Settings
 import com.hussienfahmy.sync_domain.model.Subject
 import com.hussienfahmy.sync_domain.repository.SyncRepository
 import dev.gitlive.firebase.firestore.FirebaseFirestore
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class FirebaseSyncRepository(
     private val db: FirebaseFirestore
@@ -30,11 +32,12 @@ class FirebaseSyncRepository(
     private fun userDoc(userId: String) =
         db.collection(FirebaseUserData.USERS_COLLECTION_NAME).document(userId)
 
+    @OptIn(ExperimentalTime::class)
     override suspend fun uploadSubjects(userId: String, subjects: List<Subject>) {
         val doc = subjectsDoc(userId)
         val firebaseNetworkSubjects = FirebaseNetworkSubjects(
             subjects = subjects,
-            lastUpdate = System.currentTimeMillis()
+            lastUpdate = Clock.System.now().toEpochMilliseconds()
         )
         doc.set(firebaseNetworkSubjects)
     }

@@ -33,7 +33,7 @@ class BaseKmpModulePlugin : Plugin<Project> {
 
             extensions.getByType<LibraryExtension>().apply {
                 namespace = libs.findVersion("nameSpace").get().toString()
-                compileSdk = libs.findVersion("compileSdk").get().toString().toInt()
+                compileSdkVersion("android-${libs.findVersion("compileSdk").get()}")
 
                 defaultConfig {
                     minSdk = libs.findVersion("minSdk").get().toString().toInt()

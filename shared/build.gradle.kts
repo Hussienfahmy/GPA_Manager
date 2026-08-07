@@ -16,23 +16,7 @@ kotlin {
     }
 
     sourceSets {
-        // FLAG FOR REVIEW: everything here is androidMain, not commonMain. Two of its Navigation 3
-        // deps (navigation3-ui, lifecycle-viewmodel-navigation3) are genuine Android-only AndroidX
-        // artifacts with no iOS klib published ("KMP Dependencies Resolution Failure" when they
-        // sat in commonMain against this module's iosArm64/iosSimulatorArm64 targets, added
-        // globally to base_kmp_module in Phase 11). The composition root (AppNavHost/
-        // OnboardingNavHost/AppNavigationState/the onboarding screens) is entirely Android Compose
-        // code today with no iOS entry point calling it yet, so keeping the whole module
-        // Android-only for now is honest, not a workaround - same "not attempted blind" stance as
-        // the other Phase 11 iOS stubs. Revisit once there's a real iOS app shell and either
-        // Navigation 3 or its own nav host to hand this off to.
-        androidMain.dependencies {
-            // Supplies versions for firebase-firestore/storage/auth (unversioned) that the
-            // gitlive.firebase.* Android artifacts below pull in transitively.
-            // project.dependencies.platform(...), not the bare platform(...) DSL extension - that
-            // overload is broken inside KMP sourceSet dependency blocks under Kotlin 2.3 (KT-58759).
-            implementation(project.dependencies.platform(libs.firebase.bom))
-
+        commonMain.dependencies {
             implementation(project(":core"))
             implementation(project(":core-ui"))
 
@@ -79,6 +63,15 @@ kotlin {
             // Replaces java.text.SimpleDateFormat/java.util.Date in the semester-history HTML
             // export's filename timestamp.
             implementation(libs.kotlinx.datetime)
+        }
+
+        androidMain.dependencies {
+            // Supplies versions for firebase-firestore/storage/auth (unversioned) that the
+            // gitlive.firebase.* Android artifacts pull in transitively - an Android-only need,
+            // since iOS's gitlive artifacts don't depend on Google's unversioned Android SDK.
+            // project.dependencies.platform(...), not the bare platform(...) DSL extension - that
+            // overload is broken inside KMP sourceSet dependency blocks under Kotlin 2.3 (KT-58759).
+            implementation(project.dependencies.platform(libs.firebase.bom))
         }
     }
 }

@@ -2,7 +2,7 @@
 # Project Config
 appId = "com.hussienFahmy.myGpaManager"
 nameSpace = "com.hussienfahmy.myGpaManager"
-compileSdk = "36"
+compileSdk = "37.0"
 googleid = "1.2.0"
 minSdk = "23"
 targetSdk = "36"
@@ -70,9 +70,8 @@ gitliveFirebase = "2.4.0"
 # Only used for coil3's iOS network engine (coil3-network-ktor + ktor-client-darwin) - Android
 # keeps its existing OkHttp engine, so this doesn't need to match any other Ktor usage.
 ktor = "3.1.2"
-# JetBrains' multiplatform publication of Jetpack Navigation 3. Reconfirm exact group/version at
-# Phase 8 kickoff - this is a fast-moving library.
 navigation3 = "1.1.1"
+lifecycleViewmodelNavigation3 = "2.11.0"
 
 # Baseline Profile
 # Plugin pinned to 1.5.0-alpha07: latest stable (1.4.1) doesn't detect AGP 9's application
@@ -173,8 +172,8 @@ ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.r
 # Jetpack Navigation 3 (multiplatform) - replaced Compose Destinations in Phase 8; the app-level
 # nav host lives in :shared as of Phase 11 (see shared/build.gradle.kts)
 androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3" }
-androidx-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
-androidx-lifecycle-viewmodel-navigation3 = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "androidxLifecycle" }
+androidx-navigation3-ui = { group = "org.jetbrains.androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
+androidx-lifecycle-viewmodel-navigation3 = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNavigation3" }
 
 # Room KMP - same artifact coordinates as the Android-only ones above, just the multiplatform
 # driver needed for non-Android targets, added for the Room KMP migration phase

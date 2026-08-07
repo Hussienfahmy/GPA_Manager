@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.hussienfahmy.baselineprofile"
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdkVersion("android-${libs.versions.compileSdk.get()}")
 
     defaultConfig {
         minSdk = 28
