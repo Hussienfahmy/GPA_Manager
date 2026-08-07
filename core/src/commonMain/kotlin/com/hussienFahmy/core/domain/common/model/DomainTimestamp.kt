@@ -20,6 +20,4 @@ data class DomainTimestamp(
             )
         }
     }
-
-    fun toMillis(): Long = seconds * 1000 + nanoseconds / 1_000_000
 }
