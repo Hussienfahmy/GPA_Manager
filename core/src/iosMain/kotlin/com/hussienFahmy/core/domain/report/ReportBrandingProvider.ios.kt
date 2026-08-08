@@ -15,25 +15,20 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 // the conventional "AppIcon" asset-catalog name some Xcode configurations don't auto-populate
 // CFBundleIconFiles for.
 @OptIn(ExperimentalForeignApi::class, ExperimentalEncodingApi::class)
-actual class ReportBrandingProvider actual constructor(
+internal actual suspend fun loadAppIconBase64Png(
     context: PlatformContext,
-    private val crashReporter: CrashReporter
-) {
-    actual suspend fun loadAppIconBase64Png(): String? {
-        val iconName = primaryAppIconName() ?: "AppIcon"
-        val image = UIImage.imageNamed(iconName) ?: return null
-        val png = UIImagePNGRepresentation(image) ?: return null
-        return Base64.encode(png.toByteArray())
-    }
+    crashReporter: CrashReporter,
+): String? {
+    val iconName = primaryAppIconName() ?: "AppIcon"
+    val image = UIImage.imageNamed(iconName) ?: return null
+    val png = UIImagePNGRepresentation(image) ?: return null
+    return Base64.encode(png.toByteArray())
+}
 
-    actual suspend fun loadQrCodeBase64Png(): String? =
-        loadQrCodeBase64PngFromBundledResource(crashReporter)
-
-    private fun primaryAppIconName(): String? {
-        val info = NSBundle.mainBundle.infoDictionary ?: return null
-        val icons = info["CFBundleIcons"] as? Map<Any?, *> ?: return null
-        val primary = icons["CFBundlePrimaryIcon"] as? Map<Any?, *> ?: return null
-        val files = primary["CFBundleIconFiles"] as? List<*> ?: return null
-        return files.lastOrNull() as? String
-    }
+private fun primaryAppIconName(): String? {
+    val info = NSBundle.mainBundle.infoDictionary ?: return null
+    val icons = info["CFBundleIcons"] as? Map<Any?, *> ?: return null
+    val primary = icons["CFBundlePrimaryIcon"] as? Map<Any?, *> ?: return null
+    val files = primary["CFBundleIconFiles"] as? List<*> ?: return null
+    return files.lastOrNull() as? String
 }
