@@ -2,11 +2,11 @@ plugins {
     alias(libs.plugins.base.kmp.compose.module)
 }
 
-android {
-    namespace = "com.hussienfahmy.core_ui"
-}
-
 kotlin {
+    android {
+        namespace = "com.hussienfahmy.core_ui"
+    }
+
     sourceSets {
         commonMain.dependencies {
             api(projects.core)

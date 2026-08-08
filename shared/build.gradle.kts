@@ -3,36 +3,52 @@ plugins {
 }
 
 // google-services plugin only works on com.android.application - can't apply it here, so we
-// parse :app's google-services.json directly and expose the OAuth web client ID as a BuildConfig
-// field instead. Falls back to empty string if the (gitignored) file is missing.
-android {
-    buildFeatures {
-        buildConfig = true
+// parse :app's google-services.json directly and expose the OAuth web client ID to
+// GoogleAuthUiClient.kt as a generated Kotlin constant instead. Falls back to empty string if the
+// (gitignored) file is missing.
+//
+// Not a BuildConfig field: com.android.kotlin.multiplatform.library doesn't generate a BuildConfig
+// class at all (it's variant-agnostic, no defaultConfig/buildConfigField support). Written directly
+// at configuration time - same as the old code did for the JSON parse itself - rather than via a
+// task, since there's nothing task-graph-worthy about writing one constant.
+val googleServicesFile = rootProject.file("app/google-services.json")
+val webClientId = if (googleServicesFile.exists()) {
+    val json = groovy.json.JsonSlurper().parse(googleServicesFile) as Map<*, *>
+    @Suppress("UNCHECKED_CAST")
+    val clients = json["client"] as List<Map<*, *>>
+    val appClient = clients.first {
+        val info = it["client_info"] as Map<*, *>
+        val androidInfo = info["android_client_info"] as Map<*, *>
+        androidInfo["package_name"] == libs.versions.appId.get()
     }
+    @Suppress("UNCHECKED_CAST")
+    val oauthClients = appClient["oauth_client"] as List<Map<*, *>>
+    oauthClients.first { (it["client_type"] as Number).toInt() == 3 }["client_id"] as String
+} else {
+    ""
+}
 
-    val googleServicesFile = rootProject.file("app/google-services.json")
-    val webClientId = if (googleServicesFile.exists()) {
-        val json = groovy.json.JsonSlurper().parse(googleServicesFile) as Map<*, *>
-        @Suppress("UNCHECKED_CAST")
-        val clients = json["client"] as List<Map<*, *>>
-        val appClient = clients.first {
-            val info = it["client_info"] as Map<*, *>
-            val androidInfo = info["android_client_info"] as Map<*, *>
-            androidInfo["package_name"] == libs.versions.appId.get()
-        }
-        @Suppress("UNCHECKED_CAST")
-        val oauthClients = appClient["oauth_client"] as List<Map<*, *>>
-        oauthClients.first { (it["client_type"] as Number).toInt() == 3 }["client_id"] as String
-    } else {
-        ""
-    }
+val generatedAuthConfigDir = layout.buildDirectory.dir("generated/authConfig").get().asFile
+// Same package as GoogleAuthUiClient.kt, so it's usable there with no import.
+File(generatedAuthConfigDir, "com/hussienfahmy/myGpaManager/data/auth/GoogleAuthConfig.kt").apply {
+    parentFile.mkdirs()
+    writeText(
+        """
+        package com.hussienfahmy.myGpaManager.data.auth
 
-    defaultConfig {
-        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"$webClientId\"")
-    }
+        internal const val GOOGLE_WEB_CLIENT_ID = "$webClientId"
+
+        """.trimIndent()
+    )
 }
 
 kotlin {
+    android {
+        androidResources {
+            enable = true
+        }
+    }
+
     // Kotlin/Native framework export: iosApp/ (the Xcode project) links against Shared.framework
     // and calls MainViewController() (shared/src/iosMain/.../MainViewController.kt) to get a
     // UIViewController hosting the whole Compose UI. Static (vs. dynamic) so Xcode just needs a
@@ -45,6 +61,10 @@ kotlin {
     }
 
     sourceSets {
+        androidMain {
+            kotlin.srcDir(generatedAuthConfigDir)
+        }
+
         commonMain.dependencies {
             implementation(projects.core)
             implementation(projects.coreUi)

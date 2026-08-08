@@ -13,7 +13,6 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.auth.repository.AuthResult
 import com.hussienfahmy.core.domain.crash.CrashReporter
-import com.hussienfahmy.myGpaManager.BuildConfig
 import kotlinx.coroutines.flow.StateFlow
 import java.util.concurrent.CancellationException
 
@@ -82,7 +81,7 @@ class GoogleAuthUiClient(
 
     private val googleIdOption
         get() = GetGoogleIdOption.Builder()
-            .setServerClientId(BuildConfig.GOOGLE_WEB_CLIENT_ID)
+            .setServerClientId(GOOGLE_WEB_CLIENT_ID)
             .setFilterByAuthorizedAccounts(false)
             .setAutoSelectEnabled(true)
             .build()

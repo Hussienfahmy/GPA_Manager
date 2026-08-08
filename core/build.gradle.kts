@@ -7,18 +7,18 @@ plugins {
     alias(libs.plugins.compose.multiplatform)
 }
 
-android {
-    namespace = "com.hussienfahmy.core"
-
-    ksp {
-        arg("room.schemaLocation", "$projectDir/schemas")
-        // Room KMP needs its generated _Impl classes in Kotlin, not Java, to target non-JVM
-        // platforms. Harmless on Android-only today; required once iosMain is added here.
-        arg("room.generateKotlin", "true")
-    }
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+    // Room KMP needs its generated _Impl classes in Kotlin, not Java, to target non-JVM
+    // platforms. Harmless on Android-only today; required once iosMain is added here.
+    arg("room.generateKotlin", "true")
 }
 
 kotlin {
+    android {
+        namespace = "com.hussienfahmy.core"
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(libs.bundles.room)
