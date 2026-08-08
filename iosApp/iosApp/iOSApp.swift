@@ -6,7 +6,7 @@ struct iOSApp: App {
     init() {
         // The iOS analog of :app's GPAManagerApplication.onCreate() - must run before any
         // Compose UI is shown, since every screen resolves its dependencies through Koin.
-        KoinIosKt.doInitKoin()
+        KoinIosKt.doInitApp()
     }
 
     var body: some Scene {

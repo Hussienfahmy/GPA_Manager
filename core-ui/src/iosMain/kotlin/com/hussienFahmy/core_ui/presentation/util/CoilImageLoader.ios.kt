@@ -11,7 +11,7 @@ import io.ktor.client.engine.darwin.Darwin
 // mechanism), Kotlin/Native has no such discovery - iOS needs an explicit SingletonImageLoader
 // with a network fetcher registered, or every network-backed AsyncImage silently fails at
 // runtime. Call this once from the iOS entry point before any Compose UI renders (see
-// doInitKoin() in :shared).
+// doInitApp() in :shared).
 fun initCoilImageLoader() {
     SingletonImageLoader.setSafe { context: PlatformContext ->
         ImageLoader.Builder(context)

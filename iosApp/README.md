@@ -14,7 +14,7 @@ export. Written blind in a sandbox with no macOS/Xcode/simulator anywhere in the
   byte - create a fresh project via Xcode's File > New > Project > iOS > App (SwiftUI, Swift)
   template, then copy `iOSApp.swift`, `ComposeView.swift`, `Info.plist`, and `Assets.xcassets`
   into it and redo the two build-phase changes below.
-- `iosApp/iOSApp.swift` - SwiftUI `@main App`, calls `KoinIosKt.doInitKoin()` before showing any UI.
+- `iosApp/iOSApp.swift` - SwiftUI `@main App`, calls `KoinIosKt.doInitApp()` before showing any UI.
 - `iosApp/ComposeView.swift` - `UIViewControllerRepresentable` wrapping
   `MainViewControllerKt.MainViewController()` (`shared/src/iosMain/.../MainViewController.kt`).
 - `iosApp/Info.plist`, `iosApp/Assets.xcassets/` - standard boilerplate, no real app icon bundled

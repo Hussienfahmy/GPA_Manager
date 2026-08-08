@@ -18,12 +18,11 @@ actual fun platformModules(context: PlatformContext): List<Module> = listOf(
 )
 
 // Called once from the iosApp Xcode project's entry point (iosApp/iosApp/iOSApp.swift) before any
-// Compose UI is shown.
-//
-// Named doInitKoin(), not initKoin(): Swift's Objective-C bridge treats any exported method whose
-// name starts with "init" as an initializer, which would otherwise mangle how this is callable
-// from Swift - the same reason JetBrains' own KMP project template avoids "init"-prefixed names.
-fun doInitKoin() {
+// Compose UI is shown. Named doInitApp(), not initApp(): Swift's Objective-C bridge treats any
+// exported method whose name starts with "init" as an initializer, which would otherwise mangle
+// how this is callable from Swift - the same reason JetBrains' own KMP project template avoids
+// "init"-prefixed names.
+fun doInitApp() {
     initCoilImageLoader()
     initKoin(object : PlatformContext() {})
 }

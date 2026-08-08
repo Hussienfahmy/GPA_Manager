@@ -28,7 +28,7 @@ import com.hussienfahmy.sync_domain.di.syncDomainModule
 import org.koin.core.module.Module
 
 // Common to both platform entry points (:app's GPAManagerApplication.onCreate() and :shared's
-// KoinIos.kt doInitKoin()) - each calls startKoin { modules(sharedAppModules + its own
+// KoinIos.kt doInitApp()) - each calls startKoin { modules(sharedAppModules + its own
 // platform-only extras) } instead of maintaining two near-identical module lists.
 val sharedAppModules: List<Module> = listOf(
     coreModule,
