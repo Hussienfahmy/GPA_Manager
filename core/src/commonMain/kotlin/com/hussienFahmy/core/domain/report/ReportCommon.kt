@@ -1,7 +1,12 @@
 package com.hussienfahmy.core.domain.report
 
 import com.hussienfahmy.core.domain.report.ReportCommon.pageFooterCss
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format
+import kotlinx.datetime.format.MonthNames
+import kotlinx.datetime.format.Padding
+import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -158,22 +163,30 @@ internal object ReportCommon {
 // java.text.SimpleDateFormat/java.util.Date have no Kotlin/Native equivalent. Every call site
 // uses the default (today's date, in the device's local timezone) - none pass an explicit date -
 // so this is rewritten around kotlin.time.Clock/kotlinx.datetime rather than kept JVM-only.
-// Locale.US was already hardcoded (not the device locale), so a fixed English month-abbreviation
-// table is equivalent, not a behavior change.
-private val MONTH_ABBREVIATIONS = arrayOf(
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-)
+// Locale.US was already hardcoded (not the device locale), so ENGLISH_ABBREVIATED month names
+// are equivalent, not a behavior change.
+private val dateFormat = LocalDateTime.Format {
+    monthName(MonthNames.ENGLISH_ABBREVIATED)
+    char(' ')
+    day(padding = Padding.ZERO)
+    chars(", ")
+    year()
+}
+
+private val shortDateFormat = LocalDateTime.Format {
+    monthName(MonthNames.ENGLISH_ABBREVIATED)
+    char(' ')
+    day(padding = Padding.ZERO)
+}
 
 @OptIn(ExperimentalTime::class)
 internal fun formatDate(instant: Instant? = Clock.System.now()): String {
     if (instant == null) return "—"
-    val date = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-    return "${MONTH_ABBREVIATIONS[date.monthNumber - 1]} ${date.dayOfMonth}, ${date.year}"
+    return instant.toLocalDateTime(TimeZone.currentSystemDefault()).format(dateFormat)
 }
 
 @OptIn(ExperimentalTime::class)
 internal fun formatShortDate(instant: Instant? = Clock.System.now()): String {
     if (instant == null) return "—"
-    val date = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-    return "${MONTH_ABBREVIATIONS[date.monthNumber - 1]} ${date.dayOfMonth}"
+    return instant.toLocalDateTime(TimeZone.currentSystemDefault()).format(shortDateFormat)
 }
