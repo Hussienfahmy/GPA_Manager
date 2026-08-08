@@ -5,8 +5,8 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":core"))
-            implementation(project(":gpa_system_settings:gpa_system_settings_domain"))
+            implementation(projects.core)
+            implementation(projects.gpaSystemSettings.gpaSystemSettingsDomain)
 
             implementation(libs.kotlinx.serialization.json)
         }

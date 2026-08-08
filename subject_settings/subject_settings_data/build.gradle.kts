@@ -5,8 +5,8 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":core"))
-            implementation(project(":subject_settings:subject_settings_domain"))
+            implementation(projects.core)
+            implementation(projects.subjectSettings.subjectSettingsDomain)
             implementation(libs.kotlinx.serialization.json)
         }
     }

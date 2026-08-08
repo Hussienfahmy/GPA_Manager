@@ -56,36 +56,36 @@ baselineProfile {
 
 dependencies {
     // Local modules
-    implementation(project(":shared"))
-    implementation(project(":core"))
-    implementation(project(":core-ui"))
+    implementation(projects.shared)
+    implementation(projects.core)
+    implementation(projects.coreUi)
 
-    implementation(project(":gpa_system_settings:gpa_system_settings_data"))
-    implementation(project(":gpa_system_settings:gpa_system_settings_domain"))
-    implementation(project(":gpa_system_settings:gpa_system_settings_presentaion"))
+    implementation(projects.gpaSystemSettings.gpaSystemSettingsData)
+    implementation(projects.gpaSystemSettings.gpaSystemSettingsDomain)
+    implementation(projects.gpaSystemSettings.gpaSystemSettingsPresentaion)
 
-    implementation(project(":grades_setting:grades_setting_domain"))
-    implementation(project(":grades_setting:grades_setting_presentation"))
+    implementation(projects.gradesSetting.gradesSettingDomain)
+    implementation(projects.gradesSetting.gradesSettingPresentation)
 
-    implementation(project(":onboarding:onboarding_presentation"))
+    implementation(projects.onboarding.onboardingPresentation)
 
-    implementation(project(":quick:quick_domain"))
-    implementation(project(":quick:quick_presentation"))
+    implementation(projects.quick.quickDomain)
+    implementation(projects.quick.quickPresentation)
 
-    implementation(project(":semester_marks:semester_marks_domain"))
-    implementation(project(":semester_marks:semester_marks_presentaion"))
+    implementation(projects.semesterMarks.semesterMarksDomain)
+    implementation(projects.semesterMarks.semesterMarksPresentaion)
 
-    implementation(project(":semester_subjctets:semester_subjctets_domain"))
-    implementation(project(":semester_subjctets:semester_subjctets_presentaion"))
+    implementation(projects.semesterSubjctets.semesterSubjctetsDomain)
+    implementation(projects.semesterSubjctets.semesterSubjctetsPresentaion)
 
-    implementation(project(":subject_settings:subject_settings_data"))
-    implementation(project(":subject_settings:subject_settings_domain"))
-    implementation(project(":subject_settings:subject_settings_presentation"))
+    implementation(projects.subjectSettings.subjectSettingsData)
+    implementation(projects.subjectSettings.subjectSettingsDomain)
+    implementation(projects.subjectSettings.subjectSettingsPresentation)
 
-    implementation(project(":semester_history:semester_history_domain"))
-    implementation(project(":semester_history:semester_history_presentation"))
+    implementation(projects.semesterHistory.semesterHistoryDomain)
+    implementation(projects.semesterHistory.semesterHistoryPresentation)
 
-    implementation(project(":sync:sync_domain"))
+    implementation(projects.sync.syncDomain)
 
     // Koin
     implementation(libs.koin.android)
@@ -109,7 +109,7 @@ dependencies {
 
     // Baseline Profile
     implementation(libs.androidx.profileinstaller)
-    baselineProfile(project(":baselineprofile"))
+    baselineProfile(projects.baselineprofile)
 
     // Firebase (Firestore + Storage + Analytics + Auth all migrated to GitLive)
     implementation(platform(libs.firebase.bom))

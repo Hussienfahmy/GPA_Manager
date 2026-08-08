@@ -9,7 +9,7 @@ android {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            api(project(":core"))
+            api(projects.core)
 
             // coil3.compose is genuinely multiplatform (unlike coil3.network.okhttp below), so
             // AsyncImage/ImageRequest/LocalPlatformContext now resolve on iOS too - this is what

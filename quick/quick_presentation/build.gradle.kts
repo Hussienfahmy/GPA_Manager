@@ -5,9 +5,9 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":core"))
-            implementation(project(":core-ui"))
-            implementation(project(":quick:quick_domain"))
+            implementation(projects.core)
+            implementation(projects.coreUi)
+            implementation(projects.quick.quickDomain)
         }
     }
 }
