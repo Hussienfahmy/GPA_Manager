@@ -12,6 +12,7 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.auth.repository.AuthResult
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.myGpaManager.BuildConfig
 import kotlinx.coroutines.flow.StateFlow
 import java.util.concurrent.CancellationException
@@ -20,7 +21,8 @@ private const val TAG = "GoogleAuthUiClient"
 
 class GoogleAuthUiClient(
     private val credentialManager: CredentialManager,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val crashReporter: CrashReporter
 ) : DefaultLifecycleObserver {
 
     val isSignedInFlow: StateFlow<Boolean?> = authRepository.isSignedInFlow
@@ -34,8 +36,8 @@ class GoogleAuthUiClient(
             handleSignIn(result.credential)
         } catch (e: Exception) {
             Log.e(TAG, "signIn: ", e)
-            if (e is CancellationException) throw e else null
-
+            if (e is CancellationException) throw e
+            crashReporter.recordException(e, mapOf("operation" to "signIn"))
             null
         }
     }
@@ -72,8 +74,9 @@ class GoogleAuthUiClient(
             val clearRequest = ClearCredentialStateRequest()
             credentialManager.clearCredentialState(clearRequest)
         } catch (e: Exception) {
-            Log.e(TAG, "signIn: ", e)
+            Log.e(TAG, "signOut: ", e)
             if (e is CancellationException) throw e
+            crashReporter.recordException(e, mapOf("operation" to "signOut"))
         }
     }
 

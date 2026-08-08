@@ -22,6 +22,7 @@ val semesterHistoryPresentationModule = module {
             applicationScope = get(),
             dirtyTracker = get(),
             authRepository = get(),
+            crashReporter = get(),
         )
     }
     viewModel { (semesterId: Long) ->
@@ -38,11 +39,13 @@ val semesterHistoryPresentationModule = module {
             applicationScope = get(),
             dirtyTracker = get(),
             authRepository = get(),
+            crashReporter = get(),
         )
     }
     viewModel {
         ExportReportViewModel(
             generateAcademicReport = get(),
+            crashReporter = get(),
         )
     }
 }

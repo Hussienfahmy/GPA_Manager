@@ -193,6 +193,7 @@ gitlive-firebase-auth = { group = "dev.gitlive", name = "firebase-auth", version
 gitlive-firebase-firestore = { group = "dev.gitlive", name = "firebase-firestore", version.ref = "gitliveFirebase" }
 gitlive-firebase-storage = { group = "dev.gitlive", name = "firebase-storage", version.ref = "gitliveFirebase" }
 gitlive-firebase-analytics = { group = "dev.gitlive", name = "firebase-analytics", version.ref = "gitliveFirebase" }
+gitlive-firebase-crashlytics = { group = "dev.gitlive", name = "firebase-crashlytics", version.ref = "gitliveFirebase" }
 
 # Firebase
 # BOM supplies versions for firebase-firestore/storage/analytics/auth (unversioned as of the

@@ -1,5 +1,6 @@
 package com.hussienfahmy.core.domain.analytics
 
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.core.domain.gpa_settings.use_case.GetGPASettings
 import com.hussienfahmy.core.domain.user_data.use_cases.UserDataUseCases
 import kotlinx.coroutines.flow.first
@@ -7,7 +8,8 @@ import kotlinx.coroutines.flow.first
 class AnalyticsLogger(
     private val analyticsService: AnalyticsService,
     private val userDataUseCases: UserDataUseCases,
-    private val getGPASettings: GetGPASettings
+    private val getGPASettings: GetGPASettings,
+    private val crashReporter: CrashReporter
 ) {
 
     // Authentication Events
@@ -319,8 +321,8 @@ class AnalyticsLogger(
                     semester = data.academicInfo.semester.name
                 )
             }
-        } catch (_: Exception) {
-            // Handle error silently for analytics
+        } catch (e: Exception) {
+            crashReporter.recordException(e, mapOf("operation" to "updateUserAcademicProperties"))
         }
     }
 }

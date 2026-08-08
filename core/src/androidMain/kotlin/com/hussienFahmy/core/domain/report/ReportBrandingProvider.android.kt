@@ -6,17 +6,22 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.Base64
 import androidx.core.graphics.createBitmap
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.core.util.PlatformContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 
-actual class ReportBrandingProvider actual constructor(private val context: PlatformContext) {
+actual class ReportBrandingProvider actual constructor(
+    private val context: PlatformContext,
+    private val crashReporter: CrashReporter
+) {
     actual suspend fun loadAppIconBase64Png(): String? = withContext(Dispatchers.IO) {
         try {
             val drawable = context.packageManager.getApplicationIcon(context.packageName)
             drawableToBase64Png(drawable, fallbackSize = 192)
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            crashReporter.recordException(e, mapOf("operation" to "loadAppIconBase64Png"))
             null
         }
     }
@@ -24,7 +29,8 @@ actual class ReportBrandingProvider actual constructor(private val context: Plat
     // The QR code used to be loaded from this module's own Android res/drawable via
     // ResourcesCompat - moved to a bundled Compose Multiplatform resource (single source of truth
     // shared with the iOS actual) instead of keeping a duplicate Android-only copy.
-    actual suspend fun loadQrCodeBase64Png(): String? = loadQrCodeBase64PngFromBundledResource()
+    actual suspend fun loadQrCodeBase64Png(): String? =
+        loadQrCodeBase64PngFromBundledResource(crashReporter)
 
     private fun drawableToBase64Png(drawable: Drawable, fallbackSize: Int): String {
         val bitmap = when (drawable) {

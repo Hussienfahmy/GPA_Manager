@@ -35,7 +35,7 @@ val semesterMarksDomainModule = module {
             changeOralMarks = ChangeOralMarks(get()),
             changePracticalMarks = ChangePracticalMarks(get()),
             changeProjectMarks = ChangeProjectMarks(get()),
-            syncGradeWithMarks = SyncGradeWithMarks(get(), get()),
+            syncGradeWithMarks = SyncGradeWithMarks(get(), get(), get()),
             changeFinalExamMaxMarks = ChangeFinalExamMaxMarks(get()),
         )
     }

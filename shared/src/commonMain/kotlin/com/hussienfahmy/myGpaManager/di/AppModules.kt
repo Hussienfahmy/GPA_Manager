@@ -3,6 +3,7 @@ package com.hussienfahmy.myGpaManager.di
 import com.hussienfahmy.core.data.local.di.databaseModule
 import com.hussienfahmy.core.di.coreModule
 import com.hussienfahmy.core.domain.analytics.di.analyticsModule
+import com.hussienfahmy.core.domain.crash.di.crashReporterModule
 import com.hussienfahmy.core.domain.grades.di.coreGradesDomainModule
 import com.hussienfahmy.core.domain.subject_settings.di.coreSubjectSettingsDomainModule
 import com.hussienfahmy.core.domain.user_data.di.coreUserDataDomainModule
@@ -56,4 +57,5 @@ val sharedAppModules: List<Module> = listOf(
     sharedKoinModule,
     sharedFirebaseModule,
     analyticsModule,
+    crashReporterModule,
 )

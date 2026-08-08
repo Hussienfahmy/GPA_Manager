@@ -1,13 +1,16 @@
 package com.hussienfahmy.gpa_system_settings_data.datastore
 
 import androidx.datastore.core.okio.OkioSerializer
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.gpa_system_settings_data.model.GPA
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import okio.BufferedSink
 import okio.BufferedSource
 
-internal object GPASerializer : OkioSerializer<GPA> {
+internal class GPASerializer(
+    private val crashReporter: CrashReporter
+) : OkioSerializer<GPA> {
 
     override val defaultValue: GPA
         get() = GPA()
@@ -19,7 +22,7 @@ internal object GPASerializer : OkioSerializer<GPA> {
                 string = source.readUtf8()
             )
         } catch (e: SerializationException) {
-            e.printStackTrace()
+            crashReporter.recordException(e)
             defaultValue
         }
     }

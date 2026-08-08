@@ -9,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,13 +25,14 @@ import com.hussienfahmy.onboarding_presentation.sign_in.SignInState
 import com.hussienfahmy.onboarding_presentation.sign_in.SignInViewModel
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 
 @Composable
 actual fun OnBoardingScreen(
     viewModel: SignInViewModel,
     onSignInSuccess: () -> Unit,
 ) {
-    val appleSignIn = remember { AppleSignIn() }
+    val appleSignIn = koinInject<AppleSignIn>()
     val scope = rememberCoroutineScope()
     val spacing = LocalSpacing.current
 

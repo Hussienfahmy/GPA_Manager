@@ -1,5 +1,6 @@
 package com.hussienfahmy.core.domain.report
 
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.core.generated.resources.Res
 import com.hussienfahmy.core.util.PlatformContext
 import kotlin.io.encoding.Base64
@@ -7,7 +8,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 
 // Loads the app icon / QR code as base64-encoded PNGs for embedding into the exported academic
 // report HTML.
-expect class ReportBrandingProvider(context: PlatformContext) {
+expect class ReportBrandingProvider(context: PlatformContext, crashReporter: CrashReporter) {
     suspend fun loadAppIconBase64Png(): String?
     suspend fun loadQrCodeBase64Png(): String?
 }
@@ -18,8 +19,10 @@ expect class ReportBrandingProvider(context: PlatformContext) {
 // since "the current app's launcher icon" is a genuinely platform-specific query, not a bundled
 // asset the app would otherwise carry a duplicate copy of.
 @OptIn(ExperimentalEncodingApi::class)
-internal suspend fun loadQrCodeBase64PngFromBundledResource(): String? = try {
-    Base64.encode(Res.readBytes("drawable/qr_code.png"))
-} catch (_: Exception) {
-    null
-}
+internal suspend fun loadQrCodeBase64PngFromBundledResource(crashReporter: CrashReporter): String? =
+    try {
+        Base64.encode(Res.readBytes("drawable/qr_code.png"))
+    } catch (e: Exception) {
+        crashReporter.recordException(e, mapOf("operation" to "loadQrCodeBase64Png"))
+        null
+    }

@@ -6,13 +6,15 @@ import androidx.work.CoroutineWorker
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.core.domain.sync.SyncUpload
 import java.util.concurrent.TimeUnit
 
 class SyncWorkerUpload(
     appContext: Context,
     workerParams: WorkerParameters,
-    private val syncUpload: SyncUpload
+    private val syncUpload: SyncUpload,
+    private val crashReporter: CrashReporter
 ) : CoroutineWorker(
     appContext,
     workerParams
@@ -21,7 +23,8 @@ class SyncWorkerUpload(
         return try {
             syncUpload()
             Result.success()
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            crashReporter.recordException(e, mapOf("worker" to "SyncWorkerUpload"))
             Result.retry()
         }
     }

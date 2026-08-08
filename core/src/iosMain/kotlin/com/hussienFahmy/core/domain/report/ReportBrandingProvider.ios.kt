@@ -1,5 +1,6 @@
 package com.hussienfahmy.core.domain.report
 
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.core.util.PlatformContext
 import com.hussienfahmy.core.util.toByteArray
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -14,7 +15,10 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 // the conventional "AppIcon" asset-catalog name some Xcode configurations don't auto-populate
 // CFBundleIconFiles for.
 @OptIn(ExperimentalForeignApi::class, ExperimentalEncodingApi::class)
-actual class ReportBrandingProvider actual constructor(context: PlatformContext) {
+actual class ReportBrandingProvider actual constructor(
+    context: PlatformContext,
+    private val crashReporter: CrashReporter
+) {
     actual suspend fun loadAppIconBase64Png(): String? {
         val iconName = primaryAppIconName() ?: "AppIcon"
         val image = UIImage.imageNamed(iconName) ?: return null
@@ -22,7 +26,8 @@ actual class ReportBrandingProvider actual constructor(context: PlatformContext)
         return Base64.encode(png.toByteArray())
     }
 
-    actual suspend fun loadQrCodeBase64Png(): String? = loadQrCodeBase64PngFromBundledResource()
+    actual suspend fun loadQrCodeBase64Png(): String? =
+        loadQrCodeBase64PngFromBundledResource(crashReporter)
 
     private fun primaryAppIconName(): String? {
         val info = NSBundle.mainBundle.infoDictionary ?: return null

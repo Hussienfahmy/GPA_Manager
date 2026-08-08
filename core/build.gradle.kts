@@ -34,6 +34,9 @@ kotlin {
             // live in androidMain, now that FirebaseAnalyticsService/AnalyticsModule are
             // commonMain.
             implementation(libs.gitlive.firebase.analytics)
+            // GitLive Firebase Crashlytics is genuinely multiplatform (Android + Apple), same as
+            // analytics above - no expect/actual split needed for CrashReporter.
+            implementation(libs.gitlive.firebase.crashlytics)
             // api: createDataStore()/OkioSerializer are part of :core's public API surface -
             // *_data modules' own DataStore-backed sources (GPADatastore,
             // SubjectSettingsDataSource) implement OkioSerializer<T> directly.

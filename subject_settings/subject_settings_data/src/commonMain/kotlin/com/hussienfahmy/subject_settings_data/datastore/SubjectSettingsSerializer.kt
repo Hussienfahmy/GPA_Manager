@@ -1,13 +1,16 @@
 package com.hussienfahmy.subject_settings_data.datastore
 
 import androidx.datastore.core.okio.OkioSerializer
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.subject_settings_data.model.SubjectSettings
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import okio.BufferedSink
 import okio.BufferedSource
 
-internal object SubjectSettingsSerializer : OkioSerializer<SubjectSettings> {
+internal class SubjectSettingsSerializer(
+    private val crashReporter: CrashReporter
+) : OkioSerializer<SubjectSettings> {
 
     override val defaultValue: SubjectSettings
         get() = SubjectSettings()
@@ -19,7 +22,7 @@ internal object SubjectSettingsSerializer : OkioSerializer<SubjectSettings> {
                 string = source.readUtf8()
             )
         } catch (e: SerializationException) {
-            e.printStackTrace()
+            crashReporter.recordException(e)
             defaultValue
         }
     }

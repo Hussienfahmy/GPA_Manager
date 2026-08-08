@@ -28,7 +28,7 @@ val coreModule = module {
     single<CoroutineScope> { CoroutineScope(Dispatchers.Main + SupervisorJob()) }
     single { SemesterDirtyTracker() }
     single { ImageThumbnailer(get()) }
-    single { ReportBrandingProvider(get()) }
+    single { ReportBrandingProvider(get(), get()) }
     single { PdfReportPrinter(get()) }
     single { UrlOpener(get()) }
 

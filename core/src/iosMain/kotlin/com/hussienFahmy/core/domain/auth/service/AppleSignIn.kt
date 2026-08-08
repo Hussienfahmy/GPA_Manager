@@ -1,5 +1,6 @@
 package com.hussienfahmy.core.domain.auth.service
 
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.OAuthProvider
 import dev.gitlive.firebase.auth.auth
@@ -46,7 +47,9 @@ import kotlin.coroutines.resume
  * interop to this project's own GitLive Firebase-Kotlin-SDK OAuthProvider, since this codebase
  * already uses GitLive for every other Firebase product (Auth/Firestore/Storage/Analytics).
  */
-class AppleSignIn {
+class AppleSignIn(
+    private val crashReporter: CrashReporter
+) {
     // Held strongly while a request is in flight: ASAuthorizationController's delegate and
     // presentationContextProvider properties are weak references in UIKit, so this whole request
     // would otherwise be eligible for Kotlin/Native GC before its delegate callback ever fires.
@@ -63,7 +66,7 @@ class AppleSignIn {
         request.nonce = sha256(rawNonce)
 
         val scope = CoroutineScope(Dispatchers.Main)
-        val delegate = Delegate(rawNonce, scope) { result ->
+        val delegate = Delegate(rawNonce, scope, crashReporter) { result ->
             activeController = null
             activeDelegate = null
             activePresentationContextProvider = null
@@ -95,6 +98,7 @@ class AppleSignIn {
     private class Delegate(
         private val rawNonce: String,
         private val scope: CoroutineScope,
+        private val crashReporter: CrashReporter,
         private val onResult: (AuthServiceResult?) -> Unit,
     ) : NSObject(), ASAuthorizationControllerDelegateProtocol {
 
@@ -142,6 +146,7 @@ class AppleSignIn {
                         )
                     }
                 } catch (e: Exception) {
+                    crashReporter.recordException(e, mapOf("operation" to "appleSignIn"))
                     onResult(AuthServiceResult.Error(e.message ?: "Unknown error"))
                 }
             }

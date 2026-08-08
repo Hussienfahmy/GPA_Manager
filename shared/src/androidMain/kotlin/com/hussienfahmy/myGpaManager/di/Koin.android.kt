@@ -32,7 +32,13 @@ actual fun platformModules(context: PlatformContext): List<Module> {
             single { WorkManager.getInstance(context) }
 
             single<CredentialManager> { CredentialManager.create(context) }
-            single { GoogleAuthUiClient(credentialManager = get(), authRepository = get()) }
+            single {
+                GoogleAuthUiClient(
+                    credentialManager = get(),
+                    authRepository = get(),
+                    crashReporter = get()
+                )
+            }
             // .bind<T>() narrows on return, so chaining two fails once AuthService/AuthSignIn are
             // unrelated interfaces - binds() sets both without narrowing.
             singleOf(::GoogleAuthService).binds(arrayOf(AuthService::class, AuthSignIn::class))

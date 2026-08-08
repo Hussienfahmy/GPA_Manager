@@ -1,5 +1,6 @@
 package com.hussienfahmy.myGpaManager.data.sync
 
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.myGpaManager.data.common.mapper.toDomainTimestamp
 import com.hussienfahmy.myGpaManager.data.common.mapper.toEpochMillis
 import com.hussienfahmy.myGpaManager.data.sync.model.FirebaseNetworkSemester
@@ -17,7 +18,8 @@ import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 class FirebaseSyncRepository(
-    private val db: FirebaseFirestore
+    private val db: FirebaseFirestore,
+    private val crashReporter: CrashReporter
 ) : SyncRepository {
 
     private fun subjectsDoc(userId: String) = db.collection(SUBJECTS_COLLECTION).document(userId)
@@ -97,8 +99,7 @@ class FirebaseSyncRepository(
                 doc.data<FirebaseNetworkSemester>().toDomain()
             }
         } catch (e: Exception) {
-            // Crashlytics reporting moved out of this repository - see the Analytics/Crashlytics
-            // sub-phase; this still fails safe by returning null like the pre-migration behavior.
+            crashReporter.recordException(e, mapOf("operation" to "downloadSemesters"))
             null
         }
     }

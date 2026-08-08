@@ -6,8 +6,11 @@ import com.hussienfahmy.subject_settings_data.model.SubjectSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
-class SubjectSettingsDataSource(context: PlatformContext) {
-    private val dataSource = createDataStore(context, "subjects_settings", SubjectSettingsSerializer)
+internal class SubjectSettingsDataSource(
+    context: PlatformContext,
+    serializer: SubjectSettingsSerializer
+) {
+    private val dataSource = createDataStore(context, "subjects_settings", serializer)
 
     fun observeSubjectsSettings(): Flow<SubjectSettings> {
         return dataSource.data

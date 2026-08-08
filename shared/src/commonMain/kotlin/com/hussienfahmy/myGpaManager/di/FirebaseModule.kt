@@ -48,7 +48,7 @@ val sharedFirebaseModule = module {
     single<GitLiveFirebaseStorage> { GitLiveFirebase.gitLiveStorage }
 
     single<AuthRepository> {
-        FirebaseAuthRepository(get(), get())
+        FirebaseAuthRepository(get(), get(), get())
     }
 
     single<StorageRepository> {

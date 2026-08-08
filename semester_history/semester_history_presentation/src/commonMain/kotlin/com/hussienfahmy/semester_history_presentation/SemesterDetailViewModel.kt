@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
 import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
 import com.hussienfahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
@@ -39,6 +40,7 @@ class SemesterDetailViewModel(
     private val pushSemesters: PushSemesters,
     private val authRepository: AuthRepository,
     private val applicationScope: CoroutineScope,
+    private val crashReporter: CrashReporter,
 ) : ViewModel() {
 
     private val _isSubmitting = MutableStateFlow(false)
@@ -89,7 +91,8 @@ class SemesterDetailViewModel(
                     action.totalMarks, action.semesterMarks, action.metadata,
                 )
                 editSemester(EditSemester.Request.RecalculateDetailed(semesterId))
-            } catch (_: Exception) {
+            } catch (e: Exception) {
+                crashReporter.recordException(e, mapOf("operation" to "addSubject"))
                 _events.send(SemesterDetailEvent.ShowError(UiText.Resource(Res.string.history_error_add_subject_failed)))
             } finally {
                 _isSubmitting.value = false
@@ -106,7 +109,8 @@ class SemesterDetailViewModel(
                     action.totalMarks, action.semesterMarks, action.metadata,
                 )
                 editSemester(EditSemester.Request.RecalculateDetailed(semesterId))
-            } catch (_: Exception) {
+            } catch (e: Exception) {
+                crashReporter.recordException(e, mapOf("operation" to "editSubject"))
                 _events.send(SemesterDetailEvent.ShowError(UiText.Resource(Res.string.history_error_update_subject_failed)))
             } finally {
                 _isSubmitting.value = false
@@ -120,7 +124,8 @@ class SemesterDetailViewModel(
             try {
                 deleteSubjectFromSemester(subjectId)
                 editSemester(EditSemester.Request.RecalculateDetailed(semesterId))
-            } catch (_: Exception) {
+            } catch (e: Exception) {
+                crashReporter.recordException(e, mapOf("operation" to "deleteSubject"))
                 _events.send(SemesterDetailEvent.ShowError(UiText.Resource(Res.string.history_error_delete_subject_failed)))
             } finally {
                 _isSubmitting.value = false
@@ -134,8 +139,10 @@ class SemesterDetailViewModel(
                 try {
                     val userId = authRepository.userId.filterNotNull().firstOrNull()
                     if (userId != null) pushSemesters(userId)
-                } catch (_: Exception) {
-                    // Silent fail — sync will retry on next app lifecycle event
+                } catch (e: Exception) {
+                    // Silent to the user by design - sync will retry on next app lifecycle
+                    // event - but still reported so silent regressions are visible.
+                    crashReporter.recordException(e, mapOf("operation" to "pushSemesters"))
                 }
             }
         }

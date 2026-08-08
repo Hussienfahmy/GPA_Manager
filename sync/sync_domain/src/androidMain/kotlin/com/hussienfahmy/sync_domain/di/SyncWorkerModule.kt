@@ -12,7 +12,8 @@ val syncWorkerModule = module {
         SyncWorkerUpload(
             appContext = get(),
             workerParams = get(),
-            syncUpload = get()
+            syncUpload = get(),
+            crashReporter = get()
         )
     }
 }

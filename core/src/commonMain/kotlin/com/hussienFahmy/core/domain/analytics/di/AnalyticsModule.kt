@@ -18,6 +18,6 @@ val analyticsModule = module {
     }
 
     single<AnalyticsLogger> {
-        AnalyticsLogger(get(), get(), get())
+        AnalyticsLogger(get(), get(), get(), get())
     }
 }

@@ -3,6 +3,7 @@ package com.hussienfahmy.myGpaManager.data.auth
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.auth.repository.AuthResult
 import com.hussienfahmy.core.domain.auth.repository.AuthUserData
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.CancellationException
@@ -15,7 +16,8 @@ import kotlinx.coroutines.flow.stateIn
 
 class FirebaseAuthRepository(
     private val auth: FirebaseAuth,
-    scope: CoroutineScope
+    scope: CoroutineScope,
+    private val crashReporter: CrashReporter
 ) : AuthRepository {
 
     // GitLive's authStateChanged Flow replaces the manual addAuthStateListener/callbackFlow
@@ -52,6 +54,7 @@ class FirebaseAuthRepository(
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
+            crashReporter.recordException(e, mapOf("operation" to "signInWithCredential"))
             AuthResult.Error(e.message ?: "Unknown error")
         }
     }

@@ -2,12 +2,14 @@ package com.hussienfahmy.semester_marks_domain.use_case
 
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.semester_marks_domain.model.GradeSyncResult
 import kotlinx.coroutines.flow.first
 
 class SyncGradeWithMarks(
     private val subjectDao: SubjectDao,
-    private val analyticsLogger: AnalyticsLogger
+    private val analyticsLogger: AnalyticsLogger,
+    private val crashReporter: CrashReporter
 ) {
     suspend operator fun invoke() {
         checkAllSubjects()
@@ -41,6 +43,7 @@ class SyncGradeWithMarks(
                 GradeSyncResult.NoChangeNeeded
             }
         } catch (e: Exception) {
+            crashReporter.recordException(e, mapOf("operation" to "checkSubject"))
             GradeSyncResult.Error("Failed to sync grade: ${e.message}")
         }
     }
@@ -56,6 +59,7 @@ class SyncGradeWithMarks(
                 checkSubject(subjectWithGrade)
             }
         } catch (e: Exception) {
+            crashReporter.recordException(e, mapOf("operation" to "checkAllSubjects"))
             listOf(GradeSyncResult.Error("Failed to check subjects: ${e.message}"))
         }
     }

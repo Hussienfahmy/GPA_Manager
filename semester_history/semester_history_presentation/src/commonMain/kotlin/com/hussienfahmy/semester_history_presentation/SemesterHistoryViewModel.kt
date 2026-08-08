@@ -3,6 +3,7 @@ package com.hussienfahmy.semester_history_presentation
 import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
@@ -40,6 +41,7 @@ class SemesterHistoryViewModel(
     private val pushSemesters: PushSemesters,
     private val authRepository: AuthRepository,
     private val applicationScope: CoroutineScope,
+    private val crashReporter: CrashReporter,
 ) : UiViewModel<SemesterHistoryEvent, SemesterHistoryState>(initialState = {
     SemesterHistoryState.Loading
 }) {
@@ -80,8 +82,10 @@ class SemesterHistoryViewModel(
                         if (userId != null) {
                             pushSemesters(userId)
                         }
-                    } catch (_: Exception) {
-                        // Silent fail — sync will retry on next app lifecycle event
+                    } catch (e: Exception) {
+                        // Silent to the user by design - sync will retry on next app lifecycle
+                        // event - but still reported so silent regressions are visible.
+                        crashReporter.recordException(e, mapOf("operation" to "pushSemesters"))
                     }
                 }
             }
@@ -150,7 +154,8 @@ class SemesterHistoryViewModel(
                         reorderSemester(event.id, ReorderSemester.Direction.DOWN)
                     }
                 }
-            } catch (_: Exception) {
+            } catch (e: Exception) {
+                crashReporter.recordException(e, mapOf("operation" to "onEvent:$event"))
                 _uiEvent.send(UiEvent.ShowSnackBar(UiText.Resource(Res.string.history_error_try_again)))
             }
         }
