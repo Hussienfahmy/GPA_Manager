@@ -89,7 +89,6 @@ dependencies {
 
     // Koin
     implementation(libs.koin.android)
-    implementation(libs.koin.androidx.worker)
 
     // Kotlin BOM
     implementation(platform(libs.kotlin.bom))
@@ -122,12 +121,6 @@ dependencies {
     implementation(libs.firebase.inappmessaging)
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.perf)
-
-
-    // Authentication
-    implementation(libs.androidx.credentials)
-    implementation(libs.androidx.credentials.play.services.auth)
-    implementation(libs.googleid)
 
     // Debug
     debugImplementation(libs.bundles.compose.debug)

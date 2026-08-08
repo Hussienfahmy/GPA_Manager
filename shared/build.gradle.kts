@@ -2,6 +2,36 @@ plugins {
     alias(libs.plugins.base.kmp.compose.module)
 }
 
+// google-services plugin only works on com.android.application - can't apply it here, so we
+// parse :app's google-services.json directly and expose the OAuth web client ID as a BuildConfig
+// field instead. Falls back to empty string if the (gitignored) file is missing.
+android {
+    buildFeatures {
+        buildConfig = true
+    }
+
+    val googleServicesFile = rootProject.file("app/google-services.json")
+    val webClientId = if (googleServicesFile.exists()) {
+        val json = groovy.json.JsonSlurper().parse(googleServicesFile) as Map<*, *>
+        @Suppress("UNCHECKED_CAST")
+        val clients = json["client"] as List<Map<*, *>>
+        val appClient = clients.first {
+            val info = it["client_info"] as Map<*, *>
+            val androidInfo = info["android_client_info"] as Map<*, *>
+            androidInfo["package_name"] == libs.versions.appId.get()
+        }
+        @Suppress("UNCHECKED_CAST")
+        val oauthClients = appClient["oauth_client"] as List<Map<*, *>>
+        oauthClients.first { (it["client_type"] as Number).toInt() == 3 }["client_id"] as String
+    } else {
+        ""
+    }
+
+    defaultConfig {
+        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"$webClientId\"")
+    }
+}
+
 kotlin {
     // Kotlin/Native framework export: iosApp/ (the Xcode project) links against Shared.framework
     // and calls MainViewController() (shared/src/iosMain/.../MainViewController.kt) to get a
@@ -76,6 +106,16 @@ kotlin {
             // project.dependencies.platform(...), not the bare platform(...) DSL extension - that
             // overload is broken inside KMP sourceSet dependency blocks under Kotlin 2.3 (KT-58759).
             implementation(project.dependencies.platform(libs.firebase.bom))
+
+            // platformModules()'s Android actual replicates Koin's workManagerFactory() manually
+            // (WorkManager.initialize + KoinWorkerFactory) since that call is KoinApplication
+            // builder-scope only, not something a Module can express.
+            implementation(libs.androidx.work.runtime.ktx)
+            implementation(libs.koin.androidx.worker)
+
+            implementation(libs.androidx.credentials)
+            implementation(libs.androidx.credentials.play.services.auth)
+            implementation(libs.googleid)
         }
     }
 }
