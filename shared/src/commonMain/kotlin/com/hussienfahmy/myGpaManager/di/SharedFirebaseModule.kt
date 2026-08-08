@@ -1,9 +1,3 @@
-// Same package + file name as :app's own di/FirebaseModule.kt would otherwise both compile to
-// the identical facade class com.hussienfahmy.myGpaManager.di.FirebaseModuleKt - whichever
-// module's dex wins the merge silently shadows the other's, so :app's firebaseModule vanishes
-// at runtime (NoSuchMethodError) with zero build-time warning. Disambiguated explicitly.
-@file:JvmName("SharedFirebaseModule")
-
 package com.hussienfahmy.myGpaManager.di
 
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
@@ -28,10 +22,11 @@ import org.koin.dsl.module
 // GitLive Firebase singletons + repository implementations - genuinely cross-platform (no
 // Android calls at all), just physically sitting in :app's Android-only source set until this
 // module was extracted. The Android-only pieces (CredentialManager, GoogleAuthUiClient,
-// GoogleAuthService, and the AuthService/AuthSignIn bindings) stay in :app's own firebaseModule,
-// since they need androidx.credentials, which :shared doesn't otherwise depend on. iOS gets its
-// own AuthService binding (see AppleAuthModule.ios.kt) since Sign in with Apple's shape differs
-// from Android's CredentialManager-based flow.
+// GoogleAuthService, and the AuthService/AuthSignIn bindings) now live in :shared's own
+// androidMain platformModules() (see di/Koin.android.kt), since they need androidx.credentials,
+// which this commonMain module doesn't otherwise depend on. iOS gets its own AuthService binding
+// (see KoinIos.kt) since Sign in with Apple's shape differs from Android's
+// CredentialManager-based flow.
 val sharedFirebaseModule = module {
     // Dropped the Firestore persistent-cache-size customization (previously
     // CACHE_SIZE_UNLIMITED) since GitLive's settings API differs; defaults still provide offline
