@@ -11,14 +11,11 @@ import com.hussienfahmy.core.data.local.util.UpdateResult
 import com.hussienfahmy.grades_setting_domain.model.GradeSetting
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
-@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 @SmallTest
 class ActivateGradeTest {

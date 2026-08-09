@@ -6,6 +6,12 @@ pluginManagement {
     }
 }
 
+plugins {
+    // Auto-downloads JVM toolchains (e.g. JDK 21 for Robolectric's Android SDK 36 sandbox) instead
+    // of requiring them pre-installed.
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 dependencyResolutionManagement {

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="semester_history_presentation">
+    <output-path>$PROJECT_DIR$/semester_history/semester_history_presentation/build/libs</output-path>
+    <root id="archive" name="semester_history_presentation.jar">
+      <element id="module-output" name="GPAManager.semester_history.semester_history_presentation.androidMain" />
+    </root>
+  </artifact>
+</component>

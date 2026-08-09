@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="gpa_system_settings_data">
+    <output-path>$PROJECT_DIR$/gpa_system_settings/gpa_system_settings_data/build/libs</output-path>
+    <root id="archive" name="gpa_system_settings_data.jar">
+      <element id="module-output" name="GPAManager.gpa_system_settings.gpa_system_settings_data.androidMain" />
+    </root>
+  </artifact>
+</component>

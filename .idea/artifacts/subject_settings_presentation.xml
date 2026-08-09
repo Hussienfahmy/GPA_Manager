@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="subject_settings_presentation">
+    <output-path>$PROJECT_DIR$/subject_settings/subject_settings_presentation/build/libs</output-path>
+    <root id="archive" name="subject_settings_presentation.jar">
+      <element id="module-output" name="GPAManager.subject_settings.subject_settings_presentation.androidMain" />
+    </root>
+  </artifact>
+</component>

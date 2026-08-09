@@ -7,7 +7,6 @@ import androidx.test.filters.SmallTest
 import com.hussienfahmy.core.data.local.entity.Grade
 import com.hussienfahmy.core.data.local.entity.Subject
 import com.hussienfahmy.core.data.local.model.GradeName
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.runTest
@@ -20,7 +19,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 @SmallTest
 class SubjectDaoTest {
