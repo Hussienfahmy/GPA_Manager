@@ -44,10 +44,11 @@ class BaseKmpModulePlugin : Plugin<Project> {
             // type-safe accessors, which this plain Plugin<Project> class doesn't get.
             (kotlinExtension as ExtensionAware).extensions.configure<KotlinMultiplatformAndroidLibraryTarget>("android") {
                 namespace = libs.findVersion("nameSpace").get().toString()
-                // compileSdk catalog entry is "37.0" (used to feed compileSdkVersion("android-37.0")
-                // under the old string-based API) - the new compileSdk property is a plain Int API
-                // level, so only the major component before the dot is relevant.
-                compileSdk = libs.findVersion("compileSdk").get().toString().substringBefore(".").toInt()
+                compileSdk {
+                    version = release(libs.findVersion("compileSdk").get().toString().toInt()) {
+                        minorApiLevel = 0
+                    }
+                }
                 minSdk = libs.findVersion("minSdk").get().toString().toInt()
 
                 compilerOptions {

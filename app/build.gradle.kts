@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
@@ -9,7 +8,11 @@ plugins {
 
 android {
     namespace = libs.versions.nameSpace.get()
-    compileSdkVersion("android-${libs.versions.compileSdk.get()}")
+    compileSdk {
+        version = release(libs.versions.compileSdk.get().toInt()) {
+            minorApiLevel = 0
+        }
+    }
 
     defaultConfig {
         applicationId = libs.versions.appId.get()

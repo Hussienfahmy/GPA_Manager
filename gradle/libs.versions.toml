@@ -2,13 +2,12 @@
 # Project Config
 appId = "com.hussienFahmy.myGpaManager"
 nameSpace = "com.hussienfahmy.myGpaManager"
-compileSdk = "37.0"
+compileSdk = "37"
 googleid = "1.2.0"
 minSdk = "23"
-targetSdk = "36"
+targetSdk = "37"
 versionCode = "88"
 versionName = "8.0.3"
-gradle = "8.12.0"
 
 # Build Tools
 agp = "9.1.0"
@@ -96,7 +95,7 @@ junit = "4.13.2"
 
 [libraries]
 # Gradle
-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin" }
 compose-multiplatform-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeMultiplatform" }
 
@@ -233,16 +232,6 @@ android-test = { id = "com.android.test", version.ref = "agp" }
 # deprecated for kotlin.multiplatform under AGP 9 in favor of this dedicated KMP-library plugin.
 android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-# android.builtInKotlin=false in gradle.properties disables AGP's built-in Kotlin compiler
-# project-wide (needed so the KMP library modules don't conflict with com.android.library under
-# AGP 9 - see BaseKmpModulePlugin). :app and :baselineprofile are plain com.android.application/
-# com.android.test modules with no KMP involvement, so with the built-in compiler off they need
-# this applied explicitly or their own .kt sources never get compiled at all.
-# No version.ref: AGP's built-in Kotlin machinery already puts this plugin's marker on the
-# buildscript classpath even with android.builtInKotlin=false, so pinning our own version here
-# conflicts ("already on the classpath with an unknown version"). Let it resolve against
-# whatever's already present.
-kotlin-android = { id = "org.jetbrains.kotlin.android" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }

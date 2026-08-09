@@ -1,12 +1,15 @@
 plugins {
     alias(libs.plugins.android.test)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.androidx.baselineprofile)
 }
 
 android {
     namespace = "com.hussienfahmy.baselineprofile"
-    compileSdkVersion("android-${libs.versions.compileSdk.get()}")
+    compileSdk {
+        version = release(libs.versions.compileSdk.get().toInt()) {
+            minorApiLevel = 0
+        }
+    }
 
     defaultConfig {
         minSdk = 28
