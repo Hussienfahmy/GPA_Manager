@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import com.hussienfahmy.core.domain.report.PdfReportPrinter
 import com.hussienfahmy.semester_history_presentation.SemesterHistoryScreen
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import org.koin.compose.koinInject
 import kotlin.time.Clock
@@ -16,7 +17,7 @@ import kotlin.time.ExperimentalTime
 private fun exportTimestamp(): String {
     val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     fun Int.pad() = toString().padStart(2, '0')
-    return "${now.year}-${now.monthNumber.pad()}-${now.dayOfMonth.pad()}_" +
+    return "${now.year}-${now.month.number.pad()}-${now.day.pad()}_" +
         "${now.hour.pad()}-${now.minute.pad()}"
 }
 

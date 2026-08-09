@@ -10,8 +10,8 @@ versionCode = "88"
 versionName = "8.0.3"
 
 # Build Tools
-agp = "9.1.0"
-kotlin = "2.3.10"
+agp = "9.3.1"
+kotlin = "2.4.10"
 kotlinBom = "2.2.0"
 kotlinxSerialization = "1.10.0"
 kotlinxDatetime = "0.8.0"
@@ -59,10 +59,11 @@ firebaseCrashlyticsGradle = "3.0.6"
 credentials = "1.6.0-rc02"
 
 # Kotlin Multiplatform / Compose Multiplatform
-# Added for the KMP/CMP migration (see docs/kmp-migration-plan.md). Not wired into any module yet
-# except via the new base_kmp_module/base_kmp_compose_module convention plugins themselves.
-# composeMultiplatform 1.10.1 is confirmed compatible with kotlin = "2.3.10" above.
 composeMultiplatform = "1.10.1"
+# material3 versions independently of composeMultiplatform.
+composeMaterial3 = "1.9.0"
+# Frozen at 1.7.3, no further releases - use Material Symbols instead going forward.
+composeMaterialIconsExtended = "1.7.3"
 sqlite = "2.7.0"
 coil3 = "3.5.0"
 gitliveFirebase = "2.4.0"
@@ -181,6 +182,14 @@ androidx-lifecycle-viewmodel-navigation3 = { group = "org.jetbrains.androidx.lif
 # Calf Permissions - replaced the hand-rolled PermissionController expect/actual.
 calf-permissions-core = { group = "com.mohamedrejeb.calf", name = "calf-permissions-core", version.ref = "calfPermissions" }
 calf-permissions-notifications = { group = "com.mohamedrejeb.calf", name = "calf-permissions-notifications", version.ref = "calfPermissions" }
+
+# Compose Multiplatform direct library references (replaces the deprecated ComposePlugin.Dependencies aliases).
+compose-runtime = { group = "org.jetbrains.compose.runtime", name = "runtime", version.ref = "composeMultiplatform" }
+compose-foundation = { group = "org.jetbrains.compose.foundation", name = "foundation", version.ref = "composeMultiplatform" }
+compose-material3 = { group = "org.jetbrains.compose.material3", name = "material3", version.ref = "composeMaterial3" }
+compose-material-icons-extended = { group = "org.jetbrains.compose.material", name = "material-icons-extended", version.ref = "composeMaterialIconsExtended" }
+compose-components-resources = { group = "org.jetbrains.compose.components", name = "components-resources", version.ref = "composeMultiplatform" }
+compose-components-ui-tooling-preview = { group = "org.jetbrains.compose.components", name = "components-ui-tooling-preview", version.ref = "composeMultiplatform" }
 
 # Room KMP - same artifact coordinates as the Android-only ones above, just the multiplatform
 # driver needed for non-Android targets, added for the Room KMP migration phase

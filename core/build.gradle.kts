@@ -25,11 +25,11 @@ kotlin {
             implementation(libs.androidx.sqlite.bundled)
             // api, not implementation: UiText.Resource exposes StringResource as part of :core's
             // public API surface, and ~70 downstream modules need Res.string.* to resolve.
-            api(compose.components.resources)
-            // compose.components.resources only brings the resources runtime; UiText.asString()
+            api(libs.compose.components.resources)
+            // compose-components-resources only brings the resources runtime; UiText.asString()
             // is itself @Composable, which needs the Compose runtime (Composable annotation,
             // stringResource) on the classpath too.
-            api(compose.runtime)
+            api(libs.compose.runtime)
             // GitLive Firebase Analytics replaces the Android-only SDK dependency that used to
             // live in androidMain, now that FirebaseAnalyticsService/AnalyticsModule are
             // commonMain.

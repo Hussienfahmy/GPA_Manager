@@ -13,13 +13,9 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 // Adds iosArm64/iosSimulatorArm64 alongside Android - applyDefaultHierarchyTemplate() below
-// auto-creates the iosMain/iosTest intermediate source sets once these targets exist, no
-// per-module wiring needed. iosX64 (Intel simulator) is deliberately omitted.
-//
-// Uses com.android.kotlin.multiplatform.library, not com.android.library: the latter is
-// deprecated for KMP modules under AGP 9 (kotlin.multiplatform + com.android.library triggers a
-// removal warning, gone entirely in AGP 10). The new plugin folds Android config into
-// kotlin { android { ... } } instead of a separate top-level android {} / LibraryExtension.
+// auto-creates iosMain/iosTest once these targets exist. iosX64 deliberately omitted.
+// com.android.kotlin.multiplatform.library, not com.android.library: the latter is deprecated
+// for KMP under AGP 9.
 class BaseKmpModulePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         val libs = target.extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
@@ -38,10 +34,8 @@ class BaseKmpModulePlugin : Plugin<Project> {
 
             val kotlinExtension = extensions.getByType<KotlinMultiplatformExtension>()
 
-            // com.android.kotlin.multiplatform.library registers its "android" DSL as a plain
-            // Gradle extension on KotlinMultiplatformExtension, not a compiled-in member function -
-            // that sugar only exists for .gradle.kts precompiled script plugins via generated
-            // type-safe accessors, which this plain Plugin<Project> class doesn't get.
+            // "android" is a plain Gradle extension here, not a member function - that sugar only
+            // exists for .gradle.kts scripts, not plain Plugin<Project> classes like this one.
             (kotlinExtension as ExtensionAware).extensions.configure<KotlinMultiplatformAndroidLibraryTarget>("android") {
                 namespace = libs.findVersion("nameSpace").get().toString()
                 compileSdk {
@@ -55,17 +49,12 @@ class BaseKmpModulePlugin : Plugin<Project> {
                     jvmTarget.set(JvmTarget.JVM_17)
                 }
 
-                // androidResources defaults to disabled under this plugin - res/ and Compose
-                // Multiplatform resources alike silently stop resolving on the Android target
-                // without this (no compile error, just missing resources at runtime).
+                // Off by default under this plugin - resources silently stop resolving without it.
                 androidResources {
                     enable = true
                 }
 
-                // consumerProguardFiles("consumer-rules.pro") on the old LibraryExtension is
-                // silently dropped by this plugin - equivalent is optimization.consumerKeepRules,
-                // with publish = true so :app's R8 pass actually picks these rules up from the
-                // downstream library dependency (not implicit like the old API).
+                // Replaces consumerProguardFiles("consumer-rules.pro"), silently dropped by this plugin.
                 optimization {
                     consumerKeepRules.apply {
                         publish = true
@@ -89,6 +78,8 @@ class BaseKmpModulePlugin : Plugin<Project> {
             tasks.withType<KotlinCompilationTask<*>>().configureEach {
                 compilerOptions {
                     freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
+                    // expect/actual classes are still formally Beta, warns on every build without this.
+                    freeCompilerArgs.add("-Xexpect-actual-classes")
                 }
             }
         }

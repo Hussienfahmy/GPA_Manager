@@ -4,7 +4,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 // Applies base_kmp_module first, then wires Compose Multiplatform + Koin's Compose Multiplatform
@@ -25,16 +24,14 @@ class BaseKmpComposeModulePlugin : Plugin<Project> {
                 )
             }
 
-            val composeDependencies = ComposePlugin.Dependencies(target)
-
             extensions.getByType<KotlinMultiplatformExtension>().apply {
                 sourceSets.commonMain.dependencies {
-                    implementation(composeDependencies.runtime)
-                    implementation(composeDependencies.foundation)
-                    implementation(composeDependencies.material3)
-                    implementation(composeDependencies.materialIconsExtended)
-                    implementation(composeDependencies.components.resources)
-                    implementation(composeDependencies.components.uiToolingPreview)
+                    implementation(libs.getLibrary("compose-runtime"))
+                    implementation(libs.getLibrary("compose-foundation"))
+                    implementation(libs.getLibrary("compose-material3"))
+                    implementation(libs.getLibrary("compose-material-icons-extended"))
+                    implementation(libs.getLibrary("compose-components-resources"))
+                    implementation(libs.getLibrary("compose-components-ui-tooling-preview"))
                     implementation(libs.getLibrary("koin-compose"))
                     implementation(libs.getLibrary("koin-compose-viewmodel"))
                 }
