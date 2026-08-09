@@ -23,3 +23,11 @@ local.properties
 chroma.sqlite3
 /.claude
 /.idea/firebender
+/.idea/.name
+/.idea/appInsightsSettings.xml
+/.idea/xcode.xml
+
+## Xcode - per-user window/scheme state, regenerated on open, nothing to review in diffs
+xcuserdata/
+*.xcuserstate
+iosApp/iosApp.xcodeproj/project.xcworkspace/
