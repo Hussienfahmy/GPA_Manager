@@ -175,7 +175,7 @@ class AppleSignIn(
         buffer.readBytes(length)
     }
 
-    @OptIn(ExperimentalForeignApi::class, ExperimentalStdlibApi::class)
+    @OptIn(ExperimentalForeignApi::class)
     private fun sha256(input: String): String {
         val digest = UByteArray(CC_SHA256_DIGEST_LENGTH)
         val inputBytes = input.encodeToByteArray()

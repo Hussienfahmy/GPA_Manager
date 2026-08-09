@@ -8,13 +8,12 @@ import platform.Foundation.NSBundle
 import platform.UIKit.UIImage
 import platform.UIKit.UIImagePNGRepresentation
 import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
 
 // Reads the app's primary icon name out of Info.plist's CFBundleIcons (populated by Xcode from
 // the asset catalog's App Icon set at build time) and loads it via UIImage(named:); falls back to
 // the conventional "AppIcon" asset-catalog name some Xcode configurations don't auto-populate
 // CFBundleIconFiles for.
-@OptIn(ExperimentalForeignApi::class, ExperimentalEncodingApi::class)
+@OptIn(ExperimentalForeignApi::class)
 internal actual suspend fun loadAppIconBase64Png(
     context: PlatformContext,
     crashReporter: CrashReporter,
