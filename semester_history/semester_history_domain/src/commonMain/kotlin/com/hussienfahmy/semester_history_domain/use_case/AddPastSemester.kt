@@ -4,7 +4,6 @@ import com.hussienfahmy.core.data.local.SemesterDao
 import com.hussienfahmy.core.data.local.entity.Semester
 import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 class AddPastSemester(
     private val semesterDao: SemesterDao,
@@ -27,7 +26,6 @@ class AddPastSemester(
     /**
      * Returns the created semester ID (used by Detailed flow to navigate to subject entry).
      */
-    @OptIn(ExperimentalTime::class)
     suspend operator fun invoke(request: Request): Long {
         val nextOrder = (semesterDao.getMaxOrder() ?: 0) + 1
 

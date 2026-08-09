@@ -1,7 +1,6 @@
 package com.hussienfahmy.myGpaManager.data.common.mapper
 
 import com.hussienfahmy.core.domain.common.model.DomainTimestamp
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 /**
@@ -9,7 +8,6 @@ import kotlin.time.Instant
  * client-computed rather than relying on GitLive's Firestore Timestamp/ServerTimestamp type,
  * which has known rough edges - see GitLiveApp/firebase-kotlin-sdk#666) and DomainTimestamp.
  */
-@OptIn(ExperimentalTime::class)
 fun Long.toDomainTimestamp(): DomainTimestamp {
     val instant = Instant.fromEpochMilliseconds(this)
     return DomainTimestamp(
@@ -18,7 +16,6 @@ fun Long.toDomainTimestamp(): DomainTimestamp {
     )
 }
 
-@OptIn(ExperimentalTime::class)
 fun DomainTimestamp.toEpochMillis(): Long {
     return Instant.fromEpochSeconds(seconds, nanoseconds).toEpochMilliseconds()
 }

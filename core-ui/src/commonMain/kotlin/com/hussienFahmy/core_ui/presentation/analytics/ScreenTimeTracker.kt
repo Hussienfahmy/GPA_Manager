@@ -7,9 +7,7 @@ import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import org.koin.compose.koinInject
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class)
 @Composable
 fun TrackScreenTime(screenName: String) {
     val analyticsLogger = koinInject<AnalyticsLogger>()

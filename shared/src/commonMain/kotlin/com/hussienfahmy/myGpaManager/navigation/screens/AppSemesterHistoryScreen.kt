@@ -9,11 +9,9 @@ import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import org.koin.compose.koinInject
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 // java.text.SimpleDateFormat/java.util.Date have no Kotlin/Native equivalent - rewritten on
 // kotlin.time.Clock/kotlinx-datetime, matching the pattern already used in ReportCommon.kt.
-@OptIn(ExperimentalTime::class)
 private fun exportTimestamp(): String {
     val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     fun Int.pad() = toString().padStart(2, '0')

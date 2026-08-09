@@ -11,7 +11,6 @@ import com.hussienfahmy.core.domain.user_data.use_cases.UpdateSemester
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 class ArchiveCurrentSemester(
     private val semesterDao: SemesterDao,
@@ -27,7 +26,6 @@ class ArchiveCurrentSemester(
         data object NoSubjects : Result()
     }
 
-    @OptIn(ExperimentalTime::class)
     suspend operator fun invoke(): Result {
         val userData = getUserData().filterNotNull().first()
         val currentLevel = userData.academicInfo.level

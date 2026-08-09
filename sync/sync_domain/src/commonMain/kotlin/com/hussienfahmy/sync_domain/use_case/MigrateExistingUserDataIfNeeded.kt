@@ -8,7 +8,6 @@ import com.hussienfahmy.sync_domain.repository.SyncRepository
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 class MigrateExistingUserDataIfNeeded(
     private val syncRepository: SyncRepository,
@@ -29,7 +28,6 @@ class MigrateExistingUserDataIfNeeded(
         }
     }
 
-    @OptIn(ExperimentalTime::class)
     private suspend fun migrateExistingUserData(): Boolean {
         val userData = getUserData().filterNotNull().first()
         val cumulativeGPA = userData.academicProgress.cumulativeGPA

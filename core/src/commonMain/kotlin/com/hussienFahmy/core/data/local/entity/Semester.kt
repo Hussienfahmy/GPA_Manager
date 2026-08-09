@@ -4,9 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class)
 @Entity(tableName = "semester")
 data class Semester(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,

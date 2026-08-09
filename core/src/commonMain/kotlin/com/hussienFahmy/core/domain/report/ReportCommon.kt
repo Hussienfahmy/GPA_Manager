@@ -9,7 +9,6 @@ import kotlinx.datetime.format.Padding
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 internal fun String?.escapeHtml(): String {
@@ -179,13 +178,11 @@ private val shortDateFormat = LocalDateTime.Format {
     day(padding = Padding.ZERO)
 }
 
-@OptIn(ExperimentalTime::class)
 internal fun formatDate(instant: Instant? = Clock.System.now()): String {
     if (instant == null) return "—"
     return instant.toLocalDateTime(TimeZone.currentSystemDefault()).format(dateFormat)
 }
 
-@OptIn(ExperimentalTime::class)
 internal fun formatShortDate(instant: Instant? = Clock.System.now()): String {
     if (instant == null) return "—"
     return instant.toLocalDateTime(TimeZone.currentSystemDefault()).format(shortDateFormat)
