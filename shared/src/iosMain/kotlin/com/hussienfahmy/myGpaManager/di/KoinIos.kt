@@ -2,6 +2,7 @@ package com.hussienfahmy.myGpaManager.di
 
 import com.hussienfahmy.core.domain.auth.service.AppleSignIn
 import com.hussienfahmy.core.domain.auth.service.AuthService
+import com.hussienfahmy.core.domain.auth.service.EmailPasswordSignIn
 import com.hussienfahmy.core.util.PlatformContext
 import com.hussienfahmy.core_ui.presentation.util.initCoilImageLoader
 import dev.gitlive.firebase.Firebase
@@ -16,6 +17,9 @@ actual fun platformModules(context: PlatformContext): List<Module> = listOf(
         single { context }
         single<AuthService> { IosAuthService(get()) }
         singleOf(::AppleSignIn)
+        // Temporary, see EmailPasswordSignIn.kt - remove once Sign in with Apple is wired
+        // back in as onboarding's "Get Started" action.
+        singleOf(::EmailPasswordSignIn)
     }
 )
 
