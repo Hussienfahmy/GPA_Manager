@@ -31,7 +31,7 @@ class BaseKmpComposeModulePlugin : Plugin<Project> {
                     implementation(libs.getLibrary("compose-material3"))
                     implementation(libs.getLibrary("compose-material-icons-extended"))
                     implementation(libs.getLibrary("compose-components-resources"))
-                    implementation(libs.getLibrary("compose-components-ui-tooling-preview"))
+                    implementation(libs.getLibrary("compose-ui-tooling-preview"))
                     implementation(libs.getLibrary("koin-compose"))
                     implementation(libs.getLibrary("koin-compose-viewmodel"))
                 }
@@ -40,6 +40,11 @@ class BaseKmpComposeModulePlugin : Plugin<Project> {
                     implementation(libs.getLibrary("androidx-activity-compose"))
                 }
             }
+
+            // compose.uiToolingPreview's multiplatform @Preview needs this on the Android runtime
+            // classpath too - com.android.kotlin.multiplatform.library (not com.android.library)
+            // has no debugImplementation, so it goes on androidRuntimeClasspath directly instead.
+            dependencies.add("androidRuntimeClasspath", libs.getLibrary("compose-ui-tooling"))
         }
     }
 }
