@@ -4,6 +4,8 @@ import com.hussienfahmy.core.domain.auth.service.AppleSignIn
 import com.hussienfahmy.core.domain.auth.service.AuthService
 import com.hussienfahmy.core.util.PlatformContext
 import com.hussienfahmy.core_ui.presentation.util.initCoilImageLoader
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.initialize
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -23,6 +25,10 @@ actual fun platformModules(context: PlatformContext): List<Module> = listOf(
 // how this is callable from Swift - the same reason JetBrains' own KMP project template avoids
 // "init"-prefixed names.
 fun doInitApp() {
+    // Unlike Android (auto-initialized by the Google Services Gradle plugin's ContentProvider),
+    // iOS has no equivalent - FIRApp.configure() must be called explicitly before any Firebase
+    // API is touched, reading GoogleService-Info.plist from the main bundle.
+    Firebase.initialize(context = null)
     initCoilImageLoader()
     initKoin(object : PlatformContext() {})
 }
