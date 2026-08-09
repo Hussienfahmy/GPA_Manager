@@ -34,7 +34,7 @@
     <string name="err_subject_practical_negative">Practical marks can not be less than zero</string>
     <string name="err_subject_project_negative">Project marks can not be less than zero</string>
     <string name="err_subject_final_exam_invalid">Final exam marks must be more than zero</string>
-    <string name="err_subject_final_exam_exceeds_total">Final exam total can\'t be more than the subject total marks</string>
+    <string name="err_subject_final_exam_exceeds_total">Final exam total can't be more than the subject total marks</string>
     <string name="err_subject_final_exam_below_semester">Final exam total must be larger than the semester marks you entered — enter what the exam is out of, not your score</string>
     <string name="final_exam">Final Exam</string>
     <string name="final_exam_total_hint">Max marks for final exam</string>
@@ -160,11 +160,11 @@
     <string name="active_grades_only">Active</string>
     <string name="all_grades">All</string>
     <string name="name_is_required">Name is required</string>
-    <string name="cannot_be_empty">Cann\'t be empty</string>
-    <string name="cannot_be_less_than_one">Can\'t be less than one</string>
-    <string name="cannot_be_negative">Can\'t be negative</string>
+    <string name="cannot_be_empty">Cann't be empty</string>
+    <string name="cannot_be_less_than_one">Can't be less than one</string>
+    <string name="cannot_be_negative">Can't be negative</string>
     <string name="invalid_input">Invalid Input</string>
-    <string name="total_hours_is_zero">Total hours can\'t be zero</string>
+    <string name="total_hours_is_zero">Total hours can't be zero</string>
     <string name="invalid_number">Invalid Number</string>
     <string name="credit_hours">Credit Hours</string>
     <string name="credit_hours_value_in_history">%1$s credit hours</string>
@@ -185,7 +185,7 @@
     <!-- Onboarding strings -->
     <string name="onboarding_welcome_title">Welcome to GPA Manager</string>
     <string name="onboarding_welcome_subtitle">Your smart companion for tracking and improving your academic performance</string>
-    <string name="onboarding_welcome_get_started">Let\'s Get Started! 🚀</string>
+    <string name="onboarding_welcome_get_started">Let's Get Started! 🚀</string>
     <string name="onboarding_welcome_features">• Track your academic progress\n• Calculate semester and cumulative GPA\n• Set goals and monitor improvement\n• Sync across all your devices</string>
     <string name="onboarding_welcome_tagline">Turn your academic dreams into reality! ✨</string>
     <string name="onboarding_welcome_subtitle_motivational">Ready to ace your academics? 🚀</string>
@@ -204,7 +204,7 @@
     <string name="onboarding_user_data_subtitle">Help us personalize your experience and provide accurate GPA calculations</string>
 
     <string name="onboarding_grades_title">Configure Grade System</string>
-    <string name="onboarding_grades_subtitle">Set up your institution\'s grading system for accurate GPA calculations. You can always modify these settings later.</string>
+    <string name="onboarding_grades_subtitle">Set up your institution's grading system for accurate GPA calculations. You can always modify these settings later.</string>
 
     <string name="onboarding_final_title">Final Setup</string>
     <string name="onboarding_final_subtitle">Review your GPA calculation and subjects settings. You can always modify these later.</string>
@@ -238,7 +238,7 @@
     <string name="history_add_past_data">Add Past Data</string>
     <string name="history_add_current_gpa">Add Current GPA</string>
     <string name="history_you_are_in">You are in: Year %1$d – Semester %2$d</string>
-    <string name="history_empty_state">No semesters yet.\nTap + to add a past semester, or tap \"Finish Semester\" to archive the current one.</string>
+    <string name="history_empty_state">No semesters yet.\nTap + to add a past semester, or tap “Finish Semester” to archive the current one.</string>
     <string name="history_type_summary">Summary</string>
     <string name="history_type_detailed">Detailed</string>
     <string name="history_summary_type_description">Quick entry — only the semester GPA and total credit hours. No need to add individual subjects.</string>
@@ -251,13 +251,13 @@
     <string name="history_subjects_header">Subjects (%1$d)</string>
     <string name="history_no_subjects_hint">No subjects yet. Tap + to add subjects.</string>
     <string name="history_semester_gpa">Semester GPA</string>
-    <string name="history_delete_semester_message">Delete \"%1$s\"? This will permanently remove the semester and all its subjects. This cannot be undone.</string>
+    <string name="history_delete_semester_message">Delete “%1$s”? This will permanently remove the semester and all its subjects. This cannot be undone.</string>
     <string name="history_delete_subject_title">Delete Subject</string>
-    <string name="history_delete_subject_message">Delete \"%1$s\"? This will affect the current GPA calculation and cannot be undone — you would need to re-add it manually.</string>
+    <string name="history_delete_subject_message">Delete “%1$s”? This will affect the current GPA calculation and cannot be undone — you would need to re-add it manually.</string>
     <string name="history_no_grade_excluded">No grade — excluded from GPA</string>
     <string name="history_finish_semester_title">Finish Current Semester?</string>
-    <string name="history_finish_semester_will_be_saved">Will be saved as: \"%1$s\"</string>
-    <string name="history_finish_semester_message">Your subjects and their assigned grades from the Semester tab will be archived as-is. Make sure you\'ve reviewed and set the correct grades before continuing — you can still edit them later from History.\n\nThis will move you to Year %1$d – Semester %2$d.</string>
+    <string name="history_finish_semester_will_be_saved">Will be saved as: “%1$s”</string>
+    <string name="history_finish_semester_message">Your subjects and their assigned grades from the Semester tab will be archived as-is. Make sure you've reviewed and set the correct grades before continuing — you can still edit them later from History.\n\nThis will move you to Year %1$d – Semester %2$d.</string>
     <string name="history_gpa_value">GPA: %1$.3f</string>
     <string name="history_hours_value">· %1$d hrs</string>
     <string name="history_points_value">Points: %1$.2f</string>
@@ -292,12 +292,12 @@
     <string name="tpl_minimal_tagline">Editorial whitespace</string>
     <string name="tpl_minimal_desc">Type-forward layout with generous whitespace, huge GPA mark, and quiet rules between terms.</string>
     <string name="history_add_subjects_first">Add subjects to your current semester first</string>
-    <string name="history_add_current_gpa_description">Save your current cumulative GPA and total credit hours as a history record. This will appear as \"Current GPA\" in your semester history.</string>
+    <string name="history_add_current_gpa_description">Save your current cumulative GPA and total credit hours as a history record. This will appear as “Current GPA” in your semester history.</string>
     <string name="history_grade_label">Grade</string>
     <string name="history_edit_subject">Edit Subject</string>
     <string name="history_edit_semester">Edit semester</string>
     <string name="history_marks_section_title">Marks</string>
-    <string name="history_marks_section_note">Optional — historical only, doesn\'t affect the assigned grade. Included in the exported PDF report.</string>
+    <string name="history_marks_section_note">Optional — historical only, doesn't affect the assigned grade. Included in the exported PDF report.</string>
     <string name="history_assign_grade_hint">Please assign a grade.</string>
     <string name="history_no_grade_excluded_hint">No grade — excluded from GPA. Please assign a grade.</string>
     <string name="history_score_with_total">%1$s / %2$s</string>
