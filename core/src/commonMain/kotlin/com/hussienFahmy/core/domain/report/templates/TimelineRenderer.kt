@@ -6,6 +6,7 @@ import com.hussienfahmy.core.domain.report.ReportTemplate
 import com.hussienfahmy.core.domain.report.ReportTemplateRenderer
 import com.hussienfahmy.core.domain.report.escapeHtml
 import com.hussienfahmy.core.domain.report.formatDate
+import com.hussienfahmy.core.util.toFixedString
 
 class TimelineRenderer : ReportTemplateRenderer {
     override val template = ReportTemplate.TIMELINE
@@ -83,7 +84,7 @@ ${ReportCommon.pageFooterCss(accentHex = "#ec4899", bgHex = "#f7f7f5", borderHex
 </div>
 
 <div class="strip">
-  <div class="cell"><div class="k">Cumulative GPA</div><div class="v">${"%.2f".format(data.cumulativeGPA)}<span class="suf">/${data.maxGPA}</span></div></div>
+  <div class="cell"><div class="k">Cumulative GPA</div><div class="v">${data.cumulativeGPA.toFixedString(2)}<span class="suf">/${data.maxGPA}</span></div></div>
   <div class="cell"><div class="k">Credits</div><div class="v">${data.totalCreditHours}<span class="suf">hrs</span></div></div>
   <div class="cell"><div class="k">Standing</div><div class="v" style="font-size:13pt;">${
         ReportCommon.resolveStanding(
@@ -110,24 +111,20 @@ ${ReportCommon.pageFooterCss(accentHex = "#ec4899", bgHex = "#f7f7f5", borderHex
                     Triple(x, y, gpa)
                 }
                 val polyline =
-                    points.joinToString(" ") { "${"%.1f".format(it.first)},${"%.1f".format(it.second)}" }
+                    points.joinToString(" ") { "${it.first.toFixedString(1)},${it.second.toFixedString(1)}" }
                 val circles = points.joinToString("") { (x, y, _) ->
-                    "<circle cx=\"${"%.1f".format(x)}\" cy=\"${
-                        "%.1f".format(y)
+                    "<circle cx=\"${x.toFixedString(1)}\" cy=\"${
+                        y.toFixedString(1)
                     }\" r=\"2.6\" fill=\"#ec4899\"/>"
                 }
                 val firstLabel = points.first().let { (x, y, gpa) ->
-                    "<text x=\"${"%.1f".format(x)}\" y=\"${"%.1f".format(y - 4)}\" font-size=\"6.5\" fill=\"#111214\" text-anchor=\"start\" font-family=\"Georgia,serif\" font-weight=\"bold\">${
-                        "%.2f".format(
-                            gpa
-                        )
+                    "<text x=\"${x.toFixedString(1)}\" y=\"${(y - 4).toFixedString(1)}\" font-size=\"6.5\" fill=\"#111214\" text-anchor=\"start\" font-family=\"Georgia,serif\" font-weight=\"bold\">${
+                        gpa.toFixedString(2)
                     }</text>"
                 }
                 val lastLabel = if (n > 1) points.last().let { (x, y, gpa) ->
-                    "<text x=\"${"%.1f".format(x)}\" y=\"${"%.1f".format(y - 4)}\" font-size=\"6.5\" fill=\"#111214\" text-anchor=\"end\" font-family=\"Georgia,serif\" font-weight=\"bold\">${
-                        "%.2f".format(
-                            gpa
-                        )
+                    "<text x=\"${x.toFixedString(1)}\" y=\"${(y - 4).toFixedString(1)}\" font-size=\"6.5\" fill=\"#111214\" text-anchor=\"end\" font-family=\"Georgia,serif\" font-weight=\"bold\">${
+                        gpa.toFixedString(2)
                     }</text>"
                 } else ""
                 """<svg viewBox="0 0 400 50" preserveAspectRatio="none">
@@ -152,7 +149,7 @@ ${ReportCommon.pageFooterCss(accentHex = "#ec4899", bgHex = "#f7f7f5", borderHex
             <div class="head">
               <div class="ttl">${sem.label.escapeHtml()}</div>
               <div class="stats">
-                <div class="stat"><span class="l">GPA</span><span class="v">${"%.2f".format(sem.semesterGPA)}</span></div>
+                <div class="stat"><span class="l">GPA</span><span class="v">${sem.semesterGPA.toFixedString(2)}</span></div>
                 <div class="stat"><span class="l">Hrs</span><span class="v">${sem.totalCreditHours}</span></div>
                 <div class="stat"><span class="l">Grade</span><span class="v">$gradeSym</span></div>
               </div>
@@ -183,25 +180,17 @@ ${ReportCommon.pageFooterHtml(data.logoBase64Png, data.qrBase64Png)}
                 if (row.gradeName != null) ReportCommon.gradePillClass(row.gradeName) else ""
             sb.append(
                 """<tr class="$rowClass"><td class="subject-name">${row.name.escapeHtml()}</td><td>${
-                    "%.1f".format(
-                        row.creditHours
-                    )
+                    row.creditHours.toFixedString(1)
                 }</td><td>${if (row.gradeName != null) """<span class="grade-pill $gradeClass">${row.gradeName.escapeHtml()}</span>""" else "—"}</td><td>${
-                    if (row.gradePoints != null) "%.2f".format(
-                        row.gradePoints
-                    ) else "—"
-                }</td><td>${if (row.midterm != null) "%.0f".format(row.midterm) else "—"}</td><td>${
-                    if (row.practical != null) "%.0f".format(
-                        row.practical
-                    ) else "—"
-                }</td><td>${if (row.oral != null) "%.0f".format(row.oral) else "—"}</td><td>${
-                    if (row.project != null) "%.0f".format(
-                        row.project
-                    ) else "—"
-                }</td><td>${if (row.finalExam != null) "%.0f".format(row.finalExam) else "—"}</td><td>${
+                    if (row.gradePoints != null) row.gradePoints.toFixedString(2) else "—"
+                }</td><td>${if (row.midterm != null) row.midterm.toFixedString(0) else "—"}</td><td>${
+                    if (row.practical != null) row.practical.toFixedString(0) else "—"
+                }</td><td>${if (row.oral != null) row.oral.toFixedString(0) else "—"}</td><td>${
+                    if (row.project != null) row.project.toFixedString(0) else "—"
+                }</td><td>${if (row.finalExam != null) row.finalExam.toFixedString(0) else "—"}</td><td>${
                     ReportCommon.totalMarks(
                         row
-                    )?.let { "%.0f/%.0f".format(it.first, it.second) } ?: "—"
+                    )?.let { "${it.first.toFixedString(0)}/${it.second.toFixedString(0)}" } ?: "—"
                 }</td></tr>""")
         }
         sb.append("""</tbody></table>""")

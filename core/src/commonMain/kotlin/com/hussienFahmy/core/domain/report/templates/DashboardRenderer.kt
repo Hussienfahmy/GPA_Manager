@@ -7,6 +7,7 @@ import com.hussienfahmy.core.domain.report.ReportTemplateRenderer
 import com.hussienfahmy.core.domain.report.SubjectRow
 import com.hussienfahmy.core.domain.report.escapeHtml
 import com.hussienfahmy.core.domain.report.formatShortDate
+import com.hussienfahmy.core.util.toFixedString
 
 class DashboardRenderer : ReportTemplateRenderer {
     override val template = ReportTemplate.DASHBOARD
@@ -130,9 +131,7 @@ class DashboardRenderer : ReportTemplateRenderer {
               </div>
               <div class="kpis">
                 <div class="kpi accent"><div class="k">Cumulative GPA</div><div class="v">${
-                "%.2f".format(
-                    data.cumulativeGPA
-                )
+                data.cumulativeGPA.toFixedString(2)
             }<span class="suf">/ ${data.maxGPA}</span></div></div>
                 <div class="kpi"><div class="k">Credits Earned</div><div class="v">${data.totalCreditHours}<span class="suf">hrs</span></div><div class="sub">across ${data.history.size} semesters</div></div>
                 <div class="kpi"><div class="k">Academic Standing</div><div class="v" style="font-size:14pt;">${standing.symbol}</div><div class="sub">${standing.band}</div></div>
@@ -146,9 +145,7 @@ class DashboardRenderer : ReportTemplateRenderer {
                 ${sparklineChart(allGpas, data.maxGPA)}
               </div>
               <div class="legend"><span class="l">GPA across all semesters</span><span class="r">Current: ${
-                "%.2f".format(
-                    data.cumulativeGPA
-                )
+                data.cumulativeGPA.toFixedString(2)
             }</span></div>
             </div>
         """.trimIndent()
@@ -162,7 +159,7 @@ class DashboardRenderer : ReportTemplateRenderer {
               <div class="sem-head">
                 <div class="lbl">Current Semester</div>
                 <div class="chips">
-                  <span class="chip">GPA <b>${"%.2f".format(data.currentSemester.semesterGPA)}</b></span><span class="chip">Hrs <b>${data.currentSemester.totalCreditHours}</b></span>
+                  <span class="chip">GPA <b>${data.currentSemester.semesterGPA.toFixedString(2)}</b></span><span class="chip">Hrs <b>${data.currentSemester.totalCreditHours}</b></span>
                 </div>
               </div>
               ${subjectTable(data.currentSemester.subjects)}
@@ -181,7 +178,7 @@ class DashboardRenderer : ReportTemplateRenderer {
                   <div class="sem-head">
                     <div class="lbl">${sem.label.escapeHtml()}</div>
                     <div class="chips">
-                      <span class="chip">GPA <b>${"%.2f".format(sem.semesterGPA)}</b></span><span class="chip">Hrs <b>${sem.totalCreditHours}</b></span><span class="chip">Grade <b>$gradeSym</b></span>
+                      <span class="chip">GPA <b>${sem.semesterGPA.toFixedString(2)}</b></span><span class="chip">Hrs <b>${sem.totalCreditHours}</b></span><span class="chip">Grade <b>$gradeSym</b></span>
                     </div>
                   </div>
                 """.trimIndent()
@@ -247,9 +244,7 @@ class DashboardRenderer : ReportTemplateRenderer {
                     val anchor = if (i == 0) "start" else "end"
                     val dx = if (i == 0) 4.0 else -4.0
                     """<text x="${x + dx}" y="${y - 6}" font-size="9" font-weight="bold" fill="#0f1222" text-anchor="$anchor" font-family="Georgia,serif">${
-                        "%.2f".format(
-                            gpa
-                        )
+                        gpa.toFixedString(2)
                     }</text>"""
                 } else ""
             }.joinToString("")
@@ -267,29 +262,18 @@ class DashboardRenderer : ReportTemplateRenderer {
                 if (row.gradeName != null) ReportCommon.gradePillClass(row.gradeName) else ""
             sb.append(
                 """<tr class="$rowClass"><td class="subject-name">${row.name.escapeHtml()}</td><td>${
-                    "%.1f".format(
-                        row.creditHours
-                    )
+                    row.creditHours.toFixedString(1)
                 }</td><td>${if (row.gradeName != null) """<span class="grade-pill $gradeClass">${row.gradeName.escapeHtml()}</span>""" else """<span class="muted">—</span>"""}</td><td>${
-                    if (row.gradePoints != null) "%.2f".format(
-                        row.gradePoints
-                    ) else """<span class="muted">—</span>"""
-                }</td><td>${if (row.midterm != null) "%.0f".format(row.midterm) else """<span class="muted">—</span>"""}</td><td>${
-                    if (row.practical != null) "%.0f".format(
-                        row.practical
-                    ) else """<span class="muted">—</span>"""
-                }</td><td>${if (row.oral != null) "%.0f".format(row.oral) else """<span class="muted">—</span>"""}</td><td>${
-                    if (row.project != null) "%.0f".format(
-                        row.project
-                    ) else """<span class="muted">—</span>"""
-                }</td><td>${if (row.finalExam != null) "%.0f".format(row.finalExam) else """<span class="muted">—</span>"""}</td><td>${
+                    if (row.gradePoints != null) row.gradePoints.toFixedString(2) else """<span class="muted">—</span>"""
+                }</td><td>${if (row.midterm != null) row.midterm.toFixedString(0) else """<span class="muted">—</span>"""}</td><td>${
+                    if (row.practical != null) row.practical.toFixedString(0) else """<span class="muted">—</span>"""
+                }</td><td>${if (row.oral != null) row.oral.toFixedString(0) else """<span class="muted">—</span>"""}</td><td>${
+                    if (row.project != null) row.project.toFixedString(0) else """<span class="muted">—</span>"""
+                }</td><td>${if (row.finalExam != null) row.finalExam.toFixedString(0) else """<span class="muted">—</span>"""}</td><td>${
                     ReportCommon.totalMarks(
                         row
                     )?.let {
-                        "%.0f / %.0f".format(
-                            it.first,
-                            it.second
-                        )
+                        "${it.first.toFixedString(0)} / ${it.second.toFixedString(0)}"
                     } ?: """<span class="muted">—</span>"""
                 }</td></tr>""")
         }

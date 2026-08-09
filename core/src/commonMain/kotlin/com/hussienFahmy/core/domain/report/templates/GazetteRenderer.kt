@@ -7,6 +7,7 @@ import com.hussienfahmy.core.domain.report.ReportTemplateRenderer
 import com.hussienfahmy.core.domain.report.SubjectRow
 import com.hussienfahmy.core.domain.report.escapeHtml
 import com.hussienfahmy.core.domain.report.formatDate
+import com.hussienfahmy.core.util.toFixedString
 
 class GazetteRenderer : ReportTemplateRenderer {
     override val template = ReportTemplate.GAZETTE
@@ -303,7 +304,7 @@ class GazetteRenderer : ReportTemplateRenderer {
               <div class="summary-row">
                 <div class="stat">
                   <div class="k">Cumulative GPA</div>
-                  <div class="v">${"%.2f".format(data.cumulativeGPA)}<span class="suffix">/ ${data.maxGPA}</span></div>
+                  <div class="v">${data.cumulativeGPA.toFixedString(2)}<span class="suffix">/ ${data.maxGPA}</span></div>
                 </div>
                 <div class="stat">
                   <div class="k">Credits Earned</div>
@@ -329,7 +330,7 @@ class GazetteRenderer : ReportTemplateRenderer {
                 <div class="semester-head">
                   <div class="label">Current Semester</div>
                   <div class="meta">
-                    <span>GPA <b>${"%.2f".format(data.currentSemester.semesterGPA)}</b></span>
+                    <span>GPA <b>${data.currentSemester.semesterGPA.toFixedString(2)}</b></span>
                     <span>Hrs <b>${data.currentSemester.totalCreditHours}</b></span>
                   </div>
                 </div>
@@ -349,7 +350,7 @@ class GazetteRenderer : ReportTemplateRenderer {
                     <div class="semester-head">
                       <div class="label">${sem.label.escapeHtml()}</div>
                       <div class="meta">
-                        <span>GPA <b>${"%.2f".format(sem.semesterGPA)}</b></span>
+                        <span>GPA <b>${sem.semesterGPA.toFixedString(2)}</b></span>
                         <span>Hrs <b>${sem.totalCreditHours}</b></span>
                         <span>Grade <b>$gradeSym</b></span>
                       </div>
@@ -400,21 +401,18 @@ class GazetteRenderer : ReportTemplateRenderer {
             val rowClass = if (row.gradeName == null) "no-grade" else ""
             sb.append("""<tr class="$rowClass">""")
             sb.append("""<td class="subject-name">${row.name.escapeHtml()}</td>""")
-            sb.append("""<td>${"%.1f".format(row.creditHours)}</td>""")
+            sb.append("""<td>${row.creditHours.toFixedString(1)}</td>""")
             sb.append("""<td><span class="grade-pill">${if (row.gradeName != null) row.gradeName.escapeHtml() else "—"}</span></td>""")
-            sb.append("""<td>${if (row.gradePoints != null) "%.2f".format(row.gradePoints) else "—"}</td>""")
-            sb.append("""<td>${if (row.midterm != null) "%.1f".format(row.midterm) else "—"}</td>""")
-            sb.append("""<td>${if (row.practical != null) "%.1f".format(row.practical) else "—"}</td>""")
-            sb.append("""<td>${if (row.oral != null) "%.1f".format(row.oral) else "—"}</td>""")
-            sb.append("""<td>${if (row.project != null) "%.1f".format(row.project) else "—"}</td>""")
-            sb.append("""<td>${if (row.finalExam != null) "%.1f".format(row.finalExam) else "—"}</td>""")
+            sb.append("""<td>${if (row.gradePoints != null) row.gradePoints.toFixedString(2) else "—"}</td>""")
+            sb.append("""<td>${if (row.midterm != null) row.midterm.toFixedString(1) else "—"}</td>""")
+            sb.append("""<td>${if (row.practical != null) row.practical.toFixedString(1) else "—"}</td>""")
+            sb.append("""<td>${if (row.oral != null) row.oral.toFixedString(1) else "—"}</td>""")
+            sb.append("""<td>${if (row.project != null) row.project.toFixedString(1) else "—"}</td>""")
+            sb.append("""<td>${if (row.finalExam != null) row.finalExam.toFixedString(1) else "—"}</td>""")
             val marks = ReportCommon.totalMarks(row)
             sb.append(
                 """<td>${
-                    if (marks != null) "%.1f / %.1f".format(
-                        marks.first,
-                        marks.second
-                    ) else "—"
+                    if (marks != null) "${marks.first.toFixedString(1)} / ${marks.second.toFixedString(1)}" else "—"
                 }</td>"""
             )
             sb.append("""</tr>""")

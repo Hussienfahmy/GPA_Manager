@@ -27,6 +27,7 @@ import com.hussienfahmy.myGpaManager.navigation.AppNavHost
 import com.hussienfahmy.myGpaManager.navigation.AppRoute
 import com.hussienfahmy.myGpaManager.navigation.OnboardingNavHost
 import com.hussienfahmy.myGpaManager.navigation.OnboardingRoute
+import com.hussienfahmy.myGpaManager.navigation.navKeySavedStateConfiguration
 import com.hussienfahmy.myGpaManager.navigation.rememberAppNavigationState
 import com.hussienfahmy.myGpaManager.ui.theme.GPAManagerTheme
 import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
@@ -65,7 +66,7 @@ fun GpaManagerApp() {
         val notificationPermissionState = rememberPermissionState(Permission.Notification)
 
         val appNavigationState = rememberAppNavigationState()
-        val onboardingBackStack = rememberNavBackStack(OnboardingRoute.Welcome)
+        val onboardingBackStack = rememberNavBackStack(navKeySavedStateConfiguration, OnboardingRoute.Welcome)
         // Deliberately separate from isSingedIn: sign-in succeeds at onboarding's very first
         // step (Welcome), but the user still has several data-entry steps left before tapping
         // "Start" - isSingedIn flips true mid-onboarding while the flow should keep showing.

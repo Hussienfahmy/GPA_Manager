@@ -41,7 +41,7 @@ private val TOP_LEVEL_ROUTES: List<AppRoute> = listOf(
 fun rememberAppNavigationState(): AppNavigationState {
     val topLevelRouteState = remember { mutableStateOf<AppRoute>(AppRoute.Semester) }
     val backStacks: Map<AppRoute, NavBackStack<NavKey>> = TOP_LEVEL_ROUTES.associateWith { route ->
-        rememberNavBackStack(route)
+        rememberNavBackStack(navKeySavedStateConfiguration, route)
     }
 
     return remember {

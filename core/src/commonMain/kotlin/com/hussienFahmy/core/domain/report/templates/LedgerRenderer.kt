@@ -7,6 +7,7 @@ import com.hussienfahmy.core.domain.report.ReportTemplateRenderer
 import com.hussienfahmy.core.domain.report.SubjectRow
 import com.hussienfahmy.core.domain.report.escapeHtml
 import com.hussienfahmy.core.domain.report.formatDate
+import com.hussienfahmy.core.util.toFixedString
 
 class LedgerRenderer : ReportTemplateRenderer {
     override val template = ReportTemplate.LEDGER
@@ -403,7 +404,7 @@ class LedgerRenderer : ReportTemplateRenderer {
               <div class="summary">
                 <div class="stat">
                   <span class="k">Cumulative GPA</span>
-                  <span class="v">${"%.2f".format(data.cumulativeGPA)}<span class="suffix">/ ${data.maxGPA}</span></span>
+                  <span class="v">${data.cumulativeGPA.toFixedString(2)}<span class="suffix">/ ${data.maxGPA}</span></span>
                   <div class="gpa-bar"><div class="fill" style="width: ${
                 ReportCommon.percentOfScale(
                     data.cumulativeGPA,
@@ -411,12 +412,10 @@ class LedgerRenderer : ReportTemplateRenderer {
                 )
             }%;"></div></div>
                   <div class="sub">${
-                "%.1f".format(
-                    ReportCommon.percentOfScale(
+                ReportCommon.percentOfScale(
                         data.cumulativeGPA,
                         data.maxGPA
-                    )
-                )
+                    ).toFixedString(1)
             }% of scale</div>
                 </div>
                 <div class="stat">
@@ -454,7 +453,7 @@ class LedgerRenderer : ReportTemplateRenderer {
                 <div class="semester-head">
                   <div class="label">Current Semester</div>
                   <div class="meta">
-                    <span class="chip">GPA <b>${"%.2f".format(sem.semesterGPA)}</b></span>
+                    <span class="chip">GPA <b>${sem.semesterGPA.toFixedString(2)}</b></span>
                     <span class="chip">Credit Hrs <b>${sem.totalCreditHours}</b></span>
                   </div>
                 </div>
@@ -483,7 +482,7 @@ class LedgerRenderer : ReportTemplateRenderer {
                     <div class="semester-head">
                       <div class="label">${sem.label.escapeHtml()}</div>
                       <div class="meta">
-                        <span class="chip">GPA <b>${"%.2f".format(sem.semesterGPA)}</b></span>
+                        <span class="chip">GPA <b>${sem.semesterGPA.toFixedString(2)}</b></span>
                         <span class="chip">Credit Hrs <b>${sem.totalCreditHours}</b></span>
                         <span class="chip">Grade <b>$gradeSym</b></span>
                       </div>
@@ -563,22 +562,20 @@ class LedgerRenderer : ReportTemplateRenderer {
             val rowClass = if (row.gradeName == null) "no-grade" else ""
             sb.append("""<tr class="$rowClass">""")
             sb.append("""<td class="subject-name">${row.name.escapeHtml()}</td>""")
-            sb.append("""<td class="num">${"%.1f".format(row.creditHours)}</td>""")
+            sb.append("""<td class="num">${row.creditHours.toFixedString(1)}</td>""")
             sb.append("""<td>${if (row.gradeName != null) """<span class="grade-pill">${row.gradeName.escapeHtml()}</span>""" else """<span class="muted">${ReportCommon.mdash()}</span>"""}</td>""")
-            sb.append("""<td class="num">${if (row.gradePoints != null) "%.2f".format(row.gradePoints) else """<span class="muted">${ReportCommon.mdash()}</span>"""}</td>""")
-            sb.append("""<td class="num">${if (row.midterm != null) "%.1f".format(row.midterm) else """<span class="muted">${ReportCommon.mdash()}</span>"""}</td>""")
-            sb.append("""<td class="num">${if (row.practical != null) "%.1f".format(row.practical) else """<span class="muted">${ReportCommon.mdash()}</span>"""}</td>""")
-            sb.append("""<td class="num">${if (row.oral != null) "%.1f".format(row.oral) else """<span class="muted">${ReportCommon.mdash()}</span>"""}</td>""")
-            sb.append("""<td class="num">${if (row.project != null) "%.1f".format(row.project) else """<span class="muted">${ReportCommon.mdash()}</span>"""}</td>""")
-            sb.append("""<td class="num">${if (row.finalExam != null) "%.1f".format(row.finalExam) else """<span class="muted">${ReportCommon.mdash()}</span>"""}</td>""")
+            sb.append("""<td class="num">${if (row.gradePoints != null) row.gradePoints.toFixedString(2) else """<span class="muted">${ReportCommon.mdash()}</span>"""}</td>""")
+            sb.append("""<td class="num">${if (row.midterm != null) row.midterm.toFixedString(1) else """<span class="muted">${ReportCommon.mdash()}</span>"""}</td>""")
+            sb.append("""<td class="num">${if (row.practical != null) row.practical.toFixedString(1) else """<span class="muted">${ReportCommon.mdash()}</span>"""}</td>""")
+            sb.append("""<td class="num">${if (row.oral != null) row.oral.toFixedString(1) else """<span class="muted">${ReportCommon.mdash()}</span>"""}</td>""")
+            sb.append("""<td class="num">${if (row.project != null) row.project.toFixedString(1) else """<span class="muted">${ReportCommon.mdash()}</span>"""}</td>""")
+            sb.append("""<td class="num">${if (row.finalExam != null) row.finalExam.toFixedString(1) else """<span class="muted">${ReportCommon.mdash()}</span>"""}</td>""")
 
             val marks = ReportCommon.totalMarks(row)
             if (marks != null) {
                 sb.append(
-                    """<td class="num">${"%.1f".format(marks.first)}&nbsp;/&nbsp;${
-                        "%.1f".format(
-                            marks.second
-                        )
+                    """<td class="num">${marks.first.toFixedString(1)}&nbsp;/&nbsp;${
+                        marks.second.toFixedString(1)
                     }</td>"""
                 )
             } else {

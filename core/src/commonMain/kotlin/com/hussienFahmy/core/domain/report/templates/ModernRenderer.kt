@@ -7,6 +7,7 @@ import com.hussienfahmy.core.domain.report.ReportTemplateRenderer
 import com.hussienfahmy.core.domain.report.SubjectRow
 import com.hussienfahmy.core.domain.report.escapeHtml
 import com.hussienfahmy.core.domain.report.formatDate
+import com.hussienfahmy.core.util.toFixedString
 
 class ModernRenderer : ReportTemplateRenderer {
     override val template = ReportTemplate.MODERN
@@ -371,7 +372,7 @@ class ModernRenderer : ReportTemplateRenderer {
                 </div>
                 <div class="hero-right">
                   <div class="gpa-big">
-                    <div><span class="num">${"%.2f".format(data.cumulativeGPA)}</span><span class="scale">/ ${data.maxGPA}</span></div>
+                    <div><span class="num">${data.cumulativeGPA.toFixedString(2)}</span><span class="scale">/ ${data.maxGPA}</span></div>
                     <div class="lbl">Cumulative GPA</div>
                   </div>
                   <div class="gpa-chips">
@@ -391,7 +392,7 @@ class ModernRenderer : ReportTemplateRenderer {
                 <div class="semester-head">
                   <div class="label">Current Semester</div>
                   <div class="meta">
-                    <span class="chip">GPA <b>${"%.2f".format(data.currentSemester.semesterGPA)}</b></span>
+                    <span class="chip">GPA <b>${data.currentSemester.semesterGPA.toFixedString(2)}</b></span>
                     <span class="chip">Credit Hrs <b>${data.currentSemester.totalCreditHours}</b></span>
                   </div>
                 </div>
@@ -411,7 +412,7 @@ class ModernRenderer : ReportTemplateRenderer {
                     <div class="semester-head">
                       <div class="label">${sem.label.escapeHtml()}</div>
                       <div class="meta">
-                        <span class="chip">GPA <b>${"%.2f".format(sem.semesterGPA)}</b></span>
+                        <span class="chip">GPA <b>${sem.semesterGPA.toFixedString(2)}</b></span>
                         <span class="chip">Credit Hrs <b>${sem.totalCreditHours}</b></span>
                         <span class="chip">Grade <b>$gradeSym</b></span>
                       </div>
@@ -465,21 +466,18 @@ class ModernRenderer : ReportTemplateRenderer {
                 if (row.gradeName != null) ReportCommon.gradePillClass(row.gradeName) else ""
             sb.append("""<tr class="$rowClass">""")
             sb.append("""<td class="subject-name">${row.name.escapeHtml()}</td>""")
-            sb.append("""<td>${"%.1f".format(row.creditHours)}</td>""")
+            sb.append("""<td>${row.creditHours.toFixedString(1)}</td>""")
             sb.append("""<td>${if (row.gradeName != null) """<span class="grade-pill $gradeClass">${row.gradeName.escapeHtml()}</span>""" else """<span class="muted">—</span>"""}</td>""")
-            sb.append("""<td>${if (row.gradePoints != null) "%.2f".format(row.gradePoints) else """<span class="muted">—</span>"""}</td>""")
-            sb.append("""<td>${if (row.midterm != null) "%.1f".format(row.midterm) else """<span class="muted">—</span>"""}</td>""")
-            sb.append("""<td>${if (row.practical != null) "%.1f".format(row.practical) else """<span class="muted">—</span>"""}</td>""")
-            sb.append("""<td>${if (row.oral != null) "%.1f".format(row.oral) else """<span class="muted">—</span>"""}</td>""")
-            sb.append("""<td>${if (row.project != null) "%.1f".format(row.project) else """<span class="muted">—</span>"""}</td>""")
-            sb.append("""<td>${if (row.finalExam != null) "%.1f".format(row.finalExam) else """<span class="muted">—</span>"""}</td>""")
+            sb.append("""<td>${if (row.gradePoints != null) row.gradePoints.toFixedString(2) else """<span class="muted">—</span>"""}</td>""")
+            sb.append("""<td>${if (row.midterm != null) row.midterm.toFixedString(1) else """<span class="muted">—</span>"""}</td>""")
+            sb.append("""<td>${if (row.practical != null) row.practical.toFixedString(1) else """<span class="muted">—</span>"""}</td>""")
+            sb.append("""<td>${if (row.oral != null) row.oral.toFixedString(1) else """<span class="muted">—</span>"""}</td>""")
+            sb.append("""<td>${if (row.project != null) row.project.toFixedString(1) else """<span class="muted">—</span>"""}</td>""")
+            sb.append("""<td>${if (row.finalExam != null) row.finalExam.toFixedString(1) else """<span class="muted">—</span>"""}</td>""")
             val marks = ReportCommon.totalMarks(row)
             sb.append(
                 """<td>${
-                    if (marks != null) "%.1f&nbsp;/&nbsp;%.1f".format(
-                        marks.first,
-                        marks.second
-                    ) else """<span class="muted">—</span>"""
+                    if (marks != null) "${marks.first.toFixedString(1)}&nbsp;/&nbsp;${marks.second.toFixedString(1)}" else """<span class="muted">—</span>"""
                 }</td>"""
             )
             sb.append("""</tr>""")

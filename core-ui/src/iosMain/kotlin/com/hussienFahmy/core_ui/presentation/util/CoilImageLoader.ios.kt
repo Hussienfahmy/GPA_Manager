@@ -3,7 +3,8 @@ package com.hussienfahmy.core_ui.presentation.util
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.SingletonImageLoader
-import coil3.network.ktor3.KtorNetworkFetcher
+import coil3.annotation.ExperimentalCoilApi
+import coil3.network.ktor3.KtorNetworkFetcherFactory
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.darwin.Darwin
 
@@ -12,11 +13,12 @@ import io.ktor.client.engine.darwin.Darwin
 // with a network fetcher registered, or every network-backed AsyncImage silently fails at
 // runtime. Call this once from the iOS entry point before any Compose UI renders (see
 // doInitApp() in :shared).
+@OptIn(ExperimentalCoilApi::class)
 fun initCoilImageLoader() {
     SingletonImageLoader.setSafe { context: PlatformContext ->
         ImageLoader.Builder(context)
             .components {
-                add(KtorNetworkFetcher.factory(HttpClient(Darwin)))
+                add(KtorNetworkFetcherFactory(HttpClient(Darwin)))
             }
             .build()
     }
