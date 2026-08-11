@@ -6,6 +6,8 @@ import com.hussienfahmy.core.domain.analytics.AnalyticsService
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.analytics.FirebaseAnalytics
 import dev.gitlive.firebase.analytics.analytics
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val analyticsModule = module {
@@ -13,11 +15,7 @@ val analyticsModule = module {
         Firebase.analytics
     }
 
-    single<AnalyticsService> {
-        FirebaseAnalyticsService(get())
-    }
+    singleOf(::FirebaseAnalyticsService).bind<AnalyticsService>()
 
-    single<AnalyticsLogger> {
-        AnalyticsLogger(get(), get(), get(), get())
-    }
+    singleOf(::AnalyticsLogger)
 }

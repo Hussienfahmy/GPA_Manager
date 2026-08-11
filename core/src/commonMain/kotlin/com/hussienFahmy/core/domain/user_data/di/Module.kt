@@ -16,48 +16,24 @@ import com.hussienfahmy.core.domain.user_data.use_cases.UpdateSemester
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateUniversity
 import com.hussienfahmy.core.domain.user_data.use_cases.UploadPhoto
 import com.hussienfahmy.core.domain.user_data.use_cases.UserDataUseCases
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val coreUserDataDomainModule = module {
-    single { ObserveUserData(get()) }
-    single { GetUserData(get()) }
-    single { GetAcademicProgress(getUserData = get()) }
-    single { UpdateLevel(get()) }
-    single { UpdateSemester(get()) }
-
-    single {
-        UserDataUseCases(
-            observeUserData = get(),
-            getUserData = get(),
-            getAcademicProgress = get(),
-            updateName = UpdateName(get()),
-            uploadPhoto = UploadPhoto(
-                repository = get(),
-                updatePhotoUrl = UpdatePhotoUrl(get()),
-                storageRepository = get(),
-                imageThumbnailer = get(),
-            ),
-            updateUniversity = UpdateUniversity(get()),
-            updateFaculty = UpdateFaculty(get()),
-            updateDepartment = UpdateDepartment(get()),
-            updateLevel = get(),
-            updateSemester = get(),
-            updateCumulativeGPA = UpdateCumulativeGPA(get(), get()),
-            updateCreditHours = UpdateCreditHours(get()),
-        )
-    }
-    single {
-        SignOut(
-            authService = get(),
-            subjectDao = get(),
-            semesterDao = get(),
-            syncUpload = get(),
-        )
-    }
-
-    single {
-        UpdateFCMToken(
-            repository = get()
-        )
-    }
+    singleOf(::ObserveUserData)
+    singleOf(::GetUserData)
+    singleOf(::GetAcademicProgress)
+    singleOf(::UpdateLevel)
+    singleOf(::UpdateSemester)
+    singleOf(::UpdateName)
+    singleOf(::UpdatePhotoUrl)
+    singleOf(::UploadPhoto)
+    singleOf(::UpdateUniversity)
+    singleOf(::UpdateFaculty)
+    singleOf(::UpdateDepartment)
+    singleOf(::UpdateCumulativeGPA)
+    singleOf(::UpdateCreditHours)
+    singleOf(::UserDataUseCases)
+    singleOf(::SignOut)
+    singleOf(::UpdateFCMToken)
 }

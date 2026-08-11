@@ -11,41 +11,36 @@ import com.hussienfahmy.semester_subjctets_domain.use_case.PredictGrades
 import com.hussienfahmy.semester_subjctets_domain.use_case.SetGrade
 import com.hussienfahmy.semester_subjctets_domain.use_case.SubjectUseCases
 import com.hussienfahmy.semester_subjctets_domain.use_case.UpdateName
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val semesterSubjectsDomainModule = module {
-    single { SetGrade(get()) }
+    singleOf(::SetGrade)
+    singleOf(::ObserveSubjects)
+    singleOf(::ClearGrade)
+    singleOf(::DeleteSubject)
+    singleOf(::AddSubject)
+    singleOf(::UpdateName)
+    singleOf(::SubjectUseCases)
 
     single {
-        SubjectUseCases(
-            observeSubjectsWithGrades = ObserveSubjects(get()),
-            clearGrade = ClearGrade(get()),
-            deleteSubject = DeleteSubject(get()),
-            addSubject = AddSubject(get(), get()),
-            updateName = UpdateName(get()),
-            setGrade = get(),
-        )
-    }
-
-    single {
-        val calculate = Calculate(
+        Calculate(
             defaultDispatcher = get(named(CoreQualifiers.DEFAULT_DISPATCHER)),
             getAcademicProgress = get(),
             getGradeByPoints = get(),
             getGPASettings = get(),
         )
-
-        CalculationUseCases(
-            calculate = calculate,
-            predictGrades = PredictGrades(
-                defaultDispatcher = get(named(CoreQualifiers.DEFAULT_DISPATCHER)),
-                getActiveGrades = get(),
-                calculate = calculate,
-                setGrade = get(),
-                getGPASettings = get(),
-                appScope = get()
-            ),
+    }
+    single {
+        PredictGrades(
+            defaultDispatcher = get(named(CoreQualifiers.DEFAULT_DISPATCHER)),
+            getActiveGrades = get(),
+            calculate = get(),
+            setGrade = get(),
+            getGPASettings = get(),
+            appScope = get(),
         )
     }
+    singleOf(::CalculationUseCases)
 }

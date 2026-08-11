@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -26,11 +27,11 @@ object CoreQualifiers {
 val coreModule = module {
     single<CoroutineDispatcher>(named(CoreQualifiers.DEFAULT_DISPATCHER)) { Dispatchers.Default }
     single<CoroutineScope> { CoroutineScope(Dispatchers.Main + SupervisorJob()) }
-    single { SemesterDirtyTracker() }
-    single { ImageThumbnailer(get()) }
-    single { ReportBrandingProvider(get(), get()) }
-    single { PdfReportPrinter(get()) }
-    single { UrlOpener(get()) }
+    singleOf(::SemesterDirtyTracker)
+    singleOf(::ImageThumbnailer)
+    singleOf(::ReportBrandingProvider)
+    singleOf(::PdfReportPrinter)
+    singleOf(::UrlOpener)
 
     single {
         ReportTemplateRegistry(

@@ -8,18 +8,20 @@ import com.hussienfahmy.gpa_system_settings_data.datastore.GPASerializer
 import com.hussienfahmy.gpa_system_settings_data.repository.GPASettingsRepositoryImpl
 import com.hussienfahmy.gpa_system_sittings_domain.use_case.ObserveGPASettings
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 // Koin module for GPA System Settings Data
 val gpaSystemSettingsDataModule: Module = module {
-    single { GPASerializer(get()) }
-    single { GPADatastore(get(), get()) }
+    singleOf(::GPASerializer)
+    singleOf(::GPADatastore)
 
     // Repository binding
-    single<GPASettingsRepository> { GPASettingsRepositoryImpl(get()) }
+    singleOf(::GPASettingsRepositoryImpl).bind<GPASettingsRepository>()
 
     // Use cases
-    single { GetGPASettings(get()) }
-    single { ObserveGPASettings(get()) }
-    single { UpdateGPASystem(get()) }
+    singleOf(::GetGPASettings)
+    singleOf(::ObserveGPASettings)
+    singleOf(::UpdateGPASystem)
 }
