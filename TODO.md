@@ -1,5 +1,7 @@
 # TODO
 
+- Delete examples tests and empty manifest and their directory if it becomes empty.
+- When enabling sign in with apple id, make the onboarding screen in common main not expect actual.
 - App profiler: precompile in semester_marks before publishing.
 
 ## iOS parity gaps

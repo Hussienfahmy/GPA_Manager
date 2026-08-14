@@ -26,8 +26,8 @@ internal actual suspend fun loadAppIconBase64Png(
 
 private fun primaryAppIconName(): String? {
     val info = NSBundle.mainBundle.infoDictionary ?: return null
-    val icons = info["CFBundleIcons"] as? Map<Any?, *> ?: return null
-    val primary = icons["CFBundlePrimaryIcon"] as? Map<Any?, *> ?: return null
+    val icons = info["CFBundleIcons"] as? Map<*, *> ?: return null
+    val primary = icons["CFBundlePrimaryIcon"] as? Map<*, *> ?: return null
     val files = primary["CFBundleIconFiles"] as? List<*> ?: return null
     return files.lastOrNull() as? String
 }

@@ -42,8 +42,8 @@ actual class PdfReportPrinter actual constructor(context: PlatformContext) {
         printInfo.jobName = title
 
         val printController = UIPrintInteractionController.sharedPrintController()
-        printController?.printInfo = printInfo
-        printController?.printFormatter = webView.viewPrintFormatter()
-        printController?.presentAnimated(true, completionHandler = null)
+        printController.printInfo = printInfo
+        printController.printFormatter = webView.viewPrintFormatter()
+        printController.presentAnimated(true, completionHandler = null)
     }
 }

@@ -4,6 +4,7 @@ import com.hussienfahmy.core.domain.crash.CrashReporter
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.OAuthProvider
 import dev.gitlive.firebase.auth.auth
+import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.UByteVar
 import kotlinx.cinterop.addressOf
@@ -102,7 +103,7 @@ class AppleSignIn(
         private val onResult: (AuthServiceResult?) -> Unit,
     ) : NSObject(), ASAuthorizationControllerDelegateProtocol {
 
-        @OptIn(ExperimentalForeignApi::class)
+        @OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
         override fun authorizationController(
             controller: ASAuthorizationController,
             didCompleteWithAuthorization: ASAuthorization,
