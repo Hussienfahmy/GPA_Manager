@@ -16,9 +16,6 @@
 local.properties
 .kotlin/
 /app/release/
-/onboarding/onboarding_presentation/google-services.json
-/user_data/user_data_data/google-services.json
-/sync/sync_data/google-services.json
 /.claude/*
 chroma.sqlite3
 /.claude

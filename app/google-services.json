@@ -1,0 +1,123 @@
+{
+  "project_info": {
+    "project_number": "598206887929",
+    "project_id": "my-gpa-manager",
+    "storage_bucket": "my-gpa-manager.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:598206887929:android:30b1df19ea8679322e2f28",
+        "android_client_info": {
+          "package_name": "com.hussienFahmy.myGpaManager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "598206887929-19806ed6f3ai77o5cbq0m4miku99ai0o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hussienFahmy.myGpaManager",
+            "certificate_hash": "5b34fde72b4949565e60587f81060f8137b92ce4"
+          }
+        },
+        {
+          "client_id": "598206887929-o99ic8ikmjq3ddearo5aes7e151jicap.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hussienFahmy.myGpaManager",
+            "certificate_hash": "ec09b661d9c91e6cf730768dd06b4a0165b519bb"
+          }
+        },
+        {
+          "client_id": "598206887929-s2j3djoeuh1vddrbch5cv8gk4uegu7be.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hussienFahmy.myGpaManager",
+            "certificate_hash": "b790e547972ba7d3d3a8ac26d65bd91d7ea42492"
+          }
+        },
+        {
+          "client_id": "598206887929-ssqp6l4e2hbbq77ub8amq9gdcc59rgm9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hussienFahmy.myGpaManager",
+            "certificate_hash": "cbd3fa305b22fa14effa27e256fc096d561203a2"
+          }
+        },
+        {
+          "client_id": "598206887929-hh15oovfmu7ae78rtn3l1op1counp5q2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcyoFasTTZaDp03LzYxzf5RW5d7yxVwJE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "598206887929-hh15oovfmu7ae78rtn3l1op1counp5q2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "598206887929-v6n5f1qjoitvpl5nh0a7g43jft3a1691.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hussienFahmy.myGpaManager"
+              }
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-5302266880519198~3030454766"
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:598206887929:android:7bd0448041452a9e2e2f28",
+        "android_client_info": {
+          "package_name": "com.hussienFahmy.myGpaManager.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "598206887929-l00cl3o2cnbb4afu30c7n1eohn36gnfj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hussienFahmy.myGpaManager.debug",
+            "certificate_hash": "cbd3fa305b22fa14effa27e256fc096d561203a2"
+          }
+        },
+        {
+          "client_id": "598206887929-hh15oovfmu7ae78rtn3l1op1counp5q2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcyoFasTTZaDp03LzYxzf5RW5d7yxVwJE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "598206887929-hh15oovfmu7ae78rtn3l1op1counp5q2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "598206887929-v6n5f1qjoitvpl5nh0a7g43jft3a1691.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hussienFahmy.myGpaManager"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
