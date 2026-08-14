@@ -4,17 +4,25 @@ import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.core.domain.sync.SyncUpload
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import platform.BackgroundTasks.BGProcessingTask
 import platform.BackgroundTasks.BGProcessingTaskRequest
 import platform.BackgroundTasks.BGTaskScheduler
+import platform.Foundation.NSBundle
 import platform.Foundation.NSDate
 import platform.Foundation.dateWithTimeIntervalSinceNow
 
-// Mirrors the identifier declared in Info.plist's BGTaskSchedulerPermittedIdentifiers - both must
-// match exactly or registerForTaskWithIdentifier/submitTaskRequest silently fail at runtime.
-private const val UPLOAD_SYNC_TASK_IDENTIFIER = "com.hussienFahmy.myGpaManager.uploadSync"
+// Read from Info.plist's BGTaskSchedulerPermittedIdentifiers instead of duplicating the string
+// here - registerForTaskWithIdentifier/submitTaskRequest silently fail at runtime if the two ever
+// drift apart, so Info.plist stays the single source of truth.
+private val UPLOAD_SYNC_TASK_IDENTIFIER: String by lazy {
+    val identifiers = NSBundle.mainBundle
+        .objectForInfoDictionaryKey("BGTaskSchedulerPermittedIdentifiers") as? List<*>
+    identifiers?.firstOrNull() as? String
+        ?: error("Info.plist is missing BGTaskSchedulerPermittedIdentifiers")
+}
 
 @OptIn(ExperimentalForeignApi::class)
 actual class BackgroundSyncScheduler(
@@ -48,7 +56,7 @@ actual class BackgroundSyncScheduler(
     }
 
     private fun handleTask(task: BGProcessingTask) {
-        val job = CoroutineScope(Dispatchers.Main).launch {
+        val job = CoroutineScope(SupervisorJob()).launch {
             try {
                 syncUpload()
                 task.setTaskCompletedWithSuccess(true)
