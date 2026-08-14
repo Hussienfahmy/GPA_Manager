@@ -67,6 +67,10 @@ composeMaterialIconsExtended = "1.7.3"
 sqlite = "2.7.0"
 coil3 = "3.5.0"
 gitliveFirebase = "2.4.0"
+# Cross-platform gallery picker + image compression - replaces the hand-rolled
+# rememberImagePickerLauncher/ImageThumbnailer expect/actual pairs (PHPickerViewController on iOS,
+# ActivityResultContracts.GetContent + ImageDecoder on Android) with genuinely common code.
+filekit = "0.14.2"
 # Only used for coil3's iOS network engine (coil3-network-ktor + ktor-client-darwin) - Android
 # keeps its existing OkHttp engine, so this doesn't need to match any other Ktor usage.
 ktor = "3.1.2"
@@ -172,6 +176,10 @@ coil3-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", 
 coil3-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil3" }
 # iOS's coil3 network engine - Ktor's Darwin (NSURLSession-backed) client engine.
 ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
+
+filekit-core = { group = "io.github.vinceglb", name = "filekit-core", version.ref = "filekit" }
+filekit-dialogs = { group = "io.github.vinceglb", name = "filekit-dialogs", version.ref = "filekit" }
+filekit-dialogs-compose = { group = "io.github.vinceglb", name = "filekit-dialogs-compose", version.ref = "filekit" }
 
 # Jetpack Navigation 3 (multiplatform) - replaced Compose Destinations in Phase 8; the app-level
 # nav host lives in :shared as of Phase 11 (see shared/build.gradle.kts)

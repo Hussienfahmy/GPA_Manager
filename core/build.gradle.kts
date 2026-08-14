@@ -45,6 +45,12 @@ kotlin {
             // Replaces java.text.SimpleDateFormat/java.util.Date (no Kotlin/Native equivalent) in
             // the report-template renderers' date stamps.
             implementation(libs.kotlinx.datetime)
+            // api, not implementation: PlatformFile is part of UploadPhoto's public signature,
+            // same reasoning as compose.components.resources above - downstream modules
+            // (core-ui, :shared) need it on their compile classpath too.
+            // FileKit.compressImage() is UploadPhoto's common replacement for the old
+            // PlatformImageSource/ImageThumbnailer expect/actual pair.
+            api(libs.filekit.core)
         }
 
         androidMain.dependencies {

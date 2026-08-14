@@ -63,6 +63,10 @@ dependencies {
     implementation(projects.core)
     implementation(projects.coreUi)
 
+    // FileKit.init(this) in MainActivity - needed so filekit-dialogs (pulled in transitively via
+    // :coreUi) has access to this Activity's ActivityResultRegistry for the gallery picker.
+    implementation(libs.filekit.dialogs)
+
     implementation(projects.gpaSystemSettings.gpaSystemSettingsData)
     implementation(projects.gpaSystemSettings.gpaSystemSettingsDomain)
     implementation(projects.gpaSystemSettings.gpaSystemSettingsPresentaion)

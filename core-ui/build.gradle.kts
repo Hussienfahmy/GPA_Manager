@@ -15,6 +15,9 @@ kotlin {
             // AsyncImage/ImageRequest/LocalPlatformContext now resolve on iOS too - this is what
             // unblocks UserPhoto.kt/MeadowUserCard.kt out of androidMain.
             implementation(libs.coil3.compose)
+            // rememberFilePickerLauncher - genuinely multiplatform gallery picker, replaces the
+            // old rememberImagePickerLauncher expect/actual pair.
+            implementation(libs.filekit.dialogs.compose)
         }
 
         // Android's network engine is auto-discovered via Coil's ServiceLoader mechanism (JVM-only
