@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "598206887929-8ooghfddh0ai341qicfpp1t9av0be8mr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hussienFahmy.myGpaManager",
+            "certificate_hash": "0af17183569bb1eac5269741bda5bdd93a96035b"
+          }
+        },
+        {
           "client_id": "598206887929-o99ic8ikmjq3ddearo5aes7e151jicap.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -83,11 +91,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "598206887929-l00cl3o2cnbb4afu30c7n1eohn36gnfj.apps.googleusercontent.com",
+          "client_id": "598206887929-o13nv1m5uok9rpfae88u61osvv7mngid.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.hussienFahmy.myGpaManager.debug",
-            "certificate_hash": "cbd3fa305b22fa14effa27e256fc096d561203a2"
+            "certificate_hash": "0af17183569bb1eac5269741bda5bdd93a96035b"
           }
         },
         {
