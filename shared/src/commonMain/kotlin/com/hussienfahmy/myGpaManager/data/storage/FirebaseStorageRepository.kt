@@ -18,18 +18,4 @@ class FirebaseStorageRepository(
         photoRef.putData(imageData.toFirebaseStorageData())
         return photoRef.getDownloadUrl()
     }
-
-    override suspend fun uploadFile(path: String, data: ByteArray): String {
-        val fileRef = storage.reference.child(path)
-        fileRef.putData(data.toFirebaseStorageData())
-        return fileRef.getDownloadUrl()
-    }
-
-    override suspend fun downloadUrl(path: String): String {
-        return storage.reference.child(path).getDownloadUrl()
-    }
-
-    override suspend fun deleteFile(path: String) {
-        storage.reference.child(path).delete()
-    }
 }
