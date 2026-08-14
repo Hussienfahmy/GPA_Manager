@@ -2,6 +2,9 @@
 
 - Delete examples tests and empty manifest and their directory if it becomes empty.
 - When enabling sign in with apple id, make the onboarding screen in common main not expect actual.
+- Why do we need UPLOAD_SYNC_TASK_IDENTIFIER? handleTask why dispatcher main ? 
+- Auth Flow on android and ios needs a refactor to not using interfaces and using expect actual AFTER moving shared code to common, we have many ridiculous interfaces. 
+- Why not using MainViewControllerKt.MainViewController() directly in iosApp? why intermediate struct compose view.
 - App profiler: precompile in semester_marks before publishing.
 
 ## iOS parity gaps
