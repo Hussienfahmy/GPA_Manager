@@ -17,13 +17,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
+import com.hussienfahmy.core_ui.Dimensions
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingProgressIndicator
 import com.hussienfahmy.myGpaManager.navigation.AppBottomNav
 import com.hussienfahmy.myGpaManager.navigation.AppNavHost
+import com.hussienfahmy.myGpaManager.navigation.AppNavigationState
 import com.hussienfahmy.myGpaManager.navigation.AppRoute
 import com.hussienfahmy.myGpaManager.navigation.OnboardingNavHost
 import com.hussienfahmy.myGpaManager.navigation.OnboardingRoute
@@ -93,69 +96,90 @@ fun GpaManagerApp() {
             }
         }
 
-        if (showOnboarding) {
-            val currentOnboardingRoute = onboardingBackStack.lastOrNull()
-
-            Scaffold(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .pointerInput(Unit) {
-                        detectTapGestures(onTap = { localFocusManager.clearFocus() })
-                    },
-                snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
-            ) { paddingValues ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                ) {
-                    if (currentOnboardingRoute != OnboardingRoute.Welcome &&
-                        currentOnboardingRoute !is OnboardingRoute.SemesterDetail
-                    ) {
-                        // Show progress indicator outside animated content for steps 2-7
-                        OnboardingProgressIndicator(
-                            currentStep = getOnboardingStep(currentOnboardingRoute),
-                            totalSteps = OnboardingConstants.TOTAL_STEPS,
-                            modifier = Modifier.padding(spacing.medium)
-                        )
-                    }
-
-                    OnboardingNavHost(
-                        backStack = onboardingBackStack,
-                        snackBarHostState = snackBarHostState,
-                        onSignInSuccess = {
-                            onboardingBackStack.add(OnboardingRoute.PersonalInfo)
-                        },
-                        onOnboardingComplete = {
-                            while (onboardingBackStack.size > 1) {
-                                onboardingBackStack.removeLastOrNull()
-                            }
-                            showOnboarding = false
-                        },
-                    )
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = { localFocusManager.clearFocus() })
+                },
+            snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
+            bottomBar = {
+                if (!showOnboarding) {
+                    AppBottomNav(appNavigationState = appNavigationState)
                 }
-            }
-        } else {
-            Scaffold(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .pointerInput(Unit) {
-                        detectTapGestures(onTap = { localFocusManager.clearFocus() })
-                    },
-                snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
-                bottomBar = { AppBottomNav(appNavigationState = appNavigationState) }
-            ) { paddingValues ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                ) {
-                    AppNavHost(
-                        appNavigationState = appNavigationState,
-                        snackBarHostState = snackBarHostState,
-                    )
-                }
+            },
+        ) { paddingValues ->
+            val contentModifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+
+            if (showOnboarding) {
+                OnboardingContent(
+                    modifier = contentModifier,
+                    spacing = spacing,
+                    onboardingBackStack = onboardingBackStack,
+                    snackBarHostState = snackBarHostState,
+                    onOnboardingComplete = { showOnboarding = false },
+                )
+            } else {
+                MainAppContent(
+                    modifier = contentModifier,
+                    appNavigationState = appNavigationState,
+                    snackBarHostState = snackBarHostState,
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun OnboardingContent(
+    modifier: Modifier = Modifier,
+    spacing: Dimensions,
+    onboardingBackStack: NavBackStack<NavKey>,
+    snackBarHostState: SnackbarHostState,
+    onOnboardingComplete: () -> Unit,
+) {
+    val currentOnboardingRoute = onboardingBackStack.lastOrNull()
+
+    Column(modifier = modifier) {
+        if (currentOnboardingRoute != OnboardingRoute.Welcome &&
+            currentOnboardingRoute !is OnboardingRoute.SemesterDetail
+        ) {
+            // Show progress indicator outside animated content for steps 2-7
+            OnboardingProgressIndicator(
+                currentStep = getOnboardingStep(currentOnboardingRoute),
+                totalSteps = OnboardingConstants.TOTAL_STEPS,
+                modifier = Modifier.padding(spacing.medium)
+            )
+        }
+
+        OnboardingNavHost(
+            backStack = onboardingBackStack,
+            snackBarHostState = snackBarHostState,
+            onSignInSuccess = {
+                onboardingBackStack.add(OnboardingRoute.PersonalInfo)
+            },
+            onOnboardingComplete = {
+                while (onboardingBackStack.size > 1) {
+                    onboardingBackStack.removeLastOrNull()
+                }
+                onOnboardingComplete()
+            },
+        )
+    }
+}
+
+@Composable
+private fun MainAppContent(
+    modifier: Modifier = Modifier,
+    appNavigationState: AppNavigationState,
+    snackBarHostState: SnackbarHostState,
+) {
+    Column(modifier = modifier) {
+        AppNavHost(
+            appNavigationState = appNavigationState,
+            snackBarHostState = snackBarHostState,
+        )
     }
 }
