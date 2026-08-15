@@ -8,6 +8,8 @@ import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.hussienfahmy.core.generated.resources.*
+import com.hussienfahmy.core_ui.theme.MeadowAccent
+import com.hussienfahmy.core_ui.theme.MeadowColors
 import org.jetbrains.compose.resources.StringResource
 
 enum class BottomNavDestination(
@@ -40,4 +42,12 @@ enum class BottomNavDestination(
         icon = Icons.Outlined.MoreHoriz,
         label = Res.string.more
     )
+}
+
+internal fun BottomNavDestination.accent(colors: MeadowColors): MeadowAccent = when (this) {
+    BottomNavDestination.Semester -> colors.semester
+    BottomNavDestination.Marks -> colors.marks
+    BottomNavDestination.History -> colors.history
+    BottomNavDestination.Quick -> colors.quick
+    BottomNavDestination.More -> colors.more
 }
