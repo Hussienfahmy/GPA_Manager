@@ -4,6 +4,7 @@
 - Auth Flow on android and ios needs a refactor to not using interfaces and using expect actual AFTER moving shared code to common, we have many ridiculous interfaces. 
 - Light mode: Shadow on the subject cards in semester screen has cut off on the bottom.
 - App profiler: precompile in semester_marks before publishing.
+- Scaffold bottom bar overlap: screen content should draw behind the glass bar with scrollables reserving their own bottom inset, not get pushed entirely above it - fix via WindowInsets, not by applying Scaffold's measured paddingValues bottom directly.
 
 ## iOS parity gaps
 
