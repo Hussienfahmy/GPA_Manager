@@ -105,7 +105,7 @@ fun SemesterScreen(
         is SemesterSubjectsState.Loaded -> {
             val loadedState = state as SemesterSubjectsState.Loaded
             SemesterScreenContent(
-                modifier = modifier.padding(spacing.small),
+                modifier = modifier.padding(horizontal = spacing.small),
                 state = loadedState,
                 onAddClick = { showAddDialog = true },
                 onChangeModeClick = { viewModel.onEvent(SemesterSubjectsEvent.ChangeMode) },
