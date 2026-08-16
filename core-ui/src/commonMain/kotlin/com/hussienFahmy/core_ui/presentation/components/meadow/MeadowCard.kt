@@ -1,5 +1,8 @@
 package com.hussienfahmy.core_ui.presentation.components.meadow
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,6 +36,7 @@ fun MeadowCard(
     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 14.dp),
     border: BorderStroke? = null,
     elevated: Boolean = false,
+    animateSize: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val colors = MeadowTheme.colors
@@ -52,6 +56,17 @@ fun MeadowCard(
             .clip(shape)
             .background(colors.card)
             .then(if (border != null) Modifier.border(border, shape) else Modifier)
+            // animateContentSize bakes in its own clipToBounds() at the point it's applied -
+            // must come after shadow(), or the shadow (which draws outside the card's own
+            // bounds) gets clipped along with it.
+            .then(
+                if (animateSize) Modifier.animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioNoBouncy,
+                        stiffness = Spring.StiffnessMedium,
+                    )
+                ) else Modifier
+            )
             .padding(contentPadding),
         content = content,
     )

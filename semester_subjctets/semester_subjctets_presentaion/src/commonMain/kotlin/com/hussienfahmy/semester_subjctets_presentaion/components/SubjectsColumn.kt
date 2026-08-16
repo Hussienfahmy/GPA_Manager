@@ -1,8 +1,5 @@
 package com.hussienfahmy.semester_subjctets_presentaion.components
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -110,16 +107,10 @@ fun SubjectCard(
     var isExpanded by remember { mutableStateOf(false) }
 
     MeadowCard(
-        modifier = modifier
-            .fillMaxWidth()
-            .animateContentSize(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioNoBouncy,
-                    stiffness = Spring.StiffnessMedium
-                )
-            ),
+        modifier = modifier.fillMaxWidth(),
         border = if (isExpanded) BorderStroke(2.dp, accent.container) else null,
         elevated = isExpanded,
+        animateSize = true,
     ) {
         // Header: name + chip (+ predict-mode grade pill), tap to expand
         Row(

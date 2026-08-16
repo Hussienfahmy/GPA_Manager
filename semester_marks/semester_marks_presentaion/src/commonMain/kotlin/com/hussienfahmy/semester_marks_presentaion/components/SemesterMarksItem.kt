@@ -3,10 +3,7 @@ package com.hussienfahmy.semester_marks_presentaion.components
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -136,21 +133,13 @@ fun SemesterMarksItem(
     )
 
     MeadowCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .then(
-                if (settled) Modifier.animateContentSize(
-                    animationSpec = spring(
-                        dampingRatio = Spring.DampingRatioNoBouncy,
-                        stiffness = Spring.StiffnessMedium,
-                    )
-                ) else Modifier
-            ),
+        modifier = Modifier.fillMaxWidth(),
         radius = if (isExpanded) MeadowRadius.hero else MeadowRadius.card,
         contentPadding = PaddingValues(
             horizontal = 18.dp, vertical = if (isExpanded) 16.dp else 14.dp
         ),
         elevated = isExpanded,
+        animateSize = settled,
     ) {
         // Header: name · (compact: total) · reset · setup — tap to expand
         Row(
