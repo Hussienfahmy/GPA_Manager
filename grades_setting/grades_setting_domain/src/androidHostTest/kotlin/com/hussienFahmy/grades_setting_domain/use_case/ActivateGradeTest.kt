@@ -8,6 +8,7 @@ import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.entity.Grade
 import com.hussienfahmy.core.data.local.model.GradeName
 import com.hussienfahmy.core.data.local.util.UpdateResult
+import com.hussienfahmy.core.domain.sync.SyncDirtyTracker
 import com.hussienfahmy.grades_setting_domain.model.GradeSetting
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -24,6 +25,7 @@ class ActivateGradeTest {
     private lateinit var subjectDao: SubjectDao
     private lateinit var gradeDao: GradeDao
     private lateinit var getGradeByName: GetGradeByName
+    private lateinit var dirtyTracker: SyncDirtyTracker
 
     @Before
     fun setUp() {
@@ -33,10 +35,13 @@ class ActivateGradeTest {
 
         getGradeByName = mockk(relaxed = true)
 
+        dirtyTracker = mockk(relaxed = true)
+
         activateGrade = ActivateGrade(
             subjectDao = subjectDao,
             gradeDao = gradeDao,
-            getGradeByName = getGradeByName
+            getGradeByName = getGradeByName,
+            dirtyTracker = dirtyTracker,
         )
     }
 

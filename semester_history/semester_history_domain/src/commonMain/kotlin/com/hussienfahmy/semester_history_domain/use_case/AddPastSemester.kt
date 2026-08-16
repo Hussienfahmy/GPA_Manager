@@ -2,12 +2,12 @@ package com.hussienfahmy.semester_history_domain.use_case
 
 import com.hussienfahmy.core.data.local.SemesterDao
 import com.hussienfahmy.core.data.local.entity.Semester
-import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
+import com.hussienfahmy.core.domain.sync.SyncDirtyTracker
 import kotlin.time.Clock
 
 class AddPastSemester(
     private val semesterDao: SemesterDao,
-    private val dirtyTracker: SemesterDirtyTracker,
+    private val dirtyTracker: SyncDirtyTracker,
 ) {
     sealed class Request {
         data class Summary(
@@ -58,7 +58,7 @@ class AddPastSemester(
                 semesterDao.insert(semester)
             }
         }.also {
-            dirtyTracker.markChanged()
+            dirtyTracker.markSemestersChanged()
         }
     }
 }

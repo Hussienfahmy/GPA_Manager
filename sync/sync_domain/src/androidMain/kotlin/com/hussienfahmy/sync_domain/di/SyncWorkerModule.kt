@@ -18,5 +18,5 @@ val syncWorkerModule = module {
         )
     }
 
-    single { BackgroundSyncScheduler(workManager = get()) }
+    single { BackgroundSyncScheduler(workManager = get(), dirtyTracker = get()) }
 }

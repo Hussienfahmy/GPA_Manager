@@ -21,7 +21,7 @@ val syncDomainModule = module {
     single {
         PullSettings(
             repository = get(),
-            updateGPASystem = get(),
+            gpaSettingsRepository = get(),
             gradeDao = get(),
             subjectSettingsRepository = get(),
         )

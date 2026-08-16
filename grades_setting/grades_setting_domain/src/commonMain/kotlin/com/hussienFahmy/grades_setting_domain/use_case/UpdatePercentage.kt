@@ -3,11 +3,13 @@ package com.hussienfahmy.grades_setting_domain.use_case
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.GradeDao
 import com.hussienfahmy.core.data.local.util.UpdateResult
+import com.hussienfahmy.core.domain.sync.SyncDirtyTracker
 import com.hussienfahmy.core.model.UiText
 import com.hussienfahmy.grades_setting_domain.model.GradeSetting
 
 class UpdatePercentage(
     private val gradeDao: GradeDao,
+    private val dirtyTracker: SyncDirtyTracker,
 ) {
     suspend operator fun invoke(
         gradeSetting: GradeSetting,
@@ -18,6 +20,7 @@ class UpdatePercentage(
             UpdateResult.Failed(UiText.Resource(Res.string.err_percentage_range))
         } else {
             gradeDao.updatePercentage(gradeSetting.name, percentage)
+            dirtyTracker.markSettingsChanged()
             UpdateResult.Success
         }
     }

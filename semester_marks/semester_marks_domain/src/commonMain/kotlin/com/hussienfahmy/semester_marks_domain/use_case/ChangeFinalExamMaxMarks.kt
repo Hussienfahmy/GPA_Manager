@@ -3,10 +3,12 @@ package com.hussienfahmy.semester_marks_domain.use_case
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.util.UpdateResult
+import com.hussienfahmy.core.domain.sync.SyncDirtyTracker
 import com.hussienfahmy.core.model.UiText
 
 class ChangeFinalExamMaxMarks(
     private val subjectDao: SubjectDao,
+    private val dirtyTracker: SyncDirtyTracker,
 ) {
     suspend operator fun invoke(subjectId: Long, marks: String): UpdateResult {
         val value = marks.toDoubleOrNull()
@@ -39,6 +41,7 @@ class ChangeFinalExamMaxMarks(
         }
 
         subjectDao.updateFinalExamMaxMarks(subjectId, value)
+        dirtyTracker.markSubjectsChanged()
         return UpdateResult.Success
     }
 }

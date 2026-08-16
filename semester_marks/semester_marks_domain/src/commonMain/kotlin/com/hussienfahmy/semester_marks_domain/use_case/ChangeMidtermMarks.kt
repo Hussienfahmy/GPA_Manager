@@ -3,10 +3,12 @@ package com.hussienfahmy.semester_marks_domain.use_case
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.util.UpdateResult
+import com.hussienfahmy.core.domain.sync.SyncDirtyTracker
 import com.hussienfahmy.core.model.UiText
 
 class ChangeMidtermMarks(
     private val subjectDao: SubjectDao,
+    private val dirtyTracker: SyncDirtyTracker,
 ) {
     suspend operator fun invoke(subjectId: Long, marks: String): UpdateResult = run {
         val midterm = marks.toDoubleOrNull()
@@ -14,6 +16,7 @@ class ChangeMidtermMarks(
             UpdateResult.Failed(UiText.Resource(Res.string.err_subject_midterm_negative))
         } else {
             subjectDao.updateMidterm(subjectId, midterm)
+            dirtyTracker.markSubjectsChanged()
             UpdateResult.Success
         }
     }

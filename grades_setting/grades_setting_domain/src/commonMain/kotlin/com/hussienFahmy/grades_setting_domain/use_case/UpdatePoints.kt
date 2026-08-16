@@ -3,11 +3,13 @@ package com.hussienfahmy.grades_setting_domain.use_case
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.GradeDao
 import com.hussienfahmy.core.data.local.util.UpdateResult
+import com.hussienfahmy.core.domain.sync.SyncDirtyTracker
 import com.hussienfahmy.core.model.UiText
 import com.hussienfahmy.grades_setting_domain.model.GradeSetting
 
 class UpdatePoints(
     private val gradeDao: GradeDao,
+    private val dirtyTracker: SyncDirtyTracker,
 ) {
     suspend operator fun invoke(gradeSetting: GradeSetting, pointsString: String): UpdateResult {
         val points = pointsString.toDoubleOrNull()
@@ -15,6 +17,7 @@ class UpdatePoints(
             UpdateResult.Failed(UiText.Resource(Res.string.err_points_less_zero))
         } else {
             gradeDao.updatePoints(gradeSetting.name, points)
+            dirtyTracker.markSettingsChanged()
             UpdateResult.Success
         }
     }

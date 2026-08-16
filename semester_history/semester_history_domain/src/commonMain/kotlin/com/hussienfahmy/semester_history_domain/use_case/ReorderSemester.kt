@@ -1,12 +1,12 @@
 package com.hussienfahmy.semester_history_domain.use_case
 
 import com.hussienfahmy.core.data.local.SemesterDao
-import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
+import com.hussienfahmy.core.domain.sync.SyncDirtyTracker
 import kotlinx.coroutines.flow.first
 
 class ReorderSemester(
     private val semesterDao: SemesterDao,
-    private val dirtyTracker: SemesterDirtyTracker,
+    private val dirtyTracker: SyncDirtyTracker,
 ) {
     enum class Direction { UP, DOWN }
 
@@ -28,6 +28,6 @@ class ReorderSemester(
             a = current.copy(order = target.order),
             b = target.copy(order = current.order),
         )
-        dirtyTracker.markChanged()
+        dirtyTracker.markSemestersChanged()
     }
 }

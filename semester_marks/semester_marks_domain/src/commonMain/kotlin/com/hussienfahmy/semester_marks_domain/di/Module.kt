@@ -26,17 +26,17 @@ val semesterMarksDomainModule = module {
                 defaultDispatcher = get(named(CoreQualifiers.DEFAULT_DISPATCHER)),
                 appScope = get()
             ),
-            resetMarks = ResetMarks(get()),
-            setOralAvailable = SetOralAvailable(get()),
-            setPracticalAvailable = SetPracticalAvailable(get()),
-            setMidtermAvailable = SetMidtermAvailable(get()),
-            setProjectAvailable = SetProjectAvailable(get()),
-            changeMidtermMarks = ChangeMidtermMarks(get()),
-            changeOralMarks = ChangeOralMarks(get()),
-            changePracticalMarks = ChangePracticalMarks(get()),
-            changeProjectMarks = ChangeProjectMarks(get()),
+            resetMarks = ResetMarks(get(), get()),
+            setOralAvailable = SetOralAvailable(get(), get()),
+            setPracticalAvailable = SetPracticalAvailable(get(), get()),
+            setMidtermAvailable = SetMidtermAvailable(get(), get()),
+            setProjectAvailable = SetProjectAvailable(get(), get()),
+            changeMidtermMarks = ChangeMidtermMarks(get(), get()),
+            changeOralMarks = ChangeOralMarks(get(), get()),
+            changePracticalMarks = ChangePracticalMarks(get(), get()),
+            changeProjectMarks = ChangeProjectMarks(get(), get()),
             syncGradeWithMarks = SyncGradeWithMarks(get(), get(), get()),
-            changeFinalExamMaxMarks = ChangeFinalExamMaxMarks(get()),
+            changeFinalExamMaxMarks = ChangeFinalExamMaxMarks(get(), get()),
         )
     }
 }

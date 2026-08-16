@@ -5,10 +5,10 @@ import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkerParameters
 import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.core.domain.sync.SyncUpload
-import java.util.concurrent.TimeUnit
 
 class SyncWorkerUpload(
     appContext: Context,
@@ -40,7 +40,7 @@ class SyncWorkerUpload(
                         .setRequiresDeviceIdle(false)
                         .build()
                 )
-                .setInitialDelay(5, TimeUnit.MINUTES) // 5 minute delay
+                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
                 .build()
     }
 }

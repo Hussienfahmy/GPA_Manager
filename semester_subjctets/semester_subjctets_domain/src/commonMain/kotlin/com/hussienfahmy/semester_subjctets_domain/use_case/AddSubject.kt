@@ -6,11 +6,13 @@ import com.hussienfahmy.core.data.local.entity.Subject
 import com.hussienfahmy.core.data.local.util.UpdateResult
 import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
 import com.hussienfahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
+import com.hussienfahmy.core.domain.sync.SyncDirtyTracker
 import com.hussienfahmy.core.model.UiText
 
 class AddSubject(
     private val subjectDao: SubjectDao,
     private val getSubjectsSettings: GetSubjectsSettings,
+    private val dirtyTracker: SyncDirtyTracker,
 ) {
     suspend operator fun invoke(
         name: String,
@@ -44,6 +46,7 @@ class AddSubject(
         )
 
         subjectDao.upsert(subject)
+        dirtyTracker.markSubjectsChanged()
 
         return UpdateResult.Success
     }

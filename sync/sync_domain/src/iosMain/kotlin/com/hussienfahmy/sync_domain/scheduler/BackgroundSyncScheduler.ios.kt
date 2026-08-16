@@ -1,10 +1,10 @@
 package com.hussienfahmy.sync_domain.scheduler
 
 import com.hussienfahmy.core.domain.crash.CrashReporter
+import com.hussienfahmy.core.domain.sync.SyncDirtyTracker
 import com.hussienfahmy.core.domain.sync.SyncUpload
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import platform.BackgroundTasks.BGProcessingTask
@@ -13,10 +13,10 @@ import platform.BackgroundTasks.BGTaskScheduler
 import platform.Foundation.NSBundle
 import platform.Foundation.NSDate
 import platform.Foundation.dateWithTimeIntervalSinceNow
+import platform.UIKit.UIApplication
+import platform.UIKit.UIBackgroundTaskInvalid
 
-// Read from Info.plist's BGTaskSchedulerPermittedIdentifiers instead of duplicating the string
-// here - registerForTaskWithIdentifier/submitTaskRequest silently fail at runtime if the two ever
-// drift apart, so Info.plist stays the single source of truth.
+// Read from Info.plist instead of duplicating the identifier string here, so it can't drift.
 private val UPLOAD_SYNC_TASK_IDENTIFIER: String by lazy {
     val identifiers = NSBundle.mainBundle
         .objectForInfoDictionaryKey("BGTaskSchedulerPermittedIdentifiers") as? List<*>
@@ -28,13 +28,40 @@ private val UPLOAD_SYNC_TASK_IDENTIFIER: String by lazy {
 actual class BackgroundSyncScheduler(
     private val syncUpload: SyncUpload,
     private val crashReporter: CrashReporter,
+    private val dirtyTracker: SyncDirtyTracker,
 ) {
     actual fun scheduleUploadSync() {
+        if (!dirtyTracker.hasAnyChanges()) return
+        runImmediateUpload()
+        scheduleFallback()
+    }
+
+    // beginBackgroundTask grants a guaranteed execution window immediately on backgrounding -
+    // unlike BGTaskScheduler below, this isn't heuristic.
+    private fun runImmediateUpload() {
+        var taskId = UIBackgroundTaskInvalid
+        taskId = UIApplication.sharedApplication.beginBackgroundTaskWithName("uploadSync") {
+            UIApplication.sharedApplication.endBackgroundTask(taskId)
+        }
+
+        CoroutineScope(SupervisorJob()).launch {
+            try {
+                syncUpload()
+            } catch (e: Exception) {
+                crashReporter.recordException(e, mapOf("operation" to "immediateUploadSync"))
+            } finally {
+                UIApplication.sharedApplication.endBackgroundTask(taskId)
+            }
+        }
+    }
+
+    // Fallback in case the immediate attempt above doesn't finish in time or the app gets
+    // suspended before it starts. Harmless no-op if it already succeeded, since SyncUploadImpl
+    // only pushes collections still marked dirty.
+    private fun scheduleFallback() {
         val request = BGProcessingTaskRequest(identifier = UPLOAD_SYNC_TASK_IDENTIFIER)
         request.requiresNetworkConnectivity = true
-        // Mirrors SyncWorkerUpload's 5-minute initial delay on Android - purely a hint, iOS
-        // remains free to run this later (or not at all) based on its own opportunistic scheduling.
-        request.earliestBeginDate = NSDate.dateWithTimeIntervalSinceNow(5.0 * 60.0)
+        request.earliestBeginDate = NSDate.dateWithTimeIntervalSinceNow(5.0)
         try {
             BGTaskScheduler.sharedScheduler.submitTaskRequest(request, error = null)
         } catch (e: Exception) {
@@ -42,10 +69,8 @@ actual class BackgroundSyncScheduler(
         }
     }
 
-    // Unlike Android (WorkManager discovers workers via Koin's worker{} DSL with no explicit call
-    // needed), BGTaskScheduler requires this registration to happen once, synchronously, before
-    // the app finishes launching - called from doInitApp() in KoinIos.kt, which runs at the same
-    // point iOSApp.swift's init() does.
+    // Unlike Android (WorkManager discovers workers via Koin's worker{} DSL), BGTaskScheduler
+    // requires this registration to happen once, synchronously, before the app finishes launching.
     fun registerTaskHandler() {
         BGTaskScheduler.sharedScheduler.registerForTaskWithIdentifier(
             UPLOAD_SYNC_TASK_IDENTIFIER,
@@ -65,6 +90,8 @@ actual class BackgroundSyncScheduler(
                 task.setTaskCompletedWithSuccess(false)
             }
         }
-        task.expirationHandler = { job.cancel() }
+        task.expirationHandler = {
+            job.cancel()
+        }
     }
 }

@@ -3,26 +3,20 @@ package com.hussienfahmy.semester_history_presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.generated.resources.*
-import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
 import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
 import com.hussienfahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
-import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
 import com.hussienfahmy.core.model.UiText
 import com.hussienfahmy.semester_history_domain.use_case.AddSubjectToSemester
 import com.hussienfahmy.semester_history_domain.use_case.DeleteSubjectFromSemester
 import com.hussienfahmy.semester_history_domain.use_case.EditSemester
 import com.hussienfahmy.semester_history_domain.use_case.EditSubjectInSemester
 import com.hussienfahmy.semester_history_domain.use_case.GetSemesterDetail
-import com.hussienfahmy.sync_domain.use_case.PushSemesters
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -36,10 +30,6 @@ class SemesterDetailViewModel(
     private val editSubjectInSemester: EditSubjectInSemester,
     private val deleteSubjectFromSemester: DeleteSubjectFromSemester,
     private val editSemester: EditSemester,
-    private val dirtyTracker: SemesterDirtyTracker,
-    private val pushSemesters: PushSemesters,
-    private val authRepository: AuthRepository,
-    private val applicationScope: CoroutineScope,
     private val crashReporter: CrashReporter,
 ) : ViewModel() {
 
@@ -78,7 +68,6 @@ class SemesterDetailViewModel(
             is SemesterDetailAction.OnAddSubject -> addSubject(action)
             is SemesterDetailAction.OnEditSubject -> editSubject(action)
             is SemesterDetailAction.OnDeleteSubject -> deleteSubject(action.subjectId)
-            is SemesterDetailAction.OnScreenExit -> onScreenExit()
         }
     }
 
@@ -129,21 +118,6 @@ class SemesterDetailViewModel(
                 _events.send(SemesterDetailEvent.ShowError(UiText.Resource(Res.string.history_error_delete_subject_failed)))
             } finally {
                 _isSubmitting.value = false
-            }
-        }
-    }
-
-    private fun onScreenExit() {
-        if (dirtyTracker.consumeChanges()) {
-            applicationScope.launch {
-                try {
-                    val userId = authRepository.userId.filterNotNull().firstOrNull()
-                    if (userId != null) pushSemesters(userId)
-                } catch (e: Exception) {
-                    // Silent to the user by design - sync will retry on next app lifecycle
-                    // event - but still reported so silent regressions are visible.
-                    crashReporter.recordException(e, mapOf("operation" to "pushSemesters"))
-                }
             }
         }
     }

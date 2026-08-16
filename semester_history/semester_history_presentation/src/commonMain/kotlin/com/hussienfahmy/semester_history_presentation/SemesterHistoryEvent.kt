@@ -25,6 +25,4 @@ sealed class SemesterHistoryEvent {
 
     data class MoveSemesterUp(val id: Long) : SemesterHistoryEvent()
     data class MoveSemesterDown(val id: Long) : SemesterHistoryEvent()
-
-    object OnScreenExit : SemesterHistoryEvent()
 }

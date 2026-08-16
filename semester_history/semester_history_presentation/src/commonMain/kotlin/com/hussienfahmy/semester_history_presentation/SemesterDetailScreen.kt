@@ -50,7 +50,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.entity.Subject
@@ -94,12 +93,6 @@ fun SemesterDetailRoot(
                     event.message.asStringSuspend()
                 )
             }
-        }
-    }
-
-    LifecycleResumeEffect(Unit) {
-        onPauseOrDispose {
-            viewModel.onAction(SemesterDetailAction.OnScreenExit)
         }
     }
 

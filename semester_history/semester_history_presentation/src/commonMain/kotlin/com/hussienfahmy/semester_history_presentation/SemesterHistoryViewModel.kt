@@ -2,9 +2,7 @@ package com.hussienfahmy.semester_history_presentation
 
 import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.generated.resources.*
-import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.crash.CrashReporter
-import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
 import com.hussienfahmy.core.model.UiText
@@ -18,12 +16,9 @@ import com.hussienfahmy.semester_history_domain.use_case.EditSemester
 import com.hussienfahmy.semester_history_domain.use_case.GetSemesterHistory
 import com.hussienfahmy.semester_history_domain.use_case.GetWorkspaceSubjectCount
 import com.hussienfahmy.semester_history_domain.use_case.ReorderSemester
-import com.hussienfahmy.sync_domain.use_case.PushSemesters
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
@@ -37,10 +32,6 @@ class SemesterHistoryViewModel(
     private val reorderSemester: ReorderSemester,
     private val getUserData: GetUserData,
     private val getWorkspaceSubjectCount: GetWorkspaceSubjectCount,
-    private val dirtyTracker: SemesterDirtyTracker,
-    private val pushSemesters: PushSemesters,
-    private val authRepository: AuthRepository,
-    private val applicationScope: CoroutineScope,
     private val crashReporter: CrashReporter,
 ) : UiViewModel<SemesterHistoryEvent, SemesterHistoryState>(initialState = {
     SemesterHistoryState.Loading
@@ -74,24 +65,6 @@ class SemesterHistoryViewModel(
     }
 
     override fun onEvent(event: SemesterHistoryEvent) {
-        if (event is SemesterHistoryEvent.OnScreenExit) {
-            if (dirtyTracker.consumeChanges()) {
-                applicationScope.launch {
-                    try {
-                        val userId = authRepository.userId.filterNotNull().firstOrNull()
-                        if (userId != null) {
-                            pushSemesters(userId)
-                        }
-                    } catch (e: Exception) {
-                        // Silent to the user by design - sync will retry on next app lifecycle
-                        // event - but still reported so silent regressions are visible.
-                        crashReporter.recordException(e, mapOf("operation" to "pushSemesters"))
-                    }
-                }
-            }
-            return
-        }
-
         viewModelScope.launch {
             try {
                 when (event) {

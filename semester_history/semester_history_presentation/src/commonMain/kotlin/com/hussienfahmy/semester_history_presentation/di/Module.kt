@@ -18,10 +18,6 @@ val semesterHistoryPresentationModule = module {
             reorderSemester = get(),
             getUserData = get(),
             getWorkspaceSubjectCount = get(),
-            pushSemesters = get(),
-            applicationScope = get(),
-            dirtyTracker = get(),
-            authRepository = get(),
             crashReporter = get(),
         )
     }
@@ -35,10 +31,6 @@ val semesterHistoryPresentationModule = module {
             editSemester = get(),
             getActiveGrades = get(),
             getSubjectsSettings = get(),
-            pushSemesters = get(),
-            applicationScope = get(),
-            dirtyTracker = get(),
-            authRepository = get(),
             crashReporter = get(),
         )
     }

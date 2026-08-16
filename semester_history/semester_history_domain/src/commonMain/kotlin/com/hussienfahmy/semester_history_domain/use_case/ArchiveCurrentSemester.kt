@@ -3,7 +3,7 @@ package com.hussienfahmy.semester_history_domain.use_case
 import com.hussienfahmy.core.data.local.SemesterDao
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.entity.Semester
-import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
+import com.hussienfahmy.core.domain.sync.SyncDirtyTracker
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateLevel
@@ -19,7 +19,7 @@ class ArchiveCurrentSemester(
     private val updateLevel: UpdateLevel,
     private val updateSemester: UpdateSemester,
     private val calculateSemesterGPA: CalculateSemesterGPA,
-    private val dirtyTracker: SemesterDirtyTracker,
+    private val dirtyTracker: SyncDirtyTracker,
 ) {
     sealed class Result {
         data object Success : Result()
@@ -55,7 +55,7 @@ class ArchiveCurrentSemester(
         subjectDao.linkWorkspaceSubjectsToSemester(semesterId)
 
         advanceSemester(currentLevel, currentSemesterNum)
-        dirtyTracker.markChanged()
+        dirtyTracker.markSemestersChanged()
 
         return Result.Success
     }

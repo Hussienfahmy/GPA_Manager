@@ -44,7 +44,6 @@ import androidx.compose.ui.platform.LocalDensity
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
@@ -84,12 +83,6 @@ fun SemesterHistoryScreen(
     LaunchedEffect(Unit) {
         viewModel.navigateToDetail.collect { semesterId ->
             onSemesterClick(semesterId)
-        }
-    }
-
-    LifecycleResumeEffect(Unit) {
-        onPauseOrDispose {
-            viewModel.onEvent(SemesterHistoryEvent.OnScreenExit)
         }
     }
 

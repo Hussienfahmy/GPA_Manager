@@ -7,5 +7,5 @@ import org.koin.dsl.module
 // (androidMain) - split the same way since the two actuals take entirely different constructor
 // dependencies (WorkManager vs. SyncUpload/CrashReporter).
 val syncSchedulerModule = module {
-    single { BackgroundSyncScheduler(syncUpload = get(), crashReporter = get()) }
+    single { BackgroundSyncScheduler(syncUpload = get(), crashReporter = get(), dirtyTracker = get()) }
 }

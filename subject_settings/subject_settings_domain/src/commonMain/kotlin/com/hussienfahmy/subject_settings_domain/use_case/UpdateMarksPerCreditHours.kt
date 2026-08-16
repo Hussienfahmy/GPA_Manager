@@ -3,11 +3,13 @@ package com.hussienfahmy.subject_settings_domain.use_case
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.util.UpdateResult
 import com.hussienfahmy.core.domain.subject_settings.repository.SubjectSettingsRepository
+import com.hussienfahmy.core.domain.sync.SyncDirtyTracker
 import com.hussienfahmy.core.model.UiText
 
 class UpdateMarksPerCreditHours(
     private val repository: SubjectSettingsRepository,
     private val applySettingsToSubjects: ApplySettingsToSubjects,
+    private val dirtyTracker: SyncDirtyTracker,
 ) {
     suspend operator fun invoke(marksPerCreditHours: String): UpdateResult {
         if (marksPerCreditHours.isBlank()) return UpdateResult.Failed(
@@ -19,6 +21,7 @@ class UpdateMarksPerCreditHours(
         )
 
         repository.updateMarksPerCreditHour(marksPerCreditHours.toDouble())
+        dirtyTracker.markSettingsChanged()
         applySettingsToSubjects()
 
         return UpdateResult.Success

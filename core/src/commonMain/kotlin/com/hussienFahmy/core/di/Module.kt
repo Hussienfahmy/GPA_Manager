@@ -9,7 +9,7 @@ import com.hussienfahmy.core.domain.report.templates.LedgerRenderer
 import com.hussienfahmy.core.domain.report.templates.MinimalRenderer
 import com.hussienfahmy.core.domain.report.templates.ModernRenderer
 import com.hussienfahmy.core.domain.report.templates.TimelineRenderer
-import com.hussienfahmy.core.domain.sync.SemesterDirtyTracker
+import com.hussienfahmy.core.domain.sync.SyncDirtyTracker
 import com.hussienfahmy.core.util.UrlOpener
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +26,7 @@ object CoreQualifiers {
 val coreModule = module {
     single<CoroutineDispatcher>(named(CoreQualifiers.DEFAULT_DISPATCHER)) { Dispatchers.Default }
     single<CoroutineScope> { CoroutineScope(Dispatchers.Main + SupervisorJob()) }
-    singleOf(::SemesterDirtyTracker)
+    singleOf(::SyncDirtyTracker)
     singleOf(::ReportBrandingProvider)
     singleOf(::PdfReportPrinter)
     singleOf(::UrlOpener)

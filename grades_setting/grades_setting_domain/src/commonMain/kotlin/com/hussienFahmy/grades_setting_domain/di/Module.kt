@@ -12,9 +12,9 @@ val gradesSettingDomainModule = module {
     single {
         GradeSettingsUseCases(
             loadGrades = LoadGrades(get()),
-            updatePoints = UpdatePoints(get()),
-            updatePercentage = UpdatePercentage(get()),
-            activateGrade = ActivateGrade(get(), get(), GetGradeByName(get())),
+            updatePoints = UpdatePoints(get(), get()),
+            updatePercentage = UpdatePercentage(get(), get()),
+            activateGrade = ActivateGrade(get(), get(), GetGradeByName(get()), get()),
         )
     }
 }
