@@ -32,6 +32,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,9 +42,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LifecycleResumeEffect
@@ -114,6 +118,9 @@ fun SemesterDetailScreen(
 ) {
     var showAddSubjectSheet by remember { mutableStateOf(false) }
     var editingSubject by remember { mutableStateOf<Subject?>(null) }
+    val scaffoldPadding = LocalScaffoldContentPadding.current
+    val density = LocalDensity.current
+    var fabHeight by remember { mutableStateOf(0.dp) }
 
     MeadowAccentProvider(MeadowTheme.colors.history) {
         Scaffold(
@@ -124,7 +131,13 @@ fun SemesterDetailScreen(
             contentWindowInsets = WindowInsets(0, 0, 0, 0),
             snackbarHost = { SnackbarHost(snackbarHostState) },
             floatingActionButton = {
-                AnimatedContent(targetState = state.isSubmitting, label = "fab_content") { submitting ->
+                AnimatedContent(
+                    targetState = state.isSubmitting,
+                    label = "fab_content",
+                    modifier = Modifier
+                        .padding(bottom = scaffoldPadding.calculateBottomPadding())
+                        .onSizeChanged { fabHeight = with(density) { it.height.toDp() } },
+                ) { submitting ->
                     if (submitting) {
                         MeadowCard(contentPadding = PaddingValues(14.dp)) {
                             CircularProgressIndicator(
@@ -158,6 +171,7 @@ fun SemesterDetailScreen(
                     onEditSubject = { editingSubject = it },
                     onDeleteSubject = { onAction(SemesterDetailAction.OnDeleteSubject(it)) },
                     modifier = Modifier.padding(padding),
+                    fabHeight = fabHeight,
                 )
             }
         }
@@ -201,11 +215,17 @@ private fun SemesterDetailContent(
     onEditSubject: (Subject) -> Unit,
     onDeleteSubject: (Long) -> Unit,
     modifier: Modifier = Modifier,
+    fabHeight: Dp = 0.dp,
 ) {
+    val scaffoldPadding = LocalScaffoldContentPadding.current
+
     LazyColumn(
         modifier = modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(11.dp),
-        contentPadding = PaddingValues(top = 4.dp, bottom = 96.dp),
+        contentPadding = PaddingValues(
+            top = 4.dp,
+            bottom = 16.dp + fabHeight + scaffoldPadding.calculateBottomPadding(),
+        ),
     ) {
         item {
             SemesterHeaderCard(semester = detail.semester, subjectCount = detail.subjectCount)

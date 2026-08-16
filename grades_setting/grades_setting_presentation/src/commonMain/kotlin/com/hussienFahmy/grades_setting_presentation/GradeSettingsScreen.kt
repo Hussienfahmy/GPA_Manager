@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.SnackbarHostState
+import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -104,11 +105,12 @@ private fun GradeSettingsScreenContent(
     onSavePercentage: (grade: GradeSetting, newPercentage: String) -> Unit,
 ) {
     val visibleGrades = state.gradesSetting.filter { it.active || state.mode == Mode.ALL }
+    val scaffoldPadding = LocalScaffoldContentPadding.current
 
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .padding(bottom = 12.dp),
+            .padding(bottom = 12.dp + scaffoldPadding.calculateBottomPadding()),
     ) {
         MeadowSettingsGroup {
             state.gradesSetting.forEachIndexed { index, grade ->

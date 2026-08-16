@@ -30,6 +30,7 @@ import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.util.UrlOpener
 import com.hussienfahmy.core.util.truncate
+import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
 import com.hussienfahmy.core_ui.presentation.analytics.TrackScreenTime
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowRowDivider
@@ -90,13 +91,18 @@ fun MoreScreenContent(
     var showSignOutSheet by remember { mutableStateOf(false) }
     val githubRepoUrl = stringResource(Res.string.github_repo_url)
     val playStoreLink = stringResource(Res.string.play_store_link)
+    val scaffoldPadding = LocalScaffoldContentPadding.current
 
     MeadowAccentProvider(colors.more) {
         Column(
             modifier = modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 14.dp),
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 14.dp,
+                )
+                .padding(bottom = scaffoldPadding.calculateBottomPadding()),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             MeadowUserCard(

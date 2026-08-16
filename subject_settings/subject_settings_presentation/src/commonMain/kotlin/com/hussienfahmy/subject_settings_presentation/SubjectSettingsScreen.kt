@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
+import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
 import com.hussienfahmy.core_ui.presentation.util.toStringWithOptionalDecimals
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
@@ -114,7 +115,13 @@ fun SubjectsSettingsScreenContent(
         subjectsSettings.constantMarks.toStringWithOptionalDecimals()
     }
 
-    Column(modifier = modifier.padding(16.dp)) {
+    val scaffoldPadding = LocalScaffoldContentPadding.current
+
+    Column(
+        modifier = modifier
+            .padding(16.dp)
+            .padding(bottom = scaffoldPadding.calculateBottomPadding())
+    ) {
         MeadowCard(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(horizontal = 18.dp, vertical = 16.dp),

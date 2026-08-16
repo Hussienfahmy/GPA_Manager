@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.hussienfahmy.core.domain.user_data.model.UserData
+import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.core_ui.presentation.util.isLandscapeOrientation
@@ -94,6 +95,7 @@ private fun QuickScreenPortrait(
     onCalculate: (QuickCalculationRequest) -> Unit,
 ) {
     val spacing = LocalSpacing.current
+    val scaffoldPadding = LocalScaffoldContentPadding.current
 
     val inputsValid = !invalidCumulativeGPAInput && !invalidSemesterGPAInput &&
             !invalidCumulativeGPAAboveMax && !invalidSemesterGPAAboveMax &&
@@ -101,7 +103,12 @@ private fun QuickScreenPortrait(
 
     // Result first — the screen reads like an instrument (design 2c).
     // fillMaxSize keeps the same height as the loading state → no vertical jump.
-    Column(modifier = modifier.fillMaxSize().padding(spacing.small)) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(spacing.small)
+            .padding(bottom = scaffoldPadding.calculateBottomPadding())
+    ) {
         QuickResultCard(
             modifier = Modifier.fillMaxWidth(),
             cumulativeGPA = cumulativeGPA,
@@ -140,12 +147,17 @@ private fun QuickScreenLandscape(
     onCalculate: (QuickCalculationRequest) -> Unit,
 ) {
     val spacing = LocalSpacing.current
+    val scaffoldPadding = LocalScaffoldContentPadding.current
 
     val inputsValid = !invalidCumulativeGPAInput && !invalidSemesterGPAInput &&
             !invalidCumulativeGPAAboveMax && !invalidSemesterGPAAboveMax &&
             !invalidTotalHoursInput && !invalidSemesterHoursInput
 
-    Row(modifier = modifier.padding(spacing.small)) {
+    Row(
+        modifier = modifier
+            .padding(spacing.small)
+            .padding(bottom = scaffoldPadding.calculateBottomPadding())
+    ) {
         QuickResultCard(
             modifier = Modifier.weight(1f),
             cumulativeGPA = cumulativeGPA,

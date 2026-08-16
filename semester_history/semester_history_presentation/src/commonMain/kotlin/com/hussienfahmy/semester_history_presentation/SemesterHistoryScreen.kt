@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -37,6 +38,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -110,93 +114,100 @@ fun SemesterHistoryScreen(
     }
 
     MeadowAccentProvider(MeadowTheme.colors.history) {
-    if (showExportSheet) {
-        MeadowBottomSheet(onDismiss = { showExportSheet = false }) {
-            ExportReportSheetContent(
-                state = exportState,
-                onEvent = exportViewModel::onEvent,
-            )
-        }
-    }
-
-    if (showFinishDialog && state is SemesterHistoryState.Loaded) {
-        val loadedState = state as SemesterHistoryState.Loaded
-        FinishSemesterSheet(
-            currentLevel = loadedState.currentLevel,
-            currentSemesterNum = loadedState.currentSemesterNum,
-            onConfirm = {
-                showFinishDialog = false
-                viewModel.onEvent(SemesterHistoryEvent.FinishSemester)
-            },
-            onDismiss = { showFinishDialog = false },
-        )
-    }
-
-    if (showAddSheet) {
-        AddPastSemesterSheet(
-            onDismiss = { showAddSheet = false },
-            onAddSummary = { label, gpa, hours, level ->
-                viewModel.onEvent(
-                    SemesterHistoryEvent.AddSummarySemester(
-                        label = label,
-                        semesterGPA = gpa,
-                        totalCreditHours = hours,
-                        level = level,
-                    )
+        if (showExportSheet) {
+            MeadowBottomSheet(onDismiss = { showExportSheet = false }) {
+                ExportReportSheetContent(
+                    state = exportState,
+                    onEvent = exportViewModel::onEvent,
                 )
-            },
-            onAddDetailed = { label, level ->
-                viewModel.onEvent(
-                    SemesterHistoryEvent.AddDetailedSemester(
-                        label = label,
-                        level = level,
-                    )
-                )
-            },
-        )
-    }
-
-    editingSemester?.let { semester ->
-        EditSemesterSheet(
-            semester = semester,
-            onDismiss = { editingSemester = null },
-            onSaveLabel = { id, label ->
-                viewModel.onEvent(SemesterHistoryEvent.EditSemesterLabel(id, label))
-            },
-            onSaveSummary = { id, label, gpa, hours ->
-                viewModel.onEvent(SemesterHistoryEvent.EditSummarySemester(id, label, gpa, hours))
-            },
-        )
-    }
-
-    when (state) {
-        is SemesterHistoryState.Loading -> Box(modifier = modifier.fillMaxSize()) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
         }
 
-        is SemesterHistoryState.Loaded -> {
+        if (showFinishDialog && state is SemesterHistoryState.Loaded) {
             val loadedState = state as SemesterHistoryState.Loaded
-            SemesterHistoryContent(
-                modifier = modifier,
-                state = loadedState,
-                onFinishSemesterClick = {
-                    if (loadedState.hasWorkspaceSubjects) {
-                        showFinishDialog = true
-                    } else {
-                        scope.launch { snackBarHostState.showSnackbar(addSubjectsFirstMsg) }
-                    }
+            FinishSemesterSheet(
+                currentLevel = loadedState.currentLevel,
+                currentSemesterNum = loadedState.currentSemesterNum,
+                onConfirm = {
+                    showFinishDialog = false
+                    viewModel.onEvent(SemesterHistoryEvent.FinishSemester)
                 },
-                onAddPastSemesterClick = { showAddSheet = true },
-                onSemesterClick = onSemesterClick,
-                onEditClick = { editingSemester = it },
-                onDeleteClick = { viewModel.onEvent(SemesterHistoryEvent.DeleteSemester(it)) },
-                onMoveUp = { viewModel.onEvent(SemesterHistoryEvent.MoveSemesterUp(it)) },
-                onMoveDown = { viewModel.onEvent(SemesterHistoryEvent.MoveSemesterDown(it)) },
-                isExporting = exportState.isExporting,
-                onExportClick = { showExportSheet = true },
+                onDismiss = { showFinishDialog = false },
             )
         }
-    }
+
+        if (showAddSheet) {
+            AddPastSemesterSheet(
+                onDismiss = { showAddSheet = false },
+                onAddSummary = { label, gpa, hours, level ->
+                    viewModel.onEvent(
+                        SemesterHistoryEvent.AddSummarySemester(
+                            label = label,
+                            semesterGPA = gpa,
+                            totalCreditHours = hours,
+                            level = level,
+                        )
+                    )
+                },
+                onAddDetailed = { label, level ->
+                    viewModel.onEvent(
+                        SemesterHistoryEvent.AddDetailedSemester(
+                            label = label,
+                            level = level,
+                        )
+                    )
+                },
+            )
+        }
+
+        editingSemester?.let { semester ->
+            EditSemesterSheet(
+                semester = semester,
+                onDismiss = { editingSemester = null },
+                onSaveLabel = { id, label ->
+                    viewModel.onEvent(SemesterHistoryEvent.EditSemesterLabel(id, label))
+                },
+                onSaveSummary = { id, label, gpa, hours ->
+                    viewModel.onEvent(
+                        SemesterHistoryEvent.EditSummarySemester(
+                            id,
+                            label,
+                            gpa,
+                            hours
+                        )
+                    )
+                },
+            )
+        }
+
+        when (state) {
+            is SemesterHistoryState.Loading -> Box(modifier = modifier.fillMaxSize()) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+
+            is SemesterHistoryState.Loaded -> {
+                val loadedState = state as SemesterHistoryState.Loaded
+                SemesterHistoryContent(
+                    modifier = modifier,
+                    state = loadedState,
+                    onFinishSemesterClick = {
+                        if (loadedState.hasWorkspaceSubjects) {
+                            showFinishDialog = true
+                        } else {
+                            scope.launch { snackBarHostState.showSnackbar(addSubjectsFirstMsg) }
+                        }
+                    },
+                    onAddPastSemesterClick = { showAddSheet = true },
+                    onSemesterClick = onSemesterClick,
+                    onEditClick = { editingSemester = it },
+                    onDeleteClick = { viewModel.onEvent(SemesterHistoryEvent.DeleteSemester(it)) },
+                    onMoveUp = { viewModel.onEvent(SemesterHistoryEvent.MoveSemesterUp(it)) },
+                    onMoveDown = { viewModel.onEvent(SemesterHistoryEvent.MoveSemesterDown(it)) },
+                    isExporting = exportState.isExporting,
+                    onExportClick = { showExportSheet = true },
+                )
+            }
+        }
     }
 }
 
@@ -215,6 +226,9 @@ fun SemesterHistoryContent(
     onExportClick: () -> Unit,
 ) {
     val spacing = LocalSpacing.current
+    val scaffoldPadding = LocalScaffoldContentPadding.current
+    val density = LocalDensity.current
+    var fabHeight by remember { mutableStateOf(0.dp) }
 
     val colors = MeadowTheme.colors
     val accent = MeadowTheme.accent
@@ -226,7 +240,14 @@ fun SemesterHistoryContent(
         floatingActionButton = {
             // Design 2b FABs: primary "✓ Finish semester" pill + square "+",
             // both end-aligned to the trailing edge.
-            Column(horizontalAlignment = Alignment.End) {
+            Column(
+                horizontalAlignment = Alignment.End,
+                modifier = Modifier
+                    .padding(bottom = scaffoldPadding.calculateBottomPadding())
+                    .onSizeChanged {
+                        fabHeight = with(density) { it.height.toDp() }
+                    }
+            ) {
                 PillButton(
                     text = "✓ ${stringResource(Res.string.history_finish_semester)}",
                     onClick = onFinishSemesterClick,
@@ -265,7 +286,10 @@ fun SemesterHistoryContent(
                 .padding(horizontal = spacing.small),
             verticalArrangement = Arrangement.spacedBy(11.dp),
             // Clear the stacked Finish + Add FABs so they never cover a card.
-            contentPadding = PaddingValues(top = spacing.small, bottom = 128.dp),
+            contentPadding = PaddingValues(
+                top = spacing.small,
+                bottom = spacing.small + fabHeight + scaffoldPadding.calculateBottomPadding(),
+            ),
         ) {
             item {
                 CumulativeGpaCard(

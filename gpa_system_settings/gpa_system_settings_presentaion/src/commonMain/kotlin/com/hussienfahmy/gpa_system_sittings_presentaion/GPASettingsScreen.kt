@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.domain.gpa_settings.model.GPA
+import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
 import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
 import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.gpa_system_sittings_presentaion.components.GPASystemItem
@@ -50,7 +51,13 @@ fun GPASettingsContent(
     gpa: GPA,
     onGPASystemChanged: (GPA.System) -> Unit
 ) {
-    Column(modifier.padding(16.dp)) {
+    val scaffoldPadding = LocalScaffoldContentPadding.current
+
+    Column(
+        modifier
+            .padding(16.dp)
+            .padding(bottom = scaffoldPadding.calculateBottomPadding())
+    ) {
         GPASystemItem(
             currentGPASystem = gpa.system,
             onGPASystemChanged = onGPASystemChanged,

@@ -25,6 +25,7 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.generated.resources.*
+import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.AddSubjectsHint
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
@@ -140,6 +141,7 @@ fun SemesterMarksScreenContent(
     onProjectAvailabilityCheckChanges: (subjectId: Long, newAvailability: Boolean) -> Unit,
 ) {
     val spacing = LocalSpacing.current
+    val scaffoldPadding = LocalScaffoldContentPadding.current
 
     // Expansion owned here so the toolbar always reflects real state.
     // Seed with the first subject expanded (the ladder hint).
@@ -173,7 +175,7 @@ fun SemesterMarksScreenContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = spacing.small),
-                contentPadding = PaddingValues(bottom = spacing.small)
+                contentPadding = PaddingValues(bottom = spacing.small + scaffoldPadding.calculateBottomPadding())
             ) {
                 itemsIndexed(subjects, key = { _, subject -> subject.id }) { index, subject ->
                     SemesterMarksItem(

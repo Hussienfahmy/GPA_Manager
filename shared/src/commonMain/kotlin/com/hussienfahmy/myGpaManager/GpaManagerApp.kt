@@ -2,12 +2,15 @@ package com.hussienfahmy.myGpaManager
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -16,11 +19,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.hussienfahmy.core_ui.Dimensions
+import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingProgressIndicator
@@ -109,24 +115,31 @@ fun GpaManagerApp() {
                 }
             },
         ) { paddingValues ->
-            val contentModifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+            // Only the top inset is applied to the container here (status bar clearance, uniform
+            // for every screen) - the bottom inset is deliberately not, since that would push
+            // content entirely above AppBottomNav instead of letting it draw behind the bar.
+            // Screens read the full paddingValues via LocalScaffoldContentPadding and merge the
+            // bottom component into their own scrollable's contentPadding instead.
+            CompositionLocalProvider(LocalScaffoldContentPadding provides paddingValues) {
+                val contentModifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = paddingValues.calculateTopPadding())
 
-            if (showOnboarding) {
-                OnboardingContent(
-                    modifier = contentModifier,
-                    spacing = spacing,
-                    onboardingBackStack = onboardingBackStack,
-                    snackBarHostState = snackBarHostState,
-                    onOnboardingComplete = { showOnboarding = false },
-                )
-            } else {
-                MainAppContent(
-                    modifier = contentModifier,
-                    appNavigationState = appNavigationState,
-                    snackBarHostState = snackBarHostState,
-                )
+                if (showOnboarding) {
+                    OnboardingContent(
+                        modifier = contentModifier,
+                        spacing = spacing,
+                        onboardingBackStack = onboardingBackStack,
+                        snackBarHostState = snackBarHostState,
+                        onOnboardingComplete = { showOnboarding = false },
+                    )
+                } else {
+                    MainAppContent(
+                        modifier = contentModifier,
+                        appNavigationState = appNavigationState,
+                        snackBarHostState = snackBarHostState,
+                    )
+                }
             }
         }
     }

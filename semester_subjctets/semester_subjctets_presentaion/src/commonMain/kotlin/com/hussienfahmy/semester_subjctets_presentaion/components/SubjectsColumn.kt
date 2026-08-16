@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.data.local.model.GradeName
+import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
 import com.hussienfahmy.core_ui.presentation.components.meadow.CardAction
 import com.hussienfahmy.core_ui.presentation.components.meadow.CardActionStyle
 import com.hussienfahmy.core_ui.presentation.components.meadow.GradePill
@@ -58,10 +59,12 @@ fun SubjectsColumn(
     mode: Mode,
     modifier: Modifier = Modifier
 ) {
+    val scaffoldPadding = LocalScaffoldContentPadding.current
+
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(11.dp),
-        contentPadding = PaddingValues(bottom = 8.dp),
+        contentPadding = PaddingValues(bottom = 8.dp + scaffoldPadding.calculateBottomPadding()),
     ) {
         items(items = subjects, key = { it.id }) { subject ->
             SubjectCard(

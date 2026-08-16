@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.util.truncate
+import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
 import com.hussienfahmy.core_ui.presentation.components.ExpandableTextField
 import com.hussienfahmy.core_ui.presentation.components.meadow.CapsLabel
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
@@ -46,6 +47,7 @@ fun UserDataScreenContent(
 ) {
     val colors = MeadowTheme.colors
     val userData = state.userData
+    val scaffoldPadding = LocalScaffoldContentPadding.current
 
     // Profile is reached from the More hub — wear its slate accent.
     MeadowAccentProvider(colors.more) {
@@ -53,7 +55,11 @@ fun UserDataScreenContent(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = modifier
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 14.dp)
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 14.dp,
+                )
+                .padding(bottom = scaffoldPadding.calculateBottomPadding())
         ) {
             PersonalInfoSection(
                 name = userData.name,
