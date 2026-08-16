@@ -1,19 +1,16 @@
-package com.hussienfahmy.myGpaManager.data.auth
+package com.hussienfahmy.core.domain.auth
 
 import android.app.Activity
 import android.util.Log
-import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.Credential
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
-import androidx.lifecycle.DefaultLifecycleObserver
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.auth.repository.AuthResult
 import com.hussienfahmy.core.domain.crash.CrashReporter
-import kotlinx.coroutines.flow.StateFlow
 import java.util.concurrent.CancellationException
 
 private const val TAG = "GoogleAuthUiClient"
@@ -22,11 +19,8 @@ class GoogleAuthUiClient(
     private val credentialManager: CredentialManager,
     private val authRepository: AuthRepository,
     private val crashReporter: CrashReporter
-) : DefaultLifecycleObserver {
-
-    val isSignedInFlow: StateFlow<Boolean?> = authRepository.isSignedInFlow
-
-    suspend fun signIn(activity: Activity): SignInResult? {
+) {
+    suspend fun signIn(activity: Activity): AuthResult? {
         return try {
             val result = credentialManager.getCredential(
                 request = request,
@@ -41,41 +35,13 @@ class GoogleAuthUiClient(
         }
     }
 
-    private suspend fun handleSignIn(credential: Credential): SignInResult? {
+    private suspend fun handleSignIn(credential: Credential): AuthResult? {
         return if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
             val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
-
-            signInWithCredential(googleIdTokenCredential.idToken)
+            authRepository.signInWithCredential(googleIdTokenCredential.idToken)
         } else {
             Log.w(TAG, "Credential is not of type Google ID!")
             null
-        }
-    }
-
-    suspend fun signInWithCredential(idToken: String): SignInResult {
-        return when (val result = authRepository.signInWithCredential(idToken)) {
-            is AuthResult.Success -> SignInResult.Success(
-                FirebaseUserData(
-                    id = result.userData.id,
-                    name = result.userData.name,
-                    photoUrl = result.userData.photoUrl,
-                    email = result.userData.email,
-                )
-            )
-
-            is AuthResult.Error -> SignInResult.Error(result.message)
-        }
-    }
-
-    suspend fun signOut() {
-        try {
-            authRepository.signOut()
-            val clearRequest = ClearCredentialStateRequest()
-            credentialManager.clearCredentialState(clearRequest)
-        } catch (e: Exception) {
-            Log.e(TAG, "signOut: ", e)
-            if (e is CancellationException) throw e
-            crashReporter.recordException(e, mapOf("operation" to "signOut"))
         }
     }
 
@@ -91,15 +57,3 @@ class GoogleAuthUiClient(
             .addCredentialOption(googleIdOption)
             .build()
 }
-
-sealed interface SignInResult {
-    data class Success(val userData: FirebaseUserData) : SignInResult
-    data class Error(val message: String) : SignInResult
-}
-
-data class FirebaseUserData(
-    val id: String,
-    val name: String,
-    val photoUrl: String,
-    val email: String,
-)

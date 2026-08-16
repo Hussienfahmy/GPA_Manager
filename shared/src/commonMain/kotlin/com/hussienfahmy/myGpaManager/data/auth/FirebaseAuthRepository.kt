@@ -1,5 +1,6 @@
 package com.hussienfahmy.myGpaManager.data.auth
 
+import com.hussienfahmy.core.domain.auth.PlatformCredentialCleanup
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.auth.repository.AuthResult
 import com.hussienfahmy.core.domain.auth.repository.AuthUserData
@@ -17,7 +18,8 @@ import kotlinx.coroutines.flow.stateIn
 class FirebaseAuthRepository(
     private val auth: FirebaseAuth,
     scope: CoroutineScope,
-    private val crashReporter: CrashReporter
+    private val crashReporter: CrashReporter,
+    private val platformCredentialCleanup: PlatformCredentialCleanup,
 ) : AuthRepository {
 
     // GitLive's authStateChanged Flow replaces the manual addAuthStateListener/callbackFlow
@@ -61,6 +63,7 @@ class FirebaseAuthRepository(
 
     override suspend fun signOut() {
         auth.signOut()
+        platformCredentialCleanup.clear()
         while (userId.value != null) {
             delay(100)
         }

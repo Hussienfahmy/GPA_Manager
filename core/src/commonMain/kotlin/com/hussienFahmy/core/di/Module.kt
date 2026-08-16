@@ -1,5 +1,6 @@
 package com.hussienfahmy.core.di
 
+import com.hussienfahmy.core.domain.auth.PlatformCredentialCleanup
 import com.hussienfahmy.core.domain.report.PdfReportPrinter
 import com.hussienfahmy.core.domain.report.ReportBrandingProvider
 import com.hussienfahmy.core.domain.report.ReportTemplateRegistry
@@ -30,6 +31,7 @@ val coreModule = module {
     singleOf(::ReportBrandingProvider)
     singleOf(::PdfReportPrinter)
     singleOf(::UrlOpener)
+    singleOf(::PlatformCredentialCleanup)
 
     single {
         ReportTemplateRegistry(

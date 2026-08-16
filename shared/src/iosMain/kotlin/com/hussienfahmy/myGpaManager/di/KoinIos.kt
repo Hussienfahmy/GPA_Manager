@@ -1,7 +1,6 @@
 package com.hussienfahmy.myGpaManager.di
 
 import com.hussienfahmy.core.domain.auth.service.AppleSignIn
-import com.hussienfahmy.core.domain.auth.service.AuthService
 import com.hussienfahmy.core.domain.auth.service.EmailPasswordSignIn
 import com.hussienfahmy.core.util.PlatformContext
 import com.hussienfahmy.core_ui.presentation.util.initCoilImageLoader
@@ -16,11 +15,9 @@ import org.koin.mp.KoinPlatform
 import platform.Foundation.NSNotificationCenter
 import platform.UIKit.UIApplicationDidEnterBackgroundNotification
 
-// IosAuthService replaces firebaseModule's Android-only Google Sign-In binding.
 actual fun platformModules(context: PlatformContext): List<Module> = listOf(
     module {
         single { context }
-        single<AuthService> { IosAuthService(get()) }
         singleOf(::AppleSignIn)
         // Temporary, see EmailPasswordSignIn.kt - remove once Sign in with Apple is wired
         // back in as onboarding's "Get Started" action.

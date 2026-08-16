@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.hussienfahmy.core.domain.auth.service.AuthSignIn
+import com.hussienfahmy.core.domain.auth.GoogleAuthUiClient
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
@@ -36,7 +36,7 @@ actual fun OnBoardingScreen(
     viewModel: SignInViewModel,
     onSignInSuccess: () -> Unit,
 ) {
-    val authSignIn = koinInject<AuthSignIn>()
+    val authSignIn = koinInject<GoogleAuthUiClient>()
     val scope = rememberCoroutineScope()
     val spacing = LocalSpacing.current
     val context = LocalContext.current

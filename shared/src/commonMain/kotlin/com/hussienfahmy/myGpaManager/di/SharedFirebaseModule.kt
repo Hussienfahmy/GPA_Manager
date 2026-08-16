@@ -21,12 +21,8 @@ import org.koin.dsl.module
 
 // GitLive Firebase singletons + repository implementations - genuinely cross-platform (no
 // Android calls at all), just physically sitting in :app's Android-only source set until this
-// module was extracted. The Android-only pieces (CredentialManager, GoogleAuthUiClient,
-// GoogleAuthService, and the AuthService/AuthSignIn bindings) now live in :shared's own
-// androidMain platformModules() (see di/Koin.android.kt), since they need androidx.credentials,
-// which this commonMain module doesn't otherwise depend on. iOS gets its own AuthService binding
-// (see KoinIos.kt) since Sign in with Apple's shape differs from Android's
-// CredentialManager-based flow.
+// module was extracted. CredentialManager/GoogleAuthUiClient now live in :core's androidMain
+// (see di/Koin.android.kt for the CredentialManager/GoogleAuthUiClient registration).
 val sharedFirebaseModule = module {
     // Dropped the Firestore persistent-cache-size customization (previously
     // CACHE_SIZE_UNLIMITED) since GitLive's settings API differs; defaults still provide offline
@@ -43,7 +39,7 @@ val sharedFirebaseModule = module {
     single<GitLiveFirebaseStorage> { GitLiveFirebase.gitLiveStorage }
 
     single<AuthRepository> {
-        FirebaseAuthRepository(get(), get(), get())
+        FirebaseAuthRepository(get(), get(), get(), get())
     }
 
     single<StorageRepository> {

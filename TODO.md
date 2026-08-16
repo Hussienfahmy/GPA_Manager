@@ -1,7 +1,6 @@
 # TODO
 
 - When enabling sign in with apple id, make the onboarding screen in common main not expect actual.
-- Auth Flow on android and ios needs a refactor to not using interfaces and using expect actual AFTER moving shared code to common, we have many ridiculous interfaces. 
 - Light mode: Shadow on the subject cards in semester screen has cut off on the bottom. Also in Marks screen items too., history is fine.
 - App profiler: precompile in semester_marks before publishing.
 - Use navigation Suit to have navigation ars in different screen sizes. use standard.

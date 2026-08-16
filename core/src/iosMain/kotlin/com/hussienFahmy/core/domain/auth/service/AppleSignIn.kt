@@ -1,5 +1,7 @@
 package com.hussienfahmy.core.domain.auth.service
 
+import com.hussienfahmy.core.domain.auth.repository.AuthResult
+import com.hussienfahmy.core.domain.auth.repository.AuthUserData
 import com.hussienfahmy.core.domain.crash.CrashReporter
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.OAuthProvider
@@ -58,7 +60,7 @@ class AppleSignIn(
     private var activeDelegate: NSObject? = null
     private var activePresentationContextProvider: NSObject? = null
 
-    suspend fun signIn(): AuthServiceResult? = suspendCancellableCoroutine { continuation ->
+    suspend fun signIn(): AuthResult? = suspendCancellableCoroutine { continuation ->
         val request = ASAuthorizationAppleIDProvider().createRequest().apply {
             requestedScopes = listOf(ASAuthorizationScopeFullName, ASAuthorizationScopeEmail)
         }
@@ -100,7 +102,7 @@ class AppleSignIn(
         private val rawNonce: String,
         private val scope: CoroutineScope,
         private val crashReporter: CrashReporter,
-        private val onResult: (AuthServiceResult?) -> Unit,
+        private val onResult: (AuthResult?) -> Unit,
     ) : NSObject(), ASAuthorizationControllerDelegateProtocol {
 
         @OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
@@ -113,7 +115,7 @@ class AppleSignIn(
             val idTokenData = credential?.identityToken
             val idToken = idTokenData?.let { NSString.create(it, NSUTF8StringEncoding)?.toString() }
             if (credential == null || idToken == null) {
-                onResult(AuthServiceResult.Error("Unable to read Apple identity token"))
+                onResult(AuthResult.Error("Unable to read Apple identity token"))
                 return
             }
 
@@ -126,7 +128,7 @@ class AppleSignIn(
                     )
                     val user = Firebase.auth.signInWithCredential(firebaseCredential).user
                     if (user == null) {
-                        onResult(AuthServiceResult.Error("Firebase sign-in returned no user"))
+                        onResult(AuthResult.Error("Firebase sign-in returned no user"))
                     } else {
                         // Apple only ever sends fullName on the very first authorization for a
                         // given app - it's absent on every subsequent sign-in, hence the fallback
@@ -136,8 +138,8 @@ class AppleSignIn(
                         }?.takeIf { it.isNotBlank() }
 
                         onResult(
-                            AuthServiceResult.Success(
-                                AuthServiceUserData(
+                            AuthResult.Success(
+                                AuthUserData(
                                     id = user.uid,
                                     name = appleFullName ?: (user.displayName ?: ""),
                                     photoUrl = user.photoURL ?: "",
@@ -148,7 +150,7 @@ class AppleSignIn(
                     }
                 } catch (e: Exception) {
                     crashReporter.recordException(e, mapOf("operation" to "appleSignIn"))
-                    onResult(AuthServiceResult.Error(e.message ?: "Unknown error"))
+                    onResult(AuthResult.Error(e.message ?: "Unknown error"))
                 }
             }
         }
@@ -157,7 +159,7 @@ class AppleSignIn(
             controller: ASAuthorizationController,
             didCompleteWithError: NSError,
         ) {
-            onResult(AuthServiceResult.Error(didCompleteWithError.localizedDescription))
+            onResult(AuthResult.Error(didCompleteWithError.localizedDescription))
         }
     }
 

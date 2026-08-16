@@ -3,7 +3,7 @@ package com.hussienfahmy.onboarding_presentation.sign_in
 import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import com.hussienfahmy.core.domain.analytics.UserPropertyValues
-import com.hussienfahmy.core.domain.auth.service.AuthServiceResult
+import com.hussienfahmy.core.domain.auth.repository.AuthResult
 import com.hussienfahmy.core.domain.sync.SyncDownload
 import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienfahmy.core.model.UiText.DynamicString
@@ -27,7 +27,7 @@ class SignInViewModel(
         when (event) {
             is AuthEvent.OnSignInResult -> {
                 when (val signInResult = event.signInResult) {
-                    is AuthServiceResult.Success -> {
+                    is AuthResult.Success -> {
                         viewModelScope.launch {
                             val isUserExists = userDataRepository.isUserExists()
                             if (!isUserExists) {
@@ -66,7 +66,7 @@ class SignInViewModel(
                         _uiEvent.send(
                             ShowSnackBar(
                                 DynamicString(
-                                    (event.signInResult as? AuthServiceResult.Error)?.message
+                                    (event.signInResult as? AuthResult.Error)?.message
                                         ?: "Unknown error"
                                 )
                             )

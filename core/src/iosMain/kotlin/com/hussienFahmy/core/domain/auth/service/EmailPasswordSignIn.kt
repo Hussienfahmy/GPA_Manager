@@ -1,5 +1,7 @@
 package com.hussienfahmy.core.domain.auth.service
 
+import com.hussienfahmy.core.domain.auth.repository.AuthResult
+import com.hussienfahmy.core.domain.auth.repository.AuthUserData
 import com.hussienfahmy.core.domain.crash.CrashReporter
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.FirebaseUser
@@ -12,12 +14,12 @@ import dev.gitlive.firebase.auth.auth
 class EmailPasswordSignIn(
     private val crashReporter: CrashReporter
 ) {
-    suspend fun signIn(email: String, password: String): AuthServiceResult {
+    suspend fun signIn(email: String, password: String): AuthResult {
         return try {
             signInOrCreateAccount(email, password).toResult()
         } catch (e: Exception) {
             crashReporter.recordException(e, mapOf("operation" to "emailPasswordSignIn"))
-            AuthServiceResult.Error(e.message ?: "Unknown error")
+            AuthResult.Error(e.message ?: "Unknown error")
         }
     }
 
@@ -36,8 +38,8 @@ class EmailPasswordSignIn(
             ?: error("Firebase returned no user")
     }
 
-    private fun FirebaseUser.toResult() = AuthServiceResult.Success(
-        AuthServiceUserData(
+    private fun FirebaseUser.toResult() = AuthResult.Success(
+        AuthUserData(
             id = uid,
             name = displayName ?: "",
             photoUrl = photoURL ?: "",
