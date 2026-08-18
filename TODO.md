@@ -1,6 +1,5 @@
 # TODO
 
-- Use native FAB?
 - Native back buttons in sub screens.
 
 ## iOS parity gaps
@@ -12,7 +11,7 @@
 ## Enhancements
 - Add subject in history semester detail, the grades flow row doesn't have vertical spacing.
 - History item, put the tag next to the title. leaving the line for gpa and hours.
-- Finish semester, and + icon in history can be options on top or think of a better place.
+- Finish semester, and + icon in history can be options on top or think of a better place. we can replace all fabs for that.
 - Use navigation Suit to have navigation ars in different screen sizes. use standard.
 
 ## Before Publishing Android
