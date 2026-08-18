@@ -90,10 +90,8 @@
     <string name="number_must_be_more_than_zero">هذا الرقم يجب أن يساوي صفرا(0) او اكثر</string>
     <string name="ok">حسنا</string>
     <string name="Percentage">النسبة المئوية</string>
-    <string name="percentage_value">"النسبة المئوية\n%.2f "</string>
     <string name="please_enter_value">الرجاء إدخال قيمة</string>
     <string name="points">النقاط</string>
-    <string name="points_value">"النقاط\n%.2f "</string>
     <string name="predict_grade">احسب التقدير</string>
     <string name="private_email">خاص</string>
     <string name="quick">سريع</string>
@@ -271,9 +269,9 @@
     <string name="history_finish_semester_title">إنهاء الفصل الدراسي الحالي؟</string>
     <string name="history_finish_semester_will_be_saved">سيتم الحفظ كـ: \"%1$s\"</string>
     <string name="history_finish_semester_message">سيتم أرشفة موادك وتقديراتها من الفصل الحالي كما هي. تأكد من مراجعة وتقديد التقديرات الصحيحة قبل المتابعة - لا يزال يمكنك تعديلها لاحقاً من السجل.\n\nسينقلك هذا إلى السنة %1$d – الفصل %2$d.</string>
-    <string name="history_gpa_value">المعدل: %1$.3f</string>
+    <string name="history_gpa_value">المعدل: %1$s</string>
     <string name="history_hours_value">· %1$d ساعة</string>
-    <string name="history_points_value">النقاط: %1$.2f</string>
+    <string name="history_points_value">النقاط: %1$s</string>
     <string name="history_move_up">تحريك لأعلى</string>
     <string name="history_move_down">تحريك لأسفل</string>
     <string name="history_add_subjects">إضافة مواد</string>

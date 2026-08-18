@@ -81,10 +81,8 @@
     <string name="number_must_be_more_than_zero">"This number must be more than or equal zero(0) "</string>
     <string name="ok">OK</string>
     <string name="Percentage">Percentage</string>
-    <string name="percentage_value">Percentage\n%.2f</string>
     <string name="please_enter_value">Please Enter Value</string>
     <string name="points">Points</string>
-    <string name="points_value">Points\n%.2f</string>
     <string name="predict_grade">Calculate Grade</string>
     <string name="private_email">Private</string>
     <string name="quick">Quick</string>
@@ -258,9 +256,9 @@
     <string name="history_finish_semester_title">Finish Current Semester?</string>
     <string name="history_finish_semester_will_be_saved">Will be saved as: “%1$s”</string>
     <string name="history_finish_semester_message">Your subjects and their assigned grades from the Semester tab will be archived as-is. Make sure you've reviewed and set the correct grades before continuing — you can still edit them later from History.\n\nThis will move you to Year %1$d – Semester %2$d.</string>
-    <string name="history_gpa_value">GPA: %1$.3f</string>
+    <string name="history_gpa_value">GPA: %1$s</string>
     <string name="history_hours_value">· %1$d hrs</string>
-    <string name="history_points_value">Points: %1$.2f</string>
+    <string name="history_points_value">Points: %1$s</string>
     <string name="history_move_up">Move up</string>
     <string name="history_move_down">Move down</string>
     <string name="history_add_subjects">Add subjects</string>

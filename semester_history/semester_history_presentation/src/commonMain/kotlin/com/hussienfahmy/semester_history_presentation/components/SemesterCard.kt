@@ -37,7 +37,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hussienfahmy.core.generated.resources.*
+import com.hussienfahmy.core.util.toFixedString
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
+import com.hussienfahmy.core_ui.presentation.components.meadow.asGpa
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChip
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowChipStyle
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowConfirmationSheet
@@ -172,7 +174,7 @@ fun SemesterCard(
                         MeadowChip(text = stringResource(Res.string.history_type_summary))
                     }
                     Text(
-                        text = stringResource(Res.string.history_gpa_value, semester.semesterGPA),
+                        text = stringResource(Res.string.history_gpa_value, semester.semesterGPA.asGpa()),
                         style = MaterialTheme.typography.labelMedium.copy(fontSize = 12.sp),
                         color = accent.accent,
                     )
@@ -182,7 +184,7 @@ fun SemesterCard(
                         } · ${
                             stringResource(
                                 Res.string.history_points_value,
-                                semester.semesterGPA * semester.totalCreditHours,
+                                (semester.semesterGPA * semester.totalCreditHours).toFixedString(2),
                             )
                         }",
                         style = MaterialTheme.typography.bodySmall,

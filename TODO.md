@@ -1,6 +1,5 @@
 # TODO
 
-- GPA: %1$.3f doesn't display formatted, it display exactly as it is, i think there is no float?
 - Contribute to the app, did u find the app useful both links not open in ios.
 - Use native FAB?
 - Native back buttons in sub screens.
