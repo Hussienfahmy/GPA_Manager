@@ -1,6 +1,5 @@
 # TODO
 
-- Contribute to the app, did u find the app useful both links not open in ios.
 - Use native FAB?
 - Native back buttons in sub screens.
 
@@ -8,6 +7,7 @@
 
 - Push notifications — `GPAFirebaseMessagingService` (FCM). Android-only, no APNs wiring on iOS at all.
 - When enabling sign in with apple id, make the onboarding screen in common main not expect actual.
+- Fill in storeRatingUrl() for iOS once the app is on the App Store.
 
 ## Enhancements
 - Add subject in history semester detail, the grades flow row doesn't have vertical spacing.

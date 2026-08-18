@@ -29,6 +29,7 @@ import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.util.UrlOpener
+import com.hussienfahmy.core.util.storeRatingUrl
 import com.hussienfahmy.core.util.truncate
 import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
 import com.hussienfahmy.core_ui.presentation.analytics.TrackScreenTime
@@ -90,7 +91,7 @@ fun MoreScreenContent(
     val urlOpener = koinInject<UrlOpener>()
     var showSignOutSheet by remember { mutableStateOf(false) }
     val githubRepoUrl = stringResource(Res.string.github_repo_url)
-    val playStoreLink = stringResource(Res.string.play_store_link)
+    val ratingUrl = storeRatingUrl()
     val scaffoldPadding = LocalScaffoldContentPadding.current
 
     MeadowAccentProvider(colors.more) {
@@ -174,7 +175,7 @@ fun MoreScreenContent(
                     trailing = SettingsRowTrailing.External,
                     onClick = {
                         onAppRatingClick()
-                        urlOpener.open(playStoreLink)
+                        ratingUrl?.let { urlOpener.open(it) }
                     },
                 )
             }

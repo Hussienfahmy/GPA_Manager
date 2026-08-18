@@ -114,7 +114,6 @@
     <string name="connect_with_us">Connect with us</string>
     <string name="facebook_page">facebook page</string>
     <string name="like_us_on_facebook">Like us on Facebook</string>
-    <string name="play_store_link" translatable="false">https://play.google.com/store/apps/details?id=com.hussienFahmy.myGpaManager</string>
     <string name="app_logo_description">app logo</string>
     <string name="contact_us">Contact us</string>
     <string name="gpa_manager_email" translatable="false">gpa-manager@h-fahmy.com</string>

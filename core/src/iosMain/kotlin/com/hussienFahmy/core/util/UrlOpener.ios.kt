@@ -6,6 +6,10 @@ import platform.UIKit.UIApplication
 actual class UrlOpener actual constructor(context: PlatformContext) {
     actual fun open(url: String) {
         val nsUrl = NSURL.URLWithString(url) ?: return
-        UIApplication.sharedApplication.openURL(nsUrl)
+        UIApplication.sharedApplication.openURL(
+            url = nsUrl,
+            options = emptyMap<Any?, Any?>(),
+            completionHandler = null,
+        )
     }
 }
