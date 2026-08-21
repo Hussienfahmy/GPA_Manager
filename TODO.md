@@ -9,7 +9,6 @@
 - Fill in storeRatingUrl() for iOS once the app is on the App Store.
 
 ## Enhancements
-- History item, put the tag next to the title. leaving the line for gpa and hours.
 - Finish semester, and + icon in history can be options on top or think of a better place. we can replace all fabs for that.
 - Use navigation Suit to have navigation ars in different screen sizes. use standard.
 
