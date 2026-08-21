@@ -16,3 +16,6 @@
 
 ## Before Publishing Android
 - App profiler: precompile in semester_marks before publishing.
+
+## Bugs
+- Can't add a subject with 0 Hours

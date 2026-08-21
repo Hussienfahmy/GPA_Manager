@@ -37,7 +37,7 @@ class SemesterHistoryViewModel(
     SemesterHistoryState.Loading
 }) {
 
-    private val _navigateToDetail = Channel<Long>()
+    private val _navigateToDetail = Channel<Pair<Long, String>>()
     val navigateToDetail = _navigateToDetail.receiveAsFlow()
 
     init {
@@ -101,7 +101,7 @@ class SemesterHistoryViewModel(
                                 level = event.level,
                             )
                         )
-                        _navigateToDetail.send(semesterId)
+                        _navigateToDetail.send(semesterId to event.label)
                     }
 
                     is SemesterHistoryEvent.EditSemesterLabel -> {

@@ -22,7 +22,7 @@ private fun exportTimestamp(): String {
 @Composable
 fun AppSemesterHistoryScreen(
     snackBarHostState: SnackbarHostState,
-    onSemesterClick: (Long) -> Unit,
+    onSemesterClick: (semesterId: Long, label: String) -> Unit,
 ) {
     val pdfReportPrinter = koinInject<PdfReportPrinter>()
 

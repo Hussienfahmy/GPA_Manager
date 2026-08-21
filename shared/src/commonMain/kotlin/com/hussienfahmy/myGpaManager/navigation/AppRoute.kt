@@ -23,7 +23,7 @@ sealed interface AppRoute : NavKey {
     data object SemesterHistory : AppRoute
 
     @Serializable
-    data class SemesterDetail(val semesterId: Long) : AppRoute
+    data class SemesterDetail(val semesterId: Long, val semesterLabel: String) : AppRoute
 
     @Serializable
     data object Quick : AppRoute

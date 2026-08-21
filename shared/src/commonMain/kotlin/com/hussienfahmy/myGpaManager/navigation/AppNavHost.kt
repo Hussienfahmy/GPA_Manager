@@ -34,8 +34,8 @@ fun AppNavHost(
                 entry<AppRoute.SemesterHistory>(metadata = fadeTransitionMetadata) {
                     AppSemesterHistoryScreen(
                         snackBarHostState = snackBarHostState,
-                        onSemesterClick = { semesterId ->
-                            appNavigationState.navigate(AppRoute.SemesterDetail(semesterId))
+                        onSemesterClick = { semesterId, label ->
+                            appNavigationState.navigate(AppRoute.SemesterDetail(semesterId, label))
                         },
                     )
                 }

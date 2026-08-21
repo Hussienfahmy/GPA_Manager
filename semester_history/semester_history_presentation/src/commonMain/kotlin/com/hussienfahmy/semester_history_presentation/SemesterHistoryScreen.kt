@@ -70,7 +70,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun SemesterHistoryScreen(
     modifier: Modifier = Modifier,
     snackBarHostState: SnackbarHostState,
-    onSemesterClick: (semesterId: Long) -> Unit,
+    onSemesterClick: (semesterId: Long, label: String) -> Unit,
     onExportHtml: (String) -> Unit,
     viewModel: SemesterHistoryViewModel = koinViewModel(),
     exportViewModel: ExportReportViewModel = koinViewModel()
@@ -81,8 +81,8 @@ fun SemesterHistoryScreen(
     val addSubjectsFirstMsg = stringResource(Res.string.history_add_subjects_first)
 
     LaunchedEffect(Unit) {
-        viewModel.navigateToDetail.collect { semesterId ->
-            onSemesterClick(semesterId)
+        viewModel.navigateToDetail.collect { (semesterId, label) ->
+            onSemesterClick(semesterId, label)
         }
     }
 
@@ -211,7 +211,7 @@ fun SemesterHistoryContent(
     isExporting: Boolean,
     onFinishSemesterClick: () -> Unit,
     onAddPastSemesterClick: () -> Unit,
-    onSemesterClick: (Long) -> Unit,
+    onSemesterClick: (semesterId: Long, label: String) -> Unit,
     onEditClick: (Semester) -> Unit,
     onDeleteClick: (Long) -> Unit,
     onMoveUp: (Long) -> Unit,
@@ -329,7 +329,9 @@ fun SemesterHistoryContent(
                     SemesterCard(
                         semester = semester,
                         onClick = {
-                            if (semester.type == Semester.Type.DETAILED) onSemesterClick(semester.id)
+                            if (semester.type == Semester.Type.DETAILED) {
+                                onSemesterClick(semester.id, semester.label)
+                            }
                         },
                         onEditClick = { onEditClick(semester) },
                         onDeleteClick = { onDeleteClick(semester.id) },

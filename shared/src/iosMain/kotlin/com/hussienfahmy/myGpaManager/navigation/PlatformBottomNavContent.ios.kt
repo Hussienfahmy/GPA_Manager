@@ -115,7 +115,7 @@ private val BottomNavDestination.sfSymbol: String
         BottomNavDestination.More -> "ellipsis"
     }
 
-private fun Color.toUIColor(): UIColor =
+internal fun Color.toUIColor(): UIColor =
     UIColor(red = red.toDouble(), green = green.toDouble(), blue = blue.toDouble(), alpha = alpha.toDouble())
 
 private class TabBarDelegate(
