@@ -135,7 +135,10 @@ fun AddSubjectSheet(
             }
 
             CapsLabel(text = stringResource(Res.string.history_grade_label))
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
                 availableGrades.sortedByDescending { it.percentage ?: 0.0 }.forEach { grade ->
                     SelectablePill(
                         text = grade.name.symbol,
@@ -161,7 +164,10 @@ fun AddSubjectSheet(
                 style = MaterialTheme.typography.bodySmall,
                 color = MeadowTheme.colors.inkFaint,
             )
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
                 SelectablePill(stringResource(Res.string.midterm), midtermEnabled) { midtermEnabled = !midtermEnabled }
                 SelectablePill(stringResource(Res.string.practical), practicalEnabled) { practicalEnabled = !practicalEnabled }
                 SelectablePill(stringResource(Res.string.oral), oralEnabled) { oralEnabled = !oralEnabled }

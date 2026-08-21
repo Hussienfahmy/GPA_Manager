@@ -140,6 +140,14 @@ fun SemesterCard(
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f, fill = false),
                     )
+                    if (isDetailed) {
+                        MeadowChip(
+                            text = "${stringResource(Res.string.history_type_detailed)} ›",
+                            style = MeadowChipStyle.Accent,
+                        )
+                    } else {
+                        MeadowChip(text = stringResource(Res.string.history_type_summary))
+                    }
                     // Amber flag — a subject in this semester has no grade yet.
                     if (semester.hasMissingGrade) {
                         Box(
@@ -165,14 +173,6 @@ fun SemesterCard(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    if (isDetailed) {
-                        MeadowChip(
-                            text = "${stringResource(Res.string.history_type_detailed)} ›",
-                            style = MeadowChipStyle.Accent,
-                        )
-                    } else {
-                        MeadowChip(text = stringResource(Res.string.history_type_summary))
-                    }
                     Text(
                         text = stringResource(Res.string.history_gpa_value, semester.semesterGPA.asGpa()),
                         style = MaterialTheme.typography.labelMedium.copy(fontSize = 12.sp),
