@@ -1,7 +1,11 @@
 package com.hussienfahmy.myGpaManager.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.hussienfahmy.myGpaManager.navigation.screens.AppGPASettingsScreen
@@ -41,7 +45,11 @@ fun AppNavHost(
                 }
 
                 entry<AppRoute.SemesterDetail>(metadata = slideTransitionMetadata) { route ->
-                    AppSemesterDetailScreen(semesterId = route.semesterId)
+                    ScreenWithToolbar(route = route, onBackClick = { appNavigationState.goBack() }) { padding ->
+                        Box(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding())) {
+                            AppSemesterDetailScreen(semesterId = route.semesterId)
+                        }
+                    }
                 }
 
                 entry<AppRoute.Quick>(metadata = fadeTransitionMetadata) {
@@ -58,19 +66,35 @@ fun AppNavHost(
                 }
 
                 entry<AppRoute.UserData>(metadata = slideTransitionMetadata) {
-                    AppUserDataScreen(snackBarHostState = snackBarHostState)
+                    ScreenWithToolbar(route = AppRoute.UserData, onBackClick = { appNavigationState.goBack() }) { padding ->
+                        Box(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding())) {
+                            AppUserDataScreen(snackBarHostState = snackBarHostState)
+                        }
+                    }
                 }
 
                 entry<AppRoute.GPASettings>(metadata = slideTransitionMetadata) {
-                    AppGPASettingsScreen()
+                    ScreenWithToolbar(route = AppRoute.GPASettings, onBackClick = { appNavigationState.goBack() }) { padding ->
+                        Box(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding())) {
+                            AppGPASettingsScreen()
+                        }
+                    }
                 }
 
                 entry<AppRoute.GradeSettings>(metadata = slideTransitionMetadata) {
-                    AppGradeSettingsScreen(snackBarHostState = snackBarHostState)
+                    ScreenWithToolbar(route = AppRoute.GradeSettings, onBackClick = { appNavigationState.goBack() }) { padding ->
+                        Box(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding())) {
+                            AppGradeSettingsScreen(snackBarHostState = snackBarHostState)
+                        }
+                    }
                 }
 
                 entry<AppRoute.SubjectSettings>(metadata = slideTransitionMetadata) {
-                    AppSubjectSettingsScreen(snackBarHostState = snackBarHostState)
+                    ScreenWithToolbar(route = AppRoute.SubjectSettings, onBackClick = { appNavigationState.goBack() }) { padding ->
+                        Box(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding())) {
+                            AppSubjectSettingsScreen(snackBarHostState = snackBarHostState)
+                        }
+                    }
                 }
             }
         ),

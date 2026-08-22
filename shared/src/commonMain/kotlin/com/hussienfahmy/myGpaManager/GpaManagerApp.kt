@@ -34,7 +34,6 @@ import com.hussienfahmy.myGpaManager.navigation.AppBottomNav
 import com.hussienfahmy.myGpaManager.navigation.AppNavHost
 import com.hussienfahmy.myGpaManager.navigation.AppNavigationState
 import com.hussienfahmy.myGpaManager.navigation.AppRoute
-import com.hussienfahmy.myGpaManager.navigation.AppToolbar
 import com.hussienfahmy.myGpaManager.navigation.OnboardingNavHost
 import com.hussienfahmy.myGpaManager.navigation.OnboardingRoute
 import com.hussienfahmy.myGpaManager.navigation.navKeySavedStateConfiguration
@@ -110,11 +109,7 @@ fun GpaManagerApp() {
                     detectTapGestures(onTap = { localFocusManager.clearFocus() })
                 },
             snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
-            topBar = {
-                if (!showOnboarding) {
-                    AppToolbar(appNavigationState = appNavigationState)
-                }
-            },
+            // No topBar - each sub-screen owns its own via ScreenWithToolbar (see AppNavHost).
             bottomBar = {
                 if (!showOnboarding) {
                     AppBottomNav(appNavigationState = appNavigationState)

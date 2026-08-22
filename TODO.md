@@ -6,7 +6,6 @@
 - Test Arabic.
 
 ## Enhancements
-- Can the top bar be scrollable/collapse when scroll the screen?
 - Use navigation Suit to have navigation ars in different screen sizes. use standard.
 - Animation for semester and predictive cards? Morphing would be super great.
 

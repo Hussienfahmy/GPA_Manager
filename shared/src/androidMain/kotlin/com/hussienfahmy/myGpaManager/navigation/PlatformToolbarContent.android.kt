@@ -1,5 +1,6 @@
 package com.hussienfahmy.myGpaManager.navigation
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,6 +32,8 @@ actual fun PlatformToolbarContent(
                 )
             }
         },
+        // Root Scaffold already reserves the status bar - don't do it twice.
+        windowInsets = WindowInsets(0),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = backgroundColor,
             titleContentColor = accentColor,

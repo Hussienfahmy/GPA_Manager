@@ -1,5 +1,8 @@
 package com.hussienfahmy.myGpaManager.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.hussienfahmy.core.generated.resources.*
@@ -7,24 +10,32 @@ import com.hussienfahmy.core_ui.theme.MeadowColors
 import com.hussienfahmy.core_ui.theme.MeadowTheme
 import org.jetbrains.compose.resources.stringResource
 
+// Gives a pushed sub-screen its own toolbar instead of one shared toolbar in the root Scaffold -
+// keeps the appear/disappear animation local to that screen. Insets zeroed since root already
+// reserves the status bar for every route.
 @Composable
-fun AppToolbar(appNavigationState: AppNavigationState) {
-    val currentRoute = appNavigationState.backStacks[appNavigationState.topLevelRoute]
-        ?.lastOrNull() as? AppRoute
-        ?: return
-    if (currentRoute in appNavigationState.backStacks.keys) return
-
+fun ScreenWithToolbar(
+    route: AppRoute,
+    onBackClick: () -> Unit,
+    content: @Composable (PaddingValues) -> Unit,
+) {
     val colors = MeadowTheme.colors
 
-    PlatformToolbarContent(
-        title = currentRoute.toolbarTitle(),
-        accentColor = currentRoute.toolbarAccent(colors),
-        backgroundColor = colors.paper,
-        onBackClick = { appNavigationState.goBack() },
+    Scaffold(
+        contentWindowInsets = WindowInsets(0),
+        topBar = {
+            PlatformToolbarContent(
+                title = route.toolbarTitle(),
+                accentColor = route.toolbarAccent(colors),
+                backgroundColor = colors.paper,
+                onBackClick = onBackClick,
+            )
+        },
+        content = content,
     )
 }
 
-// Android renders Material3's TopAppBar; iOS embeds a real native UINavigationBar via UIKitView.
+// Android renders Material3's TopAppBar; iOS embeds a native UINavigationBar via UIKitView.
 @Composable
 expect fun PlatformToolbarContent(
     title: String?,
