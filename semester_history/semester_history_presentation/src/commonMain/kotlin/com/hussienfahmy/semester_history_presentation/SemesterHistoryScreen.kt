@@ -1,27 +1,18 @@
 package com.hussienfahmy.semester_history_presentation
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
@@ -37,10 +28,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -53,7 +40,6 @@ import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
-import com.hussienfahmy.core_ui.theme.MeadowRadius
 import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.semester_history_domain.model.Semester
 import com.hussienfahmy.semester_history_presentation.components.AddPastSemesterSheet
@@ -220,70 +206,45 @@ fun SemesterHistoryContent(
 ) {
     val spacing = LocalSpacing.current
     val scaffoldPadding = LocalScaffoldContentPadding.current
-    val density = LocalDensity.current
-    var fabHeight by remember { mutableStateOf(0.dp) }
 
     val colors = MeadowTheme.colors
-    val accent = MeadowTheme.accent
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = colors.paper,
         contentWindowInsets = WindowInsets(0),
-        floatingActionButton = {
-            // Design 2b FABs: primary "✓ Finish semester" pill + square "+",
-            // both end-aligned to the trailing edge.
-            Column(
-                horizontalAlignment = Alignment.End,
-                modifier = Modifier
-                    .padding(bottom = scaffoldPadding.calculateBottomPadding())
-                    .onSizeChanged {
-                        fabHeight = with(density) { it.height.toDp() }
-                    }
-            ) {
-                PillButton(
-                    text = "✓ ${stringResource(Res.string.history_finish_semester)}",
-                    onClick = onFinishSemesterClick,
-                    style = PillButtonStyle.Primary,
-                    enabled = state.hasWorkspaceSubjects,
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(RoundedCornerShape(18.dp))
-                        .background(colors.card)
-                        .border(2.dp, accent.container, RoundedCornerShape(18.dp))
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = onAddPastSemesterClick,
-                        ),
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Add,
-                        contentDescription = stringResource(Res.string.add),
-                        tint = accent.deep,
-                        modifier = Modifier
-                            .size(22.dp)
-                            .align(Alignment.Center),
-                    )
-                }
-            }
-        }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .padding(paddingValues)
                 .padding(horizontal = spacing.small),
             verticalArrangement = Arrangement.spacedBy(11.dp),
-            // Clear the stacked Finish + Add FABs so they never cover a card.
             contentPadding = PaddingValues(
                 top = spacing.small,
-                bottom = spacing.small + fabHeight + scaffoldPadding.calculateBottomPadding(),
+                bottom = spacing.small + scaffoldPadding.calculateBottomPadding(),
             ),
         ) {
+            item {
+                // Same trailing-pill convention as the Semester tab's Controllers row.
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    PillButton(
+                        text = "+ ${stringResource(Res.string.add)}",
+                        onClick = onAddPastSemesterClick,
+                        style = PillButtonStyle.Tonal,
+                        compact = true,
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    PillButton(
+                        text = "✓ ${stringResource(Res.string.history_finish_semester)}",
+                        onClick = onFinishSemesterClick,
+                        style = PillButtonStyle.Primary,
+                        enabled = state.hasWorkspaceSubjects,
+                        compact = true,
+                    )
+                }
+            }
+
             item {
                 CumulativeGpaCard(
                     cumulativeGPA = state.cumulativeGPA,

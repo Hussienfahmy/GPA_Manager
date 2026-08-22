@@ -1,6 +1,5 @@
 package com.hussienfahmy.semester_history_presentation
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,12 +41,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -111,9 +107,6 @@ fun SemesterDetailScreen(
 ) {
     var showAddSubjectSheet by remember { mutableStateOf(false) }
     var editingSubject by remember { mutableStateOf<Subject?>(null) }
-    val scaffoldPadding = LocalScaffoldContentPadding.current
-    val density = LocalDensity.current
-    var fabHeight by remember { mutableStateOf(0.dp) }
 
     MeadowAccentProvider(MeadowTheme.colors.history) {
         Scaffold(
@@ -123,31 +116,6 @@ fun SemesterDetailScreen(
             // showing up as a big blank gap above the header card.
             contentWindowInsets = WindowInsets(0, 0, 0, 0),
             snackbarHost = { SnackbarHost(snackbarHostState) },
-            floatingActionButton = {
-                AnimatedContent(
-                    targetState = state.isSubmitting,
-                    label = "fab_content",
-                    modifier = Modifier
-                        .padding(bottom = scaffoldPadding.calculateBottomPadding())
-                        .onSizeChanged { fabHeight = with(density) { it.height.toDp() } },
-                ) { submitting ->
-                    if (submitting) {
-                        MeadowCard(contentPadding = PaddingValues(14.dp)) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(20.dp),
-                                strokeWidth = 2.dp,
-                                color = MeadowTheme.accent.accent,
-                            )
-                        }
-                    } else {
-                        PillButton(
-                            text = stringResource(Res.string.detail_add_subject),
-                            onClick = { showAddSubjectSheet = true },
-                            style = PillButtonStyle.Primary,
-                        )
-                    }
-                }
-            }
         ) { padding ->
             when {
                 state.detail == null -> Box(
@@ -163,8 +131,9 @@ fun SemesterDetailScreen(
                     detail = state.detail,
                     onEditSubject = { editingSubject = it },
                     onDeleteSubject = { onAction(SemesterDetailAction.OnDeleteSubject(it)) },
+                    onAddSubjectClick = { showAddSubjectSheet = true },
+                    addSubjectEnabled = !state.isSubmitting,
                     modifier = Modifier.padding(padding),
-                    fabHeight = fabHeight,
                 )
             }
         }
@@ -207,8 +176,9 @@ private fun SemesterDetailContent(
     detail: SemesterDetail,
     onEditSubject: (Subject) -> Unit,
     onDeleteSubject: (Long) -> Unit,
+    onAddSubjectClick: () -> Unit,
+    addSubjectEnabled: Boolean,
     modifier: Modifier = Modifier,
-    fabHeight: Dp = 0.dp,
 ) {
     val scaffoldPadding = LocalScaffoldContentPadding.current
 
@@ -217,9 +187,22 @@ private fun SemesterDetailContent(
         verticalArrangement = Arrangement.spacedBy(11.dp),
         contentPadding = PaddingValues(
             top = 4.dp,
-            bottom = 16.dp + fabHeight + scaffoldPadding.calculateBottomPadding(),
+            bottom = 16.dp + scaffoldPadding.calculateBottomPadding(),
         ),
     ) {
+        item {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Spacer(modifier = Modifier.weight(1f))
+                PillButton(
+                    text = stringResource(Res.string.detail_add_subject),
+                    onClick = onAddSubjectClick,
+                    style = PillButtonStyle.Tonal,
+                    enabled = addSubjectEnabled,
+                    compact = true,
+                )
+            }
+        }
+
         item {
             SemesterHeaderCard(semester = detail.semester, subjectCount = detail.subjectCount)
         }
