@@ -343,8 +343,8 @@
     <string name="grade_pct_pill">≥ %1$s%%</string>
     <string name="grade_edit_points_title">Points for %1$s</string>
     <string name="grade_edit_percentage_title">Percentage for %1$s</string>
-    <string name="grade_edit_points_subtitle">Grade points</string>
-    <string name="grade_edit_percentage_subtitle">Minimum percentage</string>
+    <string name="grade_edit_points_subtitle">Points this grade starts from</string>
+    <string name="grade_edit_percentage_subtitle">Percentage this grade starts from</string>
     <string name="grade_edit_points_field">Points</string>
     <string name="grade_edit_percentage_field">Percentage</string>
     <string name="gpa_scale">scale</string>

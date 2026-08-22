@@ -335,8 +335,8 @@
     <string name="grade_pct_pill">≥ %1$s%%</string>
     <string name="grade_edit_points_title">نقاط %1$s</string>
     <string name="grade_edit_percentage_title">نسبة %1$s</string>
-    <string name="grade_edit_points_subtitle">نقاط التقدير</string>
-    <string name="grade_edit_percentage_subtitle">أقل نسبة مئوية</string>
+    <string name="grade_edit_points_subtitle">النقاط التي تبدأ منها هذه الدرجة</string>
+    <string name="grade_edit_percentage_subtitle">النسبة المئوية التي تبدأ منها هذه الدرجة</string>
     <string name="grade_edit_points_field">النقاط</string>
     <string name="grade_edit_percentage_field">النسبة</string>
     <string name="gpa_scale">مقياس</string>
