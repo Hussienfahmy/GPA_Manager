@@ -63,9 +63,14 @@ fun AddSubjectSheet(
         )
     }
     var selectedGrade by remember {
-        mutableStateOf(availableGrades.find { it.name == initialSubject?.gradeName })
+        mutableStateOf(
+            when (initialSubject?.gradeName) {
+                GradeName.NP -> Grade(GradeName.NP, active = true)
+                GradeName.NF -> Grade(GradeName.NF, active = true)
+                else -> availableGrades.find { it.name == initialSubject?.gradeName }
+            }
+        )
     }
-
     val hasExistingMarks = initialSubject?.semesterMarks != null
     var midtermEnabled by remember { mutableStateOf(hasExistingMarks && initialSubject.metadata.midtermAvailable) }
     var practicalEnabled by remember { mutableStateOf(hasExistingMarks && initialSubject.metadata.practicalAvailable) }
@@ -147,6 +152,19 @@ fun AddSubjectSheet(
                         ltr = true,
                     )
                 }
+                // Pass/fail markers, kept separate from the graded-percentage pills above.
+                SelectablePill(
+                    text = GradeName.NP.symbol,
+                    selected = selectedGrade?.name == GradeName.NP,
+                    onClick = { selectedGrade = Grade(GradeName.NP, active = true) },
+                    ltr = true,
+                )
+                SelectablePill(
+                    text = GradeName.NF.symbol,
+                    selected = selectedGrade?.name == GradeName.NF,
+                    onClick = { selectedGrade = Grade(GradeName.NF, active = true) },
+                    ltr = true,
+                )
             }
             if (selectedGrade == null) {
                 Text(

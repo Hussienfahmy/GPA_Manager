@@ -18,4 +18,11 @@ enum class GradeName(val symbol: String) {
     AMinus("A-"),
     A("A"),
     APlus("A+"),
+
+    // History-only pass/fail markers - never seeded as a `Grade` row, so they never appear in
+    // Grade Settings or the live Semester tab's grade picker (both are DB-driven off that
+    // table), and carry no points/percentage - CalculateSemesterGPA already excludes any
+    // subject whose grade has no matching `Grade` row from the GPA sum, exactly like this.
+    NP("NP"),
+    NF("NF"),
 }
