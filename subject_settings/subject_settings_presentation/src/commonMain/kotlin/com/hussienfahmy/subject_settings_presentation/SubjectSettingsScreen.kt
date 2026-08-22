@@ -1,5 +1,6 @@
 package com.hussienfahmy.subject_settings_presentation
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -56,24 +57,26 @@ fun SubjectsSettingsScreen(
     val state by viewModel.state
 
     MeadowAccentProvider(MeadowTheme.colors.history) {
-        when (state) {
-            SubjectSettingsState.Loading -> Box(modifier = modifier.fillMaxSize()) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        Crossfade(targetState = state is SubjectSettingsState.Loading, label = "subjectSettingsLoading") { loading ->
+            if (loading) {
+                Box(modifier = modifier.fillMaxSize()) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            } else {
+                SubjectsSettingsScreenContent(
+                    modifier = modifier.fillMaxSize(),
+                    subjectsSettings = (state as SubjectSettingsState.Success).subjectSettings,
+                    onSubjectsDependsOnChanged = {
+                        viewModel.onEvent(SubjectSettingsEvent.UpdateSubjectMarksDependsOn(it))
+                    },
+                    onMarksPerCreditHourChanged = {
+                        viewModel.onEvent(SubjectSettingsEvent.UpdateMarksPerCreditHour(it))
+                    },
+                    onConstantMarksChanged = {
+                        viewModel.onEvent(SubjectSettingsEvent.UpdateConstantMarks(it))
+                    },
+                )
             }
-
-            is SubjectSettingsState.Success -> SubjectsSettingsScreenContent(
-                modifier = modifier.fillMaxSize(),
-                subjectsSettings = (state as SubjectSettingsState.Success).subjectSettings,
-                onSubjectsDependsOnChanged = {
-                    viewModel.onEvent(SubjectSettingsEvent.UpdateSubjectMarksDependsOn(it))
-                },
-                onMarksPerCreditHourChanged = {
-                    viewModel.onEvent(SubjectSettingsEvent.UpdateMarksPerCreditHour(it))
-                },
-                onConstantMarksChanged = {
-                    viewModel.onEvent(SubjectSettingsEvent.UpdateConstantMarks(it))
-                },
-            )
         }
     }
 }

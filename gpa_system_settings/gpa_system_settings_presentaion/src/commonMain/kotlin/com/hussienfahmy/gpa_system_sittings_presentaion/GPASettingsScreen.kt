@@ -1,5 +1,6 @@
 package com.hussienfahmy.gpa_system_sittings_presentaion
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,14 +27,12 @@ fun GPASettingsScreen(
     val state by viewModel.state
 
     MeadowAccentProvider(MeadowTheme.colors.semester) {
-        when (state) {
-            is GPAState.Loading -> {
+        Crossfade(targetState = state is GPAState.Loading, label = "gpaSettingsLoading") { loading ->
+            if (loading) {
                 Box(modifier = modifier.fillMaxSize()) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
-            }
-
-            is GPAState.Loaded -> {
+            } else {
                 val gpa = (state as GPAState.Loaded).gpa
                 GPASettingsContent(
                     modifier = modifier.fillMaxSize(),

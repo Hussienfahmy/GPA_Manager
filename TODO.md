@@ -14,3 +14,6 @@
 - Test release build.
 - Test Arabic.
 - App profiler: precompile in semester_marks before publishing.
+
+## Bugs
+- Clicking on Midterm, Practical, Oral in semester marks item should expand it.

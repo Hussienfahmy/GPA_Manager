@@ -1,5 +1,6 @@
 package com.hussienfahmy.quick_presentation
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,43 +40,45 @@ fun QuickScreen(
 
     val state by viewModel.state
 
-    if (state.isLoading) {
-        // Spinner anchored top (not center) so content doesn't jump up on load.
-        Box(modifier = Modifier.fillMaxSize()) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(top = 40.dp)
-            )
-        }
-    } else MeadowAccentProvider(MeadowTheme.colors.quick) {
-        if (isLandscapeOrientation()) {
-            QuickScreenLandscape(
-                modifier = modifier,
-                academicProgress = state.academicProgress,
-                invalidCumulativeGPAInput = state.invalidCumulativeGPAInput,
-                invalidSemesterGPAInput = state.invalidSemesterGPAInput,
-                invalidCumulativeGPAAboveMax = state.invalidCumulativeGPAAboveMax,
-                invalidSemesterGPAAboveMax = state.invalidSemesterGPAAboveMax,
-                invalidTotalHoursInput = state.invalidTotalHoursInput,
-                invalidSemesterHoursInput = state.invalidSemesterHoursInput,
-                cumulativeGPA = state.cumulativeGPA,
-                cumulativeGPAPercentage = state.cumulativeGPAPercentage,
-                onCalculate = { viewModel.onEvent(QuickEvent.Calculate(it)) }
-            )
-        } else {
-            QuickScreenPortrait(
-                academicProgress = state.academicProgress,
-                invalidCumulativeGPAInput = state.invalidCumulativeGPAInput,
-                invalidSemesterGPAInput = state.invalidSemesterGPAInput,
-                invalidCumulativeGPAAboveMax = state.invalidCumulativeGPAAboveMax,
-                invalidSemesterGPAAboveMax = state.invalidSemesterGPAAboveMax,
-                invalidTotalHoursInput = state.invalidTotalHoursInput,
-                invalidSemesterHoursInput = state.invalidSemesterHoursInput,
-                cumulativeGPA = state.cumulativeGPA,
-                cumulativeGPAPercentage = state.cumulativeGPAPercentage,
-                onCalculate = { viewModel.onEvent(QuickEvent.Calculate(it)) }
-            )
+    Crossfade(targetState = state.isLoading, label = "quickScreenLoading") { loading ->
+        if (loading) {
+            // Spinner anchored top (not center) so content doesn't jump up on load.
+            Box(modifier = Modifier.fillMaxSize()) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(top = 40.dp)
+                )
+            }
+        } else MeadowAccentProvider(MeadowTheme.colors.quick) {
+            if (isLandscapeOrientation()) {
+                QuickScreenLandscape(
+                    modifier = modifier,
+                    academicProgress = state.academicProgress,
+                    invalidCumulativeGPAInput = state.invalidCumulativeGPAInput,
+                    invalidSemesterGPAInput = state.invalidSemesterGPAInput,
+                    invalidCumulativeGPAAboveMax = state.invalidCumulativeGPAAboveMax,
+                    invalidSemesterGPAAboveMax = state.invalidSemesterGPAAboveMax,
+                    invalidTotalHoursInput = state.invalidTotalHoursInput,
+                    invalidSemesterHoursInput = state.invalidSemesterHoursInput,
+                    cumulativeGPA = state.cumulativeGPA,
+                    cumulativeGPAPercentage = state.cumulativeGPAPercentage,
+                    onCalculate = { viewModel.onEvent(QuickEvent.Calculate(it)) }
+                )
+            } else {
+                QuickScreenPortrait(
+                    academicProgress = state.academicProgress,
+                    invalidCumulativeGPAInput = state.invalidCumulativeGPAInput,
+                    invalidSemesterGPAInput = state.invalidSemesterGPAInput,
+                    invalidCumulativeGPAAboveMax = state.invalidCumulativeGPAAboveMax,
+                    invalidSemesterGPAAboveMax = state.invalidSemesterGPAAboveMax,
+                    invalidTotalHoursInput = state.invalidTotalHoursInput,
+                    invalidSemesterHoursInput = state.invalidSemesterHoursInput,
+                    cumulativeGPA = state.cumulativeGPA,
+                    cumulativeGPAPercentage = state.cumulativeGPAPercentage,
+                    onCalculate = { viewModel.onEvent(QuickEvent.Calculate(it)) }
+                )
+            }
         }
     }
 }

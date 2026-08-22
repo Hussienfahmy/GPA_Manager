@@ -1,5 +1,6 @@
 package com.hussienfahmy.myGpaManager.navigation.screens.more
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -58,20 +59,23 @@ fun AppMoreScreen(
 
     val userData by moreViewModel.userData.collectAsStateWithLifecycle(null)
 
-    if (userData != null && !moreViewModel.isSigningOut) {
-        MoreScreenContent(
-            modifier = modifier,
-            userData = userData!!,
-            onUserDataCardClick = onUserDataCardClick,
-            onGPASettingsClick = onGPASettingsClick,
-            onGradeSettingsClick = onGradeSettingsClick,
-            onSubjectSettingsClick = onSubjectSettingsClick,
-            onSignOutClick = { moreViewModel.signOut() },
-            onAppRatingClick = { moreViewModel.logAppRatingClicked() },
-        )
-    } else {
-        Box(modifier = modifier.fillMaxSize()) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+    val loading = userData == null || moreViewModel.isSigningOut
+    Crossfade(targetState = loading, label = "moreScreenLoading") { isLoading ->
+        if (isLoading) {
+            Box(modifier = modifier.fillMaxSize()) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+        } else {
+            MoreScreenContent(
+                modifier = modifier,
+                userData = userData!!,
+                onUserDataCardClick = onUserDataCardClick,
+                onGPASettingsClick = onGPASettingsClick,
+                onGradeSettingsClick = onGradeSettingsClick,
+                onSubjectSettingsClick = onSubjectSettingsClick,
+                onSignOutClick = { moreViewModel.signOut() },
+                onAppRatingClick = { moreViewModel.logAppRatingClicked() },
+            )
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.hussienfahmy.semester_history_presentation
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -125,24 +126,26 @@ fun SemesterDetailScreen(
             contentWindowInsets = WindowInsets(0, 0, 0, 0),
             snackbarHost = { SnackbarHost(snackbarHostState) },
         ) { padding ->
-            when {
-                state.detail == null -> Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator(color = MeadowTheme.accent.accent)
+            Crossfade(targetState = state.detail == null, label = "semesterDetailLoading") { loading ->
+                if (loading) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        CircularProgressIndicator(color = MeadowTheme.accent.accent)
+                    }
+                } else {
+                    SemesterDetailContent(
+                        detail = state.detail!!,
+                        onEditSubject = { editingSubject = it },
+                        onDeleteSubject = { onAction(SemesterDetailAction.OnDeleteSubject(it)) },
+                        onAddSubjectClick = { showAddSubjectSheet = true },
+                        addSubjectEnabled = !state.isSubmitting,
+                        modifier = Modifier.padding(padding),
+                    )
                 }
-
-                else -> SemesterDetailContent(
-                    detail = state.detail,
-                    onEditSubject = { editingSubject = it },
-                    onDeleteSubject = { onAction(SemesterDetailAction.OnDeleteSubject(it)) },
-                    onAddSubjectClick = { showAddSubjectSheet = true },
-                    addSubjectEnabled = !state.isSubmitting,
-                    modifier = Modifier.padding(padding),
-                )
             }
         }
     }

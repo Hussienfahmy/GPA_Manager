@@ -1,5 +1,6 @@
 package com.hussienfahmy.core_ui.presentation.user_data
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -30,14 +31,12 @@ fun UserDataScreen(
 
     val state by viewModel.customState.collectAsStateWithLifecycle()
 
-    when (state) {
-        is UserDataState.Loading -> {
+    Crossfade(targetState = state is UserDataState.Loading, label = "userDataLoading") { loading ->
+        if (loading) {
             Box(modifier = Modifier.fillMaxSize()) {
                 CircularProgressIndicator(modifier.align(Alignment.Center))
             }
-        }
-
-        is UserDataState.Loaded -> {
+        } else {
             UserDataScreenContent(
                 modifier = modifier,
                 state = (state as UserDataState.Loaded),

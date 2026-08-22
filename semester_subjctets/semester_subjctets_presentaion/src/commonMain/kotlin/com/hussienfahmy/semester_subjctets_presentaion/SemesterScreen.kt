@@ -1,5 +1,6 @@
 package com.hussienfahmy.semester_subjctets_presentaion
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -97,12 +98,12 @@ fun SemesterScreen(
 
     val spacing = LocalSpacing.current
 
-    when (state) {
-        is SemesterSubjectsState.Loading -> Box(modifier = modifier) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        }
-
-        is SemesterSubjectsState.Loaded -> {
+    Crossfade(targetState = state is SemesterSubjectsState.Loading, label = "semesterLoading") { loading ->
+        if (loading) {
+            Box(modifier = modifier) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+        } else {
             val loadedState = state as SemesterSubjectsState.Loaded
             SemesterScreenContent(
                 modifier = modifier.padding(horizontal = spacing.small),

@@ -1,5 +1,6 @@
 package com.hussienfahmy.semester_marks_presentaion
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,70 +58,87 @@ fun SemesterMarksScreen(
 
     MeadowAccentProvider(MeadowTheme.colors.marks) {
         Box(modifier = Modifier.fillMaxSize()) {
-        when (val s = state) {
-            is SemesterMarksState.Loading ->
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            Crossfade(
+                targetState = state is SemesterMarksState.Loading,
+                modifier = Modifier.fillMaxSize(),
+                label = "semesterMarksLoading",
+            ) { loading ->
+                if (loading) {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
+                } else {
+                    val s = state as SemesterMarksState.Calculated
+                    SemesterMarksScreenContent(
+                        modifier = modifier,
+                        subjects = s.subjects,
+                        onMidTermMarksChange = { subjectId, marks ->
+                            viewModel.onEvent(
+                                SemesterMarksEvent.ChangeMidtermMark(subjectId, marks)
+                            )
+                        },
+                        onOralMarksChange = { subjectId, marks ->
+                            viewModel.onEvent(
+                                SemesterMarksEvent.ChangeOralMark(subjectId, marks)
+                            )
+                        },
+                        onPracticalMarksChange = { subjectId, marks ->
+                            viewModel.onEvent(
+                                SemesterMarksEvent.ChangePracticalMark(subjectId, marks)
+                            )
+                        },
+                        onProjectMarksChange = { subjectId, marks ->
+                            viewModel.onEvent(
+                                SemesterMarksEvent.ChangeProjectMark(subjectId, marks)
+                            )
+                        },
+                        onFinalExamMaxMarksChange = { subjectId, marks ->
+                            viewModel.onEvent(
+                                SemesterMarksEvent.ChangeFinalExamMaxMarks(subjectId, marks)
+                            )
+                        },
+                        onResetClick = { subjectId ->
+                            viewModel.onEvent(
+                                SemesterMarksEvent.ResetMarks(subjectId)
+                            )
+                        },
+                        onMidtermAvailabilityCheckChanges = { subjectId, newAvailability ->
+                            viewModel.onEvent(
+                                SemesterMarksEvent.SetMidtermAvailability(
+                                    subjectId,
+                                    newAvailability
+                                )
+                            )
+                        },
+                        onPracticalAvailabilityCheckChanges = { subjectId, newAvailability ->
+                            viewModel.onEvent(
+                                SemesterMarksEvent.SetPracticalAvailability(
+                                    subjectId,
+                                    newAvailability
+                                )
+                            )
+                        },
+                        onOralAvailabilityCheckChanges = { subjectId, newAvailability ->
+                            viewModel.onEvent(
+                                SemesterMarksEvent.SetOralAvailability(subjectId, newAvailability)
+                            )
+                        },
+                        onProjectAvailabilityCheckChanges = { subjectId, newAvailability ->
+                            viewModel.onEvent(
+                                SemesterMarksEvent.SetProjectAvailability(
+                                    subjectId,
+                                    newAvailability
+                                )
+                            )
+                        },
+                    )
+                }
+            }
 
-            is SemesterMarksState.Calculated -> SemesterMarksScreenContent(
-                modifier = modifier,
-            subjects = s.subjects,
-            onMidTermMarksChange = { subjectId, marks ->
-                viewModel.onEvent(
-                    SemesterMarksEvent.ChangeMidtermMark(subjectId, marks)
-                )
-            },
-            onOralMarksChange = { subjectId, marks ->
-                viewModel.onEvent(
-                    SemesterMarksEvent.ChangeOralMark(subjectId, marks)
-                )
-            },
-            onPracticalMarksChange = { subjectId, marks ->
-                viewModel.onEvent(
-                    SemesterMarksEvent.ChangePracticalMark(subjectId, marks)
-                )
-            },
-            onProjectMarksChange = { subjectId, marks ->
-                viewModel.onEvent(
-                    SemesterMarksEvent.ChangeProjectMark(subjectId, marks)
-                )
-            },
-            onFinalExamMaxMarksChange = { subjectId, marks ->
-                viewModel.onEvent(
-                    SemesterMarksEvent.ChangeFinalExamMaxMarks(subjectId, marks)
-                )
-            },
-            onResetClick = { subjectId ->
-                viewModel.onEvent(
-                    SemesterMarksEvent.ResetMarks(subjectId)
-                )
-            },
-            onMidtermAvailabilityCheckChanges = { subjectId, newAvailability ->
-                viewModel.onEvent(
-                    SemesterMarksEvent.SetMidtermAvailability(subjectId, newAvailability)
-                )
-            },
-            onPracticalAvailabilityCheckChanges = { subjectId, newAvailability ->
-                viewModel.onEvent(
-                    SemesterMarksEvent.SetPracticalAvailability(subjectId, newAvailability)
-                )
-            },
-            onOralAvailabilityCheckChanges = { subjectId, newAvailability ->
-                viewModel.onEvent(
-                    SemesterMarksEvent.SetOralAvailability(subjectId, newAvailability)
-                )
-            },
-            onProjectAvailabilityCheckChanges = { subjectId, newAvailability ->
-                viewModel.onEvent(
-                    SemesterMarksEvent.SetProjectAvailability(subjectId, newAvailability)
-                )
-            },
+            SnackbarHost(
+                hostState = snackBarHostState,
+                modifier = Modifier.align(Alignment.BottomCenter),
             )
-        }
-
-        SnackbarHost(
-            hostState = snackBarHostState,
-            modifier = Modifier.align(Alignment.BottomCenter),
-        )
         }
     }
 }
@@ -188,37 +206,37 @@ fun SemesterMarksScreenContent(
                                 expandedIds + subject.id
                             }
                         },
-                    onMidTermMarksChange = { onMidTermMarksChange(subject.id, it) },
-                    onOralMarksChange = { onOralMarksChange(subject.id, it) },
-                    onPracticalMarksChange = { onPracticalMarksChange(subject.id, it) },
-                    onProjectMarksChange = { onProjectMarksChange(subject.id, it) },
-                    onFinalExamMaxMarksChange = { onFinalExamMaxMarksChange(subject.id, it) },
-                    onResetClick = { onResetClick(subject.id) },
-                    onMidtermAvailabilityCheckChanges = {
-                        onMidtermAvailabilityCheckChanges(
-                            subject.id,
-                            it
-                        )
-                    },
-                    onPracticalAvailabilityCheckChanges = {
-                        onPracticalAvailabilityCheckChanges(
-                            subject.id,
-                            it
-                        )
-                    },
-                    onOralAvailabilityCheckChanges = {
-                        onOralAvailabilityCheckChanges(
-                            subject.id,
-                            it
-                        )
-                    },
-                    onProjectAvailabilityCheckChanges = {
-                        onProjectAvailabilityCheckChanges(
-                            subject.id,
-                            it
-                        )
-                    },
-                )
+                        onMidTermMarksChange = { onMidTermMarksChange(subject.id, it) },
+                        onOralMarksChange = { onOralMarksChange(subject.id, it) },
+                        onPracticalMarksChange = { onPracticalMarksChange(subject.id, it) },
+                        onProjectMarksChange = { onProjectMarksChange(subject.id, it) },
+                        onFinalExamMaxMarksChange = { onFinalExamMaxMarksChange(subject.id, it) },
+                        onResetClick = { onResetClick(subject.id) },
+                        onMidtermAvailabilityCheckChanges = {
+                            onMidtermAvailabilityCheckChanges(
+                                subject.id,
+                                it
+                            )
+                        },
+                        onPracticalAvailabilityCheckChanges = {
+                            onPracticalAvailabilityCheckChanges(
+                                subject.id,
+                                it
+                            )
+                        },
+                        onOralAvailabilityCheckChanges = {
+                            onOralAvailabilityCheckChanges(
+                                subject.id,
+                                it
+                            )
+                        },
+                        onProjectAvailabilityCheckChanges = {
+                            onProjectAvailabilityCheckChanges(
+                                subject.id,
+                                it
+                            )
+                        },
+                    )
                 }
             }
         }

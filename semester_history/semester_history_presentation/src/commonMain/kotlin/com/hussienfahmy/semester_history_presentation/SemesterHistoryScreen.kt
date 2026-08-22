@@ -1,5 +1,6 @@
 package com.hussienfahmy.semester_history_presentation
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -169,12 +170,12 @@ fun SemesterHistoryScreen(
             )
         }
 
-        when (state) {
-            is SemesterHistoryState.Loading -> Box(modifier = modifier.fillMaxSize()) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
-
-            is SemesterHistoryState.Loaded -> {
+        Crossfade(targetState = state is SemesterHistoryState.Loading, label = "semesterHistoryLoading") { loading ->
+            if (loading) {
+                Box(modifier = modifier.fillMaxSize()) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            } else {
                 val loadedState = state as SemesterHistoryState.Loaded
                 SemesterHistoryContent(
                     modifier = modifier,

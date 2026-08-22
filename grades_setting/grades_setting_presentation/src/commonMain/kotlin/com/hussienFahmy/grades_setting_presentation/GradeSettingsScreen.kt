@@ -1,6 +1,7 @@
 package com.hussienfahmy.grades_setting_presentation
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -74,23 +75,29 @@ fun GradeSettingsScreen(
                 Spacer(modifier = Modifier.height(12.dp))
             }
 
-            if (state.isLoading) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-            } else {
-                GradeSettingsScreenContent(
-                    state = state,
-                    onGradeActiveChange = { grade, newActive ->
-                        viewModel.onEvent(GradeEvent.ActivateGrade(grade, newActive))
-                    },
-                    onSavePoint = { grade, newPoints ->
-                        viewModel.onEvent(GradeEvent.UpdatePoints(grade, newPoints))
-                    },
-                    onSavePercentage = { grade, newPercentage ->
-                        viewModel.onEvent(GradeEvent.UpdatePercentage(grade, newPercentage))
+            Crossfade(
+                targetState = state.isLoading,
+                modifier = Modifier.fillMaxSize(),
+                label = "gradeSettingsLoading",
+            ) { loading ->
+                if (loading) {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                     }
-                )
+                } else {
+                    GradeSettingsScreenContent(
+                        state = state,
+                        onGradeActiveChange = { grade, newActive ->
+                            viewModel.onEvent(GradeEvent.ActivateGrade(grade, newActive))
+                        },
+                        onSavePoint = { grade, newPoints ->
+                            viewModel.onEvent(GradeEvent.UpdatePoints(grade, newPoints))
+                        },
+                        onSavePercentage = { grade, newPercentage ->
+                            viewModel.onEvent(GradeEvent.UpdatePercentage(grade, newPercentage))
+                        }
+                    )
+                }
             }
         }
     }
