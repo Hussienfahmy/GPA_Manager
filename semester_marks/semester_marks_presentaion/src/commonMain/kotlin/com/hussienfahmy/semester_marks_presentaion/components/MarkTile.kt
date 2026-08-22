@@ -2,6 +2,7 @@ package com.hussienfahmy.semester_marks_presentaion.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Column
@@ -32,7 +33,7 @@ import com.hussienfahmy.core_ui.theme.MeadowTheme
  * A component-mark tile (design 2a/4b): sunken tile with a caps label and the
  * mark. Editing happens in place — focusing turns on the tab-hue border, no
  * dialogs for marks. When [editable] is false the tile is read-only ("–" when
- * empty).
+ * empty) and tapping it fires [onClick] instead (e.g. to expand the card).
  */
 @Composable
 fun MarkTile(
@@ -41,6 +42,7 @@ fun MarkTile(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     editable: Boolean = true,
+    onClick: (() -> Unit)? = null,
 ) {
     val colors = MeadowTheme.colors
     val accent = MeadowTheme.accent
@@ -57,6 +59,15 @@ fun MarkTile(
             .then(
                 if (focused) Modifier.border(2.dp, accent.accent, shape)
                 else Modifier
+            )
+            .then(
+                if (!editable && onClick != null) {
+                    Modifier.clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = onClick,
+                    )
+                } else Modifier
             )
             .padding(horizontal = 12.dp, vertical = 9.dp),
     ) {

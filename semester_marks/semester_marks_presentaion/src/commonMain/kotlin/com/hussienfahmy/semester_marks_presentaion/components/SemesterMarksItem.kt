@@ -236,6 +236,7 @@ fun SemesterMarksItem(
                         onMidTermMarksChange(it)
                     },
                     editable = isExpanded,
+                    onClick = onToggleExpand,
                     modifier = Modifier.weight(1f),
                 )
                 if (subject.practicalAvailable) MarkTile(
@@ -246,6 +247,7 @@ fun SemesterMarksItem(
                         onPracticalMarksChange(it)
                     },
                     editable = isExpanded,
+                    onClick = onToggleExpand,
                     modifier = Modifier.weight(1f),
                 )
                 if (subject.oralAvailable) MarkTile(
@@ -256,6 +258,7 @@ fun SemesterMarksItem(
                         onOralMarksChange(it)
                     },
                     editable = isExpanded,
+                    onClick = onToggleExpand,
                     modifier = Modifier.weight(1f),
                 )
                 if (subject.projectAvailable) MarkTile(
@@ -266,6 +269,7 @@ fun SemesterMarksItem(
                         onProjectMarksChange(it)
                     },
                     editable = isExpanded,
+                    onClick = onToggleExpand,
                     modifier = Modifier.weight(1f),
                 )
             }

@@ -6,13 +6,10 @@
 - Test Arabic.
 
 ## Enhancements
-- Use navigation Suit to have navigation ars in different screen sizes. use standard.
+- Use navigation Suit to have navigation bars in different screen sizes. use standard.
 - Animation for semester and predictive cards? Morphing would be super great.
 
 ## Before Publishing Android
 - Test release build.
 - Test Arabic.
 - App profiler: precompile in semester_marks before publishing.
-
-## Bugs
-- Clicking on Midterm, Practical, Oral in semester marks item should expand it.
