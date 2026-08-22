@@ -13,17 +13,23 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core_ui.theme.MeadowTheme
@@ -42,6 +48,7 @@ fun PillButton(
     style: PillButtonStyle = PillButtonStyle.Primary,
     enabled: Boolean = true,
     compact: Boolean = false,
+    icon: ImageVector? = null,
 ) {
     val colors = MeadowTheme.colors
     val accent = MeadowTheme.accent
@@ -106,11 +113,9 @@ fun PillButton(
         PaddingValues(horizontal = 22.dp, vertical = 11.dp)
     }
 
-    Text(
-        text = text,
-        style = if (compact) MaterialTheme.typography.labelMedium
-        else MaterialTheme.typography.labelLarge,
-        color = contentColor,
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 6.dp),
         modifier = modifier
             .scale(scale)
             .clip(CircleShape)
@@ -126,7 +131,22 @@ fun PillButton(
                 onClick = onClick,
             )
             .padding(padding),
-    )
+    ) {
+        if (icon != null) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = contentColor,
+                modifier = Modifier.size(if (compact) 16.dp else 18.dp),
+            )
+        }
+        Text(
+            text = text,
+            style = if (compact) MaterialTheme.typography.labelMedium
+            else MaterialTheme.typography.labelLarge,
+            color = contentColor,
+        )
+    }
 }
 
 @Composable
@@ -150,6 +170,7 @@ private fun PillButtonShowcase() {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             PillButton(text = "Disabled", onClick = {}, enabled = false)
             PillButton(text = "Compact", onClick = {}, compact = true)
+            PillButton(text = "Add", onClick = {}, icon = Icons.Rounded.Add, compact = true)
         }
     }
 }

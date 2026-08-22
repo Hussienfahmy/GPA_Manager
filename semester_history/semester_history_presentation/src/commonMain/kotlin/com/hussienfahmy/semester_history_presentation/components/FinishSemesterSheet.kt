@@ -9,6 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,10 +53,11 @@ fun FinishSemesterSheet(
                 .clip(RoundedCornerShape(MeadowRadius.tile))
                 .background(accent.container),
         ) {
-            Text(
-                text = "✓",
-                style = MaterialTheme.typography.headlineLarge,
-                color = accent.deep,
+            Icon(
+                imageVector = Icons.Rounded.Check,
+                contentDescription = null,
+                tint = accent.deep,
+                modifier = Modifier.size(22.dp),
             )
         }
 
@@ -98,9 +102,10 @@ fun FinishSemesterSheet(
                 compact = true,
             )
             PillButton(
-                text = "${stringResource(Res.string.history_finish_semester)} ✓",
+                text = stringResource(Res.string.history_finish_semester),
                 onClick = onConfirm,
                 style = PillButtonStyle.Primary,
+                icon = Icons.Rounded.Check,
                 compact = true,
             )
         }

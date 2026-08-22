@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,9 +54,10 @@ fun Controllers(
         Spacer(modifier = Modifier.weight(1f))
 
         PillButton(
-            text = "+ ${stringResource(Res.string.add)}",
+            text = stringResource(Res.string.add),
             onClick = onAddClick,
             style = PillButtonStyle.Tonal,
+            icon = Icons.Rounded.Add,
             compact = true,
         )
 

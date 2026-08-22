@@ -360,7 +360,7 @@
     <string name="detail_hrs_marks">%1$s hrs · %2$s/%3$s marks</string>
     <string name="detail_hrs_only">%1$s hrs</string>
     <string name="detail_subjects_count">%1$d subjects</string>
-    <string name="detail_add_subject">+ Add subject</string>
+    <string name="detail_add_subject">Add subject</string>
     <string name="calculated_from_history">Calculated from History</string>
     <string name="expand_all">Expand all</string>
     <string name="collapse_all">Collapse all</string>

@@ -12,6 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -229,16 +232,18 @@ fun SemesterHistoryContent(
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Spacer(modifier = Modifier.weight(1f))
                     PillButton(
-                        text = "+ ${stringResource(Res.string.add)}",
+                        text = stringResource(Res.string.add),
                         onClick = onAddPastSemesterClick,
                         style = PillButtonStyle.Tonal,
+                        icon = Icons.Rounded.Add,
                         compact = true,
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     PillButton(
-                        text = "✓ ${stringResource(Res.string.history_finish_semester)}",
+                        text = stringResource(Res.string.history_finish_semester),
                         onClick = onFinishSemesterClick,
                         style = PillButtonStyle.Primary,
+                        icon = Icons.Rounded.Check,
                         enabled = state.hasWorkspaceSubjects,
                         compact = true,
                     )

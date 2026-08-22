@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.PriorityHigh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -197,6 +198,7 @@ private fun SemesterDetailContent(
                     text = stringResource(Res.string.detail_add_subject),
                     onClick = onAddSubjectClick,
                     style = PillButtonStyle.Tonal,
+                    icon = Icons.Rounded.Add,
                     enabled = addSubjectEnabled,
                     compact = true,
                 )
