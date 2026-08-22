@@ -10,7 +10,6 @@ kotlin {
             implementation(projects.semesterHistory.semesterHistoryDomain)
             implementation(projects.semesterSubjctets.semesterSubjctetsDomain)
             implementation(projects.semesterSubjctets.semesterSubjctetsPresentaion)
-            implementation(projects.sync.syncDomain)
         }
     }
 }

@@ -16,5 +16,4 @@
 - App profiler: precompile in semester_marks before publishing.
 
 ## Bugs
-- In Semester history detail, we need to be able to add "NP-No Grade Pass" and "NF-No Grade Fail" this will be separate from the Semester Grades and the database, those just in the History.
 - Navigation animation all sub screen should be sliding or something funny rather than the current fade in

@@ -7,12 +7,14 @@ import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.core.domain.grades.use_case.GetActiveGrades
 import com.hussienfahmy.core.domain.subject_settings.model.SubjectSettings
 import com.hussienfahmy.core.domain.subject_settings.use_case.GetSubjectsSettings
+import com.hussienfahmy.core.domain.sync.SyncUpload
 import com.hussienfahmy.core.model.UiText
 import com.hussienfahmy.semester_history_domain.use_case.AddSubjectToSemester
 import com.hussienfahmy.semester_history_domain.use_case.DeleteSubjectFromSemester
 import com.hussienfahmy.semester_history_domain.use_case.EditSemester
 import com.hussienfahmy.semester_history_domain.use_case.EditSubjectInSemester
 import com.hussienfahmy.semester_history_domain.use_case.GetSemesterDetail
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,6 +32,8 @@ class SemesterDetailViewModel(
     private val editSubjectInSemester: EditSubjectInSemester,
     private val deleteSubjectFromSemester: DeleteSubjectFromSemester,
     private val editSemester: EditSemester,
+    private val syncUpload: SyncUpload,
+    private val applicationScope: CoroutineScope,
     private val crashReporter: CrashReporter,
 ) : ViewModel() {
 
@@ -68,6 +72,7 @@ class SemesterDetailViewModel(
             is SemesterDetailAction.OnAddSubject -> addSubject(action)
             is SemesterDetailAction.OnEditSubject -> editSubject(action)
             is SemesterDetailAction.OnDeleteSubject -> deleteSubject(action.subjectId)
+            is SemesterDetailAction.OnScreenExit -> onScreenExit()
         }
     }
 
@@ -118,6 +123,18 @@ class SemesterDetailViewModel(
                 _events.send(SemesterDetailEvent.ShowError(UiText.Resource(Res.string.history_error_delete_subject_failed)))
             } finally {
                 _isSubmitting.value = false
+            }
+        }
+    }
+
+    private fun onScreenExit() {
+        applicationScope.launch {
+            try {
+                syncUpload()
+            } catch (e: Exception) {
+                // Silent to the user by design - sync will retry on next app lifecycle
+                // event - but still reported so silent regressions are visible.
+                crashReporter.recordException(e, mapOf("operation" to "syncUpload"))
             }
         }
     }

@@ -18,6 +18,8 @@ val semesterHistoryPresentationModule = module {
             reorderSemester = get(),
             getUserData = get(),
             getWorkspaceSubjectCount = get(),
+            syncUpload = get(),
+            applicationScope = get(),
             crashReporter = get(),
         )
     }
@@ -31,6 +33,8 @@ val semesterHistoryPresentationModule = module {
             editSemester = get(),
             getActiveGrades = get(),
             getSubjectsSettings = get(),
+            syncUpload = get(),
+            applicationScope = get(),
             crashReporter = get(),
         )
     }

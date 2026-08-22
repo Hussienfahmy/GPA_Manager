@@ -24,4 +24,6 @@ sealed interface SemesterDetailAction {
     ) : SemesterDetailAction
 
     data class OnDeleteSubject(val subjectId: Long) : SemesterDetailAction
+
+    data object OnScreenExit : SemesterDetailAction
 }
