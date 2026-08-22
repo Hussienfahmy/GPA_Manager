@@ -57,19 +57,19 @@ fun AppNavHost(
                     )
                 }
 
-                entry<AppRoute.UserData>(metadata = fadeTransitionMetadata) {
+                entry<AppRoute.UserData>(metadata = slideTransitionMetadata) {
                     AppUserDataScreen(snackBarHostState = snackBarHostState)
                 }
 
-                entry<AppRoute.GPASettings>(metadata = fadeTransitionMetadata) {
+                entry<AppRoute.GPASettings>(metadata = slideTransitionMetadata) {
                     AppGPASettingsScreen()
                 }
 
-                entry<AppRoute.GradeSettings>(metadata = fadeTransitionMetadata) {
+                entry<AppRoute.GradeSettings>(metadata = slideTransitionMetadata) {
                     AppGradeSettingsScreen(snackBarHostState = snackBarHostState)
                 }
 
-                entry<AppRoute.SubjectSettings>(metadata = fadeTransitionMetadata) {
+                entry<AppRoute.SubjectSettings>(metadata = slideTransitionMetadata) {
                     AppSubjectSettingsScreen(snackBarHostState = snackBarHostState)
                 }
             }

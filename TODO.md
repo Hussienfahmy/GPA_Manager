@@ -14,6 +14,3 @@
 - Test release build.
 - Test Arabic.
 - App profiler: precompile in semester_marks before publishing.
-
-## Bugs
-- Navigation animation all sub screen should be sliding or something funny rather than the current fade in
