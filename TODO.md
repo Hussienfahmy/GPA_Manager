@@ -16,7 +16,6 @@
 - App profiler: precompile in semester_marks before publishing.
 
 ## Bugs
-- Can't add a subject with 0 Hours
 - In Semester history detail, we need to be able to add "NP-No Grade Pass" and "NF-No Grade Fail" this will be separate from the Semester Grades and the database, those just in the History.
 - Add Percentage for Grades Settings, change description to Minimal Percentage to achieve this grade, same for Points and next to it both, more description like "Percentage / Points this Grade starts from"
 - Navigation animation all sub screen should be sliding or something funny rather than the current fade in

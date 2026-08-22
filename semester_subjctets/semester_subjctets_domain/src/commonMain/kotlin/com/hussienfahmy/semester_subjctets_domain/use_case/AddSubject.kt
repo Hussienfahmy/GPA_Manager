@@ -26,7 +26,7 @@ class AddSubject(
             ?: return UpdateResult.Failed(UiText.Resource(Res.string.invalid_input))
 
         if (name.isBlank()) return UpdateResult.Failed(UiText.Resource(Res.string.err_subject_name_empty))
-        if (creditHours <= 0) return UpdateResult.Failed(UiText.Resource(Res.string.err_subject_credit_hours_negative))
+        if (creditHours < 0) return UpdateResult.Failed(UiText.Resource(Res.string.err_subject_credit_hours_negative))
 
         val subjectSettings = getSubjectsSettings()
 
