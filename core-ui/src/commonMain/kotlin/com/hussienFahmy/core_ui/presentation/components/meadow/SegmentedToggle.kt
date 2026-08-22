@@ -1,5 +1,7 @@
 package com.hussienfahmy.core_ui.presentation.components.meadow
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -9,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,7 +24,7 @@ import com.hussienfahmy.core_ui.theme.MeadowTheme
 
 /**
  * Two-or-more option segmented control on a pill track (Normal / Predict).
- * Selected segment fills with the tab hue.
+ * Selected segment fills with the tab hue - background/text color cross-fade on selection.
  */
 @Composable
 fun SegmentedToggle(
@@ -41,16 +44,26 @@ fun SegmentedToggle(
     ) {
         options.forEachIndexed { index, option ->
             val selected = index == selectedIndex
+            val background by animateColorAsState(
+                targetValue = if (selected) accent.accent else Color.Transparent,
+                animationSpec = tween(durationMillis = 500),
+                label = "segmentBackground",
+            )
+            val textColor by animateColorAsState(
+                targetValue = if (selected) accent.onAccent else colors.segmentedText,
+                animationSpec = tween(durationMillis = 500),
+                label = "segmentTextColor",
+            )
             Text(
                 text = option,
                 style = MaterialTheme.typography.labelMedium.copy(
                     fontSize = 13.sp,
                     fontWeight = if (selected) FontWeight.ExtraBold else FontWeight.Bold,
                 ),
-                color = if (selected) accent.onAccent else colors.segmentedText,
+                color = textColor,
                 modifier = Modifier
                     .clip(CircleShape)
-                    .background(if (selected) accent.accent else Color.Transparent)
+                    .background(background)
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,

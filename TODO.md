@@ -6,9 +6,9 @@
 - Test Arabic.
 
 ## Enhancements
-- Animation between pills swap in Semester tab, Normal and Predictive, Personal Info First and Second Semester.
 - Can the top bar be scrollable/collapse when scroll the screen?
 - Use navigation Suit to have navigation ars in different screen sizes. use standard.
+- Animation for semester and predictive cards? Morphing would be super great.
 
 ## Before Publishing Android
 - Test release build.
