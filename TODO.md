@@ -7,7 +7,6 @@
 
 ## Enhancements
 - Use navigation Suit to have navigation bars in different screen sizes. use standard.
-- Animation for semester and predictive cards? Morphing would be super great.
 
 ## Before Publishing Android
 - Test release build.

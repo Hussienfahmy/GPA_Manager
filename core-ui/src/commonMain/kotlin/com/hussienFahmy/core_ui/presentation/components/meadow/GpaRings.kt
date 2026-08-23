@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import com.hussienfahmy.core_ui.theme.MeadowTheme
 
 /**
@@ -37,7 +38,8 @@ fun GpaRings(
     size: Dp = 112.dp,
     outerStroke: Dp = 9.dp,
     innerStroke: Dp = 9.dp,
-    innerDashed: Boolean = false,
+    // 0 = solid line, 1 = fully dashed. Animated by the caller, not internally.
+    dashProgress: Float = 0f,
 ) {
     val colors = MeadowTheme.colors
     val accent = MeadowTheme.accent
@@ -63,16 +65,15 @@ fun GpaRings(
         drawRing(colors.ringTrack, outerRadius, outerStrokePx, 1f)
         drawRing(accent.accent, outerRadius, outerStrokePx, animatedOuter)
         drawRing(colors.ringTrackInner, innerRadius, innerStrokePx, 1f)
-        if (innerDashed) {
-            drawRing(
-                accent.soft, innerRadius, innerStrokePx, 1f,
-                pathEffect = PathEffect.dashPathEffect(
-                    floatArrayOf(4.dp.toPx(), 7.dp.toPx()), 0f
-                ),
-            )
-        } else {
-            drawRing(accent.soft, innerRadius, innerStrokePx, animatedInner)
-        }
+
+        val dashGapPx = lerp(0.01f, 7.dp.toPx(), dashProgress)
+        drawRing(
+            color = accent.soft,
+            radius = innerRadius,
+            strokeWidth = innerStrokePx,
+            progress = animatedInner,
+            pathEffect = PathEffect.dashPathEffect(floatArrayOf(4.dp.toPx(), dashGapPx), 0f),
+        )
     }
 }
 
@@ -114,7 +115,7 @@ private fun GpaRingsShowcase() {
             size = 76.dp,
             outerStroke = 7.dp,
             innerStroke = 5.dp,
-            innerDashed = true,
+            dashProgress = 1f,
         )
     }
 }

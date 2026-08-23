@@ -1,9 +1,19 @@
 package com.hussienfahmy.semester_subjctets_presentaion.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -67,11 +77,28 @@ import com.hussienfahmy.semester_subjctets_presentaion.model.Mode
 import com.hussienfahmy.semester_subjctets_presentaion.model.ModeResult
 import com.hussienfahmy.core.util.toFixedString
 
+private const val SHARED_KEY_SEMESTER_GPA_NUMBER = "semesterGpaNumber"
+private const val SHARED_KEY_GPA_RINGS = "gpaRings"
+private const val SHARED_KEY_GRADE_SYMBOL = "gradeSymbol"
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+private data class HeroShared(
+    val sharedTransitionScope: SharedTransitionScope,
+    val animatedVisibilityScope: AnimatedVisibilityScope,
+    val dashProgress: Float,
+) {
+    @Composable
+    fun sharedKey(key: String): Modifier = with(sharedTransitionScope) {
+        Modifier.sharedBounds(rememberSharedContentState(key = key), animatedVisibilityScope)
+    }
+}
+
 /**
  * The hero card. Normal mode: cumulative GPA + semester GPA + progress rings.
  * Predict mode: compact hero — target field, reachability, needed GPA and the
  * low-credit-hours option in a single card (design 4a).
  */
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun ResultCard(
     modifier: Modifier = Modifier,
@@ -79,24 +106,51 @@ fun ResultCard(
     onTargetGPAChange: (targetGPA: String, reverseOrder: Boolean) -> Unit,
     mode: Mode,
 ) {
-    when (mode) {
-        Mode.Normal -> NormalHero(
-            modifier = modifier,
-            calculationResult = modeResult.calculationResult,
-        )
+    // Hoisted above AnimatedContent - a GpaRings owned inside either hero gets torn down on
+    // every mode flip, so an animation living inside it would just snap.
+    val dashProgress by animateFloatAsState(
+        targetValue = if (mode is Mode.Predict) 1f else 0f,
+        animationSpec = tween(durationMillis = 900),
+        label = "gpaRingsDash",
+    )
 
-        is Mode.Predict -> PredictHero(
-            modifier = modifier,
-            modeResult = modeResult,
-            onTargetGPAChange = onTargetGPAChange,
-        )
+    SharedTransitionLayout(modifier = modifier) {
+        // contentKey collapses every Mode.Predict value to the same key, since it carries the
+        // target-GPA text as it's typed - without this the morph would replay on every keystroke.
+        AnimatedContent(
+            targetState = mode,
+            contentKey = { it is Mode.Predict },
+            transitionSpec = {
+                (fadeIn(tween(220, delayMillis = 90)) togetherWith fadeOut(tween(90)))
+                    .using(SizeTransform(clip = false))
+            },
+            label = "resultCardMode",
+        ) { targetMode ->
+            val shared = HeroShared(this@SharedTransitionLayout, this, dashProgress)
+            when (targetMode) {
+                is Mode.Predict -> PredictHero(
+                    modifier = Modifier.fillMaxWidth(),
+                    modeResult = modeResult,
+                    onTargetGPAChange = onTargetGPAChange,
+                    shared = shared,
+                )
+
+                Mode.Normal -> NormalHero(
+                    modifier = Modifier.fillMaxWidth(),
+                    calculationResult = modeResult.calculationResult,
+                    shared = shared,
+                )
+            }
+        }
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun NormalHero(
     modifier: Modifier = Modifier,
     calculationResult: Calculate.Result,
+    shared: HeroShared,
 ) {
     val colors = MeadowTheme.colors
     val accent = MeadowTheme.accent
@@ -181,7 +235,10 @@ private fun NormalHero(
                                     }
                                 }
 
-                                GpaTooltipBox(fullValue = semesterGpa) {
+                                GpaTooltipBox(
+                                    fullValue = semesterGpa,
+                                    modifier = shared.sharedKey(SHARED_KEY_SEMESTER_GPA_NUMBER),
+                                ) {
                                     Text(
                                         text = animatedSemester.asGpa(),
                                         style = MaterialTheme.typography.displayLarge,
@@ -193,7 +250,7 @@ private fun NormalHero(
                                     text = calculationResult.semester.grade.symbol,
                                     style = MaterialTheme.typography.titleMedium,
                                     color = accent.deep,
-                                    modifier = Modifier
+                                    modifier = shared.sharedKey(SHARED_KEY_GRADE_SYMBOL)
                                         .padding(bottom = 4.dp)
                                         .clip(CircleShape)
                                         .background(accent.container)
@@ -231,6 +288,8 @@ private fun NormalHero(
                         GpaRings(
                             outerProgress = calculationResult.cumulative.percentage / 100f,
                             innerProgress = calculationResult.semester.percentage / 100f,
+                            dashProgress = shared.dashProgress,
+                            modifier = shared.sharedKey(SHARED_KEY_GPA_RINGS),
                         )
                     }
                 }
@@ -239,11 +298,13 @@ private fun NormalHero(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun PredictHero(
     modifier: Modifier = Modifier,
     modeResult: ModeResult,
     onTargetGPAChange: (targetGPA: String, reverseOrder: Boolean) -> Unit,
+    shared: HeroShared,
 ) {
     val colors = MeadowTheme.colors
     val accent = MeadowTheme.accent
@@ -378,7 +439,10 @@ private fun PredictHero(
                                 animationSpec = spring(stiffness = Spring.StiffnessLow),
                                 label = "neededGpa",
                             )
-                            GpaTooltipBox(fullValue = calculationResult.semester.gpa) {
+                            GpaTooltipBox(
+                                fullValue = calculationResult.semester.gpa,
+                                modifier = shared.sharedKey(SHARED_KEY_SEMESTER_GPA_NUMBER),
+                            ) {
                                 Text(
                                     text = animatedNeeded.asGpa(),
                                     style = MaterialTheme.typography.displayMedium,
@@ -389,7 +453,7 @@ private fun PredictHero(
                                 text = calculationResult.semester.grade.symbol,
                                 style = MaterialTheme.typography.titleSmall,
                                 color = accent.deep,
-                                modifier = Modifier
+                                modifier = shared.sharedKey(SHARED_KEY_GRADE_SYMBOL)
                                     .padding(bottom = 4.dp)
                                     .clip(RoundedCornerShape(MeadowRadius.pill))
                                     .dashedBorder(color = accent.soft, radius = MeadowRadius.pill)
@@ -419,7 +483,8 @@ private fun PredictHero(
                     size = 76.dp,
                     outerStroke = 7.dp,
                     innerStroke = 5.dp,
-                    innerDashed = true,
+                    dashProgress = shared.dashProgress,
+                    modifier = shared.sharedKey(SHARED_KEY_GPA_RINGS),
                 )
 
                 else -> Unit
