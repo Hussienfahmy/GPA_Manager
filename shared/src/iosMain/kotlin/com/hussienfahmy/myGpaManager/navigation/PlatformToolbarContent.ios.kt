@@ -26,6 +26,7 @@ import platform.UIKit.UINavigationBarAppearance
 import platform.UIKit.UINavigationItem
 import platform.darwin.NSObject
 import platform.objc.OBJC_ASSOCIATION_RETAIN_NONATOMIC
+import platform.objc.objc_getAssociatedObject
 import platform.objc.objc_setAssociatedObject
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalForeignApi::class, BetaInteropApi::class)
@@ -72,6 +73,9 @@ actual fun PlatformToolbarContent(
         update = { navBar ->
             applyToolbarAppearance(navBar, accentColor)
             navBar.topItem?.title = title ?: ""
+
+            val target = objc_getAssociatedObject(navBar, "backButtonTarget".cstr) as? BackButtonTarget
+            target?.onBackClick = onBackClick
         },
     )
 }
@@ -88,7 +92,7 @@ private fun applyToolbarAppearance(navBar: UINavigationBar, accentColor: Color) 
 
 @OptIn(BetaInteropApi::class)
 private class BackButtonTarget(
-    private val onBackClick: () -> Unit,
+    var onBackClick: () -> Unit,
 ) : NSObject() {
     @ObjCAction
     fun onBackTapped() {

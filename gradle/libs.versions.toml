@@ -76,6 +76,8 @@ filekit = "0.14.2"
 ktor = "3.1.2"
 navigation3 = "1.1.1"
 lifecycleViewmodelNavigation3 = "2.11.0"
+androidxWindowCore = "1.5.1"
+composeMaterial3Adaptive = "1.1.2"
 # Multiplatform runtime permissions (notification permission) - Compose-idiomatic
 # rememberPermissionState(), no manual Activity wiring needed, unlike the old hand-rolled
 # PermissionController which required constructing with the current Activity before STARTED.
@@ -195,6 +197,10 @@ calf-permissions-notifications = { group = "com.mohamedrejeb.calf", name = "calf
 compose-runtime = { group = "org.jetbrains.compose.runtime", name = "runtime", version.ref = "composeMultiplatform" }
 compose-foundation = { group = "org.jetbrains.compose.foundation", name = "foundation", version.ref = "composeMultiplatform" }
 compose-material3 = { group = "org.jetbrains.compose.material3", name = "material3", version.ref = "composeMaterial3" }
+compose-material3-adaptive-navigation-suite = { group = "org.jetbrains.compose.material3", name = "material3-adaptive-navigation-suite", version.ref = "composeMaterial3" }
+# currentWindowAdaptiveInfo() itself lives here, not in navigation-suite - transitive resolution
+# doesn't reliably surface it to :shared's commonMain, so declared directly.
+compose-material3-adaptive = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive", version.ref = "composeMaterial3Adaptive" }
 compose-material-icons-extended = { group = "org.jetbrains.compose.material", name = "material-icons-extended", version.ref = "composeMaterialIconsExtended" }
 compose-components-resources = { group = "org.jetbrains.compose.components", name = "components-resources", version.ref = "composeMultiplatform" }
 compose-ui-tooling-preview = { group = "org.jetbrains.compose.ui", name = "ui-tooling-preview", version.ref = "composeMultiplatform" }

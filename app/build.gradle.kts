@@ -122,6 +122,9 @@ dependencies {
     implementation(libs.bundles.compose.debug)
     implementation(libs.bundles.compose.presentation)
 
+    // Window size class for MainActivity's orientation lock (phone = portrait-locked, larger = free)
+    implementation(libs.compose.material3.adaptive.navigation.suite)
+
     // Work Manager
     implementation(libs.androidx.work.runtime.ktx)
 

@@ -1,13 +1,12 @@
 package com.hussienfahmy.myGpaManager.navigation
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
+import com.hussienfahmy.core_ui.presentation.components.CenteredMaxWidthContent
 import com.hussienfahmy.myGpaManager.navigation.screens.AppGPASettingsScreen
 import com.hussienfahmy.myGpaManager.navigation.screens.AppGradeSettingsScreen
 import com.hussienfahmy.myGpaManager.navigation.screens.AppQuickScreen
@@ -32,42 +31,50 @@ fun AppNavHost(
                 }
 
                 entry<AppRoute.SemesterMarks>(metadata = fadeTransitionMetadata) {
-                    AppSemesterMarksScreen()
+                    CenteredMaxWidthContent {
+                        AppSemesterMarksScreen()
+                    }
                 }
 
                 entry<AppRoute.SemesterHistory>(metadata = fadeTransitionMetadata) {
-                    AppSemesterHistoryScreen(
-                        snackBarHostState = snackBarHostState,
-                        onSemesterClick = { semesterId, label ->
-                            appNavigationState.navigate(AppRoute.SemesterDetail(semesterId, label))
-                        },
-                    )
+                    CenteredMaxWidthContent {
+                        AppSemesterHistoryScreen(
+                            snackBarHostState = snackBarHostState,
+                            onSemesterClick = { semesterId, label ->
+                                appNavigationState.navigate(AppRoute.SemesterDetail(semesterId, label))
+                            },
+                        )
+                    }
                 }
 
                 entry<AppRoute.SemesterDetail>(metadata = slideTransitionMetadata) { route ->
                     ScreenWithToolbar(route = route, onBackClick = { appNavigationState.goBack() }) { padding ->
-                        Box(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding())) {
+                        CenteredMaxWidthContent(modifier = Modifier.padding(top = padding.calculateTopPadding())) {
                             AppSemesterDetailScreen(semesterId = route.semesterId)
                         }
                     }
                 }
 
                 entry<AppRoute.Quick>(metadata = fadeTransitionMetadata) {
-                    AppQuickScreen(snackBarHostState = snackBarHostState)
+                    CenteredMaxWidthContent {
+                        AppQuickScreen(snackBarHostState = snackBarHostState)
+                    }
                 }
 
                 entry<AppRoute.More>(metadata = fadeTransitionMetadata) {
-                    AppMoreScreen(
-                        onUserDataCardClick = { appNavigationState.navigate(AppRoute.UserData) },
-                        onGPASettingsClick = { appNavigationState.navigate(AppRoute.GPASettings) },
-                        onGradeSettingsClick = { appNavigationState.navigate(AppRoute.GradeSettings) },
-                        onSubjectSettingsClick = { appNavigationState.navigate(AppRoute.SubjectSettings) },
-                    )
+                    CenteredMaxWidthContent {
+                        AppMoreScreen(
+                            onUserDataCardClick = { appNavigationState.navigate(AppRoute.UserData) },
+                            onGPASettingsClick = { appNavigationState.navigate(AppRoute.GPASettings) },
+                            onGradeSettingsClick = { appNavigationState.navigate(AppRoute.GradeSettings) },
+                            onSubjectSettingsClick = { appNavigationState.navigate(AppRoute.SubjectSettings) },
+                        )
+                    }
                 }
 
                 entry<AppRoute.UserData>(metadata = slideTransitionMetadata) {
                     ScreenWithToolbar(route = AppRoute.UserData, onBackClick = { appNavigationState.goBack() }) { padding ->
-                        Box(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding())) {
+                        CenteredMaxWidthContent(modifier = Modifier.padding(top = padding.calculateTopPadding())) {
                             AppUserDataScreen(snackBarHostState = snackBarHostState)
                         }
                     }
@@ -75,7 +82,7 @@ fun AppNavHost(
 
                 entry<AppRoute.GPASettings>(metadata = slideTransitionMetadata) {
                     ScreenWithToolbar(route = AppRoute.GPASettings, onBackClick = { appNavigationState.goBack() }) { padding ->
-                        Box(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding())) {
+                        CenteredMaxWidthContent(modifier = Modifier.padding(top = padding.calculateTopPadding())) {
                             AppGPASettingsScreen()
                         }
                     }
@@ -83,7 +90,7 @@ fun AppNavHost(
 
                 entry<AppRoute.GradeSettings>(metadata = slideTransitionMetadata) {
                     ScreenWithToolbar(route = AppRoute.GradeSettings, onBackClick = { appNavigationState.goBack() }) { padding ->
-                        Box(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding())) {
+                        CenteredMaxWidthContent(modifier = Modifier.padding(top = padding.calculateTopPadding())) {
                             AppGradeSettingsScreen(snackBarHostState = snackBarHostState)
                         }
                     }
@@ -91,7 +98,7 @@ fun AppNavHost(
 
                 entry<AppRoute.SubjectSettings>(metadata = slideTransitionMetadata) {
                     ScreenWithToolbar(route = AppRoute.SubjectSettings, onBackClick = { appNavigationState.goBack() }) { padding ->
-                        Box(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding())) {
+                        CenteredMaxWidthContent(modifier = Modifier.padding(top = padding.calculateTopPadding())) {
                             AppSubjectSettingsScreen(snackBarHostState = snackBarHostState)
                         }
                     }

@@ -13,8 +13,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,13 +55,16 @@ fun SubjectsColumn(
     onResetClick: (subjectId: Long) -> Unit,
     onGradeClick: (subjectId: Long, grade: GradeName) -> Unit,
     mode: Mode,
-    modifier: Modifier = Modifier
+    columns: Int,
+    modifier: Modifier = Modifier,
 ) {
     val scaffoldPadding = LocalScaffoldContentPadding.current
 
-    LazyColumn(
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(columns),
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(11.dp),
+        horizontalArrangement = Arrangement.spacedBy(11.dp),
         contentPadding = PaddingValues(bottom = 8.dp + scaffoldPadding.calculateBottomPadding()),
     ) {
         items(items = subjects, key = { it.id }) { subject ->
@@ -289,6 +293,7 @@ private fun SubjectsColumnNormalPreview() {
             onRenameClick = {}, onDeleteSubject = {}, onFixGradeClick = { _, _ -> },
             onResetClick = {}, onGradeClick = { _, _ -> },
             mode = Mode.Normal,
+            columns = 1
         )
     }
 }
@@ -307,6 +312,7 @@ private fun SubjectsColumnPredictPreview() {
             onRenameClick = {}, onDeleteSubject = {}, onFixGradeClick = { _, _ -> },
             onResetClick = {}, onGradeClick = { _, _ -> },
             mode = Mode.Predict(targetCumulativeGPA = "3.6", reverseSubjects = false),
+            columns = 1
         )
     }
 }

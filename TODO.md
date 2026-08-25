@@ -6,7 +6,6 @@
 - Test Arabic.
 
 ## Enhancements
-- Use navigation Suit to have navigation bars in different screen sizes. use standard.
 
 ## Before Publishing Android
 - Test release build.

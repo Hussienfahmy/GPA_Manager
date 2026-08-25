@@ -55,6 +55,8 @@ kotlin {
             implementation(libs.androidx.navigation3.runtime)
             implementation(libs.androidx.navigation3.ui)
             implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+            implementation(libs.compose.material3.adaptive.navigation.suite)
+            implementation(libs.compose.material3.adaptive)
 
             // MainViewModel checks Firebase.auth.currentUser directly to decide whether to run
             // the one-time existing-user data migration.

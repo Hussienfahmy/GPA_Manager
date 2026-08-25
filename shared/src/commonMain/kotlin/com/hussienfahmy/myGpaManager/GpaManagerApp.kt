@@ -1,10 +1,14 @@
 package com.hussienfahmy.myGpaManager
 
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldLayout
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarHost
@@ -110,17 +114,8 @@ fun GpaManagerApp() {
                 },
             snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
             // No topBar - each sub-screen owns its own via ScreenWithToolbar (see AppNavHost).
-            bottomBar = {
-                if (!showOnboarding) {
-                    AppBottomNav(appNavigationState = appNavigationState)
-                }
-            },
+            // No bottomBar either - AppBottomNav now lives inside NavigationSuiteScaffold below.
         ) { paddingValues ->
-            // Only the top inset is applied to the container here (status bar clearance, uniform
-            // for every screen) - the bottom inset is deliberately not, since that would push
-            // content entirely above AppBottomNav instead of letting it draw behind the bar.
-            // Screens read the full paddingValues via LocalScaffoldContentPadding and merge the
-            // bottom component into their own scrollable's contentPadding instead.
             CompositionLocalProvider(LocalScaffoldContentPadding provides paddingValues) {
                 val contentModifier = Modifier
                     .fillMaxSize()
@@ -135,11 +130,29 @@ fun GpaManagerApp() {
                         onOnboardingComplete = { showOnboarding = false },
                     )
                 } else {
-                    MainAppContent(
-                        modifier = contentModifier,
-                        appNavigationState = appNavigationState,
-                        snackBarHostState = snackBarHostState,
-                    )
+                    val navigationSuiteType = NavigationSuiteScaffoldDefaults
+                        .calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
+
+                    // NavigationSuiteScaffold wraps navigationItems in its own rail, double-nesting
+                    // with AppBottomNav's - use the no-wrap primitive instead. No modifier param, so Box.
+                    Box(modifier = contentModifier) {
+                        NavigationSuiteScaffoldLayout(
+                            navigationSuite = {
+                                AppBottomNav(
+                                    appNavigationState = appNavigationState,
+                                    navigationSuiteType = navigationSuiteType,
+                                )
+                            },
+                            navigationSuiteType = navigationSuiteType,
+                            content = {
+                                MainAppContent(
+                                    modifier = Modifier.fillMaxSize(),
+                                    appNavigationState = appNavigationState,
+                                    snackBarHostState = snackBarHostState,
+                                )
+                            },
+                        )
+                    }
                 }
             }
         }

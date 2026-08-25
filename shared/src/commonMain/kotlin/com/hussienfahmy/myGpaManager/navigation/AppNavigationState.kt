@@ -5,6 +5,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
@@ -31,15 +33,22 @@ private val TOP_LEVEL_ROUTES: List<AppRoute> = listOf(
  * ("exit through home": the user always exits the app via the Semester tab, matching the old
  * Compose Destinations popUpTo(root.startDestination) behavior).
  *
- * Simplification vs. the official recipe: `topLevelRoute` here is plain `mutableStateOf`, not
- * process-death-restored via a NavKey-aware Saver, so after process death the app reopens on
- * the Semester tab rather than whichever tab was last active. Each tab's own back stack content
- * (e.g. a pushed SemesterDetail) still survives process death correctly via
+ * `topLevelRoute` survives process death and Activity recreation (e.g. the orientation lock in
+ * MainActivity flipping the width breakpoint) via rememberSaveable, saved as its index into
+ * TOP_LEVEL_ROUTES since every entry is a plain `data object` with nothing else to serialize.
+ * Each tab's own back stack content (e.g. a pushed SemesterDetail) survives the same way via
  * rememberNavBackStack itself.
  */
+private val TopLevelRouteSaver = Saver<MutableState<AppRoute>, Int>(
+    save = { TOP_LEVEL_ROUTES.indexOf(it.value) },
+    restore = { mutableStateOf(TOP_LEVEL_ROUTES[it]) },
+)
+
 @Composable
 fun rememberAppNavigationState(): AppNavigationState {
-    val topLevelRouteState = remember { mutableStateOf<AppRoute>(AppRoute.Semester) }
+    val topLevelRouteState = rememberSaveable(saver = TopLevelRouteSaver) {
+        mutableStateOf(AppRoute.Semester)
+    }
     val backStacks: Map<AppRoute, NavBackStack<NavKey>> = TOP_LEVEL_ROUTES.associateWith { route ->
         rememberNavBackStack(navKeySavedStateConfiguration, route)
     }

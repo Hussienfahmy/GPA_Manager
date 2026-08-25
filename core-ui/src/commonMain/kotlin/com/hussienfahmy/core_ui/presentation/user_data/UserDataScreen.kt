@@ -33,8 +33,8 @@ fun UserDataScreen(
 
     Crossfade(targetState = state is UserDataState.Loading, label = "userDataLoading") { loading ->
         if (loading) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                CircularProgressIndicator(modifier.align(Alignment.Center))
+            Box(modifier = modifier) {
+                CircularProgressIndicator(Modifier.align(Alignment.Center))
             }
         } else {
             UserDataScreenContent(

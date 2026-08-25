@@ -3,12 +3,10 @@ package com.hussienfahmy.semester_subjctets_presentaion
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -159,41 +157,27 @@ fun SemesterScreenContent(
     onResetSubjectClick: (subjectId: Long) -> Unit,
     onGradeClick: (subjectId: Long, grade: GradeName) -> Unit,
 ) {
-    if (isLandscapeOrientation()) {
-        SemesterContentLandscape(
-            modifier = modifier,
-            state = state,
-            onAddClick = onAddClick,
-            onChangeModeClick = onChangeModeClick,
-            onResetClick = onResetClick,
-            onPredictDataChange = onPredictDataChange,
-            onRenameClick = onRenameClick,
-            onDeleteSubject = onDeleteSubject,
-            onFixGradeClick = onFixGradeClick,
-            onResetSubjectClick = onResetSubjectClick,
-            onGradeClick = onGradeClick
-        )
-    } else {
-        SemesterContentPortrait(
-            modifier = modifier,
-            state = state,
-            onAddClick = onAddClick,
-            onChangeModeClick = onChangeModeClick,
-            onResetClick = onResetClick,
-            onPredictDataChange = onPredictDataChange,
-            onRenameClick = onRenameClick,
-            onDeleteSubject = onDeleteSubject,
-            onFixGradeClick = onFixGradeClick,
-            onResetSubjectClick = onResetSubjectClick,
-            onGradeClick = onGradeClick
-        )
-    }
+    SemesterContent(
+        modifier = modifier,
+        state = state,
+        columns = if (isLandscapeOrientation()) 2 else 1,
+        onAddClick = onAddClick,
+        onChangeModeClick = onChangeModeClick,
+        onResetClick = onResetClick,
+        onPredictDataChange = onPredictDataChange,
+        onRenameClick = onRenameClick,
+        onDeleteSubject = onDeleteSubject,
+        onFixGradeClick = onFixGradeClick,
+        onResetSubjectClick = onResetSubjectClick,
+        onGradeClick = onGradeClick
+    )
 }
 
 @Composable
-fun SemesterContentPortrait(
+fun SemesterContent(
     modifier: Modifier = Modifier,
     state: SemesterSubjectsState.Loaded,
+    columns: Int,
     onAddClick: () -> Unit,
     onChangeModeClick: () -> Unit,
     onResetClick: () -> Unit,
@@ -226,7 +210,6 @@ fun SemesterContentPortrait(
 
         Spacer(modifier = Modifier.height(spacing.small))
 
-
         if (state.subjects.isEmpty()) {
             AddSubjectsHint()
         } else {
@@ -234,73 +217,13 @@ fun SemesterContentPortrait(
                 subjects = state.subjects,
                 activeGrades = state.grades,
                 mode = state.mode,
+                columns = columns,
                 onGradeClick = onGradeClick,
                 onResetClick = onResetSubjectClick,
                 onDeleteSubject = onDeleteSubject,
                 onRenameClick = onRenameClick,
                 onFixGradeClick = onFixGradeClick
             )
-        }
-    }
-}
-
-@Composable
-fun SemesterContentLandscape(
-    modifier: Modifier = Modifier,
-    state: SemesterSubjectsState.Loaded,
-    onAddClick: () -> Unit,
-    onChangeModeClick: () -> Unit,
-    onResetClick: () -> Unit,
-    onPredictDataChange: (Pair<String, Boolean>) -> Unit,
-    onRenameClick: (subject: Subject) -> Unit,
-    onDeleteSubject: (subjectId: Long) -> Unit,
-    onFixGradeClick: (subjectId: Long, fixed: Boolean) -> Unit,
-    onResetSubjectClick: (subjectId: Long) -> Unit,
-    onGradeClick: (subjectId: Long, grade: GradeName) -> Unit,
-) {
-    val spacing = LocalSpacing.current
-
-    Column(modifier = modifier) {
-        Controllers(
-            mode = state.mode,
-            onChangeModeClick = onChangeModeClick,
-            onAddClick = onAddClick,
-            onResetClick = onResetClick
-        )
-
-        Spacer(modifier = Modifier.height(spacing.small))
-
-        Row {
-            ResultCard(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(0.5f),
-                modeResult = state.modeResult,
-                onTargetGPAChange = { targetGPA, reverseOrder ->
-                    onPredictDataChange(targetGPA to reverseOrder)
-                },
-                mode = state.mode,
-            )
-
-            Spacer(modifier = Modifier.width(spacing.small))
-
-            if (state.subjects.isEmpty()) {
-                AddSubjectsHint(
-                    modifier = Modifier.weight(0.7f),
-                )
-            } else {
-                SubjectsColumn(
-                    modifier = Modifier.weight(1f),
-                    subjects = state.subjects,
-                    activeGrades = state.grades,
-                    mode = state.mode,
-                    onGradeClick = onGradeClick,
-                    onResetClick = onResetSubjectClick,
-                    onDeleteSubject = onDeleteSubject,
-                    onRenameClick = onRenameClick,
-                    onFixGradeClick = onFixGradeClick
-                )
-            }
         }
     }
 }
