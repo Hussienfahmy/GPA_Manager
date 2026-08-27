@@ -2,4 +2,13 @@
 <resources>
 
     <style name="Theme.GPAManager" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- androidx.core SplashScreen: cold-start icon, dismissed once MainActivity draws its first
+         frame. Kept as a static icon (not windowSplashScreenAnimatedIcon's AVD/animated-vector
+         support) since there's no branded animation asset. -->
+    <style name="Theme.GPAManager.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
+        <item name="postSplashScreenTheme">@style/Theme.GPAManager</item>
+    </style>
 </resources>
