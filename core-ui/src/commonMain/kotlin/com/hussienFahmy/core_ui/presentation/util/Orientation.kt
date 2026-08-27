@@ -1,11 +1,14 @@
 package com.hussienfahmy.core_ui.presentation.util
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalWindowInfo
 
 /**
- * Compose Multiplatform has no shared orientation API (LocalConfiguration is Android-only) -
- * this is the minimal expect/actual needed to keep screens that branch on orientation
- * (portrait/landscape layouts) in commonMain.
+ * [LocalWindowInfo.containerSize] is backed by Compose state on every target (Android, iOS, ...),
+ * so - unlike reading UIScreen.mainScreen.bounds directly on iOS - this recomposes on rotation.
  */
 @Composable
-expect fun isLandscapeOrientation(): Boolean
+fun isLandscapeOrientation(): Boolean {
+    val size = LocalWindowInfo.current.containerSize
+    return size.width > size.height
+}

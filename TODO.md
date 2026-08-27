@@ -6,10 +6,11 @@
 
 ## Enhancements
 - Add Summer semester in the options?!, if so consider finish semester shouldn't go to summer one. this is special
+- Splash API
+- 
 
 ## Bugs
 - Subjects with 0 credit hours, have 0 Total marks, so Marks feature Have 0 too, and added marks count from negative and can't adjust how final marks count from since it is 0 and can't be more that the total marks of 0
-- isLandscapeOrientation() on IOS, doesn't re-evaluate on rotation. it should be in common and drived from widnow size class as it provide compsoe state
 
 ## Before Publishing Android
 - App profiler: precompile in semester_marks before publishing.
