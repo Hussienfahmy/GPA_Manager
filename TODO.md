@@ -17,5 +17,4 @@
 - isLandscapeOrientation() on IOS, doesn't re-evaluate on rotation. it should be in common and drived from widnow size class as it provide compsoe state
 
 ## Before Publishing Android
-- Test Arabic.
 - App profiler: precompile in semester_marks before publishing.
