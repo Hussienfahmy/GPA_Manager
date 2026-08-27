@@ -181,13 +181,13 @@
     <!-- Final exam strings -->
     <string name="final_exam">الامتحان النهائي</string>
     <string name="final_exam_total_hint">الدرجة الكلية للامتحان النهائي</string>
-    <string name="final_exam_description_prefix">أدخل الدرجة الكلية للامتحان النهائي (مثال: ٦٠) —</string>
+    <string name="final_exam_description_prefix">أدخل الدرجة الكلية للامتحان النهائي (مثال: ٦٠):</string>
     <string name="final_exam_description_emphasis">وليست درجتك التي حصلت عليها.</string>
     <string name="final_exam_description_suffix">تُستخدم لإظهار أعلى تقدير لا يزال بإمكانك تحقيقه.</string>
     <string name="final_exam_label">الامتحان النهائي من أصل</string>
     <string name="err_subject_final_exam_invalid">يجب أن تكون درجة الامتحان النهائي أكبر من الصفر</string>
     <string name="err_subject_final_exam_exceeds_total">لا يمكن أن يكون إجمالي الامتحان النهائي أكبر من إجمالي درجات المادة</string>
-    <string name="err_subject_final_exam_below_semester">يجب أن يكون إجمالي الامتحان النهائي أكبر من درجات أعمال السنة التي أدخلتها — أدخل الدرجة الكلية للامتحان، وليس درجتك</string>
+    <string name="err_subject_final_exam_below_semester">يجب أن يكون إجمالي الامتحان النهائي أكبر من درجات أعمال السنة التي أدخلتها. أدخل الدرجة الكلية للامتحان، وليس درجتك</string>
     <string name="final_exam_score">درجة الامتحان النهائي</string>
     <string name="semester_work">الأعمال الفصلية</string>
 
@@ -265,8 +265,8 @@
     <string name="history_semester_gpa">معدل الفصل</string>
     <string name="history_delete_semester_message">حذف \"%1$s\"؟ سيتم حذف الفصل وجميع مواده نهائياً. لا يمكن التراجع عن هذا.</string>
     <string name="history_delete_subject_title">حذف المادة</string>
-    <string name="history_delete_subject_message">حذف \"%1$s\"؟ سيؤثر هذا على حساب المعدل التراكمي الحالي ولا يمكن التراجع عنه — ستحتاج إلى إضافته يدوياً مرة أخرى.</string>
-    <string name="history_no_grade_excluded">بدون تقدير — مستبعد من المعدل التراكمي</string>
+    <string name="history_delete_subject_message">حذف \"%1$s\"؟ سيؤثر هذا على حساب المعدل التراكمي الحالي ولا يمكن التراجع عنه. ستحتاج إلى إضافته يدوياً مرة أخرى.</string>
+    <string name="history_no_grade_excluded">بدون تقدير: مستبعد من المعدل التراكمي</string>
     <string name="history_finish_semester_title">إنهاء الفصل الدراسي الحالي؟</string>
     <string name="history_finish_semester_will_be_saved">سيتم الحفظ كـ: \"%1$s\"</string>
     <string name="history_finish_semester_message">سيتم أرشفة موادك وتقديراتها من الفصل الحالي كما هي. تأكد من مراجعة وتقديد التقديرات الصحيحة قبل المتابعة - لا يزال يمكنك تعديلها لاحقاً من السجل.\n\nسينقلك هذا إلى السنة %1$d – الفصل %2$d.</string>
@@ -287,9 +287,9 @@
     <string name="history_edit_subject">تعديل المادة</string>
     <string name="history_edit_semester">تعديل الفصل</string>
     <string name="history_marks_section_title">الدرجات</string>
-    <string name="history_marks_section_note">اختياري — للسجل فقط، لا تؤثر على التقدير المحدد. تُدرَج في تقرير PDF المُصدَّر.</string>
+    <string name="history_marks_section_note">اختياري: للسجل فقط، لا تؤثر على التقدير المحدد. تُدرَج في تقرير PDF المُصدَّر.</string>
     <string name="history_assign_grade_hint">يرجى تحديد تقدير.</string>
-    <string name="history_no_grade_excluded_hint">لا يوجد تقدير — مستبعدة من المعدل. يرجى تحديد تقدير.</string>
+    <string name="history_no_grade_excluded_hint">لا يوجد تقدير: مستبعدة من المعدل. يرجى تحديد تقدير.</string>
     <string name="history_score_with_total">%1$s / %2$s</string>
     <string name="history_score_no_total">الدرجة: %1$s</string>
     <string name="history_total_marks_info">المجموع: %1$s</string>
@@ -305,7 +305,7 @@
     <string name="out_of_reach">بعيد المنال</string>
     <string name="fixed">مثبّت</string>
     <string name="predicted">متوقع</string>
-    <string name="locked_prediction_hint">مثبّت — التوقع يعمل حول هذا التقدير</string>
+    <string name="locked_prediction_hint">مثبّت: التوقع يعمل حول هذا التقدير</string>
     <string name="prefer_high_grades_low_hours">تفضيل التقديرات العالية للمواد ذات الساعات الأقل</string>
     <string name="delete_subject_title">حذف %1$s؟</string>
     <string name="delete_subject_message">سيتم حذف المادة ودرجاتها نهائيًا من هذا الفصل.</string>
@@ -313,7 +313,7 @@
     <string name="reset_all_message">سيؤدي هذا إلى مسح كل التقديرات المحددة في الفصل الحالي نهائيًا. ستبقى موادك كما هي.</string>
     <string name="reset_all">إعادة تعيين الكل</string>
     <string name="hrs_value">%1$s ساعة</string>
-    <string name="lock_grade_hint">تستطيع تخمين نتيجتك في هذه المادة؟ ثبّتها ثم اختر التقدير المتوقع — وسيعيد التوقع التوزيع على باقي المواد.</string>
+    <string name="lock_grade_hint">تستطيع تخمين نتيجتك في هذه المادة؟ ثبّتها ثم اختر التقدير المتوقع. سيعيد التوقع التوزيع على باقي المواد.</string>
     <string name="let_app_predict">دع التطبيق يتوقع</string>
     <string name="prefer_high_grades_low_hours_hint">عند التفعيل، تحصل المواد ذات الساعات المعتمدة الأقل على أعلى التقديرات.</string>
     <string name="capped_max">الأقصى %1$s</string>
@@ -322,7 +322,7 @@
     <string name="auto">تلقائي</string>
     <string name="use_my_information_hint">يملأ المعدل والساعات من سجلّك</string>
     <string name="sheet_components_question">ما المكونات التي تُقيَّم في هذه المادة؟</string>
-    <string name="sheet_setup_title">%1$s — الإعداد</string>
+    <string name="sheet_setup_title">%1$s الإعداد</string>
     <string name="reset_marks_title">إعادة تعيين درجات %1$s؟</string>
     <string name="reset_marks_message">سيتم مسح كل الدرجات المدخلة لهذه المادة. تبقى المادة نفسها كما هي.</string>
     <string name="final_exam_marks_needed">درجات الامتحان النهائي المطلوبة لكل تقدير</string>
@@ -342,7 +342,7 @@
     <string name="gpa_scale">مقياس</string>
     <string name="gpa_scale_four_detail">A = 4.00 نقطة\nالنظام الأكثر شيوعًا</string>
     <string name="gpa_scale_five_detail">A = 5.00 نقطة\nتستخدمه بعض الكليات</string>
-    <string name="gpa_scale_warning">تغيير المقياس يعيد حساب كل المعدلات في التطبيق — الفصل الحالي والسجل.</string>
+    <string name="gpa_scale_warning">تغيير المقياس يعيد حساب كل المعدلات في التطبيق: الفصل الحالي والسجل.</string>
     <string name="subject_marks_depend_on">إجمالي درجات المادة الجديدة يعتمد على</string>
     <string name="subject_depends_credit_hours">الساعات المعتمدة</string>
     <string name="subject_depends_constant">ثابت</string>

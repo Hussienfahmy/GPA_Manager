@@ -35,11 +35,11 @@
     <string name="err_subject_project_negative">Project marks can not be less than zero</string>
     <string name="err_subject_final_exam_invalid">Final exam marks must be more than zero</string>
     <string name="err_subject_final_exam_exceeds_total">Final exam total can't be more than the subject total marks</string>
-    <string name="err_subject_final_exam_below_semester">Final exam total must be larger than the semester marks you entered — enter what the exam is out of, not your score</string>
+    <string name="err_subject_final_exam_below_semester">Final exam total must be larger than the semester marks you entered. Enter what the exam is out of, not your score</string>
     <string name="final_exam">Final Exam</string>
     <string name="final_exam_total_hint">Max marks for final exam</string>
     <string name="semester_work">Semester Work</string>
-    <string name="final_exam_description_prefix">Enter what the final exam is out of (e.g. 60) —</string>
+    <string name="final_exam_description_prefix">Enter what the final exam is out of (e.g. 60):</string>
     <string name="final_exam_description_emphasis">not the score you got.</string>
     <string name="final_exam_description_suffix">Used to show the highest grade you can still reach.</string>
     <string name="final_exam_label">Final exam out of</string>
@@ -239,7 +239,7 @@
     <string name="history_empty_state">No semesters yet.\nTap + to add a past semester, or tap “Finish Semester” to archive the current one.</string>
     <string name="history_type_summary">Summary</string>
     <string name="history_type_detailed">Detailed</string>
-    <string name="history_summary_type_description">Quick entry — only the semester GPA and total credit hours. No need to add individual subjects.</string>
+    <string name="history_summary_type_description">Quick entry: only the semester GPA and total credit hours. No need to add individual subjects.</string>
     <string name="history_detailed_type_description">You will enter each subject individually on the next screen. Use this for an accurate per-subject record.</string>
     <string name="history_semester_label">Semester Label</string>
     <string name="history_label">Label</string>
@@ -251,11 +251,11 @@
     <string name="history_semester_gpa">Semester GPA</string>
     <string name="history_delete_semester_message">Delete “%1$s”? This will permanently remove the semester and all its subjects. This cannot be undone.</string>
     <string name="history_delete_subject_title">Delete Subject</string>
-    <string name="history_delete_subject_message">Delete “%1$s”? This will affect the current GPA calculation and cannot be undone — you would need to re-add it manually.</string>
-    <string name="history_no_grade_excluded">No grade — excluded from GPA</string>
+    <string name="history_delete_subject_message">Delete “%1$s”? This will affect the current GPA calculation and cannot be undone. You would need to re-add it manually.</string>
+    <string name="history_no_grade_excluded">No grade: excluded from GPA</string>
     <string name="history_finish_semester_title">Finish Current Semester?</string>
     <string name="history_finish_semester_will_be_saved">Will be saved as: “%1$s”</string>
-    <string name="history_finish_semester_message">Your subjects and their assigned grades from the Semester tab will be archived as-is. Make sure you've reviewed and set the correct grades before continuing — you can still edit them later from History.\n\nThis will move you to Year %1$d – Semester %2$d.</string>
+    <string name="history_finish_semester_message">Your subjects and their assigned grades from the Semester tab will be archived as-is. Make sure you've reviewed and set the correct grades before continuing. You can still edit them later from History.\n\nThis will move you to Year %1$d – Semester %2$d.</string>
     <string name="history_gpa_value">GPA: %1$s</string>
     <string name="history_hours_value">· %1$d hrs</string>
     <string name="history_points_value">Points: %1$s</string>
@@ -295,9 +295,9 @@
     <string name="history_edit_subject">Edit Subject</string>
     <string name="history_edit_semester">Edit semester</string>
     <string name="history_marks_section_title">Marks</string>
-    <string name="history_marks_section_note">Optional — historical only, doesn't affect the assigned grade. Included in the exported PDF report.</string>
+    <string name="history_marks_section_note">Optional: historical only, doesn't affect the assigned grade. Included in the exported PDF report.</string>
     <string name="history_assign_grade_hint">Please assign a grade.</string>
-    <string name="history_no_grade_excluded_hint">No grade — excluded from GPA. Please assign a grade.</string>
+    <string name="history_no_grade_excluded_hint">No grade: excluded from GPA. Please assign a grade.</string>
     <string name="history_score_with_total">%1$s / %2$s</string>
     <string name="history_score_no_total">Score: %1$s</string>
     <string name="history_total_marks_info">Total: %1$s</string>
@@ -313,7 +313,7 @@
     <string name="out_of_reach">out of reach</string>
     <string name="fixed">Fixed</string>
     <string name="predicted">Predicted</string>
-    <string name="locked_prediction_hint">Locked — the prediction works around this grade</string>
+    <string name="locked_prediction_hint">Locked: the prediction works around this grade</string>
     <string name="prefer_high_grades_low_hours">Prefer high grades on low credit-hour subjects</string>
     <string name="delete_subject_title">Delete %1$s?</string>
     <string name="delete_subject_message">The subject and its marks are permanently removed from this semester.</string>
@@ -321,7 +321,7 @@
     <string name="reset_all_message">This permanently clears every assigned grade in the current semester. Your subjects stay in place.</string>
     <string name="reset_all">Reset all</string>
     <string name="hrs_value">%1$s hrs</string>
-    <string name="lock_grade_hint">Can already guess your result for this subject? Lock it, then tap the grade you expect — the plan works around it and redistributes across the remaining subjects.</string>
+    <string name="lock_grade_hint">Can already guess your result for this subject? Lock it, then tap the grade you expect. The plan works around it and redistributes across the remaining subjects.</string>
     <string name="let_app_predict">Let app predict</string>
     <string name="prefer_high_grades_low_hours_hint">When on, subjects with the fewest credit hours get the highest grades.</string>
     <string name="capped_max">max %1$s</string>
@@ -330,7 +330,7 @@
     <string name="auto">auto</string>
     <string name="use_my_information_hint">Fills GPA &amp; hours from your history</string>
     <string name="sheet_components_question">Which components does this course grade?</string>
-    <string name="sheet_setup_title">%1$s — setup</string>
+    <string name="sheet_setup_title">%1$s setup</string>
     <string name="reset_marks_title">Reset marks for %1$s?</string>
     <string name="reset_marks_message">All entered marks for this subject are cleared. The subject itself stays in place.</string>
     <string name="final_exam_marks_needed">Final-exam marks needed for each grade</string>
@@ -350,7 +350,7 @@
     <string name="gpa_scale">scale</string>
     <string name="gpa_scale_four_detail">A = 4.00 points\nMost common system</string>
     <string name="gpa_scale_five_detail">A = 5.00 points\nUsed by some faculties</string>
-    <string name="gpa_scale_warning">Changing the scale recalculates every GPA in the app — current semester and history.</string>
+    <string name="gpa_scale_warning">Changing the scale recalculates every GPA in the app: current semester and history.</string>
     <string name="subject_marks_depend_on">New-subject total marks depend on</string>
     <string name="subject_depends_credit_hours">Credit hours</string>
     <string name="subject_depends_constant">Constant</string>
