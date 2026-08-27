@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldLayout
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarHost
@@ -106,6 +107,10 @@ fun GpaManagerApp() {
             }
         }
 
+        val navigationSuiteType = NavigationSuiteScaffoldDefaults
+            .calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
+        val showBottomBar = !showOnboarding && navigationSuiteType == NavigationSuiteType.NavigationBar
+
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
@@ -114,8 +119,22 @@ fun GpaManagerApp() {
                 },
             snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
             // No topBar - each sub-screen owns its own via ScreenWithToolbar (see AppNavHost).
-            // No bottomBar either - AppBottomNav now lives inside NavigationSuiteScaffold below.
+            bottomBar = {
+                if (showBottomBar) {
+                    AppBottomNav(
+                        appNavigationState = appNavigationState,
+                        navigationSuiteType = navigationSuiteType,
+                    )
+                }
+            },
         ) { paddingValues ->
+            // Only the top inset is applied to the container here (status bar clearance, uniform
+            // for every screen) - the bottom inset is deliberately not, since that would push
+            // content entirely above AppBottomNav instead of letting it draw behind it (Scaffold
+            // itself already overlays bottomBar on top of full-height content, it doesn't shrink
+            // it - unlike NavigationSuiteScaffoldLayout, used below only for the wide/rail case).
+            // Screens read the full paddingValues via LocalScaffoldContentPadding and merge the
+            // bottom component into their own scrollable's contentPadding instead.
             CompositionLocalProvider(LocalScaffoldContentPadding provides paddingValues) {
                 val contentModifier = Modifier
                     .fillMaxSize()
@@ -129,12 +148,16 @@ fun GpaManagerApp() {
                         snackBarHostState = snackBarHostState,
                         onOnboardingComplete = { showOnboarding = false },
                     )
+                } else if (navigationSuiteType == NavigationSuiteType.NavigationBar) {
+                    MainAppContent(
+                        modifier = contentModifier,
+                        appNavigationState = appNavigationState,
+                        snackBarHostState = snackBarHostState,
+                    )
                 } else {
-                    val navigationSuiteType = NavigationSuiteScaffoldDefaults
-                        .calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
-
-                    // NavigationSuiteScaffold wraps navigationItems in its own rail, double-nesting
-                    // with AppBottomNav's - use the no-wrap primitive instead. No modifier param, so Box.
+                    // Wide/rail layouts: squeeze content beside the rail via the no-wrap
+                    // primitive - NavigationSuiteScaffold wraps navigationItems in its own
+                    // rail, double-nesting with AppBottomNav's.
                     Box(modifier = contentModifier) {
                         NavigationSuiteScaffoldLayout(
                             navigationSuite = {
