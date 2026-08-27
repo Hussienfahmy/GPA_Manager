@@ -332,7 +332,7 @@
     <string name="more_gpa_chip">معدل %1$s</string>
     <string name="more_institution_line">%1$s\n%2$s · %3$s</string>
     <string name="grade_pts_pill">%1$s نقطة</string>
-    <string name="grade_pct_pill">≥ %1$s%%</string>
+    <string name="grade_pct_pill">≥ %1$s%</string>
     <string name="grade_edit_points_title">نقاط %1$s</string>
     <string name="grade_edit_percentage_title">نسبة %1$s</string>
     <string name="grade_edit_points_subtitle">النقاط التي تبدأ منها هذه الدرجة</string>
