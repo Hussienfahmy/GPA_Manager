@@ -59,16 +59,17 @@ fun AppMoreScreen(
 
     val userData by moreViewModel.userData.collectAsStateWithLifecycle(null)
 
-    val loading = userData == null || moreViewModel.isSigningOut
+    val currentUserData = userData
+    val loading = currentUserData == null || moreViewModel.isSigningOut
     Crossfade(targetState = loading, label = "moreScreenLoading") { isLoading ->
-        if (isLoading) {
+        if (isLoading || currentUserData == null) {
             Box(modifier = modifier.fillMaxSize()) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         } else {
             MoreScreenContent(
                 modifier = modifier,
-                userData = userData!!,
+                userData = currentUserData,
                 onUserDataCardClick = onUserDataCardClick,
                 onGPASettingsClick = onGPASettingsClick,
                 onGradeSettingsClick = onGradeSettingsClick,
