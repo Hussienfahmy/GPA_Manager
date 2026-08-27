@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.core.domain.sync.SyncUpload
-import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
 import com.hussienfahmy.core.model.UiText
 import com.hussienfahmy.core_ui.presentation.model.UiEvent
@@ -58,10 +57,7 @@ class SemesterHistoryViewModel(
                     cumulativeGPA = progress.cumulativeGPA,
                     totalCreditHours = progress.creditHours,
                     currentLevel = userData.academicInfo.level,
-                    currentSemesterNum = when (userData.academicInfo.semester) {
-                        UserData.AcademicInfo.Semester.Second -> 2
-                        UserData.AcademicInfo.Semester.First -> 1
-                    },
+                    currentSemester = userData.academicInfo.semester,
                     hasWorkspaceSubjects = subjectCount > 0,
                 )
             }.collect { state.value = it }

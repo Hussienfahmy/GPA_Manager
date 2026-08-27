@@ -36,6 +36,7 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
@@ -117,7 +118,7 @@ fun SemesterHistoryScreen(
             val loadedState = state as SemesterHistoryState.Loaded
             FinishSemesterSheet(
                 currentLevel = loadedState.currentLevel,
-                currentSemesterNum = loadedState.currentSemesterNum,
+                currentSemester = loadedState.currentSemester,
                 onConfirm = {
                     showFinishDialog = false
                     viewModel.onEvent(SemesterHistoryEvent.FinishSemester)
@@ -273,7 +274,11 @@ fun SemesterHistoryContent(
                     text = stringResource(
                         Res.string.history_you_are_in,
                         state.currentLevel,
-                        state.currentSemesterNum
+                        when (state.currentSemester) {
+                            UserData.AcademicInfo.Semester.First -> stringResource(Res.string.first)
+                            UserData.AcademicInfo.Semester.Second -> stringResource(Res.string.second)
+                            UserData.AcademicInfo.Semester.Summer -> stringResource(Res.string.summer)
+                        },
                     ),
                     style = MeadowChipStyle.Accent,
                 )

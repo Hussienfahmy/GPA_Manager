@@ -16,7 +16,7 @@ data class UserData(
         val semester: Semester
     ) {
         enum class Semester {
-            First, Second
+            First, Second, Summer
         }
     }
 

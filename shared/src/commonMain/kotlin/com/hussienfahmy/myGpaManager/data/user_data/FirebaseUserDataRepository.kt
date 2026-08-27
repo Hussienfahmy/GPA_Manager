@@ -123,6 +123,7 @@ class FirebaseUserDataRepository(
             when (semester) {
                 UserData.AcademicInfo.Semester.First -> FirebaseUserData.AcademicInfo.Semester.First
                 UserData.AcademicInfo.Semester.Second -> FirebaseUserData.AcademicInfo.Semester.Second
+                UserData.AcademicInfo.Semester.Summer -> FirebaseUserData.AcademicInfo.Semester.Summer
             }
         )
     }

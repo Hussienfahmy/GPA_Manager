@@ -23,12 +23,14 @@ import androidx.compose.ui.draw.clip
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButton
 import com.hussienfahmy.core_ui.presentation.components.meadow.PillButtonStyle
 import com.hussienfahmy.core_ui.theme.MeadowRadius
 import com.hussienfahmy.core_ui.theme.MeadowTheme
+import com.hussienfahmy.semester_history_domain.use_case.SemesterProgression
 
 /**
  * "Finish this semester?" — positive confirmation (design 3f/2b): the semester
@@ -37,14 +39,14 @@ import com.hussienfahmy.core_ui.theme.MeadowTheme
 @Composable
 fun FinishSemesterSheet(
     currentLevel: Int,
-    currentSemesterNum: Int,
+    currentSemester: UserData.AcademicInfo.Semester,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     MeadowBottomSheet(onDismiss = onDismiss) {
         FinishSemesterSheetContent(
             currentLevel = currentLevel,
-            currentSemesterNum = currentSemesterNum,
+            currentSemester = currentSemester,
             onConfirm = onConfirm,
             onDismiss = onDismiss,
         )
@@ -54,7 +56,7 @@ fun FinishSemesterSheet(
 @Composable
 fun FinishSemesterSheetContent(
     currentLevel: Int,
-    currentSemesterNum: Int,
+    currentSemester: UserData.AcademicInfo.Semester,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
@@ -62,9 +64,11 @@ fun FinishSemesterSheetContent(
     val colors = MeadowTheme.colors
     val accent = MeadowTheme.accent
 
-    val nextSemesterNum = if (currentSemesterNum == 1) 2 else 1
-    val nextLevel = if (currentSemesterNum == 2) currentLevel + 1 else currentLevel
-    val archiveLabel = "Year $currentLevel - Semester $currentSemesterNum"
+    // "next" only ever resolves to First/Second (see SemesterProgression) - finish-semester never
+    // lands on Summer itself, only a user manually setting their profile to it can.
+    val (nextSemester, nextLevel) = SemesterProgression.next(currentSemester, currentLevel)
+    val nextSemesterNum = if (nextSemester == UserData.AcademicInfo.Semester.First) 1 else 2
+    val archiveLabel = SemesterProgression.label(currentLevel, currentSemester)
 
     Column(modifier = modifier.fillMaxWidth()) {
         Box(
@@ -142,7 +146,7 @@ private fun FinishSemesterSheetShowcase() {
     ) {
         FinishSemesterSheetContent(
             currentLevel = 2,
-            currentSemesterNum = 1,
+            currentSemester = UserData.AcademicInfo.Semester.First,
             onConfirm = {},
             onDismiss = {},
         )

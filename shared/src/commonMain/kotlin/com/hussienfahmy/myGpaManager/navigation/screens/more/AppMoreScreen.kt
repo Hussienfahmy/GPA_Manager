@@ -130,6 +130,7 @@ fun MoreScreenContent(
                     when (userData.academicInfo.semester) {
                         UserData.AcademicInfo.Semester.First -> stringResource(Res.string.first)
                         UserData.AcademicInfo.Semester.Second -> stringResource(Res.string.second)
+                        UserData.AcademicInfo.Semester.Summer -> stringResource(Res.string.summer)
                     },
                 ),
                 photoUrl = userData.photoUrl,

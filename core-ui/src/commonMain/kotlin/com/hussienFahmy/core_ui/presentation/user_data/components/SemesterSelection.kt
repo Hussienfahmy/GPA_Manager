@@ -39,12 +39,20 @@ fun SemesterSelection(
             options = listOf(
                 stringResource(Res.string.first),
                 stringResource(Res.string.second),
+                stringResource(Res.string.summer),
             ),
-            selectedIndex = if (semester == UserData.AcademicInfo.Semester.First) 0 else 1,
+            selectedIndex = when (semester) {
+                UserData.AcademicInfo.Semester.First -> 0
+                UserData.AcademicInfo.Semester.Second -> 1
+                UserData.AcademicInfo.Semester.Summer -> 2
+            },
             onSelect = { index ->
                 onSemesterClick(
-                    if (index == 0) UserData.AcademicInfo.Semester.First
-                    else UserData.AcademicInfo.Semester.Second
+                    when (index) {
+                        0 -> UserData.AcademicInfo.Semester.First
+                        1 -> UserData.AcademicInfo.Semester.Second
+                        else -> UserData.AcademicInfo.Semester.Summer
+                    }
                 )
             },
         )

@@ -18,6 +18,7 @@ internal fun FirebaseUserData.toDomain(id: String): UserData = UserData(
         semester = when (academicInfo.semester) {
             FirebaseUserData.AcademicInfo.Semester.First -> UserData.AcademicInfo.Semester.First
             FirebaseUserData.AcademicInfo.Semester.Second -> UserData.AcademicInfo.Semester.Second
+            FirebaseUserData.AcademicInfo.Semester.Summer -> UserData.AcademicInfo.Semester.Summer
         }
     ),
     academicProgress = UserData.AcademicProgress(

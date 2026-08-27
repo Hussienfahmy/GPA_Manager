@@ -4,7 +4,6 @@ import com.hussienfahmy.core.data.local.SemesterDao
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.entity.Semester
 import com.hussienfahmy.core.domain.sync.SyncDirtyTracker
-import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateLevel
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateSemester
@@ -29,7 +28,7 @@ class ArchiveCurrentSemester(
     suspend operator fun invoke(): Result {
         val userData = getUserData().filterNotNull().first()
         val currentLevel = userData.academicInfo.level
-        val currentSemesterNum = userData.academicInfo.semester
+        val currentSemester = userData.academicInfo.semester
 
         val currentSubjects = subjectDao.getAllCurrentSubjects().first()
         if (currentSubjects.isEmpty()) return Result.NoSubjects
@@ -37,7 +36,7 @@ class ArchiveCurrentSemester(
         val semesterGPA = calculateSemesterGPA(currentSubjects)
         val totalCreditHours = currentSubjects.sumOf { it.creditHours }.toInt()
 
-        val label = buildLabel(currentLevel, currentSemesterNum)
+        val label = SemesterProgression.label(currentLevel, currentSemester)
         val nextOrder = (semesterDao.getMaxOrder() ?: 0) + 1
 
         val newSemester = Semester(
@@ -54,30 +53,11 @@ class ArchiveCurrentSemester(
         val semesterId = semesterDao.insert(newSemester)
         subjectDao.linkWorkspaceSubjectsToSemester(semesterId)
 
-        advanceSemester(currentLevel, currentSemesterNum)
+        val (nextSemester, nextLevel) = SemesterProgression.next(currentSemester, currentLevel)
+        updateSemester(nextSemester)
+        if (nextLevel != currentLevel) updateLevel(nextLevel.toString())
         dirtyTracker.markSemestersChanged()
 
         return Result.Success
-    }
-
-    private suspend fun advanceSemester(
-        currentLevel: Int,
-        currentSemester: UserData.AcademicInfo.Semester,
-    ) {
-        when (currentSemester) {
-            UserData.AcademicInfo.Semester.First -> updateSemester(UserData.AcademicInfo.Semester.Second)
-            UserData.AcademicInfo.Semester.Second -> {
-                updateSemester(UserData.AcademicInfo.Semester.First)
-                updateLevel((currentLevel + 1).toString())
-            }
-        }
-    }
-
-    private fun buildLabel(level: Int, semester: UserData.AcademicInfo.Semester): String {
-        val semesterName = when (semester) {
-            UserData.AcademicInfo.Semester.First -> "1"
-            UserData.AcademicInfo.Semester.Second -> "2"
-        }
-        return "Year $level - Semester $semesterName"
     }
 }

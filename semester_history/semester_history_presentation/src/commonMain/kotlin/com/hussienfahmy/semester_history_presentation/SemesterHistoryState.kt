@@ -1,5 +1,6 @@
 package com.hussienfahmy.semester_history_presentation
 
+import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.semester_history_domain.model.Semester
 
 sealed class SemesterHistoryState {
@@ -9,7 +10,7 @@ sealed class SemesterHistoryState {
         val cumulativeGPA: Double,
         val totalCreditHours: Int,
         val currentLevel: Int,
-        val currentSemesterNum: Int, // 1 or 2
+        val currentSemester: UserData.AcademicInfo.Semester,
         val hasWorkspaceSubjects: Boolean,
     ) : SemesterHistoryState()
 }

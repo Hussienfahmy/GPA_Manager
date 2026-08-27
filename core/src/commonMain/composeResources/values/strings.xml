@@ -91,6 +91,7 @@
     <string name="reset">Reset</string>
     <string name="save">Save</string>
     <string name="second">Second</string>
+    <string name="summer">Summer</string>
     <string name="semester">Semester</string>
     <string name="semester_credit_hours">Semester Credit Hours</string>
     <string name="send">Send</string>
@@ -237,7 +238,7 @@
     <string name="history_add_past_semester">Add Past Semester</string>
     <string name="history_add_past_data">Add Past Data</string>
     <string name="history_add_current_gpa">Add Current GPA</string>
-    <string name="history_you_are_in">You are in: Year %1$d – Semester %2$d</string>
+    <string name="history_you_are_in">You are in: Year %1$d – Semester %2$s</string>
     <string name="history_empty_state">No semesters yet.\nTap + to add a past semester, or tap “Finish Semester” to archive the current one.</string>
     <string name="history_type_summary">Summary</string>
     <string name="history_type_detailed">Detailed</string>

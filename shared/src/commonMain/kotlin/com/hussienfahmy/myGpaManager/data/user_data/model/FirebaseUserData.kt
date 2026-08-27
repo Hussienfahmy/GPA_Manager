@@ -53,7 +53,7 @@ internal data class FirebaseUserData(
     ) {
         @Serializable
         enum class Semester {
-            First, Second
+            First, Second, Summer
         }
     }
 

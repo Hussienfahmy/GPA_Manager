@@ -101,6 +101,7 @@
     <string name="save">حفظ</string>
     <string name="second">الثاني</string>
     <string name="semester">الفصل الدراسي</string>
+    <string name="summer">الصيفي</string>
     <string name="semester_credit_hours">عدد ساعات الفصل الدراسي</string>
     <string name="send">ارسال</string>
     <string name="send_feedback_summary">إرسال ملاحظات للمطور حول تجربتك أو مشكلة واجهتها في التطبيق</string>
@@ -251,7 +252,7 @@
     <string name="history_add_past_semester">إضافة فصل سابق</string>
     <string name="history_add_past_data">إضافة بيانات سابقة</string>
     <string name="history_add_current_gpa">إضافة المعدل التراكمي الحالي</string>
-    <string name="history_you_are_in">أنت في: السنة %1$d – الفصل %2$d</string>
+    <string name="history_you_are_in">أنت في: السنة %1$d – الفصل %2$s</string>
     <string name="history_empty_state">لا توجد فصول بعد.\nاضغط + لإضافة فصل سابق، أو اضغط \"إنهاء الفصل الدراسي\" لأرشفة الفصل الحالي.</string>
     <string name="history_type_summary">ملخص</string>
     <string name="history_type_detailed">مفصل</string>
