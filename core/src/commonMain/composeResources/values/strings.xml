@@ -107,7 +107,9 @@
     <string name="yes">Yes</string>
     <string name="are_you_sure">Are you sure ?</string>
     <string name="is_app_useful">Did you find the app useful ? ❤</string>
-    <string name="is_app_useful_details">If you find the app useful and really helped you, make us happy by clicking here to rate and review the app on play store</string>
+    <string name="is_app_useful_details">If you find the app useful and really helped you, make us happy by clicking here to rate and review the app on %1$s</string>
+    <string name="store_name_google_play">Google Play</string>
+    <string name="store_name_app_store">App Store</string>
     <string name="about_app">About App</string>
     <string name="about_app_summary">Info about the app and the developer</string>
     <string name="app_version" translatable="false">Version %1$s</string>

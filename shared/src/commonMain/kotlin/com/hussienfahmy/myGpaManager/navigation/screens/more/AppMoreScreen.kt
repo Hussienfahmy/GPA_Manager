@@ -30,6 +30,7 @@ import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core.domain.analytics.AnalyticsValues
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.util.UrlOpener
+import com.hussienfahmy.core.util.storeDisplayNameRes
 import com.hussienfahmy.core.util.storeRatingUrl
 import com.hussienfahmy.core.util.truncate
 import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
@@ -175,7 +176,7 @@ fun MoreScreenContent(
                 MeadowSettingsRow(
                     icon = Icons.Outlined.WorkspacePremium,
                     title = stringResource(Res.string.is_app_useful),
-                    summary = stringResource(Res.string.is_app_useful_details),
+                    summary = stringResource(Res.string.is_app_useful_details, stringResource(storeDisplayNameRes)),
                     tileAccent = colors.marks,
                     trailing = SettingsRowTrailing.External,
                     onClick = {

@@ -117,7 +117,9 @@
     <string name="are_you_sure">هل أنت متأكد ؟</string>
     <string name="yes">نعم</string>
     <string name="is_app_useful">هل وجدت التطبيق مفيد ؟ ❤</string>
-    <string name="is_app_useful_details">اذا وجدت التطبيق مفيد و ساعدك فعلا. فسيسعدنا ان تضغط هنا لتقيم التطبيق علي متجر بلاي</string>
+    <string name="is_app_useful_details">اذا وجدت التطبيق مفيد و ساعدك فعلا. فسيسعدنا ان تضغط هنا لتقيم التطبيق علي %1$s</string>
+    <string name="store_name_google_play">متجر بلاي</string>
+    <string name="store_name_app_store">أبل ستور</string>
     <string name="about_app">حول التطبيق</string>
     <string name="about_app_summary">معلومات حول التطبيق والمطور</string>
     <string name="connect_with_us">تواصل معنا</string>
