@@ -3,10 +3,12 @@ package com.hussienfahmy.semester_history_presentation.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -19,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
@@ -38,6 +41,24 @@ fun FinishSemesterSheet(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    MeadowBottomSheet(onDismiss = onDismiss) {
+        FinishSemesterSheetContent(
+            currentLevel = currentLevel,
+            currentSemesterNum = currentSemesterNum,
+            onConfirm = onConfirm,
+            onDismiss = onDismiss,
+        )
+    }
+}
+
+@Composable
+fun FinishSemesterSheetContent(
+    currentLevel: Int,
+    currentSemesterNum: Int,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val colors = MeadowTheme.colors
     val accent = MeadowTheme.accent
 
@@ -45,7 +66,7 @@ fun FinishSemesterSheet(
     val nextLevel = if (currentSemesterNum == 2) currentLevel + 1 else currentLevel
     val archiveLabel = "Year $currentLevel - Semester $currentSemesterNum"
 
-    MeadowBottomSheet(onDismiss = onDismiss) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
@@ -110,4 +131,38 @@ fun FinishSemesterSheet(
             )
         }
     }
+}
+
+@Composable
+private fun FinishSemesterSheetShowcase() {
+    Column(
+        modifier = Modifier
+            .background(MeadowTheme.colors.card)
+            .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 22.dp),
+    ) {
+        FinishSemesterSheetContent(
+            currentLevel = 2,
+            currentSemesterNum = 1,
+            onConfirm = {},
+            onDismiss = {},
+        )
+    }
+}
+
+@Preview(name = "FinishSemesterSheet · light", showBackground = true)
+@Composable
+private fun FinishSemesterSheetLightPreview() {
+    MeadowTheme(darkTheme = false) { FinishSemesterSheetShowcase() }
+}
+
+@Preview(name = "FinishSemesterSheet · dark", showBackground = true)
+@Composable
+private fun FinishSemesterSheetDarkPreview() {
+    MeadowTheme(darkTheme = true) { FinishSemesterSheetShowcase() }
+}
+
+@Preview(name = "FinishSemesterSheet · AR", showBackground = true, locale = "ar")
+@Composable
+private fun FinishSemesterSheetArPreview() {
+    MeadowTheme(darkTheme = false) { FinishSemesterSheetShowcase() }
 }

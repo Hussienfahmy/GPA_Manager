@@ -130,3 +130,21 @@ private fun RenameSheetDarkPreview() {
         }
     }
 }
+
+@Preview(name = "RenameSheet · AR", showBackground = true, locale = "ar")
+@Composable
+private fun RenameSheetArPreview() {
+    MeadowTheme(darkTheme = false) {
+        Column(
+            modifier = Modifier
+                .background(MeadowTheme.colors.card)
+                .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 22.dp),
+        ) {
+            RenameSheetContent(
+                onDismiss = {},
+                onSaveClick = {},
+                subjectCurrentName = "Computer Graphics",
+            )
+        }
+    }
+}

@@ -1,8 +1,11 @@
 package com.hussienfahmy.semester_history_presentation.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
@@ -26,6 +30,22 @@ import com.hussienfahmy.semester_history_domain.model.Semester
 
 @Composable
 fun AddPastSemesterSheet(
+    onDismiss: () -> Unit,
+    onAddSummary: (label: String, gpa: Double, hours: Int, level: Int) -> Unit,
+    onAddDetailed: (label: String, level: Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    MeadowBottomSheet(onDismiss = onDismiss, modifier = modifier) {
+        AddPastSemesterSheetContent(
+            onDismiss = onDismiss,
+            onAddSummary = onAddSummary,
+            onAddDetailed = onAddDetailed,
+        )
+    }
+}
+
+@Composable
+fun AddPastSemesterSheetContent(
     onDismiss: () -> Unit,
     onAddSummary: (label: String, gpa: Double, hours: Int, level: Int) -> Unit,
     onAddDetailed: (label: String, level: Int) -> Unit,
@@ -48,7 +68,7 @@ fun AddPastSemesterSheet(
             label.isNotBlank()
     }
 
-    MeadowBottomSheet(onDismiss = onDismiss, modifier = modifier) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Text(
             text = stringResource(Res.string.history_add_past_semester),
             style = MaterialTheme.typography.headlineMedium,
@@ -127,4 +147,37 @@ fun AddPastSemesterSheet(
             modifier = Modifier.fillMaxWidth(),
         )
     }
+}
+
+@Composable
+private fun AddPastSemesterSheetShowcase() {
+    Column(
+        modifier = Modifier
+            .background(MeadowTheme.colors.card)
+            .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 22.dp),
+    ) {
+        AddPastSemesterSheetContent(
+            onDismiss = {},
+            onAddSummary = { _, _, _, _ -> },
+            onAddDetailed = { _, _ -> },
+        )
+    }
+}
+
+@Preview(name = "AddPastSemesterSheet · light", showBackground = true)
+@Composable
+private fun AddPastSemesterSheetLightPreview() {
+    MeadowTheme(darkTheme = false) { AddPastSemesterSheetShowcase() }
+}
+
+@Preview(name = "AddPastSemesterSheet · dark", showBackground = true)
+@Composable
+private fun AddPastSemesterSheetDarkPreview() {
+    MeadowTheme(darkTheme = true) { AddPastSemesterSheetShowcase() }
+}
+
+@Preview(name = "AddPastSemesterSheet · AR", showBackground = true, locale = "ar")
+@Composable
+private fun AddPastSemesterSheetArPreview() {
+    MeadowTheme(darkTheme = false) { AddPastSemesterSheetShowcase() }
 }

@@ -192,3 +192,19 @@ private fun ExportReportSheetContentPreview() {
         }
     }
 }
+
+@Preview(name = "ExportReportSheetContent · AR", showBackground = true, heightDp = 700, locale = "ar")
+@Composable
+private fun ExportReportSheetContentArPreview() {
+    MeadowTheme(darkTheme = false) {
+        Column(modifier = Modifier.background(MeadowTheme.colors.card).padding(20.dp)) {
+            ExportReportSheetContent(
+                state = ExportReportState(
+                    selectedTemplate = ReportTemplate.LEDGER,
+                    isExporting = false
+                ),
+                onEvent = {},
+            )
+        }
+    }
+}

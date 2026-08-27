@@ -1,8 +1,11 @@
 package com.hussienfahmy.semester_history_presentation.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
@@ -25,6 +29,24 @@ import com.hussienfahmy.semester_history_domain.model.Semester
 
 @Composable
 fun EditSemesterSheet(
+    semester: Semester,
+    onDismiss: () -> Unit,
+    onSaveLabel: (id: Long, label: String) -> Unit,
+    onSaveSummary: (id: Long, label: String, gpa: Double, hours: Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    MeadowBottomSheet(onDismiss = onDismiss, modifier = modifier) {
+        EditSemesterSheetContent(
+            semester = semester,
+            onDismiss = onDismiss,
+            onSaveLabel = onSaveLabel,
+            onSaveSummary = onSaveSummary,
+        )
+    }
+}
+
+@Composable
+fun EditSemesterSheetContent(
     semester: Semester,
     onDismiss: () -> Unit,
     onSaveLabel: (id: Long, label: String) -> Unit,
@@ -45,7 +67,7 @@ fun EditSemesterSheet(
                     (hours.toIntOrNull() ?: 0) > 0
             ) else true
 
-    MeadowBottomSheet(onDismiss = onDismiss, modifier = modifier) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Text(
             text = stringResource(Res.string.edit),
             style = MaterialTheme.typography.headlineMedium,
@@ -101,4 +123,51 @@ fun EditSemesterSheet(
             modifier = Modifier.fillMaxWidth(),
         )
     }
+}
+
+private val previewSummarySemester = Semester(
+    id = 1L,
+    label = "Year 2 - Semester 1",
+    level = 2,
+    type = Semester.Type.SUMMARY,
+    semesterGPA = 3.5,
+    totalCreditHours = 18,
+    status = Semester.Status.ARCHIVED,
+    order = 0,
+    createdAt = 0L,
+    archivedAt = 0L,
+)
+
+@Composable
+private fun EditSemesterSheetShowcase() {
+    Column(
+        modifier = Modifier
+            .background(MeadowTheme.colors.card)
+            .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 22.dp),
+    ) {
+        EditSemesterSheetContent(
+            semester = previewSummarySemester,
+            onDismiss = {},
+            onSaveLabel = { _, _ -> },
+            onSaveSummary = { _, _, _, _ -> },
+        )
+    }
+}
+
+@Preview(name = "EditSemesterSheet · light", showBackground = true)
+@Composable
+private fun EditSemesterSheetLightPreview() {
+    MeadowTheme(darkTheme = false) { EditSemesterSheetShowcase() }
+}
+
+@Preview(name = "EditSemesterSheet · dark", showBackground = true)
+@Composable
+private fun EditSemesterSheetDarkPreview() {
+    MeadowTheme(darkTheme = true) { EditSemesterSheetShowcase() }
+}
+
+@Preview(name = "EditSemesterSheet · AR", showBackground = true, locale = "ar")
+@Composable
+private fun EditSemesterSheetArPreview() {
+    MeadowTheme(darkTheme = false) { EditSemesterSheetShowcase() }
 }

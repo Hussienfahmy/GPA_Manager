@@ -28,6 +28,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -59,6 +60,40 @@ fun SubjectSettingsSheet(
     onProjectCheckChanges: (Boolean) -> Unit,
     onFinalExamMaxMarksSave: (String) -> Unit,
 ) {
+    MeadowBottomSheet(onDismiss = onDismiss) {
+        SubjectSettingsSheetContent(
+            subjectName = subjectName,
+            midtermAvailable = midtermAvailable,
+            oralAvailable = oralAvailable,
+            practicalAvailable = practicalAvailable,
+            projectAvailable = projectAvailable,
+            finalExamMaxMarks = finalExamMaxMarks,
+            onDismiss = onDismiss,
+            onMidtermCheckChanges = onMidtermCheckChanges,
+            onOralCheckChanges = onOralCheckChanges,
+            onPracticalCheckChanges = onPracticalCheckChanges,
+            onProjectCheckChanges = onProjectCheckChanges,
+            onFinalExamMaxMarksSave = onFinalExamMaxMarksSave,
+        )
+    }
+}
+
+@Composable
+fun SubjectSettingsSheetContent(
+    subjectName: String,
+    midtermAvailable: Boolean,
+    oralAvailable: Boolean,
+    practicalAvailable: Boolean,
+    projectAvailable: Boolean,
+    finalExamMaxMarks: Double,
+    onDismiss: () -> Unit,
+    onMidtermCheckChanges: (Boolean) -> Unit,
+    onOralCheckChanges: (Boolean) -> Unit,
+    onPracticalCheckChanges: (Boolean) -> Unit,
+    onProjectCheckChanges: (Boolean) -> Unit,
+    onFinalExamMaxMarksSave: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val colors = MeadowTheme.colors
     val accent = MeadowTheme.accent
 
@@ -68,7 +103,7 @@ fun SubjectSettingsSheet(
     val parsedFinalExam = finalExamInput.toDoubleOrNull()
     val isFinalExamValid = parsedFinalExam != null && parsedFinalExam > 0
 
-    MeadowBottomSheet(onDismiss = onDismiss) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Text(
             text = stringResource(Res.string.sheet_setup_title, subjectName),
             style = MaterialTheme.typography.headlineMedium,
@@ -209,4 +244,46 @@ private fun RowDivider() {
             .height(1.dp)
             .background(MeadowTheme.colors.divider),
     )
+}
+
+@Composable
+private fun SubjectSettingsSheetShowcase() {
+    Column(
+        modifier = Modifier
+            .background(MeadowTheme.colors.card)
+            .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 22.dp),
+    ) {
+        SubjectSettingsSheetContent(
+            subjectName = "Computer Graphics",
+            midtermAvailable = true,
+            oralAvailable = true,
+            practicalAvailable = false,
+            projectAvailable = false,
+            finalExamMaxMarks = 60.0,
+            onDismiss = {},
+            onMidtermCheckChanges = {},
+            onOralCheckChanges = {},
+            onPracticalCheckChanges = {},
+            onProjectCheckChanges = {},
+            onFinalExamMaxMarksSave = {},
+        )
+    }
+}
+
+@Preview(name = "SubjectSettingsSheet · light", showBackground = true)
+@Composable
+private fun SubjectSettingsSheetLightPreview() {
+    MeadowTheme(darkTheme = false) { SubjectSettingsSheetShowcase() }
+}
+
+@Preview(name = "SubjectSettingsSheet · dark", showBackground = true)
+@Composable
+private fun SubjectSettingsSheetDarkPreview() {
+    MeadowTheme(darkTheme = true) { SubjectSettingsSheetShowcase() }
+}
+
+@Preview(name = "SubjectSettingsSheet · AR", showBackground = true, locale = "ar")
+@Composable
+private fun SubjectSettingsSheetArPreview() {
+    MeadowTheme(darkTheme = false) { SubjectSettingsSheetShowcase() }
 }

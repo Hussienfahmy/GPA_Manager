@@ -267,3 +267,17 @@ private fun AddSubjectSheetDarkPreview() {
         }
     }
 }
+
+@Preview(name = "AddSubjectSheet · AR", showBackground = true, locale = "ar")
+@Composable
+private fun AddSubjectSheetArPreview() {
+    MeadowTheme(darkTheme = false) {
+        Column(
+            modifier = Modifier
+                .background(MeadowTheme.colors.card)
+                .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 22.dp),
+        ) {
+            AddSubjectSheetContent(onAddSubject = { _, _, _, _, _, _ -> }, onDismiss = {})
+        }
+    }
+}

@@ -156,3 +156,9 @@ private fun MeadowConfirmationSheetLightPreview() {
 private fun MeadowConfirmationSheetDarkPreview() {
     MeadowTheme(darkTheme = true) { MeadowConfirmationSheetShowcase() }
 }
+
+@Preview(name = "MeadowConfirmationSheet · AR", locale = "ar")
+@Composable
+private fun MeadowConfirmationSheetArPreview() {
+    MeadowTheme(darkTheme = false) { MeadowConfirmationSheetShowcase() }
+}

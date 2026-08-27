@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -23,6 +24,7 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
@@ -48,22 +50,49 @@ fun EditGradeValueSheet(
     onSaveClick: (newValue: String) -> Unit,
     viewModel: EditTextDialogViewModel = koinViewModel(),
 ) {
-    val colors = MeadowTheme.colors
-    val accent = MeadowTheme.accent
-
     LaunchedEffect(value) {
         viewModel.onValueChanged(value)
     }
 
+    MeadowBottomSheet(onDismiss = onDismiss) {
+        EditGradeValueSheetContent(
+            symbol = symbol,
+            title = title,
+            subtitle = subtitle,
+            fieldLabel = fieldLabel,
+            value = viewModel.value,
+            onValueChange = viewModel::onValueChanged,
+            onDismiss = onDismiss,
+            onSaveClick = { onSaveClick(viewModel.value) },
+        )
+    }
+}
+
+@Composable
+fun EditGradeValueSheetContent(
+    symbol: String,
+    title: String,
+    subtitle: String,
+    fieldLabel: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    onDismiss: () -> Unit,
+    onSaveClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
+
     val save = {
-        onSaveClick(viewModel.value)
+        onSaveClick()
         onDismiss()
     }
 
-    MeadowBottomSheet(onDismiss = onDismiss) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -80,7 +109,7 @@ fun EditGradeValueSheet(
                     color = accent.deep,
                 )
             }
-            Column {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.headlineSmall,
@@ -97,8 +126,8 @@ fun EditGradeValueSheet(
         Spacer(modifier = Modifier.height(14.dp))
 
         MeadowTextField(
-            value = viewModel.value,
-            onValueChange = viewModel::onValueChanged,
+            value = value,
+            onValueChange = onValueChange,
             label = fieldLabel,
             outlined = true,
             keyboardOptions = KeyboardOptions(
@@ -129,4 +158,36 @@ fun EditGradeValueSheet(
             )
         }
     }
+}
+
+@Composable
+private fun EditGradeValueSheetShowcase() {
+    Column(
+        modifier = Modifier
+            .background(MeadowTheme.colors.card)
+            .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 22.dp),
+    ) {
+        EditGradeValueSheetContent(
+            symbol = "A+",
+            title = "Percentage for A+",
+            subtitle = "Percentage this grade starts from",
+            fieldLabel = "Percentage",
+            value = "90",
+            onValueChange = {},
+            onDismiss = {},
+            onSaveClick = {},
+        )
+    }
+}
+
+@Preview(name = "EditGradeValueSheet · light", showBackground = true)
+@Composable
+private fun EditGradeValueSheetLightPreview() {
+    MeadowTheme(darkTheme = false) { EditGradeValueSheetShowcase() }
+}
+
+@Preview(name = "EditGradeValueSheet · AR", showBackground = true, locale = "ar")
+@Composable
+private fun EditGradeValueSheetArPreview() {
+    MeadowTheme(darkTheme = false) { EditGradeValueSheetShowcase() }
 }
