@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,12 @@ fun QuickScreen(
     snackBarHostState: SnackbarHostState,
 ) {
     UiEventHandler(uiEvent = viewModel.uiEvent, snackBarHostState = snackBarHostState)
+
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.onEvent(QuickEvent.OnScreenExit)
+        }
+    }
 
     val state by viewModel.state
 

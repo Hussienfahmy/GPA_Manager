@@ -34,9 +34,24 @@ class QuickViewModel(
     }
 
     override fun onEvent(event: QuickEvent) {
+        if (event is QuickEvent.OnScreenExit) {
+            state.value = state.value.copy(
+                cumulativeGPA = 0f,
+                cumulativeGPAPercentage = 0f,
+                invalidCumulativeGPAInput = false,
+                invalidCumulativeGPAAboveMax = false,
+                invalidSemesterGPAInput = false,
+                invalidSemesterGPAAboveMax = false,
+                invalidTotalHoursInput = false,
+                invalidSemesterHoursInput = false,
+            )
+            return
+        }
+
         viewModelScope.launch {
             val (result, calculationRequest) = when (event) {
                 is QuickEvent.Calculate -> quickCalculate(event.calculationRequest) to event.calculationRequest
+                is QuickEvent.OnScreenExit -> return@launch
             }
 
             when (result) {

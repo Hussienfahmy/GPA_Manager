@@ -4,4 +4,5 @@ import com.hussienfahmy.quick_domain.model.QuickCalculationRequest
 
 sealed class QuickEvent {
     data class Calculate(val calculationRequest: QuickCalculationRequest) : QuickEvent()
+    data object OnScreenExit : QuickEvent()
 }
