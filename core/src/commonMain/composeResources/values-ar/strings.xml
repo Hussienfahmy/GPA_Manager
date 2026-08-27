@@ -48,7 +48,7 @@
     <string name="err_cant_activate">يرجى تعيين قيمة للنقاط وبالنسبة المئوية قبل تفعيل هذا التقدير</string>
     <string name="err_percentage_range">النسبة يجب أن تكون من 0 إلي 100</string>
     <string name="err_points_less_zero">النقاط لا يمكن أن تكون أقل من صفر</string>
-    <string name="err_subject_credit_hours_negative">عدد الساعات لا يمكن أن يكون أقل من صفر</string>
+    <string name="err_subject_credit_hours_negative">عدد الساعات يجب أن يكون أكثر من صفر</string>
     <string name="err_subject_midterm_negative">درجات الميدترم لا يمكن أن يكون أقل من الصفر</string>
     <string name="err_subject_name_empty">اسم المادة لا يمكن أن يكون فارغا</string>
     <string name="err_subject_oral_negative">"درجات الشفوي لا يمكن أن تكون أقل من الصفر "</string>

@@ -78,7 +78,7 @@ fun AddSubjectSheetContent(
 
     val validate = {
         validSubjectName = subjectName.isNotBlank()
-        validCreditHours = creditHours.isNotBlank() && creditHours.all { it.isDigit() }
+        validCreditHours = (creditHours.toIntOrNull() ?: 0) > 0
         validSubjectName && validCreditHours
     }
 
@@ -121,7 +121,7 @@ fun AddSubjectSheetContent(
                 value = creditHours,
                 onValueChange = {
                     creditHours = it.filter { char -> char.isDigit() }
-                    if (!validCreditHours) validCreditHours = creditHours.isNotBlank()
+                    if (!validCreditHours) validCreditHours = (creditHours.toIntOrNull() ?: 0) > 0
                 },
                 label = stringResource(Res.string.hours),
                 isError = !validCreditHours,

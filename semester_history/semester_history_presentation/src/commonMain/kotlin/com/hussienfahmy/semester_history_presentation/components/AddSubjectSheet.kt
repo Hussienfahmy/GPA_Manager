@@ -125,7 +125,7 @@ fun AddSubjectSheetContent(
                 && (finalExamScoreInput.isEmpty() || finalExamScoreInput.toDoubleOrNull() != null)
 
     val isValid = name.isNotBlank()
-            && creditHours.toDoubleOrNull() != null
+            && (creditHours.toDoubleOrNull() ?: 0.0) > 0
             && selectedGrade != null
             && marksValid
 
@@ -153,7 +153,8 @@ fun AddSubjectSheetContent(
                 value = creditHours,
                 onValueChange = { creditHours = it },
                 label = stringResource(Res.string.credit_hours),
-                isError = creditHours.isNotBlank() && creditHours.toDoubleOrNull() == null,
+                isError = creditHours.isNotBlank() &&
+                        (creditHours.toDoubleOrNull() == null || creditHours.toDouble() <= 0),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.weight(1f),
             )

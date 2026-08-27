@@ -27,7 +27,7 @@
     <string name="err_cant_activate">Please set points and percentage first to enable this grade</string>
     <string name="err_percentage_range">Percentage can be from 0 to 100</string>
     <string name="err_points_less_zero">Points can not be negative</string>
-    <string name="err_subject_credit_hours_negative">Credit hours can not be negative</string>
+    <string name="err_subject_credit_hours_negative">Credit hours must be more than zero</string>
     <string name="err_subject_midterm_negative">Midterm can not be less than zero</string>
     <string name="err_subject_name_empty">Subject Name Can not be Empty</string>
     <string name="err_subject_oral_negative">Oral can not be less than zero</string>
