@@ -2,6 +2,7 @@ package com.hussienfahmy.sync_domain.di
 
 import com.hussienfahmy.core.domain.sync.SyncDownload
 import com.hussienfahmy.core.domain.sync.SyncUpload
+import com.hussienfahmy.sync_domain.use_case.DownloadDataOnFreshInstall
 import com.hussienfahmy.sync_domain.use_case.MigrateExistingUserDataIfNeeded
 import com.hussienfahmy.sync_domain.use_case.PullSemesters
 import com.hussienfahmy.sync_domain.use_case.PullSettings
@@ -71,4 +72,6 @@ val syncDomainModule = module {
     singleOf(::SyncUploadImpl).bind<SyncUpload>()
 
     singleOf(::MigrateExistingUserDataIfNeeded)
+
+    singleOf(::DownloadDataOnFreshInstall)
 }

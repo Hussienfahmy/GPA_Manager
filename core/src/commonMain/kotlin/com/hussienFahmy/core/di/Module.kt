@@ -1,5 +1,6 @@
 package com.hussienfahmy.core.di
 
+import com.hussienfahmy.core.data.local.datastore.AppLifecycleDataStore
 import com.hussienfahmy.core.domain.auth.PlatformCredentialCleanup
 import com.hussienfahmy.core.domain.report.PdfReportPrinter
 import com.hussienfahmy.core.domain.report.ReportBrandingProvider
@@ -28,6 +29,7 @@ val coreModule = module {
     single<CoroutineDispatcher>(named(CoreQualifiers.DEFAULT_DISPATCHER)) { Dispatchers.Default }
     single<CoroutineScope> { CoroutineScope(Dispatchers.Main + SupervisorJob()) }
     singleOf(::SyncDirtyTracker)
+    singleOf(::AppLifecycleDataStore)
     singleOf(::ReportBrandingProvider)
     singleOf(::PdfReportPrinter)
     singleOf(::UrlOpener)
