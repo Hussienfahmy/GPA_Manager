@@ -1,6 +1,5 @@
 ## iOS parity gaps
 
-- Push notifications — `GPAFirebaseMessagingService` (FCM). Android-only, no APNs wiring on iOS at all.
 - Fill in storeRatingUrl() for iOS once the app is on the App Store.
 
 ## Before Publishing iOS
