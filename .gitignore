@@ -28,3 +28,10 @@ chroma.sqlite3
 xcuserdata/
 *.xcuserstate
 iosApp/iosApp.xcodeproj/project.xcworkspace/
+
+## Signing secrets - never commit. APNs auth keys, provisioning profiles, certificates.
+## These live in the Apple Developer portal / Firebase console only.
+*.p8
+*.p12
+*.mobileprovision
+*.cer

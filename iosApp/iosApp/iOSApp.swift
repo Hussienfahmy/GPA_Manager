@@ -3,11 +3,10 @@ import Shared
 
 @main
 struct iOSApp: App {
-    init() {
-        // The iOS analog of :app's GPAManagerApplication.onCreate() - must run before any
-        // Compose UI is shown, since every screen resolves its dependencies through Koin.
-        KoinIosKt.doInitApp()
-    }
+    // Startup (Firebase/Koin init) and FCM/APNs wiring live in AppDelegate - it needs the UIKit
+    // app-delegate callbacks, and running doInitApp() from didFinishLaunchingWithOptions gives a
+    // deterministic "before any Compose/Koin use" ordering.
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
         WindowGroup {

@@ -22,8 +22,8 @@ actual fun platformModules(context: PlatformContext): List<Module> = listOf(
     syncSchedulerModule,
 )
 
-// Called once from the iosApp Xcode project's entry point (iosApp/iosApp/iOSApp.swift) before any
-// Compose UI is shown. Named doInitApp(), not initApp(): Swift's Objective-C bridge treats any
+// Called once from iosApp/iosApp/AppDelegate.swift's application(_:didFinishLaunchingWithOptions:)
+// before any Compose UI is shown. Named doInitApp(), not initApp(): Swift's Objective-C bridge treats any
 // exported method whose name starts with "init" as an initializer, which would otherwise mangle
 // how this is callable from Swift - the same reason JetBrains' own KMP project template avoids
 // "init"-prefixed names.
@@ -38,7 +38,7 @@ fun doInitApp() {
 }
 
 // BGTaskScheduler's launch handler must be registered before the app finishes launching (this
-// runs at the same point as iOSApp.swift's init()), unlike Android where WorkManager discovers
+// runs from the app delegate's didFinishLaunchingWithOptions), unlike Android where WorkManager discovers
 // its worker via Koin's worker{} DSL with no explicit call needed. The app-backgrounding trigger
 // itself mirrors Android's ProcessLifecycleOwner.onStop() in GPAManagerApplication.kt.
 private fun setupBackgroundSync() {
