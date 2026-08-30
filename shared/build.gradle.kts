@@ -67,6 +67,11 @@ kotlin {
             implementation(libs.gitlive.firebase.firestore)
             implementation(libs.gitlive.firebase.storage)
 
+            // FirebaseFcmTokenProvider - on-demand FCM token fetch/delete so sign-in can push the
+            // token and sign-out can rotate + clear it. iOS links the native FirebaseMessaging
+            // SPM product (added for AppDelegate); the APNs plumbing stays in AppDelegate.swift.
+            implementation(libs.gitlive.firebase.messaging)
+
             // Replaces java.text.SimpleDateFormat/java.util.Date in the semester-history HTML
             // export's filename timestamp.
             implementation(libs.kotlinx.datetime)

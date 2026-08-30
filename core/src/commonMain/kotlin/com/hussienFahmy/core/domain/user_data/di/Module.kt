@@ -1,8 +1,10 @@
 package com.hussienfahmy.core.domain.user_data.di
 
+import com.hussienfahmy.core.domain.user_data.use_cases.ClearFcmToken
 import com.hussienfahmy.core.domain.user_data.use_cases.GetAcademicProgress
 import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
 import com.hussienfahmy.core.domain.user_data.use_cases.ObserveUserData
+import com.hussienfahmy.core.domain.user_data.use_cases.RefreshFcmToken
 import com.hussienfahmy.core.domain.user_data.use_cases.SignOut
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateCreditHours
 import com.hussienfahmy.core.domain.user_data.use_cases.UpdateCumulativeGPA
@@ -36,4 +38,6 @@ val coreUserDataDomainModule = module {
     singleOf(::UserDataUseCases)
     singleOf(::SignOut)
     singleOf(::UpdateFCMToken)
+    singleOf(::RefreshFcmToken)
+    singleOf(::ClearFcmToken)
 }
