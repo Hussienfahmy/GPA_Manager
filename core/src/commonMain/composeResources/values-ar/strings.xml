@@ -198,6 +198,7 @@
     <string name="onboarding_welcome_title">مرحباً بك في مدير المعدل التراكمي</string>
     <string name="onboarding_welcome_subtitle">رفيقك الذكي لتتبع وتحسين أدائك الأكاديمي</string>
     <string name="onboarding_welcome_get_started">هيا نبدأ! 🚀</string>
+    <string name="onboarding_sign_in_with_google">المتابعة باستخدام Google</string>
     <string name="onboarding_welcome_features">• تتبع تقدمك الأكاديمي\n• احسب المعدل الفصلي والتراكمي\n• ضع أهدافاً وراقب تحسنك\n• زامن بياناتك عبر جميع أجهزتك</string>
     <string name="onboarding_welcome_tagline">حوّل أحلامك الأكاديمية إلى حقيقة! ✨</string>
     <string name="onboarding_welcome_subtitle_motivational">مستعد لتحقيق التفوق الأكاديمي؟ 🚀</string>

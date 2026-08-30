@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,11 +26,14 @@ import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.History
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,29 +43,139 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hussienfahmy.core.generated.resources.*
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
+import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
+import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.core_ui.theme.MeadowAccent
 import com.hussienfahmy.core_ui.theme.MeadowTheme
+import com.hussienfahmy.onboarding_presentation.sign_in.AuthEvent
+import com.hussienfahmy.onboarding_presentation.sign_in.SignInState
 import com.hussienfahmy.onboarding_presentation.sign_in.SignInViewModel
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
- * The onboarding welcome/sign-in screen. Presenting a sign-in UI is one of the few genuinely
- * platform-specific things in this app - Android drives Google Sign-In via a CredentialManager
- * flow needing an Activity, iOS drives Sign in with Apple via AuthenticationServices - so the
- * top-level composable is expect/actual while the hero/feature-highlight UI below (identical on
- * both platforms) stays shared.
+ * The onboarding welcome/sign-in screen. Fully shared: the hero/feature-highlight UI is identical
+ * on both platforms, and the only genuinely platform-specific bits - launching the OS sign-in flow
+ * ([rememberPlatformSignIn]) and its call-to-action button ([PlatformSignInButton], the system
+ * "Sign in with Apple" button on iOS, a Google button on Android) - are isolated behind expects.
+ *
+ * State/effects live in [OnBoardingScreen]; the visuals are in the stateless
+ * [OnBoardingScreenContent] so they can be previewed without Koin or a running sign-in.
  */
 @Composable
-expect fun OnBoardingScreen(
+fun OnBoardingScreen(
     viewModel: SignInViewModel = koinViewModel(),
     onSignInSuccess: () -> Unit,
-)
+) {
+    val platformSignIn = rememberPlatformSignIn()
+    val scope = rememberCoroutineScope()
+
+    val state by viewModel.state
+
+    LaunchedEffect(key1 = state) {
+        when (state) {
+            SignInState.Success -> onSignInSuccess()
+            SignInState.Initial,
+            SignInState.Loading,
+            SignInState.Syncing,
+            SignInState.Error -> {
+            }
+        }
+    }
+
+    UiEventHandler(uiEvent = viewModel.uiEvent)
+
+    OnBoardingScreenContent(
+        signingIn = state == SignInState.Loading || state == SignInState.Syncing,
+        onSignInClick = {
+            scope.launch {
+                viewModel.setLoadingState()
+                viewModel.onEvent(AuthEvent.OnSignInResult(platformSignIn.signIn()))
+            }
+        },
+    )
+}
+
+@Composable
+private fun OnBoardingScreenContent(
+    signingIn: Boolean,
+    onSignInClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val spacing = LocalSpacing.current
+
+    OnboardingLayout(
+        title = stringResource(Res.string.onboarding_welcome_title),
+        subtitle = stringResource(Res.string.onboarding_welcome_subtitle),
+        currentStep = OnboardingConstants.Steps.WELCOME,
+        modifier = modifier,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(spacing.large),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(spacing.large),
+        ) {
+            AnimatedHeroSection()
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(spacing.small),
+            ) {
+                Text(
+                    text = stringResource(Res.string.onboarding_welcome_tagline),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+
+                Text(
+                    text = stringResource(Res.string.onboarding_welcome_subtitle_motivational),
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            FeatureHighlights()
+
+            if (signingIn) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(28.dp),
+                    strokeWidth = 3.dp,
+                    color = MeadowTheme.accent.accent,
+                )
+            } else {
+                PlatformSignInButton(
+                    onClick = onSignInClick,
+                    enabled = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun OnBoardingScreenContentPreview() {
+    MeadowTheme(darkTheme = false) {
+        OnBoardingScreenContent(signingIn = false, onSignInClick = {})
+    }
+}
 
 /** Brand ring mark (design 2d): a 3/4-swept green ring with "4.0" centered,
  *  a filled inner disc, and three slowly-orbiting spark dots in the tab hues. */

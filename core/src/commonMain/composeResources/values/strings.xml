@@ -187,6 +187,7 @@
     <string name="onboarding_welcome_title">Welcome to GPA Manager</string>
     <string name="onboarding_welcome_subtitle">Your smart companion for tracking and improving your academic performance</string>
     <string name="onboarding_welcome_get_started">Let's Get Started! 🚀</string>
+    <string name="onboarding_sign_in_with_google">Continue with Google</string>
     <string name="onboarding_welcome_features">• Track your academic progress\n• Calculate semester and cumulative GPA\n• Set goals and monitor improvement\n• Sync across all your devices</string>
     <string name="onboarding_welcome_tagline">Turn your academic dreams into reality! ✨</string>
     <string name="onboarding_welcome_subtitle_motivational">Ready to ace your academics? 🚀</string>
