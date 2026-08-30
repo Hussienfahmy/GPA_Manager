@@ -1,5 +1,4 @@
 import UIKit
-import FirebaseInstallations
 import FirebaseMessaging
 import UserNotifications
 import Shared
@@ -23,23 +22,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNU
         // user-facing alert permission is requested separately from Compose via Calf.
         application.registerForRemoteNotifications()
 
-        logInstallationIDForInAppMessagingTests()
-
         return true
-    }
-
-    /// Prints the Firebase Installation ID (FID) so it can be pasted into the Firebase console's
-    /// In-App Messaging "Test on your device" flow. Debug builds only.
-    private func logInstallationIDForInAppMessagingTests() {
-        #if DEBUG
-        Installations.installations().installationID { id, error in
-            if let id {
-                NSLog("[FIAM] Firebase Installation ID (FID) for test devices: \(id)")
-            } else {
-                NSLog("[FIAM] Could not fetch Installation ID: \(error?.localizedDescription ?? "unknown")")
-            }
-        }
-        #endif
     }
 
     func application(
