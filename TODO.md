@@ -1,8 +1,3 @@
-## iOS parity gaps
-
-- Fill in storeRatingUrl() for iOS once the app is on the App Store (paste the numeric Apple ID
-  from App Store Connect into `StoreRatingUrl.ios.kt`).
-
 ## Rate app
 
 - Native in-app review per platform, falling back to the store URL when it can't run:
