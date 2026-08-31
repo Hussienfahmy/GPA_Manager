@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="quick_domain">
+    <output-path>$PROJECT_DIR$/quick/quick_domain/build/libs</output-path>
+    <root id="archive" name="quick_domain.jar">
+      <element id="module-output" name="GPAManager.quick.quick_domain.androidMain" />
+    </root>
+  </artifact>
+</component>

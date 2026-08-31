@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="subject_settings_data">
+    <output-path>$PROJECT_DIR$/subject_settings/subject_settings_data/build/libs</output-path>
+    <root id="archive" name="subject_settings_data.jar">
+      <element id="module-output" name="GPAManager.subject_settings.subject_settings_data.androidMain" />
+    </root>
+  </artifact>
+</component>

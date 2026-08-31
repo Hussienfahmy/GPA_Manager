@@ -9,14 +9,29 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
+**/build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
-/onboarding/onboarding_presentation/google-services.json
-/user_data/user_data_data/google-services.json
-/sync/sync_data/google-services.json
+.kotlin/
+/app/release/
 /.claude/*
 chroma.sqlite3
 /.claude
 /.idea/firebender
+/.idea/.name
+/.idea/appInsightsSettings.xml
+/.idea/xcode.xml
+
+## Xcode - per-user window/scheme state, regenerated on open, nothing to review in diffs
+xcuserdata/
+*.xcuserstate
+iosApp/iosApp.xcodeproj/project.xcworkspace/
+
+## Signing secrets - never commit. APNs auth keys, provisioning profiles, certificates.
+## These live in the Apple Developer portal / Firebase console only.
+*.p8
+*.p12
+*.mobileprovision
+*.cer

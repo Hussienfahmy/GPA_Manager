@@ -5,6 +5,15 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+plugins {
+    // Auto-downloads JVM toolchains (e.g. JDK 21 for Robolectric's Android SDK 36 sandbox) instead
+    // of requiring them pre-installed.
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -12,8 +21,9 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "GPA Manager"
+rootProject.name = "GPAManager"
 include ':app'
+include ':shared'
 include ':core'
 include ':grades_setting'
 include ':grades_setting:grades_setting_domain'

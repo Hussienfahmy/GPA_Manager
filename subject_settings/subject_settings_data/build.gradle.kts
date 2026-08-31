@@ -1,10 +1,13 @@
 plugins {
-    alias(libs.plugins.base.module)
+    alias(libs.plugins.base.kmp.module)
 }
 
-dependencies {
-    implementation(project(":core"))
-    implementation(project(":subject_settings:subject_settings_domain"))
-    implementation(libs.androidx.datastore.core)
-    implementation(libs.kotlinx.serialization.json)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core)
+            implementation(projects.subjectSettings.subjectSettingsDomain)
+            implementation(libs.kotlinx.serialization.json)
+        }
+    }
 }

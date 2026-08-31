@@ -124,15 +124,11 @@ feature_name/
    cd GPA_Manager
    ```
 
-2. **Configure Firebase**
+2. **Firebase**
 
-   The app uses Firebase for authentication and data sync. You'll need to obtain `google-services.json` files from the [Firebase Console](https://console.firebase.google.com/) and place them in:
-   ```
-   onboarding/onboarding_presentation/google-services.json
-   user_data/user_data_data/google-services.json
-   sync/sync_data/google-services.json
-   ```
-   > These files are excluded from version control for security reasons.
+   The app uses Firebase for authentication and data sync. `app/google-services.json` is committed to the
+   repo, so no setup is needed here — Firestore/Storage access is scoped per-user via security rules, not
+   by keeping this file private.
 
 3. **Build the project**
    ```bash

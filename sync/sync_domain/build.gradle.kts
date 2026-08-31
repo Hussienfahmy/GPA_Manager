@@ -1,10 +1,16 @@
 plugins {
-    alias(libs.plugins.base.module)
+    alias(libs.plugins.base.kmp.module)
 }
 
-dependencies {
-    implementation(project(":core"))
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core)
+        }
 
-    implementation(libs.androidx.work.runtime.ktx)
-    implementation(libs.firebase.firestore)
+        androidMain.dependencies {
+            implementation(libs.androidx.work.runtime.ktx)
+            implementation(libs.koin.androidx.worker)
+        }
+    }
 }

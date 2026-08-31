@@ -1,0 +1,235 @@
+package com.hussienfahmy.myGpaManager
+
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldLayout
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
+import com.hussienfahmy.core_ui.Dimensions
+import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
+import com.hussienfahmy.core_ui.LocalSpacing
+import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
+import com.hussienfahmy.core_ui.presentation.components.OnboardingProgressIndicator
+import com.hussienfahmy.myGpaManager.navigation.AppBottomNav
+import com.hussienfahmy.myGpaManager.navigation.AppNavHost
+import com.hussienfahmy.myGpaManager.navigation.AppNavigationState
+import com.hussienfahmy.myGpaManager.navigation.AppRoute
+import com.hussienfahmy.myGpaManager.navigation.OnboardingNavHost
+import com.hussienfahmy.myGpaManager.navigation.OnboardingRoute
+import com.hussienfahmy.myGpaManager.navigation.navKeySavedStateConfiguration
+import com.hussienfahmy.myGpaManager.navigation.rememberAppNavigationState
+import com.hussienfahmy.myGpaManager.ui.theme.GPAManagerTheme
+import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
+import com.mohamedrejeb.calf.permissions.Notification
+import com.mohamedrejeb.calf.permissions.Permission
+import com.mohamedrejeb.calf.permissions.PermissionStatus
+import com.mohamedrejeb.calf.permissions.rememberPermissionState
+import org.koin.compose.viewmodel.koinViewModel
+
+private fun getOnboardingStep(route: NavKey?): Int = when (route) {
+    OnboardingRoute.Welcome -> OnboardingConstants.Steps.WELCOME
+    OnboardingRoute.PersonalInfo -> OnboardingConstants.Steps.PERSONAL_INFO
+    OnboardingRoute.InstitutionInfo -> OnboardingConstants.Steps.INSTITUTION_INFO
+    OnboardingRoute.AcademicStatus -> OnboardingConstants.Steps.ACADEMIC_STATUS
+    OnboardingRoute.GPATracking,
+    is OnboardingRoute.SemesterDetail -> OnboardingConstants.Steps.GPA_TRACKING
+    OnboardingRoute.GradesSettings -> OnboardingConstants.Steps.GRADES_SETTINGS
+    OnboardingRoute.GPASubjectsSettings -> OnboardingConstants.Steps.FINAL_SETUP
+    else -> OnboardingConstants.Steps.WELCOME
+}
+
+/**
+ * The whole app's composition root - both :app's MainActivity.kt (Android) and the iOS entry
+ * point's MainViewController.kt call this directly with no arguments.
+ */
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun GpaManagerApp() {
+    val viewModel: MainViewModel = koinViewModel()
+
+    GPAManagerTheme {
+        val spacing = LocalSpacing.current
+        val localFocusManager = LocalFocusManager.current
+        val snackBarHostState = remember { SnackbarHostState() }
+        val isSingedIn by viewModel.isSignedIn.collectAsState()
+        val notificationPermissionState = rememberPermissionState(Permission.Notification)
+
+        val appNavigationState = rememberAppNavigationState()
+        val onboardingBackStack = rememberNavBackStack(navKeySavedStateConfiguration, OnboardingRoute.Welcome)
+        // Deliberately separate from isSingedIn: sign-in succeeds at onboarding's very first
+        // step (Welcome), but the user still has several data-entry steps left before tapping
+        // "Start" - isSingedIn flips true mid-onboarding while the flow should keep showing.
+        var showOnboarding by remember { mutableStateOf(false) }
+
+        LaunchedEffect(key1 = isSingedIn) {
+            if (isSingedIn == false) {
+                showOnboarding = true
+                // Reset onboarding to its start whenever the user signs out.
+                while (onboardingBackStack.size > 1) {
+                    onboardingBackStack.removeLastOrNull()
+                }
+            }
+        }
+
+        LaunchedEffect(appNavigationState.topLevelRoute, isSingedIn) {
+            if (isSingedIn != true) return@LaunchedEffect
+
+            if (appNavigationState.topLevelRoute == AppRoute.Semester &&
+                notificationPermissionState.status !is PermissionStatus.Granted
+            ) {
+                // request notification permission if not granted after user completes sign in.
+                notificationPermissionState.launchPermissionRequest()
+            }
+        }
+
+        val navigationSuiteType = NavigationSuiteScaffoldDefaults
+            .calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
+        val showBottomBar = !showOnboarding && navigationSuiteType == NavigationSuiteType.NavigationBar
+
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = { localFocusManager.clearFocus() })
+                },
+            snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
+            // No topBar - each sub-screen owns its own via ScreenWithToolbar (see AppNavHost).
+            bottomBar = {
+                if (showBottomBar) {
+                    AppBottomNav(
+                        appNavigationState = appNavigationState,
+                        navigationSuiteType = navigationSuiteType,
+                    )
+                }
+            },
+        ) { paddingValues ->
+            // Only the top inset is applied to the container here (status bar clearance, uniform
+            // for every screen) - the bottom inset is deliberately not, since that would push
+            // content entirely above AppBottomNav instead of letting it draw behind it (Scaffold
+            // itself already overlays bottomBar on top of full-height content, it doesn't shrink
+            // it - unlike NavigationSuiteScaffoldLayout, used below only for the wide/rail case).
+            // Screens read the full paddingValues via LocalScaffoldContentPadding and merge the
+            // bottom component into their own scrollable's contentPadding instead.
+            CompositionLocalProvider(LocalScaffoldContentPadding provides paddingValues) {
+                val contentModifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = paddingValues.calculateTopPadding())
+
+                if (showOnboarding) {
+                    OnboardingContent(
+                        modifier = contentModifier,
+                        spacing = spacing,
+                        onboardingBackStack = onboardingBackStack,
+                        snackBarHostState = snackBarHostState,
+                        onOnboardingComplete = { showOnboarding = false },
+                    )
+                } else if (navigationSuiteType == NavigationSuiteType.NavigationBar) {
+                    MainAppContent(
+                        modifier = contentModifier,
+                        appNavigationState = appNavigationState,
+                        snackBarHostState = snackBarHostState,
+                    )
+                } else {
+                    // Wide/rail layouts: squeeze content beside the rail via the no-wrap
+                    // primitive - NavigationSuiteScaffold wraps navigationItems in its own
+                    // rail, double-nesting with AppBottomNav's.
+                    Box(modifier = contentModifier) {
+                        NavigationSuiteScaffoldLayout(
+                            navigationSuite = {
+                                AppBottomNav(
+                                    appNavigationState = appNavigationState,
+                                    navigationSuiteType = navigationSuiteType,
+                                )
+                            },
+                            navigationSuiteType = navigationSuiteType,
+                            content = {
+                                MainAppContent(
+                                    modifier = Modifier.fillMaxSize(),
+                                    appNavigationState = appNavigationState,
+                                    snackBarHostState = snackBarHostState,
+                                )
+                            },
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun OnboardingContent(
+    modifier: Modifier = Modifier,
+    spacing: Dimensions,
+    onboardingBackStack: NavBackStack<NavKey>,
+    snackBarHostState: SnackbarHostState,
+    onOnboardingComplete: () -> Unit,
+) {
+    val currentOnboardingRoute = onboardingBackStack.lastOrNull()
+
+    Column(modifier = modifier) {
+        if (currentOnboardingRoute != OnboardingRoute.Welcome &&
+            currentOnboardingRoute !is OnboardingRoute.SemesterDetail
+        ) {
+            // Show progress indicator outside animated content for steps 2-7
+            OnboardingProgressIndicator(
+                currentStep = getOnboardingStep(currentOnboardingRoute),
+                totalSteps = OnboardingConstants.TOTAL_STEPS,
+                modifier = Modifier.padding(spacing.medium)
+            )
+        }
+
+        OnboardingNavHost(
+            backStack = onboardingBackStack,
+            snackBarHostState = snackBarHostState,
+            onSignInSuccess = {
+                onboardingBackStack.add(OnboardingRoute.PersonalInfo)
+            },
+            onOnboardingComplete = {
+                while (onboardingBackStack.size > 1) {
+                    onboardingBackStack.removeLastOrNull()
+                }
+                onOnboardingComplete()
+            },
+        )
+    }
+}
+
+@Composable
+private fun MainAppContent(
+    modifier: Modifier = Modifier,
+    appNavigationState: AppNavigationState,
+    snackBarHostState: SnackbarHostState,
+) {
+    Column(modifier = modifier) {
+        AppNavHost(
+            appNavigationState = appNavigationState,
+            snackBarHostState = snackBarHostState,
+        )
+    }
+}

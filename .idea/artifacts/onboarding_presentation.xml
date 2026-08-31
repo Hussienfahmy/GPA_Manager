@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="onboarding_presentation">
+    <output-path>$PROJECT_DIR$/onboarding/onboarding_presentation/build/libs</output-path>
+    <root id="archive" name="onboarding_presentation.jar">
+      <element id="module-output" name="GPAManager.onboarding.onboarding_presentation.androidMain" />
+    </root>
+  </artifact>
+</component>

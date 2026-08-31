@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
@@ -9,7 +8,11 @@ plugins {
 
 android {
     namespace = libs.versions.nameSpace.get()
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk {
+        version = release(libs.versions.compileSdk.get().toInt()) {
+            minorApiLevel = 0
+        }
+    }
 
     defaultConfig {
         applicationId = libs.versions.appId.get()
@@ -24,6 +27,15 @@ android {
         }
     }
 
+    signingConfigs {
+        getByName("debug") {
+            storeFile = rootProject.file("debug.jks")
+            storePassword = "123456"
+            keyAlias = "key0"
+            keyPassword = "123456"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -32,9 +44,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
         debug {
             applicationIdSuffix = ".debug"
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -56,46 +70,50 @@ baselineProfile {
 
 dependencies {
     // Local modules
-    implementation(project(":core"))
-    implementation(project(":core-ui"))
+    implementation(projects.shared)
+    implementation(projects.core)
+    implementation(projects.coreUi)
 
-    implementation(project(":gpa_system_settings:gpa_system_settings_data"))
-    implementation(project(":gpa_system_settings:gpa_system_settings_domain"))
-    implementation(project(":gpa_system_settings:gpa_system_settings_presentaion"))
+    // FileKit.init(this) in MainActivity - needed so filekit-dialogs (pulled in transitively via
+    // :coreUi) has access to this Activity's ActivityResultRegistry for the gallery picker.
+    implementation(libs.filekit.dialogs)
 
-    implementation(project(":grades_setting:grades_setting_domain"))
-    implementation(project(":grades_setting:grades_setting_presentation"))
+    implementation(projects.gpaSystemSettings.gpaSystemSettingsData)
+    implementation(projects.gpaSystemSettings.gpaSystemSettingsDomain)
+    implementation(projects.gpaSystemSettings.gpaSystemSettingsPresentaion)
 
-    implementation(project(":onboarding:onboarding_presentation"))
+    implementation(projects.gradesSetting.gradesSettingDomain)
+    implementation(projects.gradesSetting.gradesSettingPresentation)
 
-    implementation(project(":quick:quick_domain"))
-    implementation(project(":quick:quick_presentation"))
+    implementation(projects.onboarding.onboardingPresentation)
 
-    implementation(project(":semester_marks:semester_marks_domain"))
-    implementation(project(":semester_marks:semester_marks_presentaion"))
+    implementation(projects.quick.quickDomain)
+    implementation(projects.quick.quickPresentation)
 
-    implementation(project(":semester_subjctets:semester_subjctets_domain"))
-    implementation(project(":semester_subjctets:semester_subjctets_presentaion"))
+    implementation(projects.semesterMarks.semesterMarksDomain)
+    implementation(projects.semesterMarks.semesterMarksPresentaion)
 
-    implementation(project(":subject_settings:subject_settings_data"))
-    implementation(project(":subject_settings:subject_settings_domain"))
-    implementation(project(":subject_settings:subject_settings_presentation"))
+    implementation(projects.semesterSubjctets.semesterSubjctetsDomain)
+    implementation(projects.semesterSubjctets.semesterSubjctetsPresentaion)
 
-    implementation(project(":semester_history:semester_history_domain"))
-    implementation(project(":semester_history:semester_history_presentation"))
+    implementation(projects.subjectSettings.subjectSettingsData)
+    implementation(projects.subjectSettings.subjectSettingsDomain)
+    implementation(projects.subjectSettings.subjectSettingsPresentation)
 
-    implementation(project(":sync:sync_domain"))
+    implementation(projects.semesterHistory.semesterHistoryDomain)
+    implementation(projects.semesterHistory.semesterHistoryPresentation)
+
+    implementation(projects.sync.syncDomain)
 
     // Koin
     implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
-    implementation(libs.koin.androidx.worker)
 
     // Kotlin BOM
     implementation(platform(libs.kotlin.bom))
 
     // AndroidX Core
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.bundles.lifecycle)
     implementation(libs.androidx.activity.compose)
 
@@ -105,32 +123,26 @@ dependencies {
     implementation(libs.bundles.compose.debug)
     implementation(libs.bundles.compose.presentation)
 
-    // Compose Destinations
-    implementation(libs.compose.destinations.core)
-    ksp(libs.compose.destinations.ksp)
+    // Window size class for MainActivity's orientation lock (phone = portrait-locked, larger = free)
+    implementation(libs.compose.material3.adaptive.navigation.suite)
 
     // Work Manager
     implementation(libs.androidx.work.runtime.ktx)
 
     // Baseline Profile
     implementation(libs.androidx.profileinstaller)
-    baselineProfile(project(":baselineprofile"))
+    baselineProfile(projects.baselineprofile)
 
-    // Firebase
-    implementation(libs.firebase.firestore)
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.storage)
+    // Firebase (Firestore + Storage + Analytics + Auth all migrated to GitLive)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.gitlive.firebase.firestore)
+    implementation(libs.gitlive.firebase.storage)
+    implementation(libs.gitlive.firebase.analytics)
+    implementation(libs.gitlive.firebase.auth)
     implementation(libs.firebase.crashlytics)
-    implementation(libs.firebase.analytics)
     implementation(libs.firebase.inappmessaging)
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.perf)
-
-
-    // Authentication
-    implementation(libs.androidx.credentials)
-    implementation(libs.androidx.credentials.play.services.auth)
-    implementation(libs.googleid)
 
     // Debug
     debugImplementation(libs.bundles.compose.debug)

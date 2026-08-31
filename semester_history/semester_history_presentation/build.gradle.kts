@@ -1,12 +1,15 @@
 plugins {
-    alias(libs.plugins.base.module.compose)
+    alias(libs.plugins.base.kmp.compose.module)
 }
 
-dependencies {
-    implementation(project(":core"))
-    implementation(project(":core-ui"))
-    implementation(project(":semester_history:semester_history_domain"))
-    implementation(project(":semester_subjctets:semester_subjctets_domain"))
-    implementation(project(":semester_subjctets:semester_subjctets_presentaion"))
-    implementation(project(":sync:sync_domain"))
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core)
+            implementation(projects.coreUi)
+            implementation(projects.semesterHistory.semesterHistoryDomain)
+            implementation(projects.semesterSubjctets.semesterSubjctetsDomain)
+            implementation(projects.semesterSubjctets.semesterSubjctetsPresentaion)
+        }
+    }
 }

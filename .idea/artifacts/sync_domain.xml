@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="sync_domain">
+    <output-path>$PROJECT_DIR$/sync/sync_domain/build/libs</output-path>
+    <root id="archive" name="sync_domain.jar">
+      <element id="module-output" name="GPAManager.sync.sync_domain.androidMain" />
+    </root>
+  </artifact>
+</component>

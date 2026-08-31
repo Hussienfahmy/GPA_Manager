@@ -1,9 +1,13 @@
 plugins {
-    alias(libs.plugins.base.module.compose)
+    alias(libs.plugins.base.kmp.compose.module)
 }
 
-dependencies {
-    implementation(project(":core"))
-    implementation(project(":core-ui"))
-    implementation(project(":gpa_system_settings:gpa_system_settings_domain"))
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core)
+            implementation(projects.coreUi)
+            implementation(projects.gpaSystemSettings.gpaSystemSettingsDomain)
+        }
+    }
 }

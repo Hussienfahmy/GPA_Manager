@@ -1,0 +1,33 @@
+package com.hussienfahmy.core.domain.report
+
+import com.hussienfahmy.core.domain.crash.CrashReporter
+import com.hussienfahmy.core.util.PlatformContext
+import com.hussienfahmy.core.util.toByteArray
+import kotlinx.cinterop.ExperimentalForeignApi
+import platform.Foundation.NSBundle
+import platform.UIKit.UIImage
+import platform.UIKit.UIImagePNGRepresentation
+import kotlin.io.encoding.Base64
+
+// Reads the app's primary icon name out of Info.plist's CFBundleIcons (populated by Xcode from
+// the asset catalog's App Icon set at build time) and loads it via UIImage(named:); falls back to
+// the conventional "AppIcon" asset-catalog name some Xcode configurations don't auto-populate
+// CFBundleIconFiles for.
+@OptIn(ExperimentalForeignApi::class)
+internal actual suspend fun loadAppIconBase64Png(
+    context: PlatformContext,
+    crashReporter: CrashReporter,
+): String? {
+    val iconName = primaryAppIconName() ?: "AppIcon"
+    val image = UIImage.imageNamed(iconName) ?: return null
+    val png = UIImagePNGRepresentation(image) ?: return null
+    return Base64.encode(png.toByteArray())
+}
+
+private fun primaryAppIconName(): String? {
+    val info = NSBundle.mainBundle.infoDictionary ?: return null
+    val icons = info["CFBundleIcons"] as? Map<*, *> ?: return null
+    val primary = icons["CFBundlePrimaryIcon"] as? Map<*, *> ?: return null
+    val files = primary["CFBundleIconFiles"] as? List<*> ?: return null
+    return files.lastOrNull() as? String
+}

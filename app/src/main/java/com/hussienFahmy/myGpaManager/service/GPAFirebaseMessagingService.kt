@@ -11,11 +11,9 @@ class GPAFirebaseMessagingService : FirebaseMessagingService() {
     private val updateFCMToken: UpdateFCMToken by inject()
     private val scope: CoroutineScope by inject()
 
-    override fun onNewToken(token: String) {
-        super.onNewToken(token)
-
+    override fun onRegistered(installationId: String) {
         scope.launch {
-            updateFCMToken(token)
+            updateFCMToken(installationId)
         }
     }
 }

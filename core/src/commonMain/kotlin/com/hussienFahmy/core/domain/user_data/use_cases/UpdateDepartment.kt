@@ -1,0 +1,16 @@
+package com.hussienfahmy.core.domain.user_data.use_cases
+
+import com.hussienfahmy.core.generated.resources.*
+import com.hussienfahmy.core.data.local.util.UpdateResult
+import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
+import com.hussienfahmy.core.model.UiText
+
+class UpdateDepartment(
+    private val repository: UserDataRepository
+) {
+    suspend operator fun invoke(department: String): UpdateResult {
+        if (department.isBlank()) return UpdateResult.Failed(UiText.Resource(Res.string.cannot_be_empty))
+        repository.updateDepartment(department)
+        return UpdateResult.Success
+    }
+}

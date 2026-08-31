@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="semester_marks_presentaion">
+    <output-path>$PROJECT_DIR$/semester_marks/semester_marks_presentaion/build/libs</output-path>
+    <root id="archive" name="semester_marks_presentaion.jar">
+      <element id="module-output" name="GPAManager.semester_marks.semester_marks_presentaion.androidMain" />
+    </root>
+  </artifact>
+</component>

@@ -1,17 +1,138 @@
 plugins {
-    alias(libs.plugins.base.module)
+    alias(libs.plugins.base.kmp.module)
+    // Needed for UiText's @Composable asString() and the generated Res.string.* accessors below -
+    // :core does NOT pull in compose.foundation/material3/ui, just the compiler plugin + the
+    // resources library, so it stays a data/domain module rather than a UI module.
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.compose.multiplatform)
 }
 
-android {
-    namespace = "com.hussienfahmy.core"
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+    // Room KMP needs its generated _Impl classes in Kotlin, not Java, to target non-JVM
+    // platforms. Harmless on Android-only today; required once iosMain is added here.
+    arg("room.generateKotlin", "true")
+}
 
-    ksp {
-        arg("room.schemaLocation", "$projectDir/schemas")
+// google-services plugin only works on com.android.application - can't apply it here, so we
+// parse :app's google-services.json directly and expose the OAuth web client ID to
+// GoogleAuthUiClient.kt as a generated Kotlin constant instead. Falls back to empty string if the
+// (gitignored) file is missing.
+//
+// Not a BuildConfig field: com.android.kotlin.multiplatform.library doesn't generate a BuildConfig
+// class at all (it's variant-agnostic, no defaultConfig/buildConfigField support). Written directly
+// at configuration time - same as the old code did for the JSON parse itself - rather than via a
+// task, since there's nothing task-graph-worthy about writing one constant.
+val googleServicesFile = rootProject.file("app/google-services.json")
+val webClientId = if (googleServicesFile.exists()) {
+    val json = groovy.json.JsonSlurper().parse(googleServicesFile) as Map<*, *>
+    @Suppress("UNCHECKED_CAST")
+    val clients = json["client"] as List<Map<*, *>>
+    val appClient = clients.first {
+        val info = it["client_info"] as Map<*, *>
+        val androidInfo = info["android_client_info"] as Map<*, *>
+        androidInfo["package_name"] == libs.versions.appId.get()
+    }
+    @Suppress("UNCHECKED_CAST")
+    val oauthClients = appClient["oauth_client"] as List<Map<*, *>>
+    oauthClients.first { (it["client_type"] as Number).toInt() == 3 }["client_id"] as String
+} else {
+    ""
+}
+
+val generatedAuthConfigDir = layout.buildDirectory.dir("generated/authConfig").get().asFile
+// Same package as GoogleAuthUiClient.kt, so it's usable there with no import.
+File(generatedAuthConfigDir, "com/hussienfahmy/core/domain/auth/GoogleAuthConfig.kt").apply {
+    parentFile.mkdirs()
+    writeText(
+        """
+        package com.hussienfahmy.core.domain.auth
+
+        internal const val GOOGLE_WEB_CLIENT_ID = "$webClientId"
+
+        """.trimIndent()
+    )
+}
+
+kotlin {
+    android {
+        namespace = "com.hussienfahmy.core"
+    }
+
+    sourceSets {
+        androidMain {
+            kotlin.srcDir(generatedAuthConfigDir)
+        }
+
+        commonMain.dependencies {
+            implementation(libs.bundles.room)
+            implementation(libs.androidx.sqlite.bundled)
+            // api, not implementation: UiText.Resource exposes StringResource as part of :core's
+            // public API surface, and ~70 downstream modules need Res.string.* to resolve.
+            api(libs.compose.components.resources)
+            // compose-components-resources only brings the resources runtime; UiText.asString()
+            // is itself @Composable, which needs the Compose runtime (Composable annotation,
+            // stringResource) on the classpath too.
+            api(libs.compose.runtime)
+            // GitLive Firebase Analytics replaces the Android-only SDK dependency that used to
+            // live in androidMain, now that FirebaseAnalyticsService/AnalyticsModule are
+            // commonMain.
+            implementation(libs.gitlive.firebase.analytics)
+            // GitLive Firebase Crashlytics is genuinely multiplatform (Android + Apple), same as
+            // analytics above - no expect/actual split needed for CrashReporter.
+            implementation(libs.gitlive.firebase.crashlytics)
+            // api: createDataStore()/OkioSerializer are part of :core's public API surface -
+            // *_data modules' own DataStore-backed sources (GPADatastore,
+            // SubjectSettingsDataSource) implement OkioSerializer<T> directly.
+            api(libs.androidx.datastore.core.okio)
+            api(libs.okio)
+            // Replaces java.text.SimpleDateFormat/java.util.Date (no Kotlin/Native equivalent) in
+            // the report-template renderers' date stamps.
+            implementation(libs.kotlinx.datetime)
+            // api, not implementation: PlatformFile is part of UploadPhoto's public signature,
+            // same reasoning as compose.components.resources above - downstream modules
+            // (core-ui, :shared) need it on their compile classpath too.
+            // FileKit.compressImage() is UploadPhoto's common replacement for the old
+            // PlatformImageSource/ImageThumbnailer expect/actual pair.
+            api(libs.filekit.core)
+        }
+
+        androidMain.dependencies {
+            // Supplies the version for firebase-analytics (unversioned) that
+            // gitlive.firebase.analytics's Android artifact pulls in transitively.
+            // project.dependencies.platform(...), not the bare platform(...) DSL extension - that
+            // overload is broken inside KMP sourceSet dependency blocks under Kotlin 2.3 (KT-58759).
+            implementation(project.dependencies.platform(libs.firebase.bom))
+            implementation(libs.androidx.core.ktx)
+            implementation(libs.androidx.activity.ktx)
+            implementation(libs.koin.android)
+            // For GoogleAuthUiClient, Android's counterpart to AppleSignIn.kt below.
+            implementation(libs.androidx.credentials)
+            implementation(libs.androidx.credentials.play.services.auth)
+            implementation(libs.googleid)
+        }
+
+        // AppleSignIn.kt exchanges its Apple ID credential for a Firebase session directly.
+        iosMain.dependencies {
+            implementation(libs.gitlive.firebase.auth)
+        }
+    }
+}
+
+// Res needs to be public (default is module-internal) since dozens of downstream Android-only
+// modules reference com.hussienfahmy.core.generated.resources.Res.string.* directly, and a fixed
+// package name keeps their imports stable regardless of :core's own namespace.
+compose {
+    resources {
+        publicResClass = true
+        packageOfResClass = "com.hussienfahmy.core.generated.resources"
     }
 }
 
 dependencies {
-    implementation(libs.bundles.room)
-    ksp(libs.androidx.room.compiler)
-    implementation(libs.firebase.analytics)
+    // Room's entities/DAOs/database now live in commonMain, but KSP still has to generate a
+    // per-target implementation - one processor per target that actually compiles this module.
+    add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
 }

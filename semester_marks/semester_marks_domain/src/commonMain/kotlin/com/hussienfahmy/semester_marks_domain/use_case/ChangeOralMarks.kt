@@ -1,0 +1,23 @@
+package com.hussienfahmy.semester_marks_domain.use_case
+
+import com.hussienfahmy.core.generated.resources.*
+import com.hussienfahmy.core.data.local.SubjectDao
+import com.hussienfahmy.core.data.local.util.UpdateResult
+import com.hussienfahmy.core.domain.sync.SyncDirtyTracker
+import com.hussienfahmy.core.model.UiText
+
+class ChangeOralMarks(
+    private val subjectDao: SubjectDao,
+    private val dirtyTracker: SyncDirtyTracker,
+) {
+    suspend operator fun invoke(subjectId: Long, marks: String): UpdateResult {
+        val oral = marks.toDoubleOrNull()
+        return if (oral != null && oral < 0) {
+            UpdateResult.Failed(UiText.Resource(Res.string.err_subject_oral_negative))
+        } else {
+            subjectDao.updateOral(subjectId, oral)
+            dirtyTracker.markSubjectsChanged()
+            UpdateResult.Success
+        }
+    }
+}

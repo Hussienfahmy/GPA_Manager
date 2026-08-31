@@ -1,9 +1,13 @@
 plugins {
-    alias(libs.plugins.base.module.compose)
+    alias(libs.plugins.base.kmp.compose.module)
 }
 
-dependencies {
-    implementation(project(":core"))
-    implementation(project(":core-ui"))
-    implementation(project(":semester_marks:semester_marks_domain"))
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core)
+            implementation(projects.coreUi)
+            implementation(projects.semesterMarks.semesterMarksDomain)
+        }
+    }
 }

@@ -1,0 +1,8 @@
+-keep class com.hussienfahmy.sync_domain.model.NetworkSemester
+-keep class com.hussienfahmy.sync_domain.model.NetworkSubjects
+-keep class com.hussienfahmy.sync_domain.model.Settings
+-keep class com.hussienfahmy.sync_domain.model.CalculationSettings
+-keep class com.hussienfahmy.sync_domain.model.NetworkGrade
+-keep class com.hussienfahmy.sync_domain.model.Subject
+-keep class com.hussienfahmy.sync_domain.model.Subject$SemesterMarks
+-keep class com.hussienfahmy.sync_domain.model.Subject$MetaData

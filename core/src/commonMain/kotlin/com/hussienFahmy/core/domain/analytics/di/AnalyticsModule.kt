@@ -1,0 +1,21 @@
+package com.hussienfahmy.core.domain.analytics.di
+
+import com.hussienfahmy.core.data.analytics.FirebaseAnalyticsService
+import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
+import com.hussienfahmy.core.domain.analytics.AnalyticsService
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.analytics.FirebaseAnalytics
+import dev.gitlive.firebase.analytics.analytics
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
+import org.koin.dsl.module
+
+val analyticsModule = module {
+    single<FirebaseAnalytics> {
+        Firebase.analytics
+    }
+
+    singleOf(::FirebaseAnalyticsService).bind<AnalyticsService>()
+
+    singleOf(::AnalyticsLogger)
+}

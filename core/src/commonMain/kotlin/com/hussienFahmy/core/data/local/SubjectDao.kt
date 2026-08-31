@@ -1,0 +1,219 @@
+package com.hussienfahmy.core.data.local
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.hussienfahmy.core.data.local.entity.Grade
+import com.hussienfahmy.core.data.local.entity.Subject
+import com.hussienfahmy.core.data.local.model.GradeName
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
+
+@Dao
+interface SubjectDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsert(subject: Subject)
+
+    @Query("DELETE FROM subject WHERE id = :id")
+    suspend fun delete(id: Long)
+
+    @Query("DELETE FROM subject")
+    suspend fun deleteAll()
+
+    @Query("DELETE FROM subject WHERE semesterId IS NOT NULL")
+    suspend fun deleteAllArchivedSubjects()
+
+    @Query(
+        "UPDATE subject SET gradeName = NULL WHERE id = :subjectId"
+    )
+    suspend fun clearGrade(subjectId: Long)
+
+    @Query(
+        "UPDATE subject SET gradeName = NULL"
+    )
+    suspend fun clearAllGrades()
+
+    // ---------------- Subject Update -----------//
+
+    @Query("UPDATE subject SET name = :name WHERE id = :subjectId")
+    suspend fun updateName(subjectId: Long, name: String)
+
+    @Query("UPDATE subject SET creditHours = :creditHours WHERE id = :subjectId")
+    suspend fun updateCreditHours(subjectId: Long, creditHours: Double)
+
+    @Query("UPDATE subject SET totalMarks = :totalMarks WHERE id = :subjectId")
+    suspend fun updateTotalMarks(subjectId: Long, totalMarks: Double)
+
+    @Query("UPDATE subject SET totalMarks = :constTotalMarks")
+    suspend fun updateTotalMarksConst(constTotalMarks: Double)
+
+    @Query("UPDATE subject SET totalMarks = creditHours * :marksPerCredit")
+    suspend fun updateTotalMarksPerCredit(marksPerCredit: Double)
+
+    @Query("UPDATE subject SET gradeName = :gradeName WHERE id = :subjectId")
+    suspend fun updateGrade(subjectId: Long, gradeName: GradeName?)
+
+    @Query("UPDATE subject SET oral=null, practical=null, midterm=null, project=null WHERE id = :subjectId")
+    suspend fun resetSubjectMarks(subjectId: Long)
+
+    /**
+     * Clear un available grades that has been set to the subjects.
+     * call this method when changing the [Grade.active] property in the database
+     * to remove all inactive grades from the subjects table
+     */
+    @Query(
+        """
+        UPDATE subject SET gradeName = NULL 
+        WHERE gradeName IN(SELECT grade.meta_data FROM grade WHERE grade.active = 0)
+    """
+    )
+    suspend fun clearUnAvailableGrades()
+
+    // ---------------- SemesterMark Update -----------//
+
+    @Query("UPDATE subject SET midterm = :midterm WHERE id = :subjectId")
+    suspend fun updateMidterm(subjectId: Long, midterm: Double?)
+
+    @Query("UPDATE subject SET practical = :practical WHERE id = :subjectId")
+    suspend fun updatePractical(subjectId: Long, practical: Double?)
+
+    @Query("UPDATE subject SET oral = :oral WHERE id = :subjectId")
+    suspend fun updateOral(subjectId: Long, oral: Double?)
+
+    @Query("UPDATE subject SET project = :project WHERE id = :subjectId")
+    suspend fun updateProject(subjectId: Long, project: Double?)
+
+    @Query("UPDATE subject SET finalExamMaxMarks = :marks WHERE id = :subjectId")
+    suspend fun updateFinalExamMaxMarks(subjectId: Long, marks: Double?)
+
+    // ---------------- MetaData Update -----------//
+
+    @Query("UPDATE subject SET midtermAvailable = :available WHERE id = :subjectId")
+    suspend fun setMidtermAvailability(subjectId: Long, available: Boolean)
+
+    @Query("UPDATE subject SET practicalAvailable = :available WHERE id = :subjectId")
+    suspend fun setPracticalAvailability(subjectId: Long, available: Boolean)
+
+    @Query("UPDATE subject SET oralAvailable = :available WHERE id = :subjectId")
+    suspend fun setOralAvailability(subjectId: Long, available: Boolean)
+
+    @Query("UPDATE subject SET projectAvailable = :available WHERE id = :subjectId")
+    suspend fun setProjectAvailability(subjectId: Long, available: Boolean)
+
+
+    // ---------------- Semester with max grade can be achieved -----------//
+
+    data class SubjectWithGrades(
+        val subject: Subject,
+        val maxGradeCanBeAssigned: Grade,
+        val assignedGrade: Grade?
+    )
+
+    /**
+     * Get all subjects in the current workspace (not yet archived to any semester)
+     */
+    @Query("SELECT * FROM subject WHERE semesterId IS NULL ORDER BY creditHours DESC")
+    fun getAllCurrentSubjects(): Flow<List<Subject>>
+
+    /**
+     * Get a single subject by id (null if not found)
+     */
+    @Query("SELECT * FROM subject WHERE id = :id")
+    suspend fun getSubjectById(id: Long): Subject?
+
+    /**
+     * Get all subjects belonging to a specific archived semester
+     */
+    @Query("SELECT * FROM subject WHERE semesterId = :semesterId ORDER BY creditHours DESC")
+    fun getSubjectsBySemesterId(semesterId: Long): Flow<List<Subject>>
+
+    /**
+     * Link all current workspace subjects (semesterId IS NULL) to the given semester
+     */
+    @Query("UPDATE subject SET semesterId = :semesterId WHERE semesterId IS NULL")
+    suspend fun linkWorkspaceSubjectsToSemester(semesterId: Long)
+
+    /**
+     * Ids of archived semesters that have at least one subject with no grade
+     * assigned — drives the "missing grade" signal on the History list.
+     */
+    @Query("SELECT DISTINCT semesterId FROM subject WHERE semesterId IS NOT NULL AND gradeName IS NULL")
+    fun getSemesterIdsWithMissingGrade(): Flow<List<Long>>
+
+    /**
+     * Get all active grades
+     */
+    @Query("SELECT * FROM grade WHERE active ORDER BY percentage DESC")
+    fun getAllActiveGrades(): Flow<List<Grade>>
+
+    /**
+     * Count subjects in the current workspace
+     */
+    @Query("SELECT COUNT(*) FROM subject WHERE semesterId IS NULL")
+    fun getWorkspaceSubjectCount(): Flow<Int>
+
+    /**
+     * Get all subjects with their grades
+     *
+     * the max_grade field will be the grade with highest active percentage value of there is no semester mark values
+     * otherwise will be the grade withe percentage equal or just below the semester mark percentage + the lowest grade percentage
+     *
+     * example:
+     * oral is null and midterm is null and practical is null the max_grade will be A
+     * oral is 10 and midterm is 5 and practical is 10 and the total marks is 100
+     * the semester mark will be 25 from 100
+     * e.g 25% + 60% (D grade) = 85% and max_grade will be A-
+     */
+    val subjectsWithAssignedGrade: Flow<List<SubjectWithGrades>>
+        get() {
+            return combine(
+                getAllCurrentSubjects(), getAllActiveGrades()
+            ) { subjects, allGrades ->
+                val gradesForMax = allGrades.filter { grade ->
+                    grade.name != GradeName.F
+                }
+                val highestGrade = (gradesForMax.ifEmpty { allGrades })
+                    .maxByOrNull { it.percentage!! } // active grades always have percentage value
+                val lowestPercentage = (gradesForMax.ifEmpty { allGrades })
+                    .minByOrNull { it.percentage!! }?.percentage ?: 0.0
+
+                subjects.map { subject ->
+                    val semesterMarks = subject.semesterMarks
+                    val maxGrade =
+                        if (semesterMarks?.midterm == null && semesterMarks?.practical == null && semesterMarks?.oral == null && semesterMarks?.project == null) {
+                            highestGrade
+                        } else {
+                            val semesterPercentage =
+                                (100.0 * semesterMarks.value / subject.totalMarks)
+                            val finalPercentage: Double = subject.metadata.finalExamMaxMarks
+                                ?.let { it / subject.totalMarks * 100.0 }
+                                ?: lowestPercentage
+                            val threshold = semesterPercentage + finalPercentage
+
+                            gradesForMax.filter { it.percentage!! <= threshold }
+                                .maxByOrNull { it.percentage!! }
+                            // threshold can fall below the lowest grade (e.g. a
+                            // tiny final-exam weight). Fall back to the lowest
+                            // available grade instead of crashing on maxGrade!!.
+                                ?: gradesForMax.minByOrNull { it.percentage!! }
+                                ?: highestGrade
+                        }
+
+                    val assignedGrade = subject.gradeName?.let { gradeName ->
+                        allGrades.find { it.name == gradeName }
+                    }
+
+                    SubjectWithGrades(
+                        subject = subject,
+                        maxGradeCanBeAssigned = maxGrade!!,
+                        assignedGrade = assignedGrade
+                    )
+                }
+            }.flowOn(Dispatchers.IO)
+        }
+}
