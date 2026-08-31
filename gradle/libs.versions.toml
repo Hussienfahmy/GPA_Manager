@@ -6,8 +6,8 @@ compileSdk = "37"
 googleid = "1.2.0"
 minSdk = "23"
 targetSdk = "37"
-versionCode = "88"
-versionName = "8.0.3"
+versionCode = "89"
+versionName = "8.1.0"
 
 # Build Tools
 agp = "9.3.1"
