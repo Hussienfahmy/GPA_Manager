@@ -1,13 +1,17 @@
 package com.hussienfahmy.myGpaManager.navigation
 
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingAcademicStatusScreen
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingGPASubjectsSettings
 import com.hussienfahmy.myGpaManager.navigation.screens.onboarding.AppOnBoardingGPATrackingScreen
@@ -28,7 +32,11 @@ fun OnboardingNavHost(
     onSignInSuccess: () -> Unit,
     onOnboardingComplete: () -> Unit,
 ) {
+    val spacing = LocalSpacing.current
+
     NavDisplay(
+        modifier = Modifier.navigationBarsPadding()
+            .padding(horizontal = spacing.medium),
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
         entryDecorators = listOf(
@@ -37,7 +45,12 @@ fun OnboardingNavHost(
         ),
         entryProvider = entryProvider {
             entry<OnboardingRoute.Welcome>(metadata = welcomeSlideTransitionMetadata) {
-                AppOnBoardingScreen(onSignInSuccess = onSignInSuccess)
+                AppOnBoardingScreen(
+                    onSignInSuccess = onSignInSuccess,
+                    // Guest chose "fill with sample data" - the app is already usable, skip the
+                    // remaining setup steps.
+                    onGuestReady = onOnboardingComplete,
+                )
             }
 
             entry<OnboardingRoute.PersonalInfo>(metadata = slideTransitionMetadata) {

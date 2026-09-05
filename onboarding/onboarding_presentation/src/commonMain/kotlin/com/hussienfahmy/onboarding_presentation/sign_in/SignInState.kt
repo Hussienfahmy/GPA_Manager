@@ -5,5 +5,6 @@ sealed class SignInState {
     object Loading : SignInState()
     object Syncing : SignInState()
     object Success : SignInState()
+    object GuestReady : SignInState()
     object Error : SignInState()
 }

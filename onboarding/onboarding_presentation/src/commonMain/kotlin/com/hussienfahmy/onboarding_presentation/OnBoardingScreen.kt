@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Check
@@ -30,10 +31,14 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,9 +58,14 @@ import com.hussienfahmy.core.generated.resources.*
 import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.presentation.components.OnboardingConstants
 import com.hussienfahmy.core_ui.presentation.components.OnboardingLayout
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowBottomSheet
 import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowCard
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowRowDivider
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSettingsGroup
+import com.hussienfahmy.core_ui.presentation.components.meadow.MeadowSettingsRow
 import com.hussienfahmy.core_ui.presentation.util.UiEventHandler
 import com.hussienfahmy.core_ui.theme.MeadowAccent
+import com.hussienfahmy.core_ui.theme.MeadowRadius
 import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.onboarding_presentation.sign_in.AuthEvent
 import com.hussienfahmy.onboarding_presentation.sign_in.SignInState
@@ -77,15 +87,18 @@ import org.koin.compose.viewmodel.koinViewModel
 fun OnBoardingScreen(
     viewModel: SignInViewModel = koinViewModel(),
     onSignInSuccess: () -> Unit,
+    onGuestReady: () -> Unit,
 ) {
     val platformSignIn = rememberPlatformSignIn()
     val scope = rememberCoroutineScope()
 
     val state by viewModel.state
+    var showDemoSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = state) {
         when (state) {
             SignInState.Success -> onSignInSuccess()
+            SignInState.GuestReady -> onGuestReady()
             SignInState.Initial,
             SignInState.Loading,
             SignInState.Syncing,
@@ -104,13 +117,25 @@ fun OnBoardingScreen(
                 viewModel.onEvent(AuthEvent.OnSignInResult(platformSignIn.signIn()))
             }
         },
+        onExploreDemoClick = { showDemoSheet = true },
     )
+
+    if (showDemoSheet) {
+        DemoModeSheet(
+            onDismiss = { showDemoSheet = false },
+            onStart = { withSampleData ->
+                showDemoSheet = false
+                viewModel.startGuest(withSampleData = withSampleData)
+            },
+        )
+    }
 }
 
 @Composable
 private fun OnBoardingScreenContent(
     signingIn: Boolean,
     onSignInClick: () -> Unit,
+    onExploreDemoClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val spacing = LocalSpacing.current
@@ -123,8 +148,7 @@ private fun OnBoardingScreenContent(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(spacing.large),
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(spacing.large),
         ) {
@@ -159,12 +183,93 @@ private fun OnBoardingScreenContent(
                     color = MeadowTheme.accent.accent,
                 )
             } else {
-                PlatformSignInButton(
-                    onClick = onSignInClick,
-                    enabled = true,
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(spacing.extraSmall),
                     modifier = Modifier.fillMaxWidth(),
-                )
+                ) {
+                    PlatformSignInButton(
+                        onClick = onSignInClick,
+                        enabled = true,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+
+                    TextButton(onClick = onExploreDemoClick) {
+                        Text(
+                            text = stringResource(Res.string.onboarding_explore_demo),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MeadowTheme.accent.accent,
+                        )
+                    }
+                }
             }
+        }
+    }
+}
+
+/**
+ * Offered from the welcome screen's "Explore the demo" action: a short explanation of what the
+ * demo is, then a choice of a pre-filled example or an empty app. Either choice starts a
+ * local-only guest session and skips the rest of onboarding.
+ */
+@Composable
+private fun DemoModeSheet(
+    onDismiss: () -> Unit,
+    onStart: (withSampleData: Boolean) -> Unit,
+) {
+    val colors = MeadowTheme.colors
+    val accent = MeadowTheme.accent
+
+    MeadowBottomSheet(onDismiss = onDismiss) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(40.dp)
+                .clip(RoundedCornerShape(MeadowRadius.tile))
+                .background(accent.container),
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.AutoAwesome,
+                contentDescription = null,
+                tint = accent.deep,
+                modifier = Modifier.size(22.dp),
+            )
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = stringResource(Res.string.demo_sheet_title),
+            style = MaterialTheme.typography.headlineMedium,
+            color = colors.ink,
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        Text(
+            text = stringResource(Res.string.demo_sheet_body),
+            style = MaterialTheme.typography.bodyMedium,
+            color = colors.chipText,
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        MeadowSettingsGroup {
+            MeadowSettingsRow(
+                icon = Icons.Outlined.AutoAwesome,
+                title = stringResource(Res.string.demo_sheet_option_sample_title),
+                summary = stringResource(Res.string.demo_sheet_option_sample_summary),
+                tileAccent = colors.marks,
+                onClick = { onStart(true) },
+            )
+            MeadowRowDivider()
+            MeadowSettingsRow(
+                icon = Icons.Outlined.Add,
+                title = stringResource(Res.string.demo_sheet_option_blank_title),
+                summary = stringResource(Res.string.demo_sheet_option_blank_summary),
+                tileAccent = colors.semester,
+                onClick = { onStart(false) },
+            )
         }
     }
 }
@@ -173,7 +278,11 @@ private fun OnBoardingScreenContent(
 @Composable
 private fun OnBoardingScreenContentPreview() {
     MeadowTheme(darkTheme = false) {
-        OnBoardingScreenContent(signingIn = false, onSignInClick = {})
+        OnBoardingScreenContent(
+            signingIn = false,
+            onSignInClick = {},
+            onExploreDemoClick = {},
+        )
     }
 }
 

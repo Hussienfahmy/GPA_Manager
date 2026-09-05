@@ -56,8 +56,7 @@ fun GradeSettingsScreen(
     MeadowAccentProvider(MeadowTheme.colors.marks) {
         Column(
             modifier = modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
+                .fillMaxSize(),
         ) {
             Spacer(modifier = Modifier.height(12.dp))
 

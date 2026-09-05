@@ -1,31 +1,8 @@
 package com.hussienfahmy.myGpaManager.data.user_data.model
 
-import kotlinx.serialization.KSerializer
+import com.hussienfahmy.myGpaManager.data.common.mapper.LenientEpochMillisSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-
-// Accounts created before the switch to GitLive Firestore have createdAt/updatedAt stored as a
-// native Firestore Timestamp (the old Android SDK's server-timestamp type), not the epoch-millis
-// Long used now (see TimestampMapper.kt for why). Neither field is read anywhere downstream -
-// they're write-only bookkeeping - so on a legacy Timestamp-shaped document there's nothing to
-// recover; just don't let it crash the whole document decode.
-private object LenientEpochMillisSerializer : KSerializer<Long> {
-    override val descriptor = PrimitiveSerialDescriptor("LenientEpochMillis", PrimitiveKind.LONG)
-
-    override fun serialize(encoder: Encoder, value: Long) = encoder.encodeLong(value)
-
-    override fun deserialize(decoder: Decoder): Long {
-        return try {
-            decoder.decodeLong()
-        } catch (e: Exception) {
-            0L
-        }
-    }
-}
 
 // No id/@DocumentId field: the document id is always the Firebase Auth uid already known to the
 // caller (userDoc(userId) = .document(userId)), so it's redundant to also store/read it from the

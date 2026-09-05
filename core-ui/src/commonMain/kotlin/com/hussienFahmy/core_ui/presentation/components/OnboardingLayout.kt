@@ -50,7 +50,6 @@ fun OnboardingLayout(
         modifier = modifier
             .fillMaxSize()
             .background(colors.paper)
-            .padding(16.dp)
     ) {
         Text(
             text = title,

@@ -55,7 +55,7 @@ val sharedFirebaseModule = module {
     }
 
     single<UserDataRepository> {
-        FirebaseUserDataRepository(get(), get(), get())
+        FirebaseUserDataRepository(get(), get(), get(), get())
     }
 
     singleOf(::FirebaseSyncRepository).bind<SyncRepository>()

@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hussienfahmy.core.domain.gpa_settings.model.GPA
 import com.hussienfahmy.core_ui.LocalScaffoldContentPadding
+import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.core_ui.theme.MeadowAccentProvider
 import com.hussienfahmy.core_ui.theme.MeadowTheme
 import com.hussienfahmy.gpa_system_sittings_presentaion.components.GPASystemItem
@@ -54,7 +55,7 @@ fun GPASettingsContent(
 
     Column(
         modifier
-            .padding(16.dp)
+            .padding(vertical = LocalSpacing.current.medium)
             .padding(bottom = scaffoldPadding.calculateBottomPadding())
     ) {
         GPASystemItem(

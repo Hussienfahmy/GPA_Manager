@@ -1,16 +1,19 @@
 package com.hussienfahmy.myGpaManager.data.user_data
 
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
+import com.hussienfahmy.core.domain.crash.CrashReporter
 import com.hussienfahmy.core.domain.user_data.model.UserData
 import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienfahmy.myGpaManager.data.user_data.mapper.toDomain
 import com.hussienfahmy.myGpaManager.data.user_data.model.FirebaseUserData
 import dev.gitlive.firebase.firestore.FirebaseFirestore
+import dev.gitlive.firebase.firestore.FirebaseFirestoreException
+import dev.gitlive.firebase.firestore.FirestoreExceptionCode
+import dev.gitlive.firebase.firestore.code
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -18,19 +21,18 @@ import kotlinx.coroutines.flow.stateIn
 import kotlin.time.Clock
 
 class FirebaseUserDataRepository(
-    authRepository: AuthRepository,
+    private val authRepository: AuthRepository,
     scope: CoroutineScope,
     private val db: FirebaseFirestore,
+    private val crashReporter: CrashReporter,
 ) : UserDataRepository {
 
-    private val userDoc = authRepository.userId.map { userId ->
-        userId?.let {
-            db.collection(FirebaseUserData.USERS_COLLECTION_NAME).document(it)
-        }
+    private fun currentDoc() = authRepository.userId.value?.let {
+        db.collection(FirebaseUserData.USERS_COLLECTION_NAME).document(it)
     }
 
     override suspend fun isUserExists(): Boolean {
-        return userDoc.first()?.get()?.exists ?: false
+        return currentDoc()?.get()?.exists ?: false
     }
 
     override suspend fun createUserData(
@@ -40,7 +42,7 @@ class FirebaseUserDataRepository(
         email: String,
     ) {
         val now = Clock.System.now().toEpochMilliseconds()
-        userDoc.first()?.set(
+        currentDoc()?.set(
             FirebaseUserData(
                 name = name,
                 photoUrl = photoUrl,
@@ -51,41 +53,35 @@ class FirebaseUserDataRepository(
         )
     }
 
-    // GitLive's DocumentReference.snapshots Flow replaces the manual
-    // addSnapshotListener/callbackFlow/awaitClose wiring the Android SDK needed.
     @OptIn(ExperimentalCoroutinesApi::class)
     override val userData: Flow<UserData?> =
-        userDoc.flatMapLatest { docRef ->
-            if (docRef == null) {
-                flowOf(null)
-            } else {
-                docRef.snapshots.map { snapshot ->
-                    if (snapshot.exists) {
-                        snapshot.data<FirebaseUserData>().toDomain(snapshot.id)
-                    } else {
-                        null
-                    }
+        authRepository.userId.flatMapLatest { id ->
+            val docRef = id?.let { db.collection(FirebaseUserData.USERS_COLLECTION_NAME).document(it) }
+            docRef?.snapshots?.map { snapshot ->
+                if (snapshot.exists) {
+                    snapshot.data<FirebaseUserData>().toDomain(snapshot.id)
+                } else {
+                    null
                 }
             }
+                ?: flowOf(null)
         }.stateIn(
             scope = scope,
             started = SharingStarted.WhileSubscribed(1_000),
             initialValue = null
         )
 
-    // The old Android SDK's mapOf(field to value) update worked with value typed as plain Any
-    // because Firestore's Android SDK serializes via reflection at runtime. GitLive's
-    // updateFields{} DSL is kotlinx.serialization-based, which typically resolves serializers from
-    // *static* (often reified) type info - "field to value" here has value statically typed as
-    // Any, which may not resolve a serializer correctly for non-String/primitive values (in
-    // particular updateSemester's FirebaseUserData.AcademicInfo.Semester enum argument), a risk
-    // untested at runtime. If it doesn't serialize correctly, each updateXxx caller below may need
-    // its own non-generic updateFields{} call with the concrete type inline instead of routing
-    // through this shared helper.
     private suspend fun updateField(field: String, value: Any) {
-        userDoc.first()?.updateFields {
-            field to value
-            FirebaseUserData.PROPERTY_UPDATED_AT to Clock.System.now().toEpochMilliseconds()
+        val doc = currentDoc() ?: return
+        try {
+            doc.updateFields {
+                field to value
+                FirebaseUserData.PROPERTY_UPDATED_AT to Clock.System.now().toEpochMilliseconds()
+            }
+        } catch (e: FirebaseFirestoreException) {
+            // No backing doc yet - best-effort write, dropped rather than crashing.
+            if (e.code != FirestoreExceptionCode.NOT_FOUND) throw e
+            crashReporter.recordException(e, mapOf("operation" to "updateField", "field" to field))
         }
     }
 
@@ -137,6 +133,7 @@ class FirebaseUserDataRepository(
     }
 
     override suspend fun updateFCMToken(fcmToken: String) {
+        if (authRepository.isAnonymousFlow.value == true) return // guests aren't targeted for push
         updateField(FirebaseUserData.PROPERTY_FCM_TOKEN, fcmToken)
     }
 }

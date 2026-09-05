@@ -1,5 +1,7 @@
 package com.hussienfahmy.core.domain.user_data.di
 
+import com.hussienfahmy.core.domain.auth.use_cases.CompleteSignIn
+import com.hussienfahmy.core.domain.sample.SeedSampleData
 import com.hussienfahmy.core.domain.user_data.use_cases.ClearFcmToken
 import com.hussienfahmy.core.domain.user_data.use_cases.GetAcademicProgress
 import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
@@ -40,4 +42,6 @@ val coreUserDataDomainModule = module {
     singleOf(::UpdateFCMToken)
     singleOf(::RefreshFcmToken)
     singleOf(::ClearFcmToken)
+    singleOf(::CompleteSignIn)
+    singleOf(::SeedSampleData)
 }

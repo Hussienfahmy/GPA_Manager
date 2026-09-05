@@ -14,6 +14,9 @@ class SyncUploadImpl(
     private val dirtyTracker: SyncDirtyTracker,
 ) : SyncUpload {
     override suspend operator fun invoke() {
+        // Guest (anonymous) sessions are local-only - nothing is pushed to Firebase.
+        if (authRepository.isAnonymousFlow.value == true) return
+
         val userId = authRepository.userId.filterNotNull().firstOrNull()
             ?: throw IllegalStateException("No user id found")
 

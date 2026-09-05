@@ -6,6 +6,10 @@ import com.hussienfahmy.onboarding_presentation.OnBoardingScreen
 @Composable
 fun AppOnBoardingScreen(
     onSignInSuccess: () -> Unit,
+    onGuestReady: () -> Unit,
 ) {
-    OnBoardingScreen(onSignInSuccess = onSignInSuccess)
+    OnBoardingScreen(
+        onSignInSuccess = onSignInSuccess,
+        onGuestReady = onGuestReady,
+    )
 }

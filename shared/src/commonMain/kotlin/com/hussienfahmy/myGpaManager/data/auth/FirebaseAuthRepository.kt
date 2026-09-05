@@ -9,9 +9,9 @@ import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
@@ -22,29 +22,27 @@ class FirebaseAuthRepository(
     private val platformCredentialCleanup: PlatformCredentialCleanup,
 ) : AuthRepository {
 
-    // GitLive's authStateChanged Flow replaces the manual addAuthStateListener/callbackFlow
-    // wiring the Android SDK needed - same pattern already used for
-    // FirebaseUserDataRepository's snapshots Flow.
+    // Eagerly shared so both flows are already listening (and can be awaited via first{}) the
+    // moment a sign-in/sign-out call needs a fresh value, rather than lagging until something
+    // else happens to subscribe first.
     override val userId: StateFlow<String?> = auth.authStateChanged
         .map { it?.uid }
-        .stateIn(
-            scope = scope,
-            started = SharingStarted.Lazily,
-            initialValue = auth.currentUser?.uid
-        )
+        .stateIn(scope, SharingStarted.Eagerly, auth.currentUser?.uid)
 
     override val isSignedInFlow: StateFlow<Boolean?> = userId.map { it != null }
-        .stateIn(
-            scope = scope,
-            started = SharingStarted.Lazily,
-            initialValue = null
-        )
+        .stateIn(scope, SharingStarted.Eagerly, null)
+
+    override val isAnonymousFlow: StateFlow<Boolean?> = auth.authStateChanged
+        .map { it?.isAnonymous }
+        .stateIn(scope, SharingStarted.Eagerly, auth.currentUser?.isAnonymous)
 
     override suspend fun signInWithCredential(idToken: String): AuthResult {
         val googleCredential = GoogleAuthProvider.credential(idToken, null)
 
         return try {
             val user = auth.signInWithCredential(googleCredential).user!!
+            // Waits for sign in
+            userId.first { it == user.uid }
             AuthResult.Success(
                 AuthUserData(
                     id = user.uid,
@@ -61,11 +59,22 @@ class FirebaseAuthRepository(
         }
     }
 
+    override suspend fun signInAnonymously(): AuthResult {
+        return try {
+            val user = auth.signInAnonymously().user!!
+            userId.first { it == user.uid }
+            AuthResult.Success(AuthUserData(id = user.uid, name = "", photoUrl = "", email = ""))
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            crashReporter.recordException(e, mapOf("operation" to "signInAnonymously"))
+            AuthResult.Error(e.message ?: "Unknown error")
+        }
+    }
+
     override suspend fun signOut() {
         auth.signOut()
         platformCredentialCleanup.clear()
-        while (userId.value != null) {
-            delay(100)
-        }
+        userId.first { it == null }
     }
 }

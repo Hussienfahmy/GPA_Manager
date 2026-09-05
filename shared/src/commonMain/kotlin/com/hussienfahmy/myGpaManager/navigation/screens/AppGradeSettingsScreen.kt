@@ -1,10 +1,13 @@
 package com.hussienfahmy.myGpaManager.navigation.screens
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
 import com.hussienfahmy.core.domain.analytics.AnalyticsLogger
 import com.hussienfahmy.core.domain.analytics.AnalyticsValues
+import com.hussienfahmy.core_ui.LocalSpacing
 import com.hussienfahmy.grades_setting_presentation.GradeSettingsScreen
 import org.koin.compose.koinInject
 
@@ -18,5 +21,8 @@ fun AppGradeSettingsScreen(
         analyticsLogger.logSettingsAccessed(AnalyticsValues.SETTINGS_TYPE_GRADE)
     }
 
-    GradeSettingsScreen(snackBarHostState = snackBarHostState)
+    GradeSettingsScreen(
+        modifier = Modifier.padding(horizontal = LocalSpacing.current.medium),
+        snackBarHostState = snackBarHostState
+    )
 }

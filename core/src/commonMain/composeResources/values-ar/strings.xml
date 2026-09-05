@@ -199,6 +199,13 @@
     <string name="onboarding_welcome_subtitle">رفيقك الذكي لتتبع وتحسين أدائك الأكاديمي</string>
     <string name="onboarding_welcome_get_started">هيا نبدأ! 🚀</string>
     <string name="onboarding_sign_in_with_google">المتابعة باستخدام Google</string>
+    <string name="onboarding_explore_demo">جرّب النسخة التجريبية</string>
+    <string name="demo_sheet_title">جرّب النسخة التجريبية</string>
+    <string name="demo_sheet_body">نظرة سريعة على التطبيق قبل إنشاء حساب. لا يُحفظ أو يُزامَن أي شيء هنا، وتبقى منفصلة تمامًا عن بياناتك.</string>
+    <string name="demo_sheet_option_sample_title">ابدأ ببيانات جاهزة</string>
+    <string name="demo_sheet_option_sample_summary">نموذج طالب كامل يحتوي على فصول ومواد وتقديرات جاهزة.</string>
+    <string name="demo_sheet_option_blank_title">ابدأ فارغًا</string>
+    <string name="demo_sheet_option_blank_summary">تطبيق فارغ لإضافة بعض المواد وتجربته بنفسك.</string>
     <string name="onboarding_welcome_features">• تتبع تقدمك الأكاديمي\n• احسب المعدل الفصلي والتراكمي\n• ضع أهدافاً وراقب تحسنك\n• زامن بياناتك عبر جميع أجهزتك</string>
     <string name="onboarding_welcome_tagline">حوّل أحلامك الأكاديمية إلى حقيقة! ✨</string>
     <string name="onboarding_welcome_subtitle_motivational">مستعد لتحقيق التفوق الأكاديمي؟ 🚀</string>

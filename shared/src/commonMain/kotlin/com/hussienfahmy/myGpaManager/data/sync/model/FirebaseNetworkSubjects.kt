@@ -1,5 +1,6 @@
 package com.hussienfahmy.myGpaManager.data.sync.model
 
+import com.hussienfahmy.myGpaManager.data.common.mapper.LenientEpochMillisSerializer
 import com.hussienfahmy.sync_domain.model.Subject
 import kotlinx.serialization.Serializable
 
@@ -10,5 +11,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class FirebaseNetworkSubjects(
     val subjects: List<Subject> = emptyList(),
+    @Serializable(with = LenientEpochMillisSerializer::class)
     val lastUpdate: Long? = null,
 )

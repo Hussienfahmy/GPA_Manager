@@ -188,6 +188,13 @@
     <string name="onboarding_welcome_subtitle">Your smart companion for tracking and improving your academic performance</string>
     <string name="onboarding_welcome_get_started">Let's Get Started! 🚀</string>
     <string name="onboarding_sign_in_with_google">Continue with Google</string>
+    <string name="onboarding_explore_demo">Explore the demo</string>
+    <string name="demo_sheet_title">Explore the demo</string>
+    <string name="demo_sheet_body">A quick look around before you sign up. Nothing here is saved or synced, and it stays separate from your own data.</string>
+    <string name="demo_sheet_option_sample_title">Start with sample data</string>
+    <string name="demo_sheet_option_sample_summary">A full example student with semesters, subjects and grades already filled in.</string>
+    <string name="demo_sheet_option_blank_title">Start empty</string>
+    <string name="demo_sheet_option_blank_summary">A clean app to add a few subjects and try things yourself.</string>
     <string name="onboarding_welcome_features">• Track your academic progress\n• Calculate semester and cumulative GPA\n• Set goals and monitor improvement\n• Sync across all your devices</string>
     <string name="onboarding_welcome_tagline">Turn your academic dreams into reality! ✨</string>
     <string name="onboarding_welcome_subtitle_motivational">Ready to ace your academics? 🚀</string>

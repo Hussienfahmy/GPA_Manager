@@ -1,13 +1,16 @@
 package com.hussienfahmy.core.domain.auth.repository
 
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface AuthRepository {
-    val userId: Flow<String?>
+    val userId: StateFlow<String?>
     val isSignedInFlow: StateFlow<Boolean?>
+    val isAnonymousFlow: StateFlow<Boolean?>
 
     suspend fun signInWithCredential(idToken: String): AuthResult
+
+    suspend fun signInAnonymously(): AuthResult
+
     suspend fun signOut()
 }
 
