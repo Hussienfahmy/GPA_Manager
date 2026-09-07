@@ -43,6 +43,8 @@ class MigrateExistingUserDataIfNeeded(
             type = Semester.Type.SUMMARY,
             semesterGPA = cumulativeGPA,
             totalCreditHours = creditHours,
+            // SUMMARY semester carrying a legacy manually-entered GPA - no NP/NF concept.
+            gpaCreditHours = creditHours,
             status = Semester.Status.ARCHIVED,
             order = 1,
             archivedAt = Clock.System.now().toEpochMilliseconds(),

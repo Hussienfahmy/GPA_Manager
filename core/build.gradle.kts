@@ -14,6 +14,16 @@ ksp {
     arg("room.generateKotlin", "true")
 }
 
+// MigrationTest needs schemas as assets under src/androidHostTest/assets (gitignored, generated).
+val copySchemasToTestAssets = tasks.register<Copy>("copySchemasToTestAssets") {
+    from("$projectDir/schemas")
+    into("$projectDir/src/androidHostTest/assets")
+}
+
+tasks.matching { it.name == "mergeAndroidHostTestAssets" }.configureEach {
+    dependsOn(copySchemasToTestAssets)
+}
+
 // google-services plugin only works on com.android.application - can't apply it here, so we
 // parse :app's google-services.json directly and expose the OAuth web client ID to
 // GoogleAuthUiClient.kt as a generated Kotlin constant instead. Falls back to empty string if the

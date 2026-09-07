@@ -5,7 +5,7 @@ import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.hussienfahmy.core.data.local.AppDatabase
 import com.hussienfahmy.core.data.local.GradeDao
-import com.hussienfahmy.core.data.local.MIGRATION_10_11
+import com.hussienfahmy.core.data.local.APP_DATABASE_MIGRATIONS
 import com.hussienfahmy.core.data.local.SemesterDao
 import com.hussienfahmy.core.data.local.SubjectDao
 import com.hussienfahmy.core.data.local.entity.Grade
@@ -42,7 +42,7 @@ val databaseModule = module {
         getDatabaseBuilder(get())
             .fallbackToDestructiveMigration(false)
             .addCallback(get<RoomDatabase.Callback>())
-            .addMigrations(MIGRATION_10_11)
+            .addMigrations(*APP_DATABASE_MIGRATIONS)
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)
             .build()

@@ -40,6 +40,8 @@ class EditSemester(
                         label = request.label,
                         semesterGPA = request.semesterGPA,
                         totalCreditHours = request.totalCreditHours,
+                        // SUMMARY: no NP/NF concept, all hours count.
+                        gpaCreditHours = request.totalCreditHours,
                     )
                 )
                 dirtyTracker.markSemestersChanged()
@@ -54,12 +56,13 @@ class EditSemester(
             is Request.RecalculateDetailed -> {
                 val existing = semesterDao.getById(request.semesterId) ?: return
                 val subjects = subjectDao.getSubjectsBySemesterId(request.semesterId).first()
-                val semesterGPA = calculateSemesterGPA(subjects)
+                val result = calculateSemesterGPA(subjects)
                 val totalCreditHours = subjects.sumOf { it.creditHours }.toInt()
                 semesterDao.update(
                     existing.copy(
-                        semesterGPA = semesterGPA,
+                        semesterGPA = result.gpa,
                         totalCreditHours = totalCreditHours,
+                        gpaCreditHours = result.gpaCreditHours,
                     )
                 )
                 dirtyTracker.markSemestersChanged()

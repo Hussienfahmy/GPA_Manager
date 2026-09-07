@@ -37,6 +37,8 @@ class AddPastSemester(
                     type = Semester.Type.SUMMARY,
                     semesterGPA = request.semesterGPA,
                     totalCreditHours = request.totalCreditHours,
+                    // SUMMARY: no NP/NF concept, all hours count.
+                    gpaCreditHours = request.totalCreditHours,
                     status = Semester.Status.ARCHIVED,
                     order = nextOrder,
                     archivedAt = Clock.System.now().toEpochMilliseconds(),

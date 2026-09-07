@@ -10,6 +10,8 @@
 .DS_Store
 /build
 **/build
+## Generated from core/schemas/ every build
+/core/src/androidHostTest/assets
 /captures
 .externalNativeBuild
 .cxx

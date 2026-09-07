@@ -9,6 +9,7 @@ data class Semester(
     val type: Type,
     val semesterGPA: Double,
     val totalCreditHours: Int,
+    val gpaCreditHours: Int,
     val status: Status,
     val order: Int,
     val createdAt: Long,
@@ -30,6 +31,7 @@ fun SemesterEntity.toDomain(hasMissingGrade: Boolean = false) = Semester(
     },
     semesterGPA = semesterGPA,
     totalCreditHours = totalCreditHours,
+    gpaCreditHours = gpaCreditHours,
     status = when (status) {
         SemesterEntity.Status.CURRENT -> Semester.Status.CURRENT
         SemesterEntity.Status.ARCHIVED -> Semester.Status.ARCHIVED

@@ -132,6 +132,7 @@ private val previewSummarySemester = Semester(
     type = Semester.Type.SUMMARY,
     semesterGPA = 3.5,
     totalCreditHours = 18,
+    gpaCreditHours = 18,
     status = Semester.Status.ARCHIVED,
     order = 0,
     createdAt = 0L,

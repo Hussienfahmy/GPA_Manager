@@ -7,7 +7,10 @@ import kotlinx.coroutines.flow.first
 class CalculateSemesterGPA(
     private val gradeDao: GradeDao,
 ) {
-    suspend operator fun invoke(subjects: List<Subject>): Double {
+    // gpaCreditHours excludes NP/NF - separate from a semester's total (all subjects).
+    data class Result(val gpa: Double, val gpaCreditHours: Int)
+
+    suspend operator fun invoke(subjects: List<Subject>): Result {
         val grades = gradeDao.grades.first()
 
         val gradedSubjects = subjects.mapNotNull { subject ->
@@ -17,8 +20,10 @@ class CalculateSemesterGPA(
         }
 
         val totalPoints = gradedSubjects.sumOf { (points, hours) -> points * hours }
-        val totalHours = gradedSubjects.sumOf { it.second }
+        val gpaCreditHours = gradedSubjects.sumOf { it.second }
 
-        return if (totalHours == 0.0) 0.0 else totalPoints / totalHours
+        val gpa = if (gpaCreditHours == 0.0) 0.0 else totalPoints / gpaCreditHours
+
+        return Result(gpa = gpa, gpaCreditHours = gpaCreditHours.toInt())
     }
 }

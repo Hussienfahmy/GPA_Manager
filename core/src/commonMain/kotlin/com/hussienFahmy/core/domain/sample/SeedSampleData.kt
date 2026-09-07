@@ -44,11 +44,11 @@ class SeedSampleData(
 
     private suspend fun seedHistory() {
         // SUMMARY semesters (no subjects: the "summary" row in the PDF report)
-        semesterDao.insert(Semester(label = "Year 1, Semester 1", level = 1, type = Semester.Type.SUMMARY, semesterGPA = 3.20, totalCreditHours = 17, status = Semester.Status.ARCHIVED, order = 1))
-        semesterDao.insert(Semester(label = "Year 1, Semester 2", level = 1, type = Semester.Type.SUMMARY, semesterGPA = 3.50, totalCreditHours = 18, status = Semester.Status.ARCHIVED, order = 2))
+        semesterDao.insert(Semester(label = "Year 1, Semester 1", level = 1, type = Semester.Type.SUMMARY, semesterGPA = 3.20, totalCreditHours = 17, gpaCreditHours = 17, status = Semester.Status.ARCHIVED, order = 1))
+        semesterDao.insert(Semester(label = "Year 1, Semester 2", level = 1, type = Semester.Type.SUMMARY, semesterGPA = 3.50, totalCreditHours = 18, gpaCreditHours = 18, status = Semester.Status.ARCHIVED, order = 2))
 
         // DETAILED: midterm + oral only, all grades set, with marks
-        val s3id = semesterDao.insert(Semester(label = "Year 2, Semester 1", level = 2, type = Semester.Type.DETAILED, semesterGPA = 3.60, totalCreditHours = 15, status = Semester.Status.ARCHIVED, order = 3))
+        val s3id = semesterDao.insert(Semester(label = "Year 2, Semester 1", level = 2, type = Semester.Type.DETAILED, semesterGPA = 3.60, totalCreditHours = 15, gpaCreditHours = 15, status = Semester.Status.ARCHIVED, order = 3))
         listOf(
             Subject(name = "Calculus II", creditHours = 3.0, gradeName = GradeName.A, totalMarks = 100.0, semesterMarks = Subject.SemesterMarks(midterm = 28.0, oral = 9.0), metadata = Subject.MetaData(midtermAvailable = true, oralAvailable = true, practicalAvailable = false, projectAvailable = false), semesterId = s3id),
             Subject(name = "Linear Algebra", creditHours = 3.0, gradeName = GradeName.BPlus, totalMarks = 100.0, semesterMarks = Subject.SemesterMarks(midterm = 22.0, oral = 7.0), metadata = Subject.MetaData(midtermAvailable = true, oralAvailable = true, practicalAvailable = false, projectAvailable = false), semesterId = s3id),
@@ -58,7 +58,7 @@ class SeedSampleData(
         ).forEach { subjectDao.upsert(it) }
 
         // DETAILED: midterm + practical only, no oral, variable marks
-        val s4id = semesterDao.insert(Semester(label = "Year 2, Semester 2", level = 2, type = Semester.Type.DETAILED, semesterGPA = 3.60, totalCreditHours = 15, status = Semester.Status.ARCHIVED, order = 4))
+        val s4id = semesterDao.insert(Semester(label = "Year 2, Semester 2", level = 2, type = Semester.Type.DETAILED, semesterGPA = 3.60, totalCreditHours = 15, gpaCreditHours = 15, status = Semester.Status.ARCHIVED, order = 4))
         listOf(
             Subject(name = "Operating Systems", creditHours = 3.0, gradeName = GradeName.A, totalMarks = 100.0, semesterMarks = Subject.SemesterMarks(midterm = 28.0, practical = 18.0), metadata = Subject.MetaData(midtermAvailable = true, oralAvailable = false, practicalAvailable = true, projectAvailable = false), semesterId = s4id),
             Subject(name = "Computer Networks", creditHours = 3.0, gradeName = GradeName.BPlus, totalMarks = 100.0, semesterMarks = Subject.SemesterMarks(midterm = 22.0, practical = 14.0), metadata = Subject.MetaData(midtermAvailable = true, oralAvailable = false, practicalAvailable = true, projectAvailable = false), semesterId = s4id),
@@ -68,7 +68,7 @@ class SeedSampleData(
         ).forEach { subjectDao.upsert(it) }
 
         // DETAILED: all mark types (midterm + practical + oral + project)
-        val s5id = semesterDao.insert(Semester(label = "Year 3, Semester 1", level = 3, type = Semester.Type.DETAILED, semesterGPA = 3.90, totalCreditHours = 14, status = Semester.Status.ARCHIVED, order = 5))
+        val s5id = semesterDao.insert(Semester(label = "Year 3, Semester 1", level = 3, type = Semester.Type.DETAILED, semesterGPA = 3.90, totalCreditHours = 14, gpaCreditHours = 14, status = Semester.Status.ARCHIVED, order = 5))
         listOf(
             Subject(name = "Compiler Design", creditHours = 3.0, gradeName = GradeName.A, totalMarks = 100.0, semesterMarks = Subject.SemesterMarks(midterm = 29.0, practical = 19.0, oral = 9.0), metadata = Subject.MetaData(midtermAvailable = true, oralAvailable = true, practicalAvailable = true, projectAvailable = false), semesterId = s5id),
             Subject(name = "Artificial Intelligence", creditHours = 3.0, gradeName = GradeName.A, totalMarks = 100.0, semesterMarks = Subject.SemesterMarks(midterm = 27.0, practical = 17.0, oral = 8.0), metadata = Subject.MetaData(midtermAvailable = true, oralAvailable = true, practicalAvailable = true, projectAvailable = false), semesterId = s5id),
@@ -78,7 +78,7 @@ class SeedSampleData(
         ).forEach { subjectDao.upsert(it) }
 
         // DETAILED: mixed credit hours, midterm only
-        val s6id = semesterDao.insert(Semester(label = "Year 3, Semester 2", level = 3, type = Semester.Type.DETAILED, semesterGPA = 3.68, totalCreditHours = 16, status = Semester.Status.ARCHIVED, order = 6))
+        val s6id = semesterDao.insert(Semester(label = "Year 3, Semester 2", level = 3, type = Semester.Type.DETAILED, semesterGPA = 3.68, totalCreditHours = 16, gpaCreditHours = 16, status = Semester.Status.ARCHIVED, order = 6))
         listOf(
             Subject(name = "Design and Analysis of Algorithms", creditHours = 3.0, gradeName = GradeName.A, totalMarks = 100.0, semesterMarks = Subject.SemesterMarks(midterm = 29.0), metadata = Subject.MetaData(midtermAvailable = true, oralAvailable = false, practicalAvailable = false, projectAvailable = false), semesterId = s6id),
             Subject(name = "Database Systems", creditHours = 3.0, gradeName = GradeName.A, totalMarks = 100.0, semesterMarks = Subject.SemesterMarks(midterm = 26.0), metadata = Subject.MetaData(midtermAvailable = true, oralAvailable = false, practicalAvailable = false, projectAvailable = false), semesterId = s6id),

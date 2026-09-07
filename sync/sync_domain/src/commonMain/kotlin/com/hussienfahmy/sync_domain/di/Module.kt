@@ -56,6 +56,7 @@ val syncDomainModule = module {
             repository = get(),
             semesterDao = get(),
             subjectDao = get(),
+            calculateWeightedCumulativeGpa = get(),
         )
     }
 

@@ -1,5 +1,6 @@
 package com.hussienfahmy.core.data.local.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
@@ -13,6 +14,8 @@ data class Semester(
     val type: Type = Type.SUMMARY,
     val semesterGPA: Double = 0.0,
     val totalCreditHours: Int = 0,
+    // Hours behind semesterGPA (excludes NP/NF, unlike totalCreditHours).
+    @ColumnInfo(defaultValue = "0") val gpaCreditHours: Int = 0,
     val status: Status = Status.ARCHIVED,
     val order: Int = 0,
     val createdAt: Long = Clock.System.now().toEpochMilliseconds(),

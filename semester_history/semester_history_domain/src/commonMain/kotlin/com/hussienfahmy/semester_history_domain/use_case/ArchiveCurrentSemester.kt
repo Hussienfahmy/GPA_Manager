@@ -33,7 +33,7 @@ class ArchiveCurrentSemester(
         val currentSubjects = subjectDao.getAllCurrentSubjects().first()
         if (currentSubjects.isEmpty()) return Result.NoSubjects
 
-        val semesterGPA = calculateSemesterGPA(currentSubjects)
+        val result = calculateSemesterGPA(currentSubjects)
         val totalCreditHours = currentSubjects.sumOf { it.creditHours }.toInt()
 
         val label = SemesterProgression.label(currentLevel, currentSemester)
@@ -43,8 +43,9 @@ class ArchiveCurrentSemester(
             label = label,
             level = currentLevel,
             type = Semester.Type.DETAILED,
-            semesterGPA = semesterGPA,
+            semesterGPA = result.gpa,
             totalCreditHours = totalCreditHours,
+            gpaCreditHours = result.gpaCreditHours,
             status = Semester.Status.ARCHIVED,
             order = nextOrder,
             archivedAt = Clock.System.now().toEpochMilliseconds(),

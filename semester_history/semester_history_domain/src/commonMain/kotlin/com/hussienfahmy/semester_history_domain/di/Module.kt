@@ -18,7 +18,7 @@ import org.koin.dsl.module
 
 val semesterHistoryDomainModule = module {
     single { CalculateSemesterGPA(gradeDao = get()) }
-    single { CalculateCumulativeFromHistory() }
+    single { CalculateCumulativeFromHistory(calculateWeightedCumulativeGpa = get()) }
     single { GetSemesterHistory(semesterDao = get(), subjectDao = get()) }
     single { GetSemesterDetail(semesterDao = get(), subjectDao = get()) }
     single { AddPastSemester(semesterDao = get(), dirtyTracker = get()) }

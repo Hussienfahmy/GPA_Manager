@@ -2,6 +2,7 @@ package com.hussienfahmy.core.di
 
 import com.hussienfahmy.core.data.local.datastore.AppLifecycleDataStore
 import com.hussienfahmy.core.domain.auth.PlatformCredentialCleanup
+import com.hussienfahmy.core.domain.gpa.CalculateWeightedCumulativeGpa
 import com.hussienfahmy.core.domain.report.PdfReportPrinter
 import com.hussienfahmy.core.domain.report.ReportBrandingProvider
 import com.hussienfahmy.core.domain.report.ReportTemplateRegistry
@@ -34,6 +35,7 @@ val coreModule = module {
     singleOf(::PdfReportPrinter)
     singleOf(::UrlOpener)
     singleOf(::PlatformCredentialCleanup)
+    singleOf(::CalculateWeightedCumulativeGpa)
 
     single {
         ReportTemplateRegistry(

@@ -2,6 +2,7 @@ package com.hussienfahmy.sync_domain.use_case
 
 import com.hussienfahmy.core.data.local.SemesterDao
 import com.hussienfahmy.core.data.local.SubjectDao
+import com.hussienfahmy.core.domain.gpa.CalculateWeightedCumulativeGpa
 import com.hussienfahmy.sync_domain.model.Subject
 import com.hussienfahmy.sync_domain.model.toNetworkSemester
 import com.hussienfahmy.sync_domain.repository.SyncRepository
@@ -11,6 +12,7 @@ class PushSemesters(
     private val repository: SyncRepository,
     private val semesterDao: SemesterDao,
     private val subjectDao: SubjectDao,
+    private val calculateWeightedCumulativeGpa: CalculateWeightedCumulativeGpa,
 ) {
     suspend operator fun invoke(userId: String) {
         val semesters = semesterDao.getArchived().first()
@@ -46,20 +48,21 @@ class PushSemesters(
 
         repository.uploadSemesters(userId = userId, semesters = networkSemesters)
 
-        // Keep academicProgress in user document in sync with the computed cumulative GPA.
-        // Only update when semesters exist — otherwise we'd overwrite legacy data with zeros.
+        // Skip when empty - avoids overwriting legacy data with zeros.
         if (semesters.isNotEmpty()) {
-            var totalPoints = 0.0
-            var totalHours = 0
-            semesters.forEach { semester ->
-                totalPoints += semester.semesterGPA * semester.totalCreditHours
-                totalHours += semester.totalCreditHours
-            }
-            val cumulativeGPA = if (totalHours == 0) 0.0 else totalPoints / totalHours
+            val result = calculateWeightedCumulativeGpa(
+                semesters.map {
+                    CalculateWeightedCumulativeGpa.SemesterContribution(
+                        gpa = it.semesterGPA,
+                        gpaCreditHours = it.gpaCreditHours,
+                        totalCreditHours = it.totalCreditHours,
+                    )
+                }
+            )
             repository.updateAcademicProgress(
                 userId = userId,
-                cumulativeGPA = cumulativeGPA,
-                creditHours = totalHours
+                cumulativeGPA = result.cumulativeGPA,
+                creditHours = result.totalCreditHours
             )
         }
     }

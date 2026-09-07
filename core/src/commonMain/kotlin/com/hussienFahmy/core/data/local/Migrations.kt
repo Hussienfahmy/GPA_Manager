@@ -134,3 +134,18 @@ val MIGRATION_10_11 = object : Migration(10, 11) {
         connection.execSQL("ALTER TABLE subject_new RENAME TO subject")
     }
 }
+
+// Adds gpaCreditHours, backfilled from totalCreditHours (correct pre-NP/NF).
+val MIGRATION_13_14 = object : Migration(13, 14) {
+    override fun migrate(connection: SQLiteConnection) {
+        connection.execSQL(
+            "ALTER TABLE semester ADD COLUMN gpaCreditHours INTEGER NOT NULL DEFAULT 0"
+        )
+        connection.execSQL(
+            "UPDATE semester SET gpaCreditHours = totalCreditHours"
+        )
+    }
+}
+
+// Single source of truth for addMigrations() - also used by MigrationTest.
+val APP_DATABASE_MIGRATIONS: Array<Migration> = arrayOf(MIGRATION_10_11, MIGRATION_13_14)
