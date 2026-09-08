@@ -93,6 +93,8 @@ fun GpaManagerApp() {
                 while (onboardingBackStack.size > 1) {
                     onboardingBackStack.removeLastOrNull()
                 }
+                // Drop every tab's pushed screens so the next session starts clean.
+                appNavigationState.reset()
             }
         }
 

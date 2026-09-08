@@ -98,6 +98,19 @@ class AppNavigationState(
         }
     }
 
+    /**
+     * Wipes every tab's back stack down to its root and returns to the start tab. Called on
+     * sign-out / account deletion so a later session never inherits the previous user's pushed
+     * screens (e.g. a settings detail, or the Delete Account screen itself).
+     */
+    fun reset() {
+        backStacks.forEach { (route, stack) ->
+            while (stack.size > 1) stack.removeLastOrNull()
+            if (stack.isEmpty()) stack.add(route)
+        }
+        topLevelRoute = startRoute
+    }
+
     /** True if the back press was consumed; false means the caller (system back) should exit. */
     fun goBack(): Boolean {
         val currentStack = backStacks[topLevelRoute] ?: return false
