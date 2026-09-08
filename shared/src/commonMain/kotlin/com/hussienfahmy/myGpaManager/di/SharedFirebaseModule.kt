@@ -3,11 +3,13 @@ package com.hussienfahmy.myGpaManager.di
 import com.hussienfahmy.core.domain.auth.repository.AuthRepository
 import com.hussienfahmy.core.domain.messaging.FcmTokenProvider
 import com.hussienfahmy.core.domain.storage.repository.StorageRepository
+import com.hussienfahmy.core.domain.user_data.repository.RemoteUserDataEraser
 import com.hussienfahmy.core.domain.user_data.repository.UserDataRepository
 import com.hussienfahmy.myGpaManager.data.auth.FirebaseAuthRepository
 import com.hussienfahmy.myGpaManager.data.messaging.FirebaseFcmTokenProvider
 import com.hussienfahmy.myGpaManager.data.storage.FirebaseStorageRepository
 import com.hussienfahmy.myGpaManager.data.sync.FirebaseSyncRepository
+import com.hussienfahmy.myGpaManager.data.user_data.FirebaseRemoteUserDataEraser
 import com.hussienfahmy.myGpaManager.data.user_data.FirebaseUserDataRepository
 import com.hussienfahmy.sync_domain.repository.SyncRepository
 import dev.gitlive.firebase.Firebase as GitLiveFirebase
@@ -56,6 +58,10 @@ val sharedFirebaseModule = module {
 
     single<UserDataRepository> {
         FirebaseUserDataRepository(get(), get(), get(), get())
+    }
+
+    single<RemoteUserDataEraser> {
+        FirebaseRemoteUserDataEraser(get(), get(), get())
     }
 
     singleOf(::FirebaseSyncRepository).bind<SyncRepository>()

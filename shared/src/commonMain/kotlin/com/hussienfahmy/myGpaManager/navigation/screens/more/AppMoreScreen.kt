@@ -11,6 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.outlined.Code
+import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.outlined.DonutLarge
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.Star
@@ -55,6 +56,7 @@ fun AppMoreScreen(
     onGPASettingsClick: () -> Unit,
     onGradeSettingsClick: () -> Unit,
     onSubjectSettingsClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit,
 ) {
     TrackScreenTime(AnalyticsValues.SCREEN_MORE)
 
@@ -77,6 +79,7 @@ fun AppMoreScreen(
                 onSubjectSettingsClick = onSubjectSettingsClick,
                 onSignOutClick = { moreViewModel.signOut() },
                 onAppRatingClick = { moreViewModel.logAppRatingClicked() },
+                onDeleteAccountClick = onDeleteAccountClick,
             )
         }
     }
@@ -92,6 +95,7 @@ fun MoreScreenContent(
     onSubjectSettingsClick: () -> Unit,
     onSignOutClick: () -> Unit,
     onAppRatingClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit,
 ) {
     val colors = MeadowTheme.colors
     val urlOpener = koinInject<UrlOpener>()
@@ -194,6 +198,14 @@ fun MoreScreenContent(
                     trailing = SettingsRowTrailing.None,
                     danger = true,
                     onClick = { showSignOutSheet = true },
+                )
+                MeadowRowDivider()
+                MeadowSettingsRow(
+                    icon = Icons.Outlined.DeleteForever,
+                    title = stringResource(Res.string.delete_account),
+                    summary = stringResource(Res.string.delete_account_summary),
+                    danger = true,
+                    onClick = onDeleteAccountClick,
                 )
             }
         }

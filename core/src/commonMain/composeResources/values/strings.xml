@@ -376,4 +376,23 @@
     <string name="expand_all">Expand all</string>
     <string name="collapse_all">Collapse all</string>
     <string name="history_missing_grade">Missing grade</string>
+
+    <string name="delete_account">Delete account</string>
+    <string name="delete_account_summary">Permanently erase your account and data</string>
+    <string name="delete_account_title">Delete your account?</string>
+    <string name="delete_account_warning_synced">This permanently deletes your account and every piece of data linked to it, on this device and any other device you sign in on. It cannot be undone.</string>
+    <string name="delete_account_warning_local">This permanently erases the guest data stored on this device. It is not synced anywhere, so once deleted it cannot be recovered.</string>
+    <string name="delete_account_bullet_profile">Your profile: name, photo, and institution details</string>
+    <string name="delete_account_bullet_grades">All subjects, marks, and grade settings</string>
+    <string name="delete_account_bullet_history">Your full semester history and cumulative GPA</string>
+    <string name="delete_account_bullet_settings">Your GPA system and app preferences</string>
+    <string name="delete_account_irreversible">This action is permanent and cannot be undone.</string>
+    <string name="delete_account_type_to_confirm">Type %1$s below to confirm.</string>
+    <string name="delete_account_confirm_token" translatable="false">DELETE</string>
+    <string name="delete_account_cta">Delete my account</string>
+    <string name="delete_account_in_progress">Deleting your account…</string>
+    <string name="delete_account_sheet_title">Delete account permanently?</string>
+    <string name="delete_account_sheet_body">Your account and all of its data will be erased immediately. This cannot be undone.</string>
+    <string name="delete_account_sheet_confirm">Delete forever</string>
+    <string name="delete_account_error">Couldn't delete your account. Please check your connection and try again.</string>
 </resources>

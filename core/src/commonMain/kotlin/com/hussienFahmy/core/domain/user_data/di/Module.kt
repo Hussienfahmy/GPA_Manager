@@ -3,6 +3,7 @@ package com.hussienfahmy.core.domain.user_data.di
 import com.hussienfahmy.core.domain.auth.use_cases.CompleteSignIn
 import com.hussienfahmy.core.domain.sample.SeedSampleData
 import com.hussienfahmy.core.domain.user_data.use_cases.ClearFcmToken
+import com.hussienfahmy.core.domain.user_data.use_cases.DeleteAccount
 import com.hussienfahmy.core.domain.user_data.use_cases.GetAcademicProgress
 import com.hussienfahmy.core.domain.user_data.use_cases.GetUserData
 import com.hussienfahmy.core.domain.user_data.use_cases.ObserveUserData
@@ -39,6 +40,7 @@ val coreUserDataDomainModule = module {
     singleOf(::UpdateCreditHours)
     singleOf(::UserDataUseCases)
     singleOf(::SignOut)
+    singleOf(::DeleteAccount)
     singleOf(::UpdateFCMToken)
     singleOf(::RefreshFcmToken)
     singleOf(::ClearFcmToken)

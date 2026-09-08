@@ -12,6 +12,8 @@ interface AuthRepository {
     suspend fun signInAnonymously(): AuthResult
 
     suspend fun signOut()
+
+    suspend fun deleteCurrentUser()
 }
 
 sealed interface AuthResult {

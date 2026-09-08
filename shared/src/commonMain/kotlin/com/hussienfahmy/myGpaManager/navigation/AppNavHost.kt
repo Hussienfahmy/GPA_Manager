@@ -16,6 +16,7 @@ import com.hussienfahmy.myGpaManager.navigation.screens.AppSemesterMarksScreen
 import com.hussienfahmy.myGpaManager.navigation.screens.AppSemesterScreen
 import com.hussienfahmy.myGpaManager.navigation.screens.AppSubjectSettingsScreen
 import com.hussienfahmy.myGpaManager.navigation.screens.AppUserDataScreen
+import com.hussienfahmy.myGpaManager.navigation.screens.more.AppDeleteAccountScreen
 import com.hussienfahmy.myGpaManager.navigation.screens.more.AppMoreScreen
 
 @Composable
@@ -68,6 +69,7 @@ fun AppNavHost(
                             onGPASettingsClick = { appNavigationState.navigate(AppRoute.GPASettings) },
                             onGradeSettingsClick = { appNavigationState.navigate(AppRoute.GradeSettings) },
                             onSubjectSettingsClick = { appNavigationState.navigate(AppRoute.SubjectSettings) },
+                            onDeleteAccountClick = { appNavigationState.navigate(AppRoute.DeleteAccount) },
                         )
                     }
                 }
@@ -76,6 +78,14 @@ fun AppNavHost(
                     ScreenWithToolbar(route = AppRoute.UserData, onBackClick = { appNavigationState.goBack() }) { padding ->
                         CenteredMaxWidthContent(modifier = Modifier.padding(top = padding.calculateTopPadding())) {
                             AppUserDataScreen(snackBarHostState = snackBarHostState)
+                        }
+                    }
+                }
+
+                entry<AppRoute.DeleteAccount>(metadata = slideTransitionMetadata) {
+                    ScreenWithToolbar(route = AppRoute.DeleteAccount, onBackClick = { appNavigationState.goBack() }) { padding ->
+                        CenteredMaxWidthContent(modifier = Modifier.padding(top = padding.calculateTopPadding())) {
+                            AppDeleteAccountScreen(snackBarHostState = snackBarHostState)
                         }
                     }
                 }

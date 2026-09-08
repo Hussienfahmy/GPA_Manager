@@ -77,4 +77,17 @@ class FirebaseAuthRepository(
         platformCredentialCleanup.clear()
         userId.first { it == null }
     }
+
+    override suspend fun deleteCurrentUser() {
+        try {
+            auth.currentUser?.delete()
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            crashReporter.recordException(e, mapOf("operation" to "deleteCurrentUser"))
+            throw e
+        }
+        platformCredentialCleanup.clear()
+        userId.first { it == null }
+    }
 }

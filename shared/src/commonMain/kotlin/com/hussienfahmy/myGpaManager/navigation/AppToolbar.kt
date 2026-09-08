@@ -51,12 +51,13 @@ private fun AppRoute.toolbarTitle(): String? = when (this) {
     AppRoute.GradeSettings -> stringResource(Res.string.grades_settings)
     AppRoute.SubjectSettings -> stringResource(Res.string.subject_settings)
     AppRoute.UserData -> stringResource(Res.string.personal_info_title)
+    AppRoute.DeleteAccount -> stringResource(Res.string.delete_account)
     else -> null
 }
 
 private fun AppRoute.toolbarAccent(colors: MeadowColors) = when (this) {
     is AppRoute.SemesterDetail, AppRoute.SubjectSettings -> colors.history
-    AppRoute.UserData -> colors.more
+    AppRoute.UserData, AppRoute.DeleteAccount -> colors.more
     AppRoute.GPASettings -> colors.semester
     AppRoute.GradeSettings -> colors.marks
     else -> colors.semester

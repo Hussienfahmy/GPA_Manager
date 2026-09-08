@@ -35,6 +35,9 @@ sealed interface AppRoute : NavKey {
     data object UserData : AppRoute
 
     @Serializable
+    data object DeleteAccount : AppRoute
+
+    @Serializable
     data object GPASettings : AppRoute
 
     @Serializable

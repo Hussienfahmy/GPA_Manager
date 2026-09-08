@@ -368,4 +368,22 @@
     <string name="expand_all">توسيع الكل</string>
     <string name="collapse_all">طيّ الكل</string>
     <string name="history_missing_grade">تقدير ناقص</string>
+
+    <string name="delete_account">حذف الحساب</string>
+    <string name="delete_account_summary">حذف حسابك وبياناتك نهائيًا</string>
+    <string name="delete_account_title">حذف حسابك؟</string>
+    <string name="delete_account_warning_synced">سيؤدي هذا إلى حذف حسابك نهائيًا وكل البيانات المرتبطة به، على هذا الجهاز وأي جهاز آخر تسجّل الدخول منه. لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="delete_account_warning_local">سيؤدي هذا إلى حذف بيانات الضيف المخزّنة على هذا الجهاز نهائيًا. هذه البيانات غير متزامنة في أي مكان، لذا لا يمكن استرجاعها بعد الحذف.</string>
+    <string name="delete_account_bullet_profile">ملفك الشخصي: الاسم والصورة وبيانات المؤسسة</string>
+    <string name="delete_account_bullet_grades">جميع المواد والدرجات وإعدادات التقديرات</string>
+    <string name="delete_account_bullet_history">سجل الفصول الكامل والمعدل التراكمي</string>
+    <string name="delete_account_bullet_settings">نظام المعدل وتفضيلات التطبيق</string>
+    <string name="delete_account_irreversible">هذا الإجراء دائم ولا يمكن التراجع عنه.</string>
+    <string name="delete_account_type_to_confirm">اكتب %1$s بالأسفل للتأكيد.</string>
+    <string name="delete_account_cta">حذف حسابي</string>
+    <string name="delete_account_in_progress">جارٍ حذف حسابك…</string>
+    <string name="delete_account_sheet_title">حذف الحساب نهائيًا؟</string>
+    <string name="delete_account_sheet_body">سيتم حذف حسابك وكل بياناته فورًا. لا يمكن التراجع عن هذا.</string>
+    <string name="delete_account_sheet_confirm">حذف نهائي</string>
+    <string name="delete_account_error">تعذّر حذف حسابك. تحقق من اتصالك وحاول مرة أخرى.</string>
 </resources>
